@@ -1,0 +1,840 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3 Portable) (preloaded format=pdflatex 2021.5.20)  15 OCT 2021 13:04
+entering extended mode
+**./Dokumentation_Studienarbeit.tex
+(Dokumentation_Studienarbeit.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-05-11>
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\article.
+cls
+Document Class: article 2020/04/10 v1.4m Standard LaTeX document class
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\size12.c
+lo
+File: size12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
+)
+\c@part=\count179
+\c@section=\count180
+\c@subsection=\count181
+\c@subsubsection=\count182
+\c@paragraph=\count183
+\c@subparagraph=\count184
+\c@figure=\count185
+\c@table=\count186
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/geometry\geom
+etry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics\keyv
+al.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/iftex\ifvte
+x.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/iftex\iftex
+.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+\Gm@cnth=\count187
+\Gm@cntv=\count188
+\c@Gm@tempcnt=\count189
+\Gm@bindingoffset=\dimen139
+\Gm@wd@mp=\dimen140
+\Gm@odd@mp=\dimen141
+\Gm@even@mp=\dimen142
+\Gm@layoutwidth=\dimen143
+\Gm@layoutheight=\dimen144
+\Gm@layouthoffset=\dimen145
+\Gm@layoutvoffset=\dimen146
+\Gm@dimlist=\toks16
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/geometry\geom
+etry.cfg))
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/blindtext\bli
+ndtext.sty
+Package: blindtext 2012/01/06 V2.0 blindtext-Package
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/latex-tools\x
+space.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+)
+\c@blindtext=\count190
+\c@Blindtext=\count191
+\c@blind@countparstart=\count192
+\blind@countxx=\count193
+\blindtext@numBlindtext=\count194
+\blind@countyy=\count195
+\c@blindlist=\count196
+\c@blindlistlevel=\count197
+\c@blindlist@level=\count198
+\blind@listitem=\count199
+\c@blind@listcount=\count266
+\c@blind@levelcount=\count267
+\blind@mathformula=\count268
+\blind@Mathformula=\count269
+\c@blind@randomcount=\count270
+\c@blind@randommax=\count271
+\c@blind@pangramcount=\count272
+\c@blind@pangrammax=\count273
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/setspace\sets
+pace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyperref\hype
+rref.sty
+Package: hyperref 2021-02-27 v7.00k Hypertext links for LaTeX
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/ltxcmds\ltx
+cmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/pdftexcmds\
+pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/infwarerr\i
+nfwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/kvsetkeys\k
+vsetkeys.sty
+Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/kvdefinekey
+s\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/pdfescape\p
+dfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hycolor\hycol
+or.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/letltxmacro\l
+etltxmacro.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/auxhook\auxho
+ok.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/kvoptions\kvo
+ptions.sty
+Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
+)
+\@linkdim=\dimen147
+\Hy@linkcounter=\count274
+\Hy@pagecounter=\count275
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyperref\pd1e
+nc.def
+File: pd1enc.def 2021-02-27 v7.00k Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyperref\hype
+rref-langpatches.def
+File: hyperref-langpatches.def 2021-02-27 v7.00k Hyperref: patches for babel la
+nguages
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/intcalc\int
+calc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/etexcmds\et
+excmds.sty
+Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+)
+\Hy@SavedSpaceFactor=\count276
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyperref\puen
+c.def
+File: puenc.def 2021-02-27 v7.00k Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Hyper figures OFF on input line 4192.
+Package hyperref Info: Link nesting OFF on input line 4197.
+Package hyperref Info: Hyper index ON on input line 4200.
+Package hyperref Info: Plain pages OFF on input line 4207.
+Package hyperref Info: Backreferencing OFF on input line 4212.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4445.
+\c@Hy@tempcnt=\count277
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/url\url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4804.
+\XeTeXLinkMargin=\dimen148
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/bitset\bits
+et.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/bigintcalc\
+bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count278
+\Field@Width=\dimen149
+\Fld@charsize=\dimen150
+Package hyperref Info: Hyper figures OFF on input line 6075.
+Package hyperref Info: Link nesting OFF on input line 6080.
+Package hyperref Info: Hyper index ON on input line 6083.
+Package hyperref Info: backreferencing OFF on input line 6090.
+Package hyperref Info: Link coloring OFF on input line 6095.
+Package hyperref Info: Link coloring with OCG OFF on input line 6100.
+Package hyperref Info: PDF/A mode OFF on input line 6105.
+LaTeX Info: Redefining \ref on input line 6145.
+LaTeX Info: Redefining \pageref on input line 6149.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\atbegshi
+-ltx.sty
+Package: atbegshi-ltx 2020/08/17 v1.0a Emulation of the original atbegshi packa
+ge
+with kernel methods
+)
+\Hy@abspage=\count279
+\c@Item=\count280
+\c@Hfootnote=\count281
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyperref\hpdf
+tex.def
+File: hpdftex.def 2021-02-27 v7.00k Hyperref driver for pdfTeX
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\atveryen
+d-ltx.sty
+Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atvery packag
+e
+with kernel methods
+)
+\Fld@listcount=\count282
+\c@bookmark@seq@number=\count283
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/rerunfilechec
+k\rerunfilecheck.sty
+Package: rerunfilecheck 2019/12/05 v1.9 Rerun checks for auxiliary files (HO)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/uniquecount
+er\uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+86.
+)
+\Hy@SectionHShift=\skip49
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crlayer-scrpage.sty
+Package: scrlayer-scrpage 2021/06/25 v3.34 KOMA-Script package (end user interf
+ace for scrlayer)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crlayer.sty
+Package: scrlayer 2021/06/25 v3.34 KOMA-Script package (defining layers and pag
+e styles)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crkbase.sty
+Package: scrkbase 2021/06/25 v3.34 KOMA-Script package (KOMA-Script-dependent b
+asics and keyval usage)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crbase.sty
+Package: scrbase 2021/06/25 v3.34 KOMA-Script package (KOMA-Script-independent 
+basics and keyval usage)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crlfile.sty
+Package: scrlfile 2021/06/25 v3.34 KOMA-Script package (file load hooks)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crlfile-hook.sty
+Package: scrlfile-hook 2021/06/25 v3.34 KOMA-Script package (using LaTeX hooks)
+
+
+LaTeX3 Info: Defining command \BeforeFile with sig. 'm' on line 75.
+
+
+LaTeX3 Info: Defining command \AfterFile with sig. 'm' on line 79.
+
+
+LaTeX3 Info: Defining command \BeforeClass with sig. 'm' on line 83.
+
+
+LaTeX3 Info: Defining command \BeforePackage with sig. 'm' on line 87.
+
+
+LaTeX3 Info: Defining command \AfterAtEndOfClass with sig. 'smo+m' on line 97.
+
+
+LaTeX3 Info: Defining command \AfterAtEndOfPackage with sig. 'smo+m' on line
+(LaTeX3)     107.
+
+
+LaTeX3 Info: Defining command \scrlfile@AfterClass with sig. 'smo+m' on line
+(LaTeX3)     187.
+
+
+LaTeX3 Info: Defining command \AfterClass with sig. '' on line 188.
+
+
+LaTeX3 Info: Defining command \scrlfile@AfterPackage with sig. 'smo+m' on line
+(LaTeX3)     205.
+
+
+LaTeX3 Info: Defining command \AfterPackage with sig. '' on line 206.
+
+
+LaTeX3 Info: Defining command \ReplaceInput with sig. '' on line 207.
+
+
+LaTeX3 Info: Defining command \ReplaceClass with sig. 'mm' on line 210.
+
+
+LaTeX3 Info: Defining command \ReplacePackage with sig. 'mm' on line 213.
+
+
+LaTeX3 Info: Defining command \UnReplaceInput with sig. '' on line 214.
+
+
+LaTeX3 Info: Defining command \UnReplaceClass with sig. 'm' on line 217.
+
+
+LaTeX3 Info: Defining command \UnReplacePackage with sig. 'mm' on line 220.
+
+
+LaTeX3 Info: Defining command \PreventPackageFromLoading with sig. 's+om' on
+(LaTeX3)     line 248.
+
+
+LaTeX3 Info: Defining command \StorePreventPackageFromLoading with sig. 'm' on
+(LaTeX3)     line 256.
+
+
+LaTeX3 Info: Defining command \ResetPreventPackageFromLoading with sig. '' on
+(LaTeX3)     line 261.
+
+
+LaTeX3 Info: Defining command \UnPreventPackageFromLoading with sig. 'sm' on
+(LaTeX3)     line 275.
+
+
+LaTeX3 Info: Defining command \BeforeClosingMainAux with sig. 'om' on line
+(LaTeX3)     288.
+
+
+LaTeX3 Info: Defining command \AfterReadingMainAux with sig. 'om' on line 301.
+
+
+LaTeX3 Info: Defining command \protected@immediate@write with sig. 'm+m+m' on
+(LaTeX3)     line 312.
+
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/koma-script\s
+crlogo.sty
+Package: scrlogo 2021/06/25 v3.34 KOMA-Script package (logo)
+)))
+Skipping: [2021/05/01] Usage of raw or classic option list on input line 252.
+Applying: [0000/00/00] Usage of raw or classic option list on input line 368.
+))
+\footheight=\skip50
+Package scrlayer Info: patching LaTeX kernel macro \pagestyle on input line 216
+2.
+))
+Package scrlayer-scrpage Info: auto-selection of `pagestyleset=standard'.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/listings\list
+ings.sty
+\lst@mode=\count284
+\lst@gtempboxa=\box47
+\lst@token=\toks17
+\lst@length=\count285
+\lst@currlwidth=\dimen151
+\lst@column=\count286
+\lst@pos=\count287
+\lst@lostspace=\dimen152
+\lst@width=\dimen153
+\lst@newlines=\count288
+\lst@lineno=\count289
+\lst@maxwidth=\dimen154
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/listings\lstm
+isc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count290
+\lst@skipnumbers=\count291
+\lst@framebox=\box48
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/listings\list
+ings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/caption\subca
+ption.sty
+Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/caption\capti
+on.sty
+Package: caption 2020/10/26 v3.5g Customizing captions (AR)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/caption\capti
+on3.sty
+Package: caption3 2020/10/21 v2.2e caption3 kernel (AR)
+\captionmargin=\dimen155
+\captionmargin@=\dimen156
+\captionwidth=\dimen157
+\caption@tempdima=\dimen158
+\caption@indent=\dimen159
+\caption@parindent=\dimen160
+\caption@hangindent=\dimen161
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count292
+\c@continuedfloat=\count293
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+)
+\c@subfigure=\count294
+\c@subtable=\count295
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/latex-tools\t
+abularx.sty
+Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/latex-tools\a
+rray.sty
+Package: array 2020/10/01 v2.5c Tabular extension package (FMi)
+\col@sep=\dimen162
+\ar@mcellbox=\box49
+\extrarowheight=\dimen163
+\NC@list=\toks18
+\extratabsurround=\skip51
+\backup@length=\skip52
+\ar@cellbox=\box50
+)
+\TX@col@width=\dimen164
+\TX@old@table=\dimen165
+\TX@old@col=\dimen166
+\TX@target=\dimen167
+\TX@delta=\dimen168
+\TX@cols=\count296
+\TX@ftn=\toks19
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics\colo
+r.sty
+Package: color 2020/02/24 v1.2b Standard LaTeX Color (DPC)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics-cfg\
+color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics-def\
+pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/colortbl\colo
+rtbl.sty
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+\everycr=\toks20
+\minrowclearance=\skip53
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/amsfonts\amss
+ymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/amsfonts\amsf
+onts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks21
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\inputenc
+.sty
+Package: inputenc 2020/08/01 v1.3d Input encoding file
+\inpenc@prehook=\toks22
+\inpenc@posthook=\toks23
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\fontenc.
+sty
+Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/babel\babel
+.sty
+Package: babel 2021/05/16 3.59 The Babel package
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/babel\babel
+.def
+File: babel.def 2021/05/16 3.59 Babel common definitions
+\babel@savecnt=\count297
+\U@D=\dimen169
+\l@unhyphenated=\language79
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/babel\txtba
+bel.def)
+\bbl@readstream=\read2
+)
+\bbl@dirlevel=\count298
+
+*************************************
+* Local config file bblopts.cfg used
+*
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/arabi\bblopts
+.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/babel-german\
+ngerman.ldf
+Language: ngerman 2021/02/27 v2.13 German support for babel (post-1996 orthogra
+phy)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/babel-german\
+ngermanb.ldf
+Language: ngermanb 2021/02/27 v2.13 German support for babel (post-1996 orthogr
+aphy)
+Package babel Info: Making " an active character on input line 122.
+)))
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyphenat\hyph
+enat.sty
+Package: hyphenat 2009/09/02 v2.3c hyphenation utilities
+\langwohyphens=\language80
+LaTeX Info: Redefining \_ on input line 43.
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics\grap
+hicx.sty
+Package: graphicx 2020/09/09 v1.2b Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics\grap
+hics.sty
+Package: graphics 2020/08/30 v1.4c Standard LaTeX Graphics (DPC,SPQR)
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics\trig
+.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/graphics-cfg\
+graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+)
+\Gin@req@height=\dimen170
+\Gin@req@width=\dimen171
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/l3backend\l3b
+ackend-pdftex.def
+File: l3backend-pdftex.def 2021-05-07 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count299
+\l__pdf_internal_box=\box51
+) (Dokumentation_Studienarbeit.aux)
+\openout1 = `Dokumentation_Studienarbeit.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 57.
+LaTeX Font Info:    ... okay on input line 57.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(99.58464pt, 426.79135pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=426.79135pt
+* \textheight=702.78308pt
+* \oddsidemargin=27.31465pt
+* \evensidemargin=27.31465pt
+* \topmargin=-52.62668pt
+* \headheight=14.5pt
+* \headsep=36.98857pt
+* \topskip=12.0pt
+* \footskip=34.1433pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package hyperref Info: Link coloring OFF on input line 57.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/hyperref\name
+ref.sty
+Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/refcount\refc
+ount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/generic/gettitlestr
+ing\gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count300
+)
+LaTeX Info: Redefining \ref on input line 57.
+LaTeX Info: Redefining \pageref on input line 57.
+LaTeX Info: Redefining \nameref on input line 57.
+ (Dokumentation_Studienarbeit.out)
+(Dokumentation_Studienarbeit.out)
+\@outlinefile=\write3
+\openout3 = `Dokumentation_Studienarbeit.out'.
+
+Package scrlayer Info: Setting magic \footheight to \baselineskip while
+(scrlayer)             \begin{document} on input line 57.
+\c@lstlisting=\count301
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/context/base/mkii\s
+upp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count302
+\scratchdimen=\dimen172
+\scratchbox=\box52
+\nofMPsegments=\count303
+\nofMParguments=\count304
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count305
+\MPscratchDim=\dimen173
+\MPnumerator=\count306
+\makeMPintoPDFobject=\count307
+\everyMPtoPDFconversion=\toks25
+)
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/epstopdf-pkg\
+epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/00miktex\epst
+opdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+<Logos/dhbw-logo.png, id=110, 130.086pt x 62.8749pt>
+File: Logos/dhbw-logo.png Graphic file (type png)
+<use Logos/dhbw-logo.png>
+Package pdftex.def Info: Logos/dhbw-logo.png  used on input line 61.
+(pdftex.def)             Requested size: 128.0374pt x 61.8875pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 75.
+
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/amsfonts\umsa
+.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 75.
+
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/amsfonts\umsb
+.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{C:/Program Files/miktex/miktex-portable/texmfs/data/pdftex/config/pdftex.map} 
+<./Logos/dhbw-logo.png>]pdfTeX warning (ext4): destination with the same identi
+fier (name{page.I}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.106 \newpage
+               [1] (Dokumentation_Studienarbeit.toc)
+\tf@toc=\write4
+\openout4 = `Dokumentation_Studienarbeit.toc'.
+
+ [2]
+(Dokumentation_Studienarbeit.lof)
+\tf@lof=\write5
+\openout5 = `Dokumentation_Studienarbeit.lof'.
+
+ (Dokumentation_Studienarbeit.lot)
+\tf@lot=\write6
+\openout6 = `Dokumentation_Studienarbeit.lot'.
+
+
+(Dokumentation_Studienarbeit.lol)
+\tf@lol=\write7
+\openout7 = `Dokumentation_Studienarbeit.lol'.
+
+
+
+Package scrlayer-scrpage Warning: \headheight to low.
+(scrlayer-scrpage)                At least 17.99445pt needed,
+(scrlayer-scrpage)                but only 14.5pt found.
+(scrlayer-scrpage)                I'll enlarge \headheight, for further
+(scrlayer-scrpage)                processing, but you should do this yourself,
+(scrlayer-scrpage)                e.g., setting geometry's option
+(scrlayer-scrpage)                `head=17.99445pt'.
+(scrlayer-scrpage)                I'll also decrease \topmargin on input line 1
+25.
+
+
+Overfull \vbox (3.49445pt too high) has occurred while \output is active []
+
+
+
+Package scrlayer-scrpage Warning: \footheight to low.
+(scrlayer-scrpage)                At least 17.99445pt needed,
+(scrlayer-scrpage)                but only 14.5pt found.
+(scrlayer-scrpage)                I'll enlarge \footheight, for further
+(scrlayer-scrpage)                processing, but you should do this yourself,
+(scrlayer-scrpage)                e.g., using
+(scrlayer-scrpage)                  \setlength{\footheight}{17.99445pt}
+(scrlayer-scrpage)                in your preamble.
+(scrlayer-scrpage)                I'll also increase \footskip on input line 12
+5.
+
+[3
+
+] [4
+
+]
+1: section
+<Logos/Firmenlogokopfzeile.png, id=166, 532.99126pt x 115.18031pt>
+File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
+<use Logos/Firmenlogokopfzeile.png>
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 165.
+
+(pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
+
+Package scrlayer-scrpage Warning: \headheight to low.
+(scrlayer-scrpage)                At least 19.62476pt needed,
+(scrlayer-scrpage)                but only 17.99445pt found.
+(scrlayer-scrpage)                I'll enlarge \headheight, for further
+(scrlayer-scrpage)                processing, but you should do this yourself,
+(scrlayer-scrpage)                e.g., setting geometry's option
+(scrlayer-scrpage)                `head=19.62476pt'.
+(scrlayer-scrpage)                I'll also decrease \topmargin on input line 1
+65.
+
+
+Overfull \vbox (1.63031pt too high) has occurred while \output is active []
+
+
+[1 <./Logos/Firmenlogokopfzeile.png>]
+File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
+<use Logos/Firmenlogokopfzeile.png>
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 177.
+
+(pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
+ [2]
+File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
+<use Logos/Firmenlogokopfzeile.png>
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 186.
+
+(pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
+ [3]
+File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
+<use Logos/Firmenlogokopfzeile.png>
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 197.
+
+(pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
+ [4]
+File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
+<use Logos/Firmenlogokopfzeile.png>
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 202.
+
+(pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
+ [5]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 2
+08.
+
+(C:\Program Files\miktex\miktex-portable\texmfs\install\tex/latex/base\t1cmtt.f
+d
+File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
+<use Logos/Firmenlogokopfzeile.png>
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 218.
+
+(pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
+ [6] (Dokumentation_Studienarbeit.aux)
+Package rerunfilecheck Info: File `Dokumentation_Studienarbeit.out' has not cha
+nged.
+(rerunfilecheck)             Checksum: CB5E8A55DD4A50250A8BAE09620A3B1C;3722.
+ ) 
+Here is how much of TeX's memory you used:
+ 14923 strings out of 479163
+ 259970 string characters out of 2849172
+ 604555 words of memory out of 3000000
+ 32279 multiletter control sequences out of 15000+600000
+ 414609 words of font info for 54 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 123i,23n,124p,356b,499s stack positions out of 5000i,500n,10000p,200000b,80000s
+ <C:\Program Files\miktex\miktex-portable\texmfs/data\fonts/pk/ljfour/jknappe
+n/ec/dpi600\ectt1200.pk> <C:\Program Files\miktex\miktex-portable\texmfs/data\f
+onts/pk/ljfour/jknappen/ec/dpi600\ecsl1200.pk> <C:\Program Files\miktex\miktex-
+portable\texmfs/data\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Progra
+m Files\miktex\miktex-portable\texmfs/data\fonts/pk/ljfour/jknappen/ec/dpi600\e
+cbx1728.pk> <C:\Program Files\miktex\miktex-portable\texmfs/data\fonts/pk/ljfou
+r/jknappen/ec/dpi600\ecrm1200.pk> <C:\Program Files\miktex\miktex-portable\texm
+fs/data\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Program Files\mikte
+x\miktex-portable\texmfs/data\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1440.pk> <
+C:\Program Files\miktex\miktex-portable\texmfs/data\fonts/pk/ljfour/jknappen/ec
+/dpi600\ecrm1728.pk> <C:\Program Files\miktex\miktex-portable\texmfs/data\fonts
+/pk/ljfour/jknappen/ec/dpi600\ecrm2488.pk>
+Output written on Dokumentation_Studienarbeit.pdf (11 pages, 185923 bytes).
+PDF statistics:
+ 523 PDF objects out of 1000 (max. 8388607)
+ 40 named destinations out of 1000 (max. 500000)
+ 227 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -1,0 +1,223 @@
+
+
+
+
+%Autor: Nico Schrodt
+%Januar 2021 - März 2021
+
+
+\documentclass[12pt]{article}
+
+\usepackage{geometry}
+\usepackage{blindtext}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage[headsepline=0.8pt, footsepline =0.8pt]{scrlayer-scrpage}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{color, colortbl}
+%\usepackage{pdfpages}
+\usepackage{amssymb}
+
+\geometry{a4paper, top=25mm, left=35mm, right=25mm, bottom=25mm, headsep=13mm, footskip=12mm, head=14.5pt}
+
+%encoding
+%--------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%--------------------------------------
+
+%German-specific commands
+%--------------------------------------
+\usepackage[ngerman]{babel}
+%--------------------------------------
+
+%Hyphenation rules
+%--------------------------------------
+\usepackage{hyphenat}
+%--------------------------------------
+
+\usepackage{graphicx}
+
+\newcommand{\Autor}{Andreas Schmider, Nico Schrodt}
+
+\newcommand{\Bearbeitungszeitraum}{2 Semester}
+\newcommand{\Kurs}{TINF19B3}
+\newcommand{\Betreuer}{Prof. Dr.-Ing. Kai Becher}
+
+\newcommand{\DHBWLogoDeckblatt}{\includegraphics[width=4.5cm]{Logos/dhbw-logo}}
+
+\newcommand{\Titel}{Konzeptionierung eines Simulators für 8-bit Prozessoren}
+\newcommand{\ArtArbeit}{Studienarbeit}
+\newcommand{\Abschluss}{Bachelor of Science}
+\newcommand{\Studiengang}{Studiengang Informationstechnik}
+
+\newcommand{\Ort}{Karlsruhe}
+
+%\newcommand{\Abgabedatum}{16.02.2021}
+
+
+\begin{document}
+\onehalfspacing
+\pagenumbering{Roman}
+	\begin{titlepage}
+		{\DHBWLogoDeckblatt}\\[2cm]
+		\begin{center}
+			\vspace*{-2cm}
+			{\Huge \Titel}\\[2cm]
+			{\Huge \ArtArbeit}\\[2cm]
+			{\Large \Abschluss}\\[0.5cm]
+			{\large \Studiengang}\\[0.5cm]
+			{\large an der}\\[0.5cm]
+			{\large Dualen Hochschule Baden-Württemberg Karlsruhe}\\[0.5cm]
+			{\large von}\\[0.5cm]
+			{\large\bfseries \Autor}\\[1cm]
+			{\large Abgabedatum \today}
+			\vfill
+		\end{center}
+		\begin{tabular}{l@{\hspace{1cm}}l}
+			Bearbeitungszeitraum & \Bearbeitungszeitraum \\
+			Kurs & \Kurs \\
+%			Ausbildungsfirma & \Ausbildungsfirma \\
+			Betreuer der Ausbildungsfirma & \Betreuer \\
+		\end{tabular}
+	\end{titlepage}
+
+\newpage
+
+\thispagestyle{empty}
+\begin{center}
+\Large\bfseries Erklärung
+\end{center}
+\medskip
+\noindent
+Wir versichern hiermit, dass wir unsere \ArtArbeit \ mit
+dem Thema: 
+\begin{center}
+	 \Titel \ 
+\end{center}
+selbstständig verfasst und keine anderen als die angegebenen Quellen und
+Hilfsmittel benutzt haben. Wir versichern zudem, dass die eingereichte elektronische Fassung mit der
+gedruckten Fassung übereinstimmt.
+
+\vspace{3cm}
+\noindent
+\underline{\Ort, \today \hspace{9cm}}\\
+%\hfill\underline{\hspace{6cm}}\\
+Ort, Datum\hfill Unterschrift\hspace{4cm}
+
+\newpage
+
+\thispagestyle{empty}
+\tableofcontents
+
+\newpage
+
+%\thispagestyle{empty}
+\thispagestyle{plain}
+\cleardoublepage
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+
+\addcontentsline{toc}{section}{\listtablename}
+\listoftables
+
+\addcontentsline{toc}{section}{Listings}
+\lstlistoflistings
+
+\newpage
+
+%\thispagestyle{empty}
+\thispagestyle{plain}
+\cleardoublepage
+\section*{Abkürzungsverzeichnis}
+\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+
+
+\newpage
+\pagenumbering{arabic}
+
+%% Kopf und Fusszeilen==================================================== 
+\pagestyle{scrheadings} % Seite mit Headern 
+
+% loescht voreingestellte Stile 
+\clearpairofpagestyles
+%\clearscrheadings 
+\clearmainofpairofpagestyles
+%\clearscrplain 
+
+% %%% Kopfzeile 
+% einseitig: Bei einseitigem Layout, nur folgende Zeilen verwenden !!! 
+\ohead[] {\includegraphics[height=0.5cm]{Logos/Firmenlogokopfzeile}}
+\ihead[]{\leftmark} % links: Kapitel
+ %\chead[]{} % mitte: 
+
+% %%% Fusszeile 
+%\cfoot[]{} % mitte: 
+\cfoot[\pagemark]{\pagemark} % rechts: Seitenzahl
+
+
+% Angezeigte Abschnitte im Header 
+\automark{section}  % Inhalt von [\rightmark]{\leftmark} 
+
+\section{Einführung}
+Test
+
+\subsection{Ziel der Arbeit}
+
+\newpage
+
+\subsection{Theoretische Grundlagen}
+
+\subsubsection{Architektur eines Prozessors}
+\subsubsection{Unterschiede 8-bit, 16-bit, 32-bit und 64-bit Prozessoren}
+
+\subsection{Auswahl der Werkzeuge}
+\subsubsection{Programmiersprache}
+\subsubsection{GUI-Umgebung}
+\subsubsection{Programmierumgebung}
+
+\newpage
+
+\section{Projektplanung}
+Platzhalter
+\subsection{Zeitplan}
+\subsection{Auswahl geeigneter Varianten}
+\subsubsection{Intel 8080}
+\subsubsection{Anderes Beispiel}
+
+\newpage
+
+\section{Umsetzung}
+Platzhalter
+\subsection{Abstraktion der Architektur}
+\subsubsection{ALU}
+\subsubsection{Akkumulator}
+\subsubsection{Instruction Register}
+\subsubsection{DataBus}
+\subsubsection{etc.}
+\subsection{Ablauf der Simulation}
+
+\newpage
+
+\section{Fazit}
+Platzhalter
+
+\newpage
+
+
+\addcontentsline{toc}{section}{Literatur}
+\begin{thebibliography}{9}
+\bibitem{Beispiel}
+Google: \url{https://www.google.com}
+\end{thebibliography}
+
+%\newpage
+%\thispagestyle{empty}
+%
+%\section*{Anhang}
+%\addcontentsline{toc}{section}{Anhang}
+
+
+\end{document}
