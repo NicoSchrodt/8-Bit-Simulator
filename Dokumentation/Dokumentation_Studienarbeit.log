@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.1.2)  15 OCT 2021 16:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.1.2)  15 OCT 2021 16:58
 entering extended mode
 **./Dokumentation_Studienarbeit.tex
 (Dokumentation_Studienarbeit.tex
@@ -747,7 +747,7 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 460.
 )
-<Logos/dhbw-logo.png, id=114, 130.086pt x 62.8749pt>
+<Logos/dhbw-logo.png, id=138, 130.086pt x 62.8749pt>
 File: Logos/dhbw-logo.png Graphic file (type png)
 <use Logos/dhbw-logo.png>
 Package pdftex.def Info: Logos/dhbw-logo.png  used on input line 65.
@@ -781,20 +781,6 @@ l.110 \newpage
 \openout4 = `Dokumentation_Studienarbeit.toc'.
 
  [2]
-(Dokumentation_Studienarbeit.lof)
-\tf@lof=\write5
-\openout5 = `Dokumentation_Studienarbeit.lof'.
-
- (Dokumentation_Studienarbeit.lot)
-\tf@lot=\write6
-\openout6 = `Dokumentation_Studienarbeit.lot'.
-
-
-(Dokumentation_Studienarbeit.lol)
-\tf@lol=\write7
-\openout7 = `Dokumentation_Studienarbeit.lol'.
-
-
 
 Package scrlayer-scrpage Warning: \headheight to low.
 (scrlayer-scrpage)                At least 17.99445pt needed,
@@ -804,7 +790,7 @@ Package scrlayer-scrpage Warning: \headheight to low.
 (scrlayer-scrpage)                e.g., setting geometry's option
 (scrlayer-scrpage)                `head=17.99445pt'.
 (scrlayer-scrpage)                I'll also decrease \topmargin on input line 1
-29.
+15.
 
 
 Overfull \vbox (3.49445pt too high) has occurred while \output is active []
@@ -819,19 +805,32 @@ Package scrlayer-scrpage Warning: \footheight to low.
 (scrlayer-scrpage)                e.g., using
 (scrlayer-scrpage)                  \setlength{\footheight}{17.99445pt}
 (scrlayer-scrpage)                in your preamble.
-(scrlayer-scrpage)                I'll also increase \footskip on input line 12
-9.
+(scrlayer-scrpage)                I'll also increase \footskip on input line 11
+5.
 
-[3
+[3] (Dokumentation_Studienarbeit.lof)
+\tf@lof=\write5
+\openout5 = `Dokumentation_Studienarbeit.lof'.
 
-] [4
+ (Dokumentation_Studienarbeit.lot)
+\tf@lot=\write6
+\openout6 = `Dokumentation_Studienarbeit.lot'.
+
+
+(Dokumentation_Studienarbeit.lol)
+\tf@lol=\write7
+\openout7 = `Dokumentation_Studienarbeit.lol'.
+
+ [4
+
+] [5
 
 ]
 1: section
-<Logos/Firmenlogokopfzeile.png, id=171, 532.99126pt x 115.18031pt>
+<Logos/Firmenlogokopfzeile.png, id=205, 532.99126pt x 115.18031pt>
 File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
 <use Logos/Firmenlogokopfzeile.png>
-Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 169.
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 170.
 
 (pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
 
@@ -843,7 +842,7 @@ Package scrlayer-scrpage Warning: \headheight to low.
 (scrlayer-scrpage)                e.g., setting geometry's option
 (scrlayer-scrpage)                `head=19.62476pt'.
 (scrlayer-scrpage)                I'll also decrease \topmargin on input line 1
-69.
+70.
 
 
 Overfull \vbox (1.63031pt too high) has occurred while \output is active []
@@ -852,59 +851,66 @@ Overfull \vbox (1.63031pt too high) has occurred while \output is active []
 [1 <./Logos/Firmenlogokopfzeile.png>]
 File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
 <use Logos/Firmenlogokopfzeile.png>
-Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 181.
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 188.
 
 (pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
  [2]
 File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
 <use Logos/Firmenlogokopfzeile.png>
-Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 190.
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 198.
 
 (pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
  [3]
 File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
 <use Logos/Firmenlogokopfzeile.png>
-Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 202.
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 211.
 
 (pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
  [4]
 File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
 <use Logos/Firmenlogokopfzeile.png>
-Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 207.
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 216.
 
 (pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
  [5]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 2
-13.
+22.
 
 ("C:\Users\ANSR\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\t1cmtt.fd"
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 223.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 232.
 File: Logos/Firmenlogokopfzeile.png Graphic file (type png)
 <use Logos/Firmenlogokopfzeile.png>
-Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 223.
+Package pdftex.def Info: Logos/Firmenlogokopfzeile.png  used on input line 232.
 
 (pdftex.def)             Requested size: 65.82672pt x 14.22636pt.
 
 [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 223.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 232.
  (Dokumentation_Studienarbeit.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 223.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 223.
-Package rerunfilecheck Info: File `Dokumentation_Studienarbeit.out' has not cha
-nged.
-(rerunfilecheck)             Checksum: 7CA73EA249F9194D780E99864F8E9AF5;1859.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 223.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 232.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 232.
+
+
+Package rerunfilecheck Warning: File `Dokumentation_Studienarbeit.out' has chan
+ged.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Dokumentation_Studienarbeit.out':
+(rerunfilecheck)             Before: D772CFAE99CD240CA9C61B6BBBDCFB30;2336
+(rerunfilecheck)             After:  D078A9A31B692B468C3AC81D82D3ABE0;2335.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 232.
  ) 
 Here is how much of TeX's memory you used:
- 22108 strings out of 492484
- 416247 string characters out of 3122055
- 514868 words of memory out of 3000000
- 26175 multiletter control sequences out of 15000+200000
+ 22121 strings out of 492484
+ 416483 string characters out of 3122055
+ 515868 words of memory out of 3000000
+ 26181 multiletter control sequences out of 15000+200000
  543517 words of font info for 51 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,23n,98p,408b,493s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 84i,23n,98p,408b,495s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\ANSR\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\e
 ctt1200.pk> <C:\Users\ANSR\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec
 /dpi600\ecsl1200.pk> <C:\Users\ANSR\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jk
@@ -916,9 +922,9 @@ KTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\ANSR\AppData
 R\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1728.pk> <C:\
 Users\ANSR\AppData\Local\MiKTeX\2.9\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2488
 .pk>
-Output written on Dokumentation_Studienarbeit.pdf (11 pages, 184897 bytes).
+Output written on Dokumentation_Studienarbeit.pdf (12 pages, 194385 bytes).
 PDF statistics:
- 529 PDF objects out of 1000 (max. 8388607)
- 41 named destinations out of 1000 (max. 500000)
- 235 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 576 PDF objects out of 1000 (max. 8388607)
+ 48 named destinations out of 1000 (max. 500000)
+ 283 words of extra memory for PDF output out of 10000 (max. 10000000)
 
