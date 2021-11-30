@@ -191,9 +191,111 @@ In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem mehrer
 Platzhalter
 \subsection{Zeitplan}
 \subsection{Auswahl geeigneter Varianten}
-\subsubsection{Intel 8080}
-\subsubsection{Beispielprozessor 2}
-\subsubsection{Beispielprozessor 3 ...}
+\subsection{Intel 8080}
+
+Der Intel 8080 verwendet fünf Arten von Befehlen:
+\begin{itemize}
+\item Data Transfer Group 
+\item Arithmetic Group
+\item Logical Group
+\item Branch Group
+\item Stack, I/O and Machine Control Group
+\end{itemize}
+
+Die Befehle der Data Transfer Group bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOV Befehlen. In der Arithemtic Group werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie ADD (Addition) verwendet. In der Logischen Gruppen werden logische Operation wie ORA (Oder) verwendet. In der Branch Group liegen die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird (JZ (Jump on Zero)). In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. [Intel 8080 S.46 (4-1)]
+\\
+
+Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Opcode oder Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
+\begin{itemize}
+\item Direct
+\item Register
+\item Register Indirect
+\item Immediate
+\end{itemize}
+
+Bei "Direkt" wird der Wert in dem Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei "Register" wird auf ein oder zwei Register verwiesen und verhält sich wie bei Direkt. Bei "Register Indirect" wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendete Wert. Bei "Immediate" steht im zweiten und/oder dritten Byte ein Wert mit dem gearbeitet wird (Lowbyte im zweiten Byte). [Intel 8080 S.47 (4-2)]
+\\
+
+Bei Interrupts und Branch Befehlen gibt es nur den "Direct" und "Register indirect" Modus [Intel 8080 S.47 (4-2)]. 
+\\
+
+Der Prozessor besitzt fünf Condition Flags. Das Zero flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry flag, welches ebenfalls einen Übertrag oder Abzug anzeigt aber zwischen dem vierten (Bit 3) und fünften Bit (Bit 4). [Intel 8080 S.47f (4-2)]
+\\
+
+\subsubsection{Data Transfer Group}
+Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser Befehle werden die Condition Flags gesetzt oder zurückgesetzt.
+
+\begin{itemize}
+\item Move Register
+\item Move from Memory
+\item Move to Memory
+\item Move immediate
+\item Move to Memory Immediate
+\item Load register pair immediate
+\item Load Accumulator direct
+\item Store Accumulator direct
+\item Load H and L direct
+\item Store H and L direct
+\item Load Acumulator indirect
+\item Store Accumulator indirect
+\item Exchange H and L with D and E
+\end{itemize}
+
+
+\subsubsection{Arithmetic Group}
+
+
+\begin{itemize}
+\item Add Register
+\item Add Memory
+\item Add immediate
+\item Add Register with carry
+\item Add Memory with carry
+\item Add immediate with carry
+\item Sustract Register
+\item Subtract Memory
+\item Subtract immediate
+\item Subtract Register with borrow
+\item Subtract Memory with borrow
+\item Subtract immediate with borrow
+\item Increment Register
+\item Increment Memory
+\item Decrement Register
+\item Decrement Memory
+\item Increment register pair
+\item Decrement register pair
+\item Add register pair to H and L
+\item Decimal Adjust Accumulator
+\end{itemize}
+
+
+\subsubsection{Logical Group}
+
+\begin{itemize}
+\item AND Register
+\item AND Memory
+\item AND immediate
+\item Exclusive OR Register
+\item Exclusive OR Memory
+\item Exclusive OR immediate
+\item OR Register
+\item OR Memory
+\item OR immediate
+\item Compare Register
+\item Compare Memory
+\item Compare immediate
+\item Rotate left
+\item Rotate right
+\item Rotate left through Carry
+\item Rotate right through Carry
+\item Complement Accumulator
+\item Complement Carry
+\item Set Carry
+\end{itemize}
+
+
+\subsection{Beispielprozessor 2}
+\subsection{Beispielprozessor 3 ...}
 
 \newpage
 
