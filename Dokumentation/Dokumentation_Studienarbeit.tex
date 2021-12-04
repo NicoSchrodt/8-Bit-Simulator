@@ -173,7 +173,29 @@ In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem mehrer
 
 \subsubsection{Architektur eines Prozessors}
 \subsubsection{Befehlsformate}
+
+
 \subsubsection{CISC und RISC}
+komplettes Kapitel aus 
+
+Ein Prozessor unterstützt immer nur eine gewisse Menge an Befehlen, diese werden Instruction Set genannt. Heutzutage gibt es zwei grundlegende Prozessorarchitekturen, Complex Instruction Set Computer (CISC) und Reduced Instruction Set Computer (RISC). Früher konnten Prozessoren genau einer dieser Gruppen zugeordnet werden, allerdings ist das bei den heutigen Prozessoren nicht mehr möglich, da sowohl RISC als auch CISC Befehle dem Prozessor zur Verfügung gestellt werden um die Vorteile von beiden zu haben.
+\\
+
+Bei CISC-Prozessoren wird versucht soviel wie möglich in einem Befehl ausführen zu können. So gibt es viele verschieden Befehle, die auch unterschiedlich viel Zeit benötigen. Dadurch wird es aber auch möglich, komplexere Befehle direkt in der Hardware zu berechnen. Bei diesen Befehlen gibt es auch einige Adressierungsarten mehr als bei RISC-Prozessoren. Für vorbestimmte Aufgaben gibt es auch eigene Register, die nur dafür verwendet werden und davon auch nur wenige. Der Nachteil bei CISC-Prozessoren ist, dass die eigenen Befehle erst noch durch ein Mikroprogramm interpretiert werden müssen und dieses die komplexen Befehle in mehrere kleine Befehle aufteilen muss, welche erst dann vom Prozessor bearbeitet werden können. Dies kostet etwas mehr Zeit und verlangsamt die Ausführung. Die Mikroprogramme, die dafür verwendet werden, werden in einem kleinem Read-only Memory (ROM) gespeichert.
+\\
+
+Bei RISC-Prozessoren wird versucht mit nur wenigen, kleinen Befehlen auszukommen. Diese sind wiederum sehr schnell, da sie meist fest verdrahtet sind, müssen aber mit anderen kombiniert werden um die Komplexität eines einzigen CISC-Befehls zu erreichen.  Im Gegensatz zu CISC-Prozessoren besitzen RISC-Prozessoren viele Register die frei verwendbar sind und nicht für speziellen Operationen bestimmt sind. Ebenso können die meisten Befehle in nur einem einzigen Arbeitsschritt ausgeführt werden.
+\\
+
+Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind diese optimal für Übersetzer oder Interpreter geeignet. Bei der Entwicklung können dann einzelne komplexe Befehle verwendet werden anstatt von vielen kleinen. Jedoch können RISC-Prozessoren schneller Befehle ausführen, da:
+
+\begin{itemize}
+\item es nur wenige Befehle gibt und diese schnell decodiert werden können
+\item die Befehle mithilfe von Pipelines effizienter abgearbeitet werden können
+\item kein Mikroprogramm die einzelnen Befehle erst noch interpretieren muss
+\end{itemize}
+ 
+
 \subsubsection{Parallelität nach Flynn}
 \subsubsection{Evolution der Prozessoren}
 \subsubsection{Unterschiede 8-bit, 16-bit, 32-bit und 64-bit Prozessoren}
@@ -242,8 +264,14 @@ Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser 
 \end{itemize}
 
 
-\subsubsection{Arithmetic Group}
 
+\subsubsection{Arithmetic Group}
+20 Befehle
+Unless indicated otherwise, all instructions in this
+group affect the Zero, Sign, Parity, Carry, and Auxiliary
+Carry flags accord ing to the standard rules.
+All subtraction operations are performed via two's
+complement arithmetic and set the carry flag to one to indicate a borrow and clear it to indicate no borrow
 
 \begin{itemize}
 \item Add Register
@@ -270,6 +298,10 @@ Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser 
 
 
 \subsubsection{Logical Group}
+19 Befehle
+Unless indicated otherwise, all instructions in this
+group affect the Zero, Sign, Parity, Auxiliary Carry, and
+Carry flags according to the standard rules
 
 \begin{itemize}
 \item AND Register
@@ -293,6 +325,42 @@ Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser 
 \item Set Carry
 \end{itemize}
 
+
+
+\subsubsection{Branch Group}
+8 Befehle
+Flags are not affected
+
+\begin{itemize}
+\item Jump
+\item Conditional Jump
+\item Call
+\item Conditional Call
+\item Return
+\item Conditional Return
+\item Restart
+\item Jump H and L indirect - move H and L to PC
+\end{itemize}
+
+\subsubsection{Stack, I/O and Machine Control Group}
+12  Befehle
+Unless otherwise specified, condition flags are not
+affected by any instructions in this group
+
+\begin{itemize}
+\item Push
+\item Push Processor status word
+\item Pop
+\item Pop processor status word
+\item Exchange stack top with H and L
+\item Move HL to SP
+\item Input
+\item Output
+\item Enable Interrupts
+\item Disable Interrupts
+\item Halt
+\item No op
+\end{itemize}
 
 \subsection{Beispielprozessor 2}
 \subsection{Beispielprozessor 3 ...}
@@ -322,6 +390,8 @@ Platzhalter
 \begin{thebibliography}{9}
 \bibitem{Beispiel}
 Google: \url{https://www.google.com}
+\bibitem{Grundlagen der Informatik}
+Grundlagen der Informatik: Herold, Lurz, Wohlrab und Hopf; 3. aktualisierte Auflage (2017), Pearson
 \end{thebibliography}
 
 %\newpage
