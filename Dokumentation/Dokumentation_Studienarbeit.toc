@@ -1,4 +1,4 @@
-\babel@toc {ngerman}{}\relax 
+\babel@toc {ngerman}{}
 \contentsline {section}{Abbildungsverzeichnis}{IV}{section*.1}%
 \contentsline {section}{Tabellenverzeichnis}{IV}{section*.2}%
 \contentsline {section}{Listings}{IV}{section*.3}%
@@ -10,31 +10,27 @@
 \contentsline {subsubsection}{\numberline {1.2.2}Befehlsformate}{2}{subsubsection.1.2.2}%
 \contentsline {subsubsection}{\numberline {1.2.3}CISC und RISC}{3}{subsubsection.1.2.3}%
 \contentsline {subsubsection}{\numberline {1.2.4}Parallelität nach Flynn}{4}{subsubsection.1.2.4}%
-\contentsline {subsubsection}{\numberline {1.2.5}Evolution der Prozessoren}{4}{subsubsection.1.2.5}%
-\contentsline {subsubsection}{\numberline {1.2.6}Unterschiede 8-bit, 16-bit, 32-bit und 64-bit Prozessoren}{4}{subsubsection.1.2.6}%
-\contentsline {subsection}{\numberline {1.3}Auswahl der Werkzeuge}{4}{subsection.1.3}%
-\contentsline {subsubsection}{\numberline {1.3.1}Programmiersprache}{4}{subsubsection.1.3.1}%
-\contentsline {subsubsection}{\numberline {1.3.2}GUI-Umgebung}{4}{subsubsection.1.3.2}%
-\contentsline {subsubsection}{\numberline {1.3.3}Programmierumgebung}{4}{subsubsection.1.3.3}%
-\contentsline {section}{\numberline {2}Projektplanung}{5}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Zeitplan}{5}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Auswahl geeigneter Varianten}{5}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Intel 8080}{5}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Data Transfer Group}{6}{subsubsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}Arithmetic Group}{7}{subsubsection.2.3.2}%
-\contentsline {subsubsection}{\numberline {2.3.3}Logical Group}{8}{subsubsection.2.3.3}%
-\contentsline {subsubsection}{\numberline {2.3.4}Branch Group}{9}{subsubsection.2.3.4}%
-\contentsline {subsubsection}{\numberline {2.3.5}Stack, I/O and Machine Control Group}{9}{subsubsection.2.3.5}%
-\contentsline {subsection}{\numberline {2.4}Beispielprozessor 2}{10}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Beispielprozessor 3 ...}{10}{subsection.2.5}%
-\contentsline {section}{\numberline {3}Umsetzung}{11}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Abstraktion der Architektur}{11}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}ALU}{11}{subsubsection.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.1.2}Akkumulator}{11}{subsubsection.3.1.2}%
-\contentsline {subsubsection}{\numberline {3.1.3}Instruction Register}{11}{subsubsection.3.1.3}%
-\contentsline {subsubsection}{\numberline {3.1.4}DataBus}{11}{subsubsection.3.1.4}%
-\contentsline {subsubsection}{\numberline {3.1.5}etc.}{11}{subsubsection.3.1.5}%
-\contentsline {subsection}{\numberline {3.2}Ablauf der Simulation}{11}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Tutorials}{11}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Fazit und Ausblick}{12}{section.4}%
-\contentsline {section}{Literatur}{13}{section.4}%
+\contentsline {section}{\numberline {2}Projektplanung}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Zeitplan}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Auswahl geeigneter Varianten}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Instruction Sets}{6}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Intel 8080}{6}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Data Transfer Group}{7}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Arithmetic Group}{8}{subsubsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}Logical Group}{8}{subsubsection.2.4.3}%
+\contentsline {subsubsection}{\numberline {2.4.4}Branch Group}{9}{subsubsection.2.4.4}%
+\contentsline {subsubsection}{\numberline {2.4.5}Stack, I/O and Machine Control Group}{9}{subsubsection.2.4.5}%
+\contentsline {subsubsection}{\numberline {2.4.6}Maschinenzyklen und Typen}{9}{subsubsection.2.4.6}%
+\contentsline {subsection}{\numberline {2.5}Beispielprozessor 2}{11}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Beispielprozessor 3 ...}{11}{subsection.2.6}%
+\contentsline {section}{\numberline {3}Umsetzung}{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Abstraktion der Architektur}{12}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}ALU}{12}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Akkumulator}{12}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Instruction Register}{12}{subsubsection.3.1.3}%
+\contentsline {subsubsection}{\numberline {3.1.4}DataBus}{12}{subsubsection.3.1.4}%
+\contentsline {subsubsection}{\numberline {3.1.5}etc.}{12}{subsubsection.3.1.5}%
+\contentsline {subsection}{\numberline {3.2}Ablauf der Simulation}{12}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Tutorials}{12}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Fazit und Ausblick}{13}{section.4}%
+\contentsline {section}{Literatur}{14}{section.4}%

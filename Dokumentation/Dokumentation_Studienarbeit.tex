@@ -8,6 +8,7 @@
 
 \documentclass[12pt]{article}
 
+\usepackage{multicol}
 \usepackage{geometry}
 \usepackage{blindtext}
 \usepackage{setspace}
@@ -16,7 +17,6 @@
 \usepackage{listings}
 \usepackage{subcaption}
 \usepackage{tabularx}
-\usepackage{graphicx}
 \usepackage{xurl} %Formats \url{}-entrys better
 \usepackage{color, colortbl}
 %\usepackage{pdfpages}
@@ -41,6 +41,7 @@
 %--------------------------------------
 
 \usepackage{graphicx}
+\graphicspath{ bilder/}
 
 \newcommand{\Autor}{Andreas Schmider, Nico Schrodt}
 
@@ -49,6 +50,7 @@
 \newcommand{\Betreuer}{Prof. Dr.-Ing. Kai Becher}
 
 \newcommand{\DHBWLogoDeckblatt}{\includegraphics[width=4.5cm]{Logos/dhbw-logo}}
+\newcommand{\IntelDataLines}{\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}}
 
 \newcommand{\Titel}{Konzeptionierung eines Simulators für 8-bit Prozessoren}
 \newcommand{\ArtArbeit}{Studienarbeit}
@@ -136,7 +138,12 @@ Ort, Datum\hfill Unterschrift\hspace{4cm}
 \section*{Abkürzungsverzeichnis}
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 ALU - Arithmetic Logic Unit
-
+CISC - Complex Instruction Set Computer
+MISD - Multiple-instruction stream single-data stream
+MIMD - Multiple-instruction stream multiple-data stream
+RISC - Reduced Instruction Set Computer
+SISD - Single-instruction stream single-data stream
+SIMD - Single-instruction stream multiple-data stream
 
 \newpage
 \pagenumbering{arabic}
@@ -197,7 +204,7 @@ txt\\
 txt\\
 
 \subsubsection{CISC und RISC}
-komplettes Kapitel aus\\
+komplettes Kapitel aus Buch \\
 Ein Prozessor unterstützt immer nur eine gewisse Menge an Befehlen, diese werden Instruction Set genannt. Heutzutage gibt es zwei grundlegende Prozessorarchitekturen, Complex Instruction Set Computer (CISC) und Reduced Instruction Set Computer (RISC). Früher konnten Prozessoren genau einer dieser Gruppen zugeordnet werden, allerdings ist das bei den heutigen Prozessoren nicht mehr möglich, da sowohl RISC als auch CISC Befehle dem Prozessor zur Verfügung gestellt werden um die Vorteile von beiden zu haben.\\\\
 Bei CISC-Prozessoren wird versucht soviel wie möglich in einem Befehl ausführen zu können. So gibt es viele verschieden Befehle, die auch unterschiedlich viel Zeit benötigen. Dadurch wird es aber auch möglich, komplexere Befehle direkt in der Hardware zu berechnen. Bei diesen Befehlen gibt es auch einige Adressierungsarten mehr als bei RISC-Prozessoren. Für vorbestimmte Aufgaben gibt es auch eigene Register, die nur dafür verwendet werden und davon auch nur wenige. Der Nachteil bei CISC-Prozessoren ist, dass die eigenen Befehle erst noch durch ein Mikroprogramm interpretiert werden müssen und dieses die komplexen Befehle in mehrere kleine Befehle aufteilen muss, welche erst dann vom Prozessor bearbeitet werden können. Dies kostet etwas mehr Zeit und verlangsamt die Ausführung. Die Mikroprogramme, die dafür verwendet werden, werden in einem kleinem Read-only Memory (ROM) gespeichert.\\\\
 Bei RISC-Prozessoren wird versucht mit nur wenigen, kleinen Befehlen auszukommen. Diese sind wiederum sehr schnell, da sie meist fest verdrahtet sind, müssen aber mit anderen kombiniert werden um die Komplexität eines einzigen CISC-Befehls zu erreichen.  Im Gegensatz zu CISC-Prozessoren besitzen RISC-Prozessoren viele Register die frei verwendbar sind und nicht für speziellen Operationen bestimmt sind. Ebenso können die meisten Befehle in nur einem einzigen Arbeitsschritt ausgeführt werden.\\\\
@@ -211,15 +218,26 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
  
 
 \subsubsection{Parallelität nach Flynn}
-\subsubsection{Evolution der Prozessoren}
-\subsubsection{Unterschiede 8-bit, 16-bit, 32-bit und 64-bit Prozessoren}
+Zur Unterscheidung von Parallelität wurden 1966 von Michael Flynn vier Arten definiert [Flynn 949]:
 
+\begin{itemize}
+\item Single-instruction stream, single-data stream (SISD)
+\item Single-instruction stream, multiple-data stream (SIMD)
+\item Multiple-instruction stream, single-data stream (MISD)
+\item Multiple-instruction stream, multiple-data stream (MIMD)
+\end{itemize}
 
+\textbf{SISD}\\
+Diese Beschreibung trifft auf die einfachen Einprozessorsysteme zu. Dabei kann immer nur eine Operation gleichzeitig ausgeführt werden und diese werden in nur einer möglichen Reihenfolge aus einem Daten-Strom abgearbeitet.\\
 
-\subsection{Auswahl der Werkzeuge}
-\subsubsection{Programmiersprache}
-\subsubsection{GUI-Umgebung}
-\subsubsection{Programmierumgebung}
+\textbf{SIMD}\\
+Bei SIMD werden Pipelines eingesetzt, die es ermöglichen mehrere korrekte Abfolgen von Programmbefehlen auszuführen. So können unterschiedliche Programme in sich selber in der richtigen Reihenfolge aber mit anderen Programmen abwechselnd ausgeführt werden.\\
+
+\textbf{MISD}\\
+Diese Variante scheint auf Anhieb keinen effizienten Nutzen zu besitzen, da mehrere Prozessoren alle die gleichen Befehle ausführen, die aus einem Daten-Strom stammen. Dies kann aber dazu verwendet werden um die Korrektheit durch Redundanzen zu bestätigen. \\
+
+\textbf{MIMD}\\
+Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutzutage ist dies unter dem Begriff Mehrprozessorsysteme bekannt. So werden für jeden einzelnen Prozessor ein Daten-Strom erzeugt der unabhängig von den anderen Prozessoren arbeiten kann. Dabei ist es für die Prozessoren aber trotzdem möglich die Daten der anderen Prozessoren zu nutzen. Nur durch MIMD oder MISD, also die Ausführung mit mehreren unabhängigen Prozessoren, ist es möglich Programme tatsächlich parallel ablaufen zu lassen. Mit SISD oder SIMD sind nur quasi parallele Ausführungen möglich.\\
 
 \newpage
 
@@ -227,19 +245,23 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
 Platzhalter
 \subsection{Zeitplan}
 \subsection{Auswahl geeigneter Varianten}
-\subsection{Intel 8080}
+\subsection{Instruction Sets}
 
-Der Intel 8080 verwendet fünf Arten von Befehlen:
+Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
 \begin{itemize}
-\item Data Transfer Group 
-\item Arithmetic Group
-\item Logical Group
-\item Branch Group
-\item Stack, I/O and Machine Control Group
+\item Daten Transfer Gruppe
+\item Arithmetik Gruppe
+\item Logischen Gruppe
+\item Zweig Gruppe
+\item Stapel, Ein- Ausgänge und Maschinen Kontroll- Gruppe
 \end{itemize}
 
-Die Befehle der Data Transfer Group bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOV Befehlen. In der Arithemtic Group werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie ADD (Addition) verwendet. In der Logischen Gruppen werden logische Operation wie ORA (Oder) verwendet. In der Branch Group liegen die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird (JZ (Jump on Zero)). In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. [Intel 8080 S.46 (4-1)]
+
+
+Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOVE Befehlen. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. [Intel 8080 S.46 (4-1)]
 \\
+
+\subsection{Intel 8080}
 
 Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Opcode oder Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
 \begin{itemize}
@@ -249,10 +271,10 @@ Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes best
 \item Immediate
 \end{itemize}
 
-Bei "Direkt" wird der Wert in dem Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei "Register" wird auf ein oder zwei Register verwiesen und verhält sich wie bei Direkt. Bei "Register Indirect" wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendete Wert. Bei "Immediate" steht im zweiten und/oder dritten Byte ein Wert mit dem gearbeitet wird (Lowbyte im zweiten Byte). [Intel 8080 S.47 (4-2)]
+Bei "Direkt"' wird der Wert in dem Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei "Register"' wird auf ein oder zwei Register verwiesen und verhält sich wie bei Direkt. Bei "Register Indirect"' wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendete Wert. Bei "Immediate"' steht im zweiten und/oder dritten Byte ein Wert mit dem gearbeitet wird (Lowbyte im zweiten Byte). [Intel 8080 S.47 (4-2)]
 \\
 
-Bei Interrupts und Branch Befehlen gibt es nur den "Direct" und "Register indirect" Modus [Intel 8080 S.47 (4-2)]. 
+Bei Interrupts und Branch Befehlen gibt es nur den "Direct"' und "Register indirect"' Modus [Intel 8080 S.47 (4-2)]. 
 \\
 
 Der Prozessor besitzt fünf Condition Flags. Das Zero flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry flag, welches ebenfalls einen Übertrag oder Abzug anzeigt aber zwischen dem vierten (Bit 3) und fünften Bit (Bit 4). [Intel 8080 S.47f (4-2)]
@@ -261,6 +283,7 @@ Der Prozessor besitzt fünf Condition Flags. Das Zero flag, das angibt ob das Er
 \subsubsection{Data Transfer Group}
 Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser Befehle werden die Condition Flags gesetzt oder zurückgesetzt.
 
+\begin{multicols}{2}
 \begin{itemize}
 \item Move Register
 \item Move from Memory
@@ -276,7 +299,7 @@ Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser 
 \item Store Accumulator indirect
 \item Exchange H and L with D and E
 \end{itemize}
-
+\end{multicols}
 
 
 \subsubsection{Arithmetic Group}
@@ -287,6 +310,7 @@ Carry flags accord ing to the standard rules.
 All subtraction operations are performed via two's
 complement arithmetic and set the carry flag to one to indicate a borrow and clear it to indicate no borrow
 
+\begin{multicols}{2}
 \begin{itemize}
 \item Add Register
 \item Add Memory
@@ -309,7 +333,7 @@ complement arithmetic and set the carry flag to one to indicate a borrow and cle
 \item Add register pair to H and L
 \item Decimal Adjust Accumulator
 \end{itemize}
-
+\end{multicols}
 
 \subsubsection{Logical Group}
 19 Befehle
@@ -317,6 +341,7 @@ Unless indicated otherwise, all instructions in this
 group affect the Zero, Sign, Parity, Auxiliary Carry, and
 Carry flags according to the standard rules
 
+\begin{multicols}{2}
 \begin{itemize}
 \item AND Register
 \item AND Memory
@@ -338,7 +363,7 @@ Carry flags according to the standard rules
 \item Complement Carry
 \item Set Carry
 \end{itemize}
-
+\end{multicols}
 
 
 \subsubsection{Branch Group}
@@ -361,6 +386,7 @@ Flags are not affected
 Unless otherwise specified, condition flags are not
 affected by any instructions in this group
 
+\begin{multicols}{2}
 \begin{itemize}
 \item Push
 \item Push Processor status word
@@ -375,6 +401,36 @@ affected by any instructions in this group
 \item Halt
 \item No op
 \end{itemize}
+\end{multicols}
+
+
+\subsubsection{Maschinenzyklen und Typen}
+Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Maschinenzyklen zum kompletten Ausführen des Befehls. Dabei kann jeder Befehl aus mehreren Typen bestehen, wobei der erste immer ein Fetch-Befehlstyp ist. Die existierenden Befehlstypen sind:
+
+\begin{itemize}
+\item Fetch
+\item Memory Read
+\item Memory Write
+\item Stack Read
+\item Stack Write
+\item Input
+\item Output
+\item Interrupt
+\item Halt
+\item Halt Interrupt
+\end{itemize}
+
+Jeder Maschinenzyklus besteht nochmal aus drei bis fünf Zuständen. So kann ein Befehl insgesamt zwischen vier und achtzehn Zuständen andauern.
+In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während des SYNC-Taktes kodiert. Die folgende Abbildung zeigt, wie die Befehlstypen über die \textbf{Data Lines} kodiert werden. [Intel 8080 S17ff. 2-3]
+
+
+\begin{figure}[h]
+\caption{Kodierung der Befehlstypen beim SYNC Takt}
+\centering
+\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}
+\label{fig:Intel8080_DataLines}
+\end{figure}
+
 
 \subsection{Beispielprozessor 2}
 \subsection{Beispielprozessor 3 ...}
