@@ -204,6 +204,7 @@ txt\\
 txt\\
 
 \subsubsection{CISC und RISC}
+Von Andreas
 komplettes Kapitel aus Buch \\
 Ein Prozessor unterstützt immer nur eine gewisse Menge an Befehlen, diese werden Instruction Set genannt. Heutzutage gibt es zwei grundlegende Prozessorarchitekturen, Complex Instruction Set Computer (CISC) und Reduced Instruction Set Computer (RISC). Früher konnten Prozessoren genau einer dieser Gruppen zugeordnet werden, allerdings ist das bei den heutigen Prozessoren nicht mehr möglich, da sowohl RISC als auch CISC Befehle dem Prozessor zur Verfügung gestellt werden um die Vorteile von beiden zu haben.\\\\
 Bei CISC-Prozessoren wird versucht soviel wie möglich in einem Befehl ausführen zu können. So gibt es viele verschieden Befehle, die auch unterschiedlich viel Zeit benötigen. Dadurch wird es aber auch möglich, komplexere Befehle direkt in der Hardware zu berechnen. Bei diesen Befehlen gibt es auch einige Adressierungsarten mehr als bei RISC-Prozessoren. Für vorbestimmte Aufgaben gibt es auch eigene Register, die nur dafür verwendet werden und davon auch nur wenige. Der Nachteil bei CISC-Prozessoren ist, dass die eigenen Befehle erst noch durch ein Mikroprogramm interpretiert werden müssen und dieses die komplexen Befehle in mehrere kleine Befehle aufteilen muss, welche erst dann vom Prozessor bearbeitet werden können. Dies kostet etwas mehr Zeit und verlangsamt die Ausführung. Die Mikroprogramme, die dafür verwendet werden, werden in einem kleinem Read-only Memory (ROM) gespeichert.\\\\
@@ -218,7 +219,8 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
  
 
 \subsubsection{Parallelität nach Flynn}
-Zur Unterscheidung von Parallelität wurden 1966 von Michael Flynn vier Arten definiert [Flynn 949]:
+Von Andreas
+1966 wurden von Micheal Flynn die folgenden vier Arten von Parallelisierung eingeführt [Flynn 949]:
 
 \begin{itemize}
 \item Single-instruction stream, single-data stream (SISD)
@@ -245,14 +247,16 @@ Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutz
 Platzhalter
 \subsection{Zeitplan}
 \subsection{Auswahl geeigneter Varianten}
-\subsection{Instruction Sets}
 
+
+\subsection{Instruction Sets}
+Von Andreas
 Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
 \begin{itemize}
 \item Daten Transfer Gruppe
 \item Arithmetik Gruppe
-\item Logischen Gruppe
-\item Zweig Gruppe
+\item Logische Gruppe
+\item Verzweigungs Gruppe
 \item Stapel, Ein- Ausgänge und Maschinen Kontroll- Gruppe
 \end{itemize}
 
@@ -262,6 +266,17 @@ Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder 
 \\
 
 \subsection{Intel 8080}
+Von Andreas\\
+
+\subsubsection{Register}
+Von Andreas
+
+Der Intel 8080 besitzt ein SRAM Array mit 16-bit Register. Darin enthalten sind der Programm Counter mit 16-bit und der Stack Pointer mit 16-bit. Dazu gibt es noch acht weitere 8-bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-bit Register als ein 16-bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. 
+Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. \textbf{Über das Adress-Latch oder den Incrementer/Decrementer-Circuit ist es möglich 16-Bit aus den Registern weiterzuleiten. Von dort aus können die Werte dann in den Adress-Puffer geschrieben werden.} [Intel 8080 S16 (2-2)]
+
+
+\subsubsection{Befehle}
+Von Andreas
 
 Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Opcode oder Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
 \begin{itemize}
