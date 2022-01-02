@@ -1278,48 +1278,70 @@ def get_number(input):
     return number
 
 
-def main():
-    """Parse the command line and pass the input file to the assembler."""
-    asm80_description = f'Intel 8080 assembler / Suite8080'
-    parser = argparse.ArgumentParser(description=asm80_description)
-    parser.add_argument('filename', default='-', help="input file, stdin if '-'")
-    parser.add_argument('-o', '--outfile',
-                        help=f'output file, {OUTFILE + ".com"} if input is - and -o not supplied')
-    parser.add_argument('-s', '--symtab', action='store_true',
-                        help='save symbol table')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='increase output verbosity')
-    args = parser.parse_args()
+def convert_to_binary(program):
+    infile = Path("program.asm")
 
-    if args.filename == '-':
-        infile = Path("program.asm")
-        with open(infile, 'r') as file:
-            lines = file.readlines()
-        # lines = ["org 0h", "start:", "INR A", "INR B", "NOP"]
-    else:
-        infile = Path(args.filename)
-        with open(infile, 'r') as file:
-            lines = file.readlines()
+    try:
+        open(infile, 'x')
+    except OSError:
+        pass
+    file = open(infile, 'w')
+    file.writelines(program)
+    file.close()
 
-    if args.filename == '-':
-        outfile = args.outfile if args.outfile else OUTFILE + '.com'
-        symfile = Path(args.outfile).stem + '.sym' if args.outfile else OUTFILE + '.sym'
-    elif args.outfile:
-        outfile = Path(args.outfile)
-        symfile = Path(args.outfile).stem + '.sym'
-    else:
-        outfile = Path(infile.stem + '.com')
-        symfile = Path(infile.stem + '.sym')
+    with open(infile, 'r') as file:
+        lines = file.readlines()
+    outfile = Path(infile.stem + '.com')
+    symfile = Path(infile.stem + '.sym')
 
     assemble(lines)
     bytes_written = write_binary_file(outfile, output)
-    if args.symtab:
-        symbol_count = write_symbol_table(symbol_table, symfile)
+    symbol_count = write_symbol_table(symbol_table, symfile)
 
-    if args.verbose:
-        print(f'{bytes_written} bytes written')
-        if args.symtab:
-            print(f'{symbol_count} symbols written')
+    print(f'{bytes_written} bytes written')
+    print(f'{symbol_count} symbols written')
+
+    #
+    # """Parse the command line and pass the input file to the assembler."""
+    # asm80_description = f'Intel 8080 assembler / Suite8080'
+    # parser = argparse.ArgumentParser(description=asm80_description)
+    # parser.add_argument('filename', default='-', help="input file, stdin if '-'")
+    # parser.add_argument('-o', '--outfile',
+    #                     help=f'output file, {OUTFILE + ".com"} if input is - and -o not supplied')
+    # parser.add_argument('-s', '--symtab', action='store_true',
+    #                     help='save symbol table')
+    # parser.add_argument('-v', '--verbose', action='store_true',
+    #                     help='increase output verbosity')
+    # args = parser.parse_args()
+    #
+    # if args.filename == '-':
+    #     infile = Path("program.asm")
+    #     with open(infile, 'r') as file:
+    #         lines = file.readlines()
+    # else:
+    #     infile = Path(args.filename)
+    #     with open(infile, 'r') as file:
+    #         lines = file.readlines()
+    #
+    # if args.filename == '-':
+    #     outfile = args.outfile if args.outfile else OUTFILE + '.com'
+    #     symfile = Path(args.outfile).stem + '.sym' if args.outfile else OUTFILE + '.sym'
+    # elif args.outfile:
+    #     outfile = Path(args.outfile)
+    #     symfile = Path(args.outfile).stem + '.sym'
+    # else:
+    #     outfile = Path(infile.stem + '.com')
+    #     symfile = Path(infile.stem + '.sym')
+    #
+    # assemble(lines)
+    # bytes_written = write_binary_file(outfile, output)
+    # if args.symtab:
+    #     symbol_count = write_symbol_table(symbol_table, symfile)
+    #
+    # if args.verbose:
+    #     print(f'{bytes_written} bytes written')
+    #     if args.symtab:
+    #         print(f'{symbol_count} symbols written')
 
 
 def write_binary_file(filename, binary_data):
@@ -1350,4 +1372,4 @@ def write_symbol_table(table, filename):
 
 
 if __name__ == '__main__':
-    main()
+    convert_to_binary("add d")
