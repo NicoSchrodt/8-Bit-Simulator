@@ -2,7 +2,7 @@
 
 """An Intel 8080 cross-assembler."""
 
-import argparse
+import os.path
 from pathlib import Path
 import sys
 
@@ -1279,7 +1279,9 @@ def get_number(input):
 
 
 def convert_to_binary(program):
-    infile = Path("program.asm")
+    output_program = "Output\\program"
+    parent_path = Path(os.path.abspath(os.path.curdir)).parent
+    infile = parent_path.joinpath(output_program + ".asm")
 
     try:
         open(infile, 'x')
@@ -1291,8 +1293,8 @@ def convert_to_binary(program):
 
     with open(infile, 'r') as file:
         lines = file.readlines()
-    outfile = Path(infile.stem + '.com')
-    symfile = Path(infile.stem + '.sym')
+    outfile = Path(parent_path.joinpath(output_program + '.com'))
+    symfile = Path(parent_path.joinpath(output_program + '.sym'))
 
     assemble(lines)
     bytes_written = write_binary_file(outfile, output)
@@ -1300,48 +1302,6 @@ def convert_to_binary(program):
 
     print(f'{bytes_written} bytes written')
     print(f'{symbol_count} symbols written')
-
-    #
-    # """Parse the command line and pass the input file to the assembler."""
-    # asm80_description = f'Intel 8080 assembler / Suite8080'
-    # parser = argparse.ArgumentParser(description=asm80_description)
-    # parser.add_argument('filename', default='-', help="input file, stdin if '-'")
-    # parser.add_argument('-o', '--outfile',
-    #                     help=f'output file, {OUTFILE + ".com"} if input is - and -o not supplied')
-    # parser.add_argument('-s', '--symtab', action='store_true',
-    #                     help='save symbol table')
-    # parser.add_argument('-v', '--verbose', action='store_true',
-    #                     help='increase output verbosity')
-    # args = parser.parse_args()
-    #
-    # if args.filename == '-':
-    #     infile = Path("program.asm")
-    #     with open(infile, 'r') as file:
-    #         lines = file.readlines()
-    # else:
-    #     infile = Path(args.filename)
-    #     with open(infile, 'r') as file:
-    #         lines = file.readlines()
-    #
-    # if args.filename == '-':
-    #     outfile = args.outfile if args.outfile else OUTFILE + '.com'
-    #     symfile = Path(args.outfile).stem + '.sym' if args.outfile else OUTFILE + '.sym'
-    # elif args.outfile:
-    #     outfile = Path(args.outfile)
-    #     symfile = Path(args.outfile).stem + '.sym'
-    # else:
-    #     outfile = Path(infile.stem + '.com')
-    #     symfile = Path(infile.stem + '.sym')
-    #
-    # assemble(lines)
-    # bytes_written = write_binary_file(outfile, output)
-    # if args.symtab:
-    #     symbol_count = write_symbol_table(symbol_table, symfile)
-    #
-    # if args.verbose:
-    #     print(f'{bytes_written} bytes written')
-    #     if args.symtab:
-    #         print(f'{symbol_count} symbols written')
 
 
 def write_binary_file(filename, binary_data):
@@ -1372,4 +1332,17 @@ def write_symbol_table(table, filename):
 
 
 if __name__ == '__main__':
-    convert_to_binary("add d")
+    convert_to_binary("""Loop:
+  ldax b
+  cpi 0
+  jz Done
+  add d
+  mov d, a
+  inr c
+  jmp Loop
+
+Done:
+  hlt
+
+myArray:
+  db 10h, 20h, 30h, 10h, 20h, 0""")
