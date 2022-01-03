@@ -1281,7 +1281,10 @@ def get_number(input):
 def convert_to_binary(program):
     output_program = "Output\\program"
     parent_path = Path(os.path.abspath(os.path.curdir)).parent
-    infile = parent_path.joinpath(output_program + ".asm")
+
+    infile = parent_path.joinpath(output_program + '.asm')
+    outfile = parent_path.joinpath(output_program + '.com')
+    symfile = parent_path.joinpath(output_program + '.sym')
 
     try:
         open(infile, 'x')
@@ -1293,8 +1296,7 @@ def convert_to_binary(program):
 
     with open(infile, 'r') as file:
         lines = file.readlines()
-    outfile = Path(parent_path.joinpath(output_program + '.com'))
-    symfile = Path(parent_path.joinpath(output_program + '.sym'))
+
 
     assemble(lines)
     bytes_written = write_binary_file(outfile, output)

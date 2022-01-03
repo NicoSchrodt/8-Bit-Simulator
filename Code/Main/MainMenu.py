@@ -7,10 +7,10 @@ from PyQt6.uic import loadUi
 class MainMenu(QMainWindow):
     def __init__(self):
         super(MainMenu, self).__init__()
-        self.init_ui("ui/MainMenu.ui")
+        self.init_ui("Code\\ui\\MainMenu.ui")
 
     def init_ui(self, ui_name):
-        base_path = os.path.abspath(".")
+        base_path = os.path.abspath("..")
         full_path = os.path.join(base_path, ui_name)
         loadUi(full_path, self)
 

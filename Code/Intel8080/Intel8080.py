@@ -1,7 +1,10 @@
+import os
+from pathlib import Path
+
 import numpy as np
 
-from ..AbstractProcessor import AbstractProcessor
-from Intel8080_Components.Intel8080_ALU import Intel8080_ALU
+from Main.AbstractProcessor import AbstractProcessor
+from Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU
 
 
 class Intel8080(AbstractProcessor):
@@ -20,11 +23,60 @@ class Intel8080(AbstractProcessor):
                           ]
         self.address_latch = np.uint16(0)
         self.ALU = Intel8080_ALU()
+        self.programm = np.zeros(1024, dtype=np.uint8)
+        self.insert_program()
+        while True:
+            self.nextInstruction()
 
     def nextCycle(self):
+        self.registers[0] += 1
         pass
         # Concrete Implementation of nextCycle
 
     def nextInstruction(self):
+        instruction = self.get_byte(self.registers[0])
+
+        #ldax b
+        if instruction == 0x0A:
+            a = 0
+        elif instruction == 0xFE:
+            data = self.get_byte(self.get_pc() + 1)
+            self.add_pc(1)
+        elif instruction == 0xCA:
+            address = self.get_address(self.get_pc() + 1)
+            self.set_pc(address)
+
+        self.nextCycle()
         pass
         # Concrete Implementation of nextInstruction
+
+    def insert_program(self):
+        output_program = "Code\\Intel8080\\Output\\program"
+        parent_path = Path(os.path.abspath(os.path.curdir)).parent
+
+        infile = parent_path.joinpath(output_program + '.com')
+
+        with open(infile, 'rb') as file:
+            byte = file.read()
+            self.programm = np.frombuffer(byte, dtype=np.uint8)
+            file.close()
+        pass
+
+    def get_address(self, first_byte):
+        low = self.get_byte(first_byte)
+        high = self.get_byte(first_byte + 1)
+        return np.uint16((high << 8) | low)
+
+    def get_byte(self, index):
+        return self.programm[index]
+
+    def get_pc(self):
+        return self.registers[0]
+
+    def add_pc(self, n):
+        while n > 0:
+            self.registers[0] += 1
+            n -= 1
+
+    def set_pc(self, address):
+        self.registers[0] = np.uint16(address)
