@@ -3,8 +3,8 @@ from pathlib import Path
 
 import numpy as np
 
-from Main.AbstractProcessor import AbstractProcessor
-from Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU
+from Code.Main.AbstractProcessor import AbstractProcessor
+from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU
 
 
 class Intel8080(AbstractProcessor):
@@ -25,7 +25,9 @@ class Intel8080(AbstractProcessor):
         self.ALU = Intel8080_ALU()
         self.programm = np.zeros(1024, dtype=np.uint8)
         self.insert_program()
-        while True:
+        count = 0
+        while count < len(self.programm):
+            count += 1
             self.nextInstruction()
 
     def nextCycle(self):
@@ -51,7 +53,7 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextInstruction
 
     def insert_program(self):
-        output_program = "Code\\Intel8080\\Output\\program"
+        output_program = "Intel8080\\Output\\program"
         parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
         infile = parent_path.joinpath(output_program + '.com')
@@ -59,6 +61,7 @@ class Intel8080(AbstractProcessor):
         with open(infile, 'rb') as file:
             byte = file.read()
             self.programm = np.frombuffer(byte, dtype=np.uint8)
+            print(self.programm)
             file.close()
         pass
 
@@ -68,6 +71,7 @@ class Intel8080(AbstractProcessor):
         return np.uint16((high << 8) | low)
 
     def get_byte(self, index):
+        print(self.programm[index])
         return self.programm[index]
 
     def get_pc(self):

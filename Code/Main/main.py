@@ -3,7 +3,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 
 from MainMenu import MainMenu
-from Intel8080 import Intel8080
+from Code.Intel8080 import Intel8080
 
 
 def main():
