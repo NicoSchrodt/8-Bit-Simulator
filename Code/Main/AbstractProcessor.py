@@ -8,4 +8,6 @@ class AbstractProcessor:
     def nextInstruction(self):
         pass
 
+    def run(self):
+        pass
 #  Functions that are generic and used by all processors should be implemented here

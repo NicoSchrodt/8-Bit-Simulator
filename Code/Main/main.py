@@ -10,7 +10,8 @@ def main():
     app = QApplication(sys.argv)
     main_menu = MainMenu()
     main_menu.show()
-    a = Intel8080.Intel8080()
+    processor = Intel8080.Intel8080()
+    processor.run()
     sys.exit(app.exec())
 
 
