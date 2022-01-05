@@ -1279,7 +1279,7 @@ def get_number(input):
 
 
 def convert_to_binary(program):
-    output_program = "Output\\program"
+    output_program = "Intel8080\\Output\\program"
     parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
     infile = parent_path.joinpath(output_program + '.asm')
@@ -1296,7 +1296,6 @@ def convert_to_binary(program):
 
     with open(infile, 'r') as file:
         lines = file.readlines()
-
 
     assemble(lines)
     bytes_written = write_binary_file(outfile, output)
