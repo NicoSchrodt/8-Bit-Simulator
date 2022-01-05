@@ -16,3 +16,51 @@ class Intel8080_ALU():
     def perform_operation(self):
         pass
         # Perform an Operation with the ALU
+
+    def set_acu(self, value):
+        self.accumulator = value
+
+    def get_acu(self):
+        return self.accumulator
+
+    def set_temp_acu(self, value):
+        self.temp_accumulator = value
+
+    def get_temp_acu(self):
+        return self.temp_accumulator
+
+    def set_temp_register(self, value):
+        self.temp_register = value
+
+    def get_temp_register(self):
+        return self.temp_register
+
+    def set_zero_flag(self, state):
+        self.flags[0] = state
+
+    def get_zero_flag(self):
+        return self.flags[0]
+
+    def set_carry_flag(self, state):
+        self.flags[1] = state
+
+    def get_carry_flag(self):
+        return self.flags[1]
+
+    def set_sign_flag(self, state):
+        self.flags[2] = state
+
+    def get_sign_flag(self):
+        return self.flags[2]
+
+    def set_parity_flag(self, state):
+        self.flags[3] = state
+
+    def get_parity_flag(self):
+        return self.flags[3]
+
+    def set_auxiliary_carry_flag(self, state):
+        self.flags[4] = state
+
+    def get_auxiliary_carry_flag(self):
+        return self.flags[4]

@@ -5,37 +5,24 @@ import numpy as np
 
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU
+from Code.Intel8080.Intel8080_Components.Intel8080_RegisterArray import Intel8080_RegisterArray
 
 
 class Intel8080(AbstractProcessor):
     def __init__(self):
         super().__init__()
-        self.registers = [np.uint16(0),  # Program Counter
-                          np.uint16(0),  # Stack Pointer
-                          np.uint8(0),  # B-REG 000
-                          np.uint8(0),  # C-REG 001
-                          np.uint8(0),  # D-REG 010
-                          np.uint8(0),  # E-REG 011
-                          np.uint8(0),  # H-REG 100
-                          np.uint8(0),  # L-REG 101
-                          np.uint8(0),  # Lücke für bessere REG zuweisung (110 -> Memory)
-                          np.uint8(0),  # A-REG 111
-                          np.uint8(0),  # H-REG
-                          np.uint8(0),  # L-REG
-                          ]
-        self.address_latch = np.uint16(0)
+        self.registerArray = Intel8080_RegisterArray()
         self.ALU = Intel8080_ALU()
         self.program = np.zeros(1024, dtype=np.uint8)
         self.insert_program()
 
     def nextCycle(self):
-        self.registers[0] += 1
-        pass
+        self.registerArray.increment_pc()
         # Concrete Implementation of nextCycle
 
     def nextInstruction(self):
         if self.get_pc() < len(self.program):
-            instruction = self.get_byte(self.registers[0])
+            instruction = self.get_byte(self.registerArray.get_register(0))
         else:
             return
 
@@ -225,15 +212,15 @@ class Intel8080(AbstractProcessor):
         return self.program[index]
 
     def get_pc(self):
-        return self.registers[0]
+        return self.registerArray.get_register(0)
 
     def add_pc(self, n):
         while n > 0:
-            self.registers[0] += 1
+            self.registerArray.increment_pc()
             n -= 1
 
     def set_pc(self, address):
-        self.registers[0] = np.uint16(address)
+        self.registerArray.set_register(0, np.uint16(address))
 
     def run(self):
         count = 0
@@ -337,7 +324,7 @@ class Intel8080(AbstractProcessor):
         if reg8 == 6:   # memory
             pass
         else:
-            self.registers[2 + reg8] += 1
+            self.registerArray.set_register((2 + reg8), (self.registerArray.get_register((2 + reg8)) + 1))
         pass
 
     def inx(self, reg16):
