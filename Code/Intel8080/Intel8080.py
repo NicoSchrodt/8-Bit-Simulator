@@ -12,14 +12,16 @@ class Intel8080(AbstractProcessor):
         super().__init__()
         self.registers = [np.uint16(0),  # Program Counter
                           np.uint16(0),  # Stack Pointer
+                          np.uint8(0),  # B-REG 000
+                          np.uint8(0),  # C-REG 001
+                          np.uint8(0),  # D-REG 010
+                          np.uint8(0),  # E-REG 011
+                          np.uint8(0),  # H-REG 100
+                          np.uint8(0),  # L-REG 101
+                          np.uint8(0),  # Lücke für bessere REG zuweisung (110 -> Memory)
+                          np.uint8(0),  # A-REG 111
                           np.uint8(0),  # H-REG
                           np.uint8(0),  # L-REG
-                          np.uint8(0),  # D-REG
-                          np.uint8(0),  # E-REG
-                          np.uint8(0),  # B-REG
-                          np.uint8(0),  # C-REG
-                          np.uint8(0),  # W-REG
-                          np.uint8(0),  # Z-REG
                           ]
         self.address_latch = np.uint16(0)
         self.ALU = Intel8080_ALU()
@@ -39,13 +41,13 @@ class Intel8080(AbstractProcessor):
 
         if instruction == 0xCE:
             self.aci()
-        elif (instruction | 0xF8) == 0x88:
+        elif (instruction & 0xF8) == 0x88:
             self.adc(self.get_reg8s_from_inst(instruction))
-        elif (instruction | 0xF8) == 0x80:
+        elif (instruction & 0xF8) == 0x80:
             self.add(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xC6:
             self.adi()
-        elif (instruction | 0xF8) == 0xA0:
+        elif (instruction & 0xF8) == 0xA0:
             self.ana(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xE6:
             self.ani()
@@ -59,7 +61,7 @@ class Intel8080(AbstractProcessor):
             self.cma()
         elif instruction == 0x3F:
             self.cmc()
-        elif (instruction | 0xF8) == 0xB8:
+        elif (instruction & 0xF8) == 0xB8:
             self.cmp(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xD4:
             self.cnc()
@@ -77,11 +79,11 @@ class Intel8080(AbstractProcessor):
             self.cz()
         elif instruction == 0x27:
             self.daa()
-        elif (instruction | 0xCF) == 0x09:
+        elif (instruction & 0xCF) == 0x09:
             self.dad(self.get_reg16_from_inst(instruction))
-        elif (instruction | 0xC7) == 0x05:
+        elif (instruction & 0xC7) == 0x05:
             self.dcr(self.get_reg8d_from_inst(instruction))
-        elif (instruction | 0xCF) == 0x0B:
+        elif (instruction & 0xCF) == 0x0B:
             self.dcx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xF3:
             self.di()
@@ -91,9 +93,9 @@ class Intel8080(AbstractProcessor):
             self.hlt()
         elif instruction == 0xDD:
             self.in_put()
-        elif (instruction | 0xC7) == 0x04:
+        elif (instruction & 0xC7) == 0x04:
             self.inr(self.get_reg8d_from_inst(instruction))
-        elif (instruction | 0xCF) == 0x03:
+        elif (instruction & 0xCF) == 0x03:
             self.inx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xDA:
             self.jc()
@@ -121,15 +123,15 @@ class Intel8080(AbstractProcessor):
             self.ldax_d()
         elif instruction == 0x2A:
             self.lhld()
-        elif (instruction | 0xCF) == 0x01:
+        elif (instruction & 0xCF) == 0x01:
             self.lxi(self.get_reg16_from_inst(instruction))
-        elif (instruction | 0xC7) == 0x06:
+        elif (instruction & 0xC7) == 0x06:
             self.mvi(self.get_reg8d_from_inst(instruction))
-        elif (instruction | 0xC0) == 0x40:
+        elif (instruction & 0xC0) == 0x40:
             self.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
             self.nop()
-        elif (instruction | 0xF8) == 0xB0:
+        elif (instruction & 0xF8) == 0xB0:
             self.ora(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xF6:
             self.ori()
@@ -137,9 +139,9 @@ class Intel8080(AbstractProcessor):
             self.out_put()
         elif instruction == 0xE9:
             self.pchl()
-        elif (instruction | 0xCF) == 0xC1:
+        elif (instruction & 0xCF) == 0xC1:
             self.pop(self.get_reg16_from_inst(instruction))
-        elif (instruction | 0xCF) == 0xC5:
+        elif (instruction & 0xCF) == 0xC5:
             self.push(self.get_reg16_from_inst(instruction))
         elif instruction == 0x17:
             self.ral()
@@ -165,11 +167,11 @@ class Intel8080(AbstractProcessor):
             self.rpo()
         elif instruction == 0x0F:
             self.rrc()
-        elif (instruction | 0xC7) == 0xC7:
+        elif (instruction & 0xC7) == 0xC7:
             self.rst()
         elif instruction == 0xC8:
             self.rz()
-        elif (instruction | 0xF8) == 0x98:
+        elif (instruction & 0xF8) == 0x98:
             self.sbb(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xDE:
             self.sbi()
@@ -183,13 +185,13 @@ class Intel8080(AbstractProcessor):
             self.stax_d()
         elif instruction == 0x37:
             self.stc()
-        elif (instruction | 0xF8) == 0x90:
+        elif (instruction & 0xF8) == 0x90:
             self.sub(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xD6:
             self.sui()
         elif instruction == 0xEB:
             self.xchg()
-        elif (instruction | 0xf8) == 0xA8:
+        elif (instruction & 0xf8) == 0xA8:
             self.xra(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xEE:
             self.xri()
@@ -240,13 +242,13 @@ class Intel8080(AbstractProcessor):
             self.nextInstruction()
 
     def get_reg8d_from_inst(self, instruction):
-        return (instruction | 0x38) >> 3
+        return (instruction & 0x38) >> 3
 
     def get_reg8s_from_inst(self, instruction):
         return instruction >> 3
 
     def get_reg16_from_inst(self, instruction):
-        return (instruction | 0x30) >> 4
+        return (instruction & 0x30) >> 4
 
     def aci(self):
         pass
@@ -332,6 +334,10 @@ class Intel8080(AbstractProcessor):
         pass
 
     def inr(self, reg8):
+        if reg8 == 6:   # memory
+            pass
+        else:
+            self.registers[2 + reg8] += 1
         pass
 
     def inx(self, reg16):
