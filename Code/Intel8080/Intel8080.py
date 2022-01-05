@@ -7,12 +7,25 @@ from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU
 from Code.Intel8080.Intel8080_Components.Intel8080_RegisterArray import Intel8080_RegisterArray
 
+asm_string = """Loop:
+  ldax b
+  cpi 0
+  jz Done
+  add d
+  mov d, a
+  inr c
+  jmp Loop
+Done:
+  hlt
+myArray:
+  db 10h, 20h, 30h, 10h, 20h, 0"""
+
 
 class Intel8080(AbstractProcessor):
     def __init__(self):
         super().__init__()
         self.registerArray = Intel8080_RegisterArray()
-        self.ALU = Intel8080_ALU()
+        self.ALU = Intel8080_ALU(self)
         self.program = np.zeros(1024, dtype=np.uint8)
         self.insert_program()
 
@@ -22,168 +35,168 @@ class Intel8080(AbstractProcessor):
 
     def nextInstruction(self):
         if self.get_pc() < len(self.program):
-            instruction = self.get_byte(self.registerArray.get_register(0))
+            instruction = self.get_byte(self.get_pc())
         else:
             return
 
         if instruction == 0xCE:
-            self.aci()
+            self.ALU.aci(self.get_one_byte_data())
         elif (instruction & 0xF8) == 0x88:
-            self.adc(self.get_reg8s_from_inst(instruction))
+            self.ALU.adc(self.get_reg8s_from_inst(instruction))
         elif (instruction & 0xF8) == 0x80:
-            self.add(self.get_reg8s_from_inst(instruction))
+            self.ALU.add(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xC6:
-            self.adi()
+            self.ALU.adi()
         elif (instruction & 0xF8) == 0xA0:
-            self.ana(self.get_reg8s_from_inst(instruction))
+            self.ALU.ana(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xE6:
-            self.ani()
+            self.ALU.ani()
         elif instruction == 0xCD:
-            self.call()
+            self.ALU.call()
         elif instruction == 0xDC:
-            self.cc()
+            self.ALU.cc()
         elif instruction == 0xFC:
-            self.cm()
+            self.ALU.cm()
         elif instruction == 0x2F:
-            self.cma()
+            self.ALU.cma()
         elif instruction == 0x3F:
-            self.cmc()
+            self.ALU.cmc()
         elif (instruction & 0xF8) == 0xB8:
-            self.cmp(self.get_reg8s_from_inst(instruction))
+            self.ALU.cmp(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xD4:
-            self.cnc()
+            self.ALU.cnc()
         elif instruction == 0xC4:
-            self.cnz()
+            self.ALU.cnz()
         elif instruction == 0xF4:
-            self.cp()
+            self.ALU.cp()
         elif instruction == 0xEC:
-            self.cpe()
+            self.ALU.cpe()
         elif instruction == 0xFE:
-            self.cpi()
+            self.ALU.cpi()
         elif instruction == 0xE4:
-            self.cpo()
+            self.ALU.cpo()
         elif instruction == 0xCC:
-            self.cz()
+            self.ALU.cz()
         elif instruction == 0x27:
-            self.daa()
+            self.ALU.daa()
         elif (instruction & 0xCF) == 0x09:
-            self.dad(self.get_reg16_from_inst(instruction))
+            self.ALU.dad(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x05:
-            self.dcr(self.get_reg8d_from_inst(instruction))
+            self.ALU.dcr(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xCF) == 0x0B:
-            self.dcx(self.get_reg16_from_inst(instruction))
+            self.ALU.dcx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xF3:
-            self.di()
+            self.ALU.di()
         elif instruction == 0xFB:
-            self.ei()
+            self.ALU.ei()
         elif instruction == 0x76:
-            self.hlt()
+            self.ALU.hlt()
         elif instruction == 0xDD:
-            self.in_put()
+            self.ALU.in_put()
         elif (instruction & 0xC7) == 0x04:
-            self.inr(self.get_reg8d_from_inst(instruction))
+            self.ALU.inr(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xCF) == 0x03:
-            self.inx(self.get_reg16_from_inst(instruction))
+            self.ALU.inx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xDA:
-            self.jc()
+            self.ALU.jc()
         elif instruction == 0xFa:
-            self.jm()
+            self.ALU.jm()
         elif instruction == 0xC3:
-            self.jmp()
+            self.ALU.jmp()
         elif instruction == 0xD2:
-            self.jnc()
+            self.ALU.jnc()
         elif instruction == 0xC2:
-            self.jnz()
+            self.ALU.jnz()
         elif instruction == 0xF2:
-            self.jp()
+            self.ALU.jp()
         elif instruction == 0xEA:
-            self.jpe()
+            self.ALU.jpe()
         elif instruction == 0xE2:
-            self.jpo()
+            self.ALU.jpo()
         elif instruction == 0xCA:
-            self.jz()
+            self.ALU.jz()
         elif instruction == 0x3A:
-            self.lda()
+            self.ALU.lda()
         elif instruction == 0x0A:
-            self.ldax_b()
+            self.ALU.ldax_b()
         elif instruction == 0x1A:
-            self.ldax_d()
+            self.ALU.ldax_d()
         elif instruction == 0x2A:
-            self.lhld()
+            self.ALU.lhld()
         elif (instruction & 0xCF) == 0x01:
-            self.lxi(self.get_reg16_from_inst(instruction))
+            self.ALU.lxi(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x06:
-            self.mvi(self.get_reg8d_from_inst(instruction))
+            self.ALU.mvi(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xC0) == 0x40:
-            self.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
+            self.ALU.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
-            self.nop()
+            self.ALU.nop()
         elif (instruction & 0xF8) == 0xB0:
-            self.ora(self.get_reg8s_from_inst(instruction))
+            self.ALU.ora(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xF6:
-            self.ori()
+            self.ALU.ori()
         elif instruction == 0xD3:
-            self.out_put()
+            self.ALU.out_put()
         elif instruction == 0xE9:
-            self.pchl()
+            self.ALU.pchl()
         elif (instruction & 0xCF) == 0xC1:
-            self.pop(self.get_reg16_from_inst(instruction))
+            self.ALU.pop(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xCF) == 0xC5:
-            self.push(self.get_reg16_from_inst(instruction))
+            self.ALU.push(self.get_reg16_from_inst(instruction))
         elif instruction == 0x17:
-            self.ral()
+            self.ALU.ral()
         elif instruction == 0x1F:
-            self.rar()
+            self.ALU.rar()
         elif instruction == 0xD8:
-            self.rc()
+            self.ALU.rc()
         elif instruction == 0xC9:
-            self.ret()
+            self.ALU.ret()
         elif instruction == 0x07:
-            self.rlc()
+            self.ALU.rlc()
         elif instruction == 0xF8:
-            self.rm()
+            self.ALU.rm()
         elif instruction == 0xB0:
-            self.rnc()
+            self.ALU.rnc()
         elif instruction == 0xC0:
-            self.rnz()
+            self.ALU.rnz()
         elif instruction == 0xF0:
-            self.rp()
+            self.ALU.rp()
         elif instruction == 0xE8:
-            self.rpe()
+            self.ALU.rpe()
         elif instruction == 0x70:
-            self.rpo()
+            self.ALU.rpo()
         elif instruction == 0x0F:
-            self.rrc()
+            self.ALU.rrc()
         elif (instruction & 0xC7) == 0xC7:
-            self.rst()
+            self.ALU.rst()
         elif instruction == 0xC8:
-            self.rz()
+            self.ALU.rz()
         elif (instruction & 0xF8) == 0x98:
-            self.sbb(self.get_reg8s_from_inst(instruction))
+            self.ALU.sbb(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xDE:
-            self.sbi()
+            self.ALU.sbi()
         elif instruction == 0x22:
-            self.shld()
+            self.ALU.shld()
         elif instruction == 0x32:
-            self.sta()
+            self.ALU.sta()
         elif instruction == 0x02:
-            self.stax_b()
+            self.ALU.stax_b()
         elif instruction == 0x22:
-            self.stax_d()
+            self.ALU.stax_d()
         elif instruction == 0x37:
-            self.stc()
+            self.ALU.stc()
         elif (instruction & 0xF8) == 0x90:
-            self.sub(self.get_reg8s_from_inst(instruction))
+            self.ALU.sub(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xD6:
-            self.sui()
+            self.ALU.sui()
         elif instruction == 0xEB:
-            self.xchg()
+            self.ALU.xchg()
         elif (instruction & 0xf8) == 0xA8:
-            self.xra(self.get_reg8s_from_inst(instruction))
+            self.ALU.xra(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xEE:
-            self.xri()
+            self.ALU.xri()
         elif instruction == 0xE3:
-            self.xthl()
+            self.ALU.xthl()
 
         self.nextCycle()
         pass
@@ -237,246 +250,5 @@ class Intel8080(AbstractProcessor):
     def get_reg16_from_inst(self, instruction):
         return (instruction & 0x30) >> 4
 
-    def aci(self):
-        pass
-
-    def adc(self, reg8):
-        pass
-
-    def add(self, reg8):
-        pass
-
-    def adi(self):
-        pass
-
-    def ana(self, reg8):
-        pass
-
-    def ani(self):
-        pass
-
-    def call(self):
-        pass
-
-    def cc(self):
-        pass
-
-    def cm(self):
-        pass
-
-    def cma(self):
-        pass
-
-    def cmc(self):
-        pass
-
-    def cmp(self, reg8):
-        pass
-
-    def cnc(self):
-        pass
-
-    def cnz(self):
-        pass
-
-    def cp(self):
-        pass
-
-    def cpe(self):
-        pass
-
-    def cpi(self):
-        data = self.get_byte(self.get_pc() + 1)
-        self.add_pc(1)
-        pass
-
-    def cpo(self):
-        pass
-
-    def cz(self):
-        pass
-
-    def daa(self):
-        pass
-
-    def dad(self, reg16):
-        pass
-
-    def dcr(self, reg8):
-        pass
-
-    def dcx(self, reg16):
-        pass
-
-    def di(self):
-        pass
-
-    def ei(self):
-        pass
-
-    def hlt(self):
-        pass
-
-    def in_put(self):
-        pass
-
-    def inr(self, reg8):
-        if reg8 == 6:   # memory
-            pass
-        else:
-            self.registerArray.set_register((2 + reg8), (self.registerArray.get_register((2 + reg8)) + 1))
-        pass
-
-    def inx(self, reg16):
-        pass
-
-    def jc(self):
-        pass
-
-    def jm(self):
-        pass
-
-    def jmp(self):
-        pass
-
-    def jnc(self):
-        pass
-
-    def jnz(self):
-        pass
-
-    def jp(self):
-        pass
-
-    def jpe(self):
-        pass
-
-    def jpo(self):
-        pass
-
-    def jz(self):
-        address = self.get_address(self.get_pc() + 1)
-        self.set_pc(address)
-
-    def lda(self):
-        pass
-
-    def ldax_b(self):
-        pass
-
-    def ldax_d(self):
-        pass
-
-    def lhld(self):
-        pass
-
-    def lxi(self, reg16):
-        pass
-
-    def mvi(self, reg8):
-        pass
-
-    def mov(self, from_reg, to_reg):
-        pass
-
-    def nop(self):
-        pass
-
-    def ora(self, reg8):
-        pass
-
-    def ori(self):
-        pass
-
-    def out_put(self):
-        pass
-
-    def pchl(self):
-        pass
-
-    def pop(self, reg16):
-        pass
-
-    def push(self, reg16):
-        pass
-
-    def ral(self):
-        pass
-
-    def rar(self):
-        pass
-
-    def rc(self):
-        pass
-
-    def ret(self):
-        pass
-
-    def rlc(self):
-        pass
-
-    def rm(self):
-        pass
-
-    def rnc(self):
-        pass
-
-    def rnz(self):
-        pass
-
-    def rp(self):
-        pass
-
-    def rpe(self):
-        pass
-
-    def rpo(self):
-        pass
-
-    def rrc(self):
-        pass
-
-    def rst(self):
-        pass
-
-    def rz(self):
-        pass
-
-    def sbb(self, reg8):
-        pass
-
-    def sbi(self):
-        pass
-
-    def shld(self):
-        pass
-
-    def sta(self):
-        pass
-
-    def stax_b(self):
-        pass
-
-    def stax_d(self):
-        pass
-
-    def stc(self):
-        pass
-
-    def sub(self, reg8):
-        pass
-
-    def sui(self):
-        pass
-
-    def xchg(self):
-        pass
-
-    def xra(self, reg8):
-        pass
-
-    def xri(self):
-        pass
-
-    def xthl(self):
-        pass
+    def get_one_byte_data(self):
+        return np.uint8(self.get_byte(self.get_pc() + 1))
