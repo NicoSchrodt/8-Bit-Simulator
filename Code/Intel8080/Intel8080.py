@@ -5,7 +5,7 @@ import numpy as np
 
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg
-from Code.Intel8080.Intel8080_Components.Intel8080_RegisterArray import Intel8080_RegisterArray
+from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 asm_string = """Loop:
@@ -27,13 +27,13 @@ myArray:
 class Intel8080(AbstractProcessor):
     def __init__(self):
         super().__init__()
-        self.registerArray = Intel8080_RegisterArray()
+        self.registers = Intel8080_Registers()
         self.ALU = Intel8080_ALU(self)
         self.program = np.zeros(1024, dtype=np.uint8)
         self.insert_program()
 
     def nextCycle(self):
-        self.registerArray.increment_pc()
+        self.registers.increment_pc()
         # Concrete Implementation of nextCycle
 
     def nextInstruction(self):
@@ -231,19 +231,19 @@ class Intel8080(AbstractProcessor):
         return np.uint8(self.program[np.uint8(index)])
 
     def get_h_l_address(self):
-        return np.uint16((self.registerArray.get_register(char_to_reg('h') << 8)) |
-                         self.registerArray.get_register(char_to_reg('l')))
+        return np.uint16((self.registers.get_register(char_to_reg('h') << 8)) |
+                         self.registers.get_register(char_to_reg('l')))
 
     def get_pc(self):
-        return self.registerArray.get_register(0)
+        return self.registers.get_register(0)
 
     def add_pc(self, n):
         while n > 0:
-            self.registerArray.increment_pc()
+            self.registers.increment_pc()
             n -= 1
 
     def set_pc(self, address):
-        self.registerArray.set_register(0, np.uint16(address))
+        self.registers.set_register(0, np.uint16(address))
 
     def run(self):
         i8080asm.convert_to_binary(asm_string)

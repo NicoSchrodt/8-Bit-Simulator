@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Intel8080_RegisterArray():
+class Intel8080_Registers():
     def __init__(self):
         self.registers = [np.uint16(0),  # Program Counter
                           np.uint16(0),  # Stack Pointer
@@ -19,6 +19,7 @@ class Intel8080_RegisterArray():
                           np.uint8(0),  # Z-REG
                           ]
         self.address_latch = np.uint16(0)
+        self.instruction_register = np.uint8(0)
 
     def increment_pc(self):
         self.registers[0] += 1

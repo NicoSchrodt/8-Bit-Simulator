@@ -23,7 +23,7 @@ def char_to_reg(reg: chr):
 
 class Intel8080_ALU():
     def __init__(self, Intel8080):
-        self.registerArray = Intel8080.registerArray
+        self.registers = Intel8080.registers
         self.temp_accumulator = np.uint8(0)
         self.flags = [0,  # Zero
                       0,  # Sign
