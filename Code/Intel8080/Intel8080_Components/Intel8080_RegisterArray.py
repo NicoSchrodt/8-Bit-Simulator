@@ -15,6 +15,8 @@ class Intel8080_RegisterArray():
                           np.uint8(0),  # A-REG 111
                           np.uint8(0),  # H-REG
                           np.uint8(0),  # L-REG
+                          np.uint8(0),  # W-REG
+                          np.uint8(0),  # Z-REG
                           ]
         self.address_latch = np.uint16(0)
 

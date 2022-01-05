@@ -24,7 +24,6 @@ def char_to_reg(reg: chr):
 class Intel8080_ALU():
     def __init__(self, Intel8080):
         self.registerArray = Intel8080.registerArray
-        self.accumulator = np.uint8(0)
         self.temp_accumulator = np.uint8(0)
         self.flags = [0,  # Zero
                       0,  # Sign
@@ -37,12 +36,6 @@ class Intel8080_ALU():
     def perform_operation(self):
         pass
         # Perform an Operation with the ALU
-
-    def set_acu(self, value):
-        self.accumulator = value
-
-    def get_acu(self):
-        return self.accumulator
 
     def set_temp_acu(self, value):
         self.temp_accumulator = value

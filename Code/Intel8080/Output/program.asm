@@ -6,7 +6,9 @@ Loop:
   mov d, a
   inr c
   jmp Loop
+
 Done:
   hlt
+
 myArray:
   db 10h, 20h, 30h, 10h, 20h, 0
