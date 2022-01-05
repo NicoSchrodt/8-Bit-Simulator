@@ -4,8 +4,9 @@ from pathlib import Path
 import numpy as np
 
 from Code.Main.AbstractProcessor import AbstractProcessor
-from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU
+from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg
 from Code.Intel8080.Intel8080_Components.Intel8080_RegisterArray import Intel8080_RegisterArray
+from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 asm_string = """Loop:
   ldax b
@@ -224,6 +225,10 @@ class Intel8080(AbstractProcessor):
         print(self.program[index])
         return self.program[index]
 
+    def get_h_l_address(self):
+        return np.uint16((self.registerArray.get_register(char_to_reg('h') << 8)) |
+                         self.registerArray.get_register(char_to_reg('l')))
+
     def get_pc(self):
         return self.registerArray.get_register(0)
 
@@ -236,6 +241,8 @@ class Intel8080(AbstractProcessor):
         self.registerArray.set_register(0, np.uint16(address))
 
     def run(self):
+        i8080asm.convert_to_binary(asm_string)
+        self.insert_program()
         count = 0
         while count < len(self.program):
             count += 1
