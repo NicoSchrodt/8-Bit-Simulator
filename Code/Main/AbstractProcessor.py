@@ -2,6 +2,9 @@ class AbstractProcessor:
     def __init__(self):
         pass
 
+    def insert_program(self):
+        pass
+
     def nextCycle(self):
         pass
 

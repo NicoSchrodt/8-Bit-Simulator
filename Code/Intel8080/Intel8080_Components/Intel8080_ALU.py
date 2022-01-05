@@ -22,20 +22,9 @@ def char_to_reg(reg: chr):
 
 
 class Intel8080_ALU():
-    def __init__(self):
-        self.registers = [np.uint8(0),  # B-REG 000
-                          np.uint8(0),  # C-REG 001
-                          np.uint8(0),  # D-REG 010
-                          np.uint8(0),  # E-REG 011
-                          np.uint8(0),  # H-REG 100
-                          np.uint8(0),  # L-REG 101
-                          np.uint8(0),  # Lücke für bessere REG zuweisung (110 -> Memory)
-                          np.uint8(0),  # A-REG 111 (Akkumulator)
-                          np.uint8(0),  # W-REG
-                          np.uint8(0),  # Z-REG
-                          np.uint16(0),  # Program Counter
-                          np.uint16(0),  # Stack Pointer
-                          ]
+    def __init__(self, Intel8080):
+        self.registerArray = Intel8080.registerArray
+        self.accumulator = np.uint8(0)
         self.temp_accumulator = np.uint8(0)
         self.flags = [0,  # Zero
                       0,  # Sign
@@ -49,13 +38,63 @@ class Intel8080_ALU():
         pass
         # Perform an Operation with the ALU
 
+    def set_acu(self, value):
+        self.accumulator = value
+
+    def get_acu(self):
+        return self.accumulator
+
+    def set_temp_acu(self, value):
+        self.temp_accumulator = value
+
+    def get_temp_acu(self):
+        return self.temp_accumulator
+
+    def set_temp_register(self, value):
+        self.temp_register = value
+
+    def get_temp_register(self):
+        return self.temp_register
+
+    def set_zero_flag(self, state):
+        self.flags[0] = state
+
+    def get_zero_flag(self):
+        return self.flags[0]
+
+    def set_sign_flag(self, state):
+        self.flags[1] = state
+
+    def get_sign_flag(self):
+        return self.flags[1]
+
+    def set_parity_flag(self, state):
+        self.flags[2] = state
+
+    def get_parity_flag(self):
+        return self.flags[2]
+
+    def set_carry_flag(self, state):
+        self.flags[3] = state
+
+    def get_carry_flag(self):
+        return self.flags[3]
+
+    def set_auxiliary_carry_flag(self, state):
+        self.flags[4] = state
+
+    def get_auxiliary_carry_flag(self):
+        return self.flags[4]
+
     def evaluate_flags(self, z: bool, s: bool, p: bool, cy: bool, ca: bool):
         pass
 
     def aci(self, data):
-        self.registers[char_to_reg('a')] += np.uint8(data + self.get_carry_flag())
+        register = char_to_reg('a')
+        current = self.registerArray.get_register(register)
+        new = current + np.uint8(data + self.get_carry_flag())
+        self.registerArray.set_register(register, new)
         self.evaluate_flags(True, True, True, True, True)
-        return
 
     def adc(self, reg8):
         pass
@@ -136,9 +175,10 @@ class Intel8080_ALU():
         pass
 
     def inr(self, reg8):
-        self.registers[reg8] += 1
+        current = self.registerArray.get_register(reg8)
+        new = current + 1
+        self.registerArray.set_register(reg8, new)
         self.evaluate_flags(True, True, True, False, True)
-        return
 
     def inx(self, reg16):
         pass
@@ -292,18 +332,3 @@ class Intel8080_ALU():
 
     def xthl(self):
         pass
-
-    def get_zero_flag(self):
-        return self.flags[0]
-
-    def get_sign_flag(self):
-        return self.flags[1]
-
-    def get_parity_flag(self):
-        return self.flags[2]
-
-    def get_carry_flag(self):
-        return self.flags[3]
-
-    def get_aux_carry(self):
-        return self.flags[4]
