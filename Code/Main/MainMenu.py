@@ -17,11 +17,11 @@ class MainMenu(QMainWindow):
     def init_ui(self, ui_name):
         base_path = os.path.abspath("..")
         full_path = os.path.join(base_path, ui_name)
-        print(full_path)
         loadUi(full_path, self)
 
     def load_Intel8080(self):
-        self.dialog = Intel8080_MainWindow()
+        self.hide()
+        self.dialog = Intel8080_MainWindow(self)
         self.dialog.show()
 
     def load_Tutorial(self):
