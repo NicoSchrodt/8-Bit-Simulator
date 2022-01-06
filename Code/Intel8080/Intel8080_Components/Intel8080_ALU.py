@@ -84,9 +84,9 @@ class Intel8080_ALU():
 
     def aci(self, data):
         register = char_to_reg('a')
-        current = self.registerArray.get_register(register)
+        current = self.registers.get_register(register)
         new = current + np.uint8(data + self.get_carry_flag())
-        self.registerArray.set_register(register, new)
+        self.registers.set_register(register, new)
         self.evaluate_flags(True, True, True, True, True)
 
     def adc(self, reg8):
@@ -168,9 +168,9 @@ class Intel8080_ALU():
         pass
 
     def inr(self, reg8):
-        current = self.registerArray.get_register(reg8)
+        current = self.registers.get_register(reg8)
         new = current + 1
-        self.registerArray.set_register(reg8, new)
+        self.registers.set_register(reg8, new)
         self.evaluate_flags(True, True, True, False, True)
 
     def inx(self, reg16):
