@@ -1,5 +1,7 @@
 import numpy as np
 
+from Code.Intel8080.Intel8080_Components.Intel8080_Registers import reg_offset
+
 
 def char_to_reg(reg: chr):
     reg = reg.upper()
@@ -86,7 +88,7 @@ class Intel8080_ALU():
         register = char_to_reg('a')
         current = self.registers.get_register(register)
         new = current + np.uint8(data + self.get_carry_flag())
-        self.registers.set_register(register, new)
+        self.registers.set_register8(reg_offset + register, new)
         self.evaluate_flags(True, True, True, True, True)
 
     def adc(self, reg8):
@@ -170,7 +172,7 @@ class Intel8080_ALU():
     def inr(self, reg8):
         current = self.registers.get_register(reg8)
         new = current + 1
-        self.registers.set_register(reg8, new)
+        self.registers.set_register8(reg_offset + reg8, new)
         self.evaluate_flags(True, True, True, False, True)
 
     def inx(self, reg16):

@@ -1,5 +1,6 @@
 import numpy as np
 
+reg_offset = 2
 
 class Intel8080_Registers():
     def __init__(self):
@@ -24,8 +25,11 @@ class Intel8080_Registers():
     def increment_pc(self):
         self.registers[0] += 1
 
-    def set_register(self, register, value):
-        self.registers[register] = value
+    def set_register8(self, register, value):
+        self.registers[register] = np.uint8(value)
+
+    def set_register16(self, register, value):
+        self.registers[register] = np.uint16(value)
 
     def get_register(self, register):
         return self.registers[register]

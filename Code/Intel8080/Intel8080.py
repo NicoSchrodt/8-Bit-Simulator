@@ -243,7 +243,7 @@ class Intel8080(AbstractProcessor):
             n -= 1
 
     def set_pc(self, address):
-        self.registers.set_register(0, np.uint16(address))
+        self.registers.set_register16(0, np.uint16(address))
 
     def run(self):
         i8080asm.convert_to_binary(asm_string)
