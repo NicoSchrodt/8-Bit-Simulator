@@ -224,7 +224,6 @@ class Intel8080(AbstractProcessor):
                     break
                 else:
                     self.program[i] = np.uint8(ord(byte))
-                    print(self.program)
                     i += 1
 
     def get_address_from_memory(self, first_byte):
@@ -234,7 +233,6 @@ class Intel8080(AbstractProcessor):
 
     def get_memory_byte(self, address):
         address = np.uint16(address)
-        print(self.program[address])
         return np.uint8(self.program[address])
 
     def set_memory_byte(self, address, value):

@@ -5,6 +5,7 @@ from PyQt6.uic import loadUi
 
 from Code.Intel8080.Intel8080_MainWindow import Intel8080_MainWindow
 
+
 class MainMenu(QMainWindow):
     def __init__(self):
         super(MainMenu, self).__init__()
