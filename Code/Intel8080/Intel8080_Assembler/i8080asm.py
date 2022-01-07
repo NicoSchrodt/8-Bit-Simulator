@@ -1261,16 +1261,20 @@ def address16():
 
 def get_number(input):
     """Return value of hex or decimal numeric input string."""
+    contains_char = True
     if input.endswith(('h', 'H')):
         base = 16
     elif input.endswith(('q', 'Q')):
         base = 8
     elif input.endswith(('b', 'B')):
         base = 2
+    elif input.endswith(('d', 'D')):
+        base = 10
     else:
         base = 10
+        contains_char = False
 
-    if base != 10:
+    if contains_char:
         number = int(input[:-1], base)
     else:
         number = int(input)

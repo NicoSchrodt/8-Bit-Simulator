@@ -5,23 +5,13 @@ import numpy as np
 
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg
-from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers
+from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
-asm_string = """Loop:
-  ldax b
-  cpi 0
-  jz Done
-  add d
-  mov d, a
-  inr c
-  jmp Loop
-
-Done:
-  hlt
-
-myArray:
-  db 10h, 20h, 30h, 10h, 20h, 0"""
+asm_string = """mvi a, 8d
+aci 8h
+aci 1h
+"""
 
 
 class Intel8080(AbstractProcessor):
@@ -29,7 +19,7 @@ class Intel8080(AbstractProcessor):
         super().__init__()
         self.registers = Intel8080_Registers()
         self.ALU = Intel8080_ALU(self)
-        self.program = np.zeros(1024, dtype=np.uint8)
+        self.program = [0] * pow(2, 16)
         self.insert_program()
 
     def nextCycle(self):
@@ -38,16 +28,24 @@ class Intel8080(AbstractProcessor):
 
     def nextInstruction(self):
         if self.get_pc() < len(self.program):
-            instruction = self.get_byte(self.get_pc())
+            instruction = self.get_memory_byte(self.get_pc())
         else:
             return
 
         if instruction == 0xCE:
             self.ALU.aci(self.get_one_byte_data())
         elif (instruction & 0xF8) == 0x88:
-            self.ALU.adc(self.get_reg8s_from_inst(instruction))
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                value = self.program[self.get_h_l_address()]
+            else:
+                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.adc(value)
         elif (instruction & 0xF8) == 0x80:
-            self.ALU.add(self.get_reg8s_from_inst(instruction))
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                value = self.get_h_l_value()
+            else:
+                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.add(value)
         elif instruction == 0xC6:
             self.ALU.adi()
         elif (instruction & 0xF8) == 0xA0:
@@ -98,7 +96,7 @@ class Intel8080(AbstractProcessor):
             self.ALU.in_put()
         elif (instruction & 0xC7) == 0x04:
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                self.program[self.get_h_l_address()] = np.uint8(self.program[self.get_h_l_address()] + 1)
+                self.set_memory_byte(self.get_h_l_address(), self.get_h_l_value() + 1)
             else:
                 self.ALU.inr(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xCF) == 0x03:
@@ -132,7 +130,11 @@ class Intel8080(AbstractProcessor):
         elif (instruction & 0xCF) == 0x01:
             self.ALU.lxi(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x06:
-            self.ALU.mvi(self.get_reg8d_from_inst(instruction))
+            data = self.get_one_byte_data()
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                self.set_memory_byte(self.get_h_l_address(), data)
+            else:
+                self.ALU.mvi(self.get_reg8d_from_inst(instruction), data)
         elif (instruction & 0xC0) == 0x40:
             self.ALU.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
@@ -215,24 +217,38 @@ class Intel8080(AbstractProcessor):
         infile = parent_path.joinpath(output_program + '.com')
 
         with open(infile, 'rb') as file:
-            byte = file.read()
-            self.program = np.frombuffer(byte, dtype=np.uint8)
-            print(self.program)
-            file.close()
-        pass
+            i = 0
+            while True:
+                byte = file.read(1)
+                if byte == b'':
+                    break
+                else:
+                    self.program[i] = np.uint8(ord(byte))
+                    print(self.program)
+                    i += 1
 
-    def get_address(self, first_byte):
-        low = self.get_byte(first_byte)
-        high = self.get_byte(first_byte + 1)
+    def get_address_from_memory(self, first_byte):
+        low = self.get_memory_byte(first_byte)
+        high = self.get_memory_byte(first_byte + 1)
         return np.uint16((high << 8) | low)
 
-    def get_byte(self, index):
-        print(self.program[index])
-        return np.uint8(self.program[np.uint8(index)])
+    def get_memory_byte(self, address):
+        address = np.uint16(address)
+        print(self.program[address])
+        return np.uint8(self.program[address])
+
+    def set_memory_byte(self, address, value):
+        value = np.uint8(value)
+        address = np.uint16(address)
+        self.program[address] = value
 
     def get_h_l_address(self):
-        return np.uint16((self.registers.get_register(char_to_reg('h') << 8)) |
-                         self.registers.get_register(char_to_reg('l')))
+        low = np.uint8(self.registers.get_register(reg_offset + char_to_reg('l')))
+        high = np.uint8(self.registers.get_register(reg_offset + char_to_reg('h')))
+        return np.uint16((high << 8) | low)
+
+    def get_h_l_value(self):
+        return np.uint8(self.program[self.get_h_l_address()])
 
     def get_pc(self):
         return self.registers.get_register(0)
@@ -269,4 +285,5 @@ class Intel8080(AbstractProcessor):
         return False
 
     def get_one_byte_data(self):
-        return np.uint8(self.get_byte(self.get_pc() + 1))
+        self.add_pc(1)
+        return np.uint8(self.get_memory_byte(self.get_pc()))

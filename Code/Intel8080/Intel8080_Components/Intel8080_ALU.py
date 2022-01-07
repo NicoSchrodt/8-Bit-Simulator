@@ -39,6 +39,9 @@ class Intel8080_ALU():
         pass
         # Perform an Operation with the ALU
 
+    def get_reg8_val(self, reg8):
+        return np.uint8(self.registers.get_register(reg_offset + reg8))
+
     def set_temp_acu(self, value):
         self.temp_accumulator = value
 
@@ -81,21 +84,73 @@ class Intel8080_ALU():
     def get_auxiliary_carry_flag(self):
         return self.flags[4]
 
-    def evaluate_flags(self, z: bool, s: bool, p: bool, cy: bool, ca: bool):
+    def evaluate_zsp_flags(self, z: bool, s: bool, p: bool, result):
+        if z and result == 0:
+            self.set_zero_flag(True)
+        else:
+            self.set_zero_flag(False)
+
+        if s and result > 127:
+            self.set_sign_flag(True)
+        else:
+            self.set_sign_flag(False)
+
+        if p and result % 2 == 0:
+            self.set_parity_flag(True)
+        else:
+            self.set_parity_flag(False)
+
+    def set_cy_ca_flags(self, cy, ca):
+        self.set_carry_flag(cy)
+        self.set_auxiliary_carry_flag(ca)
+
+    def binary_add(self, op1, op2, carry):
+        mask = 0x01
+        number, ca, cy = 0, 0, 0
+        for cycle in range(8):
+            value = (op1 & mask) + (op2 & mask) + (carry * mask)
+
+            number += value & mask
+            mask <<= 1
+            if value & mask:
+                carry = 1
+            else:
+                carry = 0
+
+            if cycle == 3:
+                ca = carry
+            if cycle == 7:
+                cy = carry
+
+        return ca, cy
+
+    def no_flags(self):
         pass
 
-    def aci(self, data):
-        register = char_to_reg('a')
-        current = self.registers.get_register(register)
-        new = current + np.uint8(data + self.get_carry_flag())
-        self.registers.set_register8(reg_offset + register, new)
-        self.evaluate_flags(True, True, True, True, True)
+    def aci(self, value):
+        reg_a = char_to_reg('a')
+        reg_a_val = self.registers.get_register(reg_offset + reg_a)
+        result = reg_a_val + value + self.get_carry_flag()
+        new = np.uint8(result)
+        self.registers.set_register8(reg_offset + reg_a, new)
 
-    def adc(self, reg8):
-        pass
+        self.evaluate_zsp_flags(True, True, True, result)
+        ca, cy = self.binary_add(reg_a_val, value, self.get_carry_flag())
+        self.set_cy_ca_flags(cy, ca)
 
-    def add(self, reg8):
-        pass
+    def adc(self, value):
+        self.aci(value)
+
+    def add(self, value):
+        reg_a = char_to_reg('a')
+        reg_a_val = self.registers.get_register(reg_offset + reg_a)
+        result = reg_a_val + value
+        new = np.uint8(result)
+        self.registers.set_register8(reg_offset + reg_a, new)
+
+        self.evaluate_zsp_flags(True, True, True, result)
+        ca, cy = self.binary_add(reg_a_val, value, 0)
+        self.set_cy_ca_flags(cy, ca)
 
     def adi(self):
         pass
@@ -220,8 +275,10 @@ class Intel8080_ALU():
     def lxi(self, reg16):
         pass
 
-    def mvi(self, reg8):
-        pass
+    def mvi(self, reg8, value):
+        value = np.uint8(value)
+        self.registers.set_register8(reg_offset + reg8, value)
+        self.no_flags()
 
     def mov(self, from_reg, to_reg):
         pass

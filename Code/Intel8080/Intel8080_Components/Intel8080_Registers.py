@@ -14,8 +14,6 @@ class Intel8080_Registers():
                           np.uint8(0),  # L-REG 101
                           np.uint8(0),  # Lücke für bessere REG zuweisung (110 -> Memory)
                           np.uint8(0),  # A-REG 111
-                          np.uint8(0),  # H-REG
-                          np.uint8(0),  # L-REG
                           np.uint8(0),  # W-REG
                           np.uint8(0),  # Z-REG
                           ]
