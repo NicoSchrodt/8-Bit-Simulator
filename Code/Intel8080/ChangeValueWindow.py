@@ -1,12 +1,11 @@
 import os
 
 from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtGui import QCloseEvent
+from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
 
 
 class ChangeValueWindow(QMainWindow):
-
     def __init__(self, Intel8080_MainWindow, btn):
         super(ChangeValueWindow, self).__init__(Intel8080_MainWindow)
 
@@ -21,6 +20,8 @@ class ChangeValueWindow(QMainWindow):
 
         button_cancel = self.button_cancel
         button_cancel.clicked.connect(self.close)
+
+        self.setWindowFlags(Qt.WindowType.Dialog)
 
     def init_ui(self, ui_name):
         base_path = os.path.abspath("..")

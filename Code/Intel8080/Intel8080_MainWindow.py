@@ -9,12 +9,12 @@ from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
 
 
 class Intel8080_MainWindow(QMainWindow):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super(Intel8080_MainWindow, self).__init__(parent)
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
         processor = Intel8080()
-        #processor.run()
+        # processor.run()
 
     def init_ui(self, ui_name):
         base_path = os.path.abspath("..")
@@ -29,9 +29,8 @@ class Intel8080_MainWindow(QMainWindow):
             self.Registers_table.setCellWidget(row, 0, btn)
             btn.pressed.connect(self.pressed_table_cell)
 
-    def closeEvent(self, a0: QCloseEvent):
-        print("Test")
-        self.close()
+    def closeEvent(self, event: QCloseEvent):
+        event.accept()
         self.parent().show()
         # Closes Window and Un-Hides MainMenu
 
