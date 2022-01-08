@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="visibleRegisters_table">
+   <widget class="QTableWidget" name="Registers_table">
     <property name="geometry">
      <rect>
       <x>10</x>
