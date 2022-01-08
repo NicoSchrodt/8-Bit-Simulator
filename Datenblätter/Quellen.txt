@@ -1,0 +1,2 @@
+8080 Programmers MAnual von https://altairclone.com/downloads/manuals/8080%20Programmers%20Manual.pdf
+9800301D_8080_8085_Assembly_Language_Programming_Manual_May81 von http://bitsavers.org/components/intel/MCS80/9800301D_8080_8085_Assembly_Language_Programming_Manual_May81.pdf

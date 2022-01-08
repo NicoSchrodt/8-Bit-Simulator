@@ -5,14 +5,14 @@ reg_offset = 2
 class Intel8080_Registers():
     def __init__(self):
         self.registers = [np.uint16(0),  # Program Counter
-                          np.uint16(0),  # Stack Pointer
+                          np.uint16(0x0030),  # Stack Pointer
                           np.uint8(0),  # B-REG 000
                           np.uint8(0),  # C-REG 001
                           np.uint8(0),  # D-REG 010
                           np.uint8(0),  # E-REG 011
                           np.uint8(0),  # H-REG 100
                           np.uint8(0),  # L-REG 101
-                          np.uint8(0),  # Lücke für bessere REG zuweisung (110 -> Memory)
+                          np.uint8(0),  # Space for better REG allocation (110 -> Memory)
                           np.uint8(0),  # A-REG 111
                           np.uint8(0),  # W-REG
                           np.uint8(0),  # Z-REG

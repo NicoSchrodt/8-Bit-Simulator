@@ -100,13 +100,13 @@ class Intel8080_ALU():
         else:
             self.set_parity_flag(False)
 
-    def set_cy_ca_flags(self, cy, ca):
-        self.set_carry_flag(cy)
-        self.set_auxiliary_carry_flag(ca)
+    def set_cy_ac_flags(self, cy, ca):
+        self.set_carry_flag(bool(cy))
+        self.set_auxiliary_carry_flag(bool(ca))
 
     def binary_add(self, op1, op2, carry):
         mask = 0x01
-        number, ca, cy = 0, 0, 0
+        number, ac, cy = 0, 0, 0
         for cycle in range(8):
             value = (op1 & mask) + (op2 & mask) + (carry * mask)
 
@@ -118,14 +118,17 @@ class Intel8080_ALU():
                 carry = 0
 
             if cycle == 3:
-                ca = carry
+                ac = carry
             if cycle == 7:
                 cy = carry
 
-        return ca, cy
+        return ac, cy
 
     def no_flags(self):
         pass
+
+    def get_sp(self):
+        return np.uint16(self.registers.get_register(1))
 
     def aci(self, value):
         reg_a = char_to_reg('a')
@@ -135,8 +138,8 @@ class Intel8080_ALU():
         self.registers.set_register8(reg_offset + reg_a, new)
 
         self.evaluate_zsp_flags(True, True, True, result)
-        ca, cy = self.binary_add(reg_a_val, value, self.get_carry_flag())
-        self.set_cy_ca_flags(cy, ca)
+        ac, cy = self.binary_add(reg_a_val, value, self.get_carry_flag())
+        self.set_cy_ac_flags(cy, ac)
 
     def adc(self, value):
         self.aci(value)
@@ -149,20 +152,25 @@ class Intel8080_ALU():
         self.registers.set_register8(reg_offset + reg_a, new)
 
         self.evaluate_zsp_flags(True, True, True, result)
-        ca, cy = self.binary_add(reg_a_val, value, 0)
-        self.set_cy_ca_flags(cy, ca)
+        ac, cy = self.binary_add(reg_a_val, value, 0)
+        self.set_cy_ac_flags(cy, ac)
 
-    def adi(self):
-        pass
+    def adi(self, value):
+        self.add(value)
 
-    def ana(self, reg8):
-        pass
+    def ana(self, value):
+        reg_a = char_to_reg('a')
+        reg_a_val = self.registers.get_register(reg_offset + reg_a)
+        result = reg_a_val & value
+        new = np.uint8(result)
+        self.registers.set_register8(reg_offset + reg_a, new)
 
-    def ani(self):
-        pass
+        self.evaluate_zsp_flags(True, True, True, result)
+        ca = ((reg_a_val & 0x8) | (value & 0x8)) >> 3
+        self.set_cy_ac_flags(0, ca)
 
-    def call(self):
-        pass
+    def ani(self, value):
+        self.ana(value)
 
     def cc(self):
         pass

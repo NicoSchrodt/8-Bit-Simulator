@@ -1,3 +1,5 @@
-mvi a, 8d
-aci 8h
-aci 1h
+call mark
+  hlt
+
+mark:
+  mvi a, 255d
