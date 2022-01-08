@@ -8,9 +8,11 @@ from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, cha
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
-asm_string = """mvi a, 8d
-aci 8h
-aci 1h
+asm_string = """call mark
+  hlt
+
+mark:
+  mvi a, 255d
 """
 
 
@@ -47,13 +49,21 @@ class Intel8080(AbstractProcessor):
                 value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
             self.ALU.add(value)
         elif instruction == 0xC6:
-            self.ALU.adi()
+            value = self.get_one_byte_data()
+            self.ALU.adi(value)
         elif (instruction & 0xF8) == 0xA0:
-            self.ALU.ana(self.get_reg8s_from_inst(instruction))
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                value = self.program[self.get_h_l_address()]
+            else:
+                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.ana(value)
         elif instruction == 0xE6:
-            self.ALU.ani()
+            value = self.get_one_byte_data()
+            self.ALU.ani(value)
         elif instruction == 0xCD:
-            self.ALU.call()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.call(low, high)
         elif instruction == 0xDC:
             self.ALU.cc()
         elif instruction == 0xFC:
@@ -130,11 +140,11 @@ class Intel8080(AbstractProcessor):
         elif (instruction & 0xCF) == 0x01:
             self.ALU.lxi(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x06:
-            data = self.get_one_byte_data()
+            value = self.get_one_byte_data()
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                self.set_memory_byte(self.get_h_l_address(), data)
+                self.set_memory_byte(self.get_h_l_address(), value)
             else:
-                self.ALU.mvi(self.get_reg8d_from_inst(instruction), data)
+                self.ALU.mvi(self.get_reg8d_from_inst(instruction), value)
         elif (instruction & 0xC0) == 0x40:
             self.ALU.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
@@ -272,7 +282,7 @@ class Intel8080(AbstractProcessor):
         return (instruction & 0x38) >> 3
 
     def get_reg8s_from_inst(self, instruction):
-        return instruction >> 3
+        return instruction & 0x07
 
     def get_reg16_from_inst(self, instruction):
         return (instruction & 0x30) >> 4
@@ -285,3 +295,17 @@ class Intel8080(AbstractProcessor):
     def get_one_byte_data(self):
         self.add_pc(1)
         return np.uint8(self.get_memory_byte(self.get_pc()))
+
+    def call(self, low, high):
+        self.push_sp(high, 1)
+        self.push_sp(low, 2)
+        new_sp = np.uint16(self.ALU.get_sp() - 2)
+        self.registers.set_register16(1, new_sp)
+
+        address = (high << 8) | low
+        self.set_pc(address)
+
+    def push_sp(self, value, offset):
+        sp = self.ALU.get_sp()
+        address = np.uint16(sp - offset)
+        self.set_memory_byte(address, value)
