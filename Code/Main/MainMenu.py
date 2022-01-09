@@ -13,6 +13,8 @@ class MainMenu(QMainWindow):
         super(MainMenu, self).__init__(parent)
         self.init_ui("ui\\MainMenu.ui")
 
+        self.setWindowFlags(Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.MSWindowsFixedSizeDialogHint)
+
         # Intel8080 Button
         intel8080_button = self.button_Intel8080
         intel8080_button.clicked.connect(self.load_Intel8080)
@@ -24,10 +26,6 @@ class MainMenu(QMainWindow):
         # Exit Button
         exit_button = self.button_Exit
         exit_button.clicked.connect(self.close)
-
-        print(self.windowFlags())
-
-        self.setWindowFlags(Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.MSWindowsFixedSizeDialogHint)
 
     def init_ui(self, ui_name):
         base_path = os.path.abspath("..")

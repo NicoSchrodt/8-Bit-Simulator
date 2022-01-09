@@ -10,7 +10,8 @@ from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
 
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
-        super(Intel8080_MainWindow, self).__init__(parent)
+        super(Intel8080_MainWindow, self).__init__(None)
+        self.mainW = parent
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
         processor = Intel8080()
@@ -23,7 +24,6 @@ class Intel8080_MainWindow(QMainWindow):
 
     def init_register_table(self):
         for row in range(self.Registers_table.rowCount()):
-            print(row)
             btn = QPushButton(self.Registers_table)
             btn.setText('{:x}'.format(0))
             self.Registers_table.setCellWidget(row, 0, btn)
@@ -31,7 +31,7 @@ class Intel8080_MainWindow(QMainWindow):
 
     def closeEvent(self, event: QCloseEvent):
         event.accept()
-        self.parent().show()
+        self.mainW.show()
         # Closes Window and Un-Hides MainMenu
 
     def pressed_table_cell(self):
