@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>793</width>
     <height>600</height>
    </rect>
   </property>
@@ -20,9 +20,15 @@
       <x>10</x>
       <y>10</y>
       <width>211</width>
-      <height>201</height>
+      <height>152</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderStretchLastSection">
+     <bool>true</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>PC</string>
@@ -85,7 +91,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>793</width>
      <height>21</height>
     </rect>
    </property>

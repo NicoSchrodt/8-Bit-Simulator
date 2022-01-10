@@ -1,6 +1,6 @@
 import os
 
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem
+from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QHeaderView
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QCloseEvent
 
@@ -14,8 +14,9 @@ class Intel8080_MainWindow(QMainWindow):
         self.mainW = parent
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
-        processor = Intel8080()
+        self.processor = Intel8080()
         # processor.run()
+        self.update_registers_table()
 
     def init_ui(self, ui_name):
         base_path = os.path.abspath("..")
@@ -23,10 +24,14 @@ class Intel8080_MainWindow(QMainWindow):
         loadUi(full_path, self)
 
     def init_register_table(self):
-        for row in range(self.Registers_table.rowCount()):
-            btn = QPushButton(self.Registers_table)
+        Registers_table = self.Registers_table
+        # Registers_table.horizontalHeader().setVisible(False)
+        # Registers_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        # Done in QT-Designer
+        for row in range(Registers_table.rowCount()):
+            btn = QPushButton(Registers_table)
             btn.setText('{:x}'.format(0))
-            self.Registers_table.setCellWidget(row, 0, btn)
+            Registers_table.setCellWidget(row, 0, btn)
             btn.pressed.connect(self.pressed_table_cell)
 
     def closeEvent(self, event: QCloseEvent):
@@ -40,5 +45,16 @@ class Intel8080_MainWindow(QMainWindow):
         self.dialog.show()
 
     def update_registers_table(self):
-        # To be implemented
-        pass
+        Registers_table = self.Registers_table
+        registers = self.processor.registers
+        alu = self.processor.ALU
+        #Registers_table.cellWidget(0, 0).setText('{:x}'.format(registers.registers[0]))  # PC
+        registers.registers[0] = int(Registers_table.cellWidget(0, 0).text(), 16)
+        #Registers_table.cellWidget(1, 0).setText('{:x}'.format(registers.registers[1]))  # SP
+        registers.registers[1] = int(Registers_table.cellWidget(1, 0).text(), 16)
+        #Registers_table.cellWidget(2, 0).setText('{:x}'.format(registers.registers[9]))  # ACC
+        registers.registers[9] = int(Registers_table.cellWidget(2, 0).text(), 16)
+        #Registers_table.cellWidget(3, 0).setText('{:x}'.format(alu.temp_accumulator))  # Temp-ACC
+        alu.temp_accumulator = int(Registers_table.cellWidget(3, 0).text(), 16)
+        #Registers_table.cellWidget(4, 0).setText('{:x}'.format(registers.instruction_register))  # INST
+        registers.instruction_register = int(Registers_table.cellWidget(4, 0).text(), 16)
