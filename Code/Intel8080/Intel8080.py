@@ -17,12 +17,12 @@ mark:
 
 
 class Intel8080(AbstractProcessor):
-    def __init__(self):
+    def __init__(self, parent_window=None):
         super().__init__()
+        self.parent = parent_window
         self.registers = Intel8080_Registers()
         self.ALU = Intel8080_ALU(self)
         self.program = [0] * pow(2, 16)
-        self.insert_program()
 
     def nextCycle(self):
         self.registers.increment_pc()
@@ -217,8 +217,18 @@ class Intel8080(AbstractProcessor):
             self.ALU.xthl()
 
         self.nextCycle()
-        pass
         # Concrete Implementation of nextInstruction
+
+    def load_program(self, filepath):
+        with open(filepath, 'rb') as file:
+            i = 0
+            while True:
+                byte = file.read(1)
+                if byte == b'':
+                    break
+                else:
+                    self.program[i] = np.uint8(ord(byte))
+                    i += 1
 
     def insert_program(self):
         output_program = "Intel8080\\Output\\program"
