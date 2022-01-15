@@ -8,11 +8,9 @@ from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, cha
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
-asm_string = """call mark
-  hlt
 
-mark:
-  mvi a, 255d
+asm_string = """mvi a, 1bh
+cpi 05h
 """
 
 
@@ -65,29 +63,50 @@ class Intel8080(AbstractProcessor):
             high = self.get_one_byte_data()
             self.call(low, high)
         elif instruction == 0xDC:
-            self.ALU.cc()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cc(low, high)
         elif instruction == 0xFC:
-            self.ALU.cm()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cm(low, high)
         elif instruction == 0x2F:
             self.ALU.cma()
         elif instruction == 0x3F:
             self.ALU.cmc()
         elif (instruction & 0xF8) == 0xB8:
-            self.ALU.cmp(self.get_reg8s_from_inst(instruction))
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                value = self.program[self.get_h_l_address()]
+            else:
+                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.cmp(value)
         elif instruction == 0xD4:
-            self.ALU.cnc()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cnc(low, high)
         elif instruction == 0xC4:
-            self.ALU.cnz()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cnz(low, high)
         elif instruction == 0xF4:
-            self.ALU.cp()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cp(low, high)
         elif instruction == 0xEC:
-            self.ALU.cpe()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cpe(low, high)
         elif instruction == 0xFE:
-            self.ALU.cpi()
+            value = self.get_one_byte_data()
+            self.ALU.cpi(value)
         elif instruction == 0xE4:
-            self.ALU.cpo()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cpo(low, high)
         elif instruction == 0xCC:
-            self.ALU.cz()
+            low = self.get_one_byte_data()
+            high = self.get_one_byte_data()
+            self.cz(low, high)
         elif instruction == 0x27:
             self.ALU.daa()
         elif (instruction & 0xCF) == 0x09:
@@ -306,16 +325,75 @@ class Intel8080(AbstractProcessor):
         self.add_pc(1)
         return np.uint8(self.get_memory_byte(self.get_pc()))
 
+    def build_address(self, high, low):
+        return np.uint16((high << 8) | low)
+
     def call(self, low, high):
         self.push_sp(high, 1)
         self.push_sp(low, 2)
         new_sp = np.uint16(self.ALU.get_sp() - 2)
         self.registers.set_register16(1, new_sp)
 
-        address = (high << 8) | low
-        self.set_pc(address)
+        self.set_pc(self.build_address(high, low))
 
     def push_sp(self, value, offset):
         sp = self.ALU.get_sp()
         address = np.uint16(sp - offset)
         self.set_memory_byte(address, value)
+
+    def call_on_(self, low, high):
+        pc = np.uint16(self.registers.get_register(0))
+        pc_high = pc & 0xff00
+        pc_low = pc & 0x00ff
+        self.push_sp(pc_high, 1)
+        self.push_sp(pc_low, 2)
+
+        self.set_pc(self.build_address(high, low))
+
+    def cc(self, low, high):
+        if self.ALU.get_carry_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cm(self, low, high):
+        if self.ALU.get_sign_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cnc(self, low, high):
+        if not self.ALU.get_carry_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cnz(self, low, high):
+        if not self.ALU.get_zero_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cp(self, low, high):
+        if not self.ALU.get_sign_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cpe(self, low, high):
+        if self.ALU.get_parity_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cpo(self, low, high):
+        if not self.ALU.get_parity_flag():
+            self.call_on_(low, high)
+        else:
+            pass
+
+    def cz(self, low, high):
+        if self.ALU.get_zero_flag():
+            self.call_on_(low, high)
+        else:
+            pass

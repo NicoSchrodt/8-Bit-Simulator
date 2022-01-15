@@ -27,11 +27,11 @@ class Intel8080_ALU():
     def __init__(self, Intel8080):
         self.registers = Intel8080.registers
         self.temp_accumulator = np.uint8(0)
-        self.flags = [0,  # Zero
-                      0,  # Sign
-                      0,  # Parity
-                      0,  # Carry
-                      0  # Auxiliary Carry
+        self.flags = [False,  # Zero
+                      False,  # Sign
+                      False,  # Parity
+                      False,  # Carry
+                      False  # Auxiliary Carry
                       ]
         self.temp_register = np.uint8(0)
 
@@ -172,41 +172,25 @@ class Intel8080_ALU():
     def ani(self, value):
         self.ana(value)
 
-    def cc(self):
-        pass
-
-    def cm(self):
-        pass
-
     def cma(self):
-        pass
+        reg_a_val = np.uint8(self.registers.get_register(char_to_reg("a") + reg_offset))
+        compliment = np.uint8(reg_a_val ^ 0xff)
+        self.registers.set_register8(char_to_reg("a") + reg_offset, compliment)
 
     def cmc(self):
-        pass
+        self.set_carry_flag(not self.get_carry_flag())
 
-    def cmp(self, reg8):
-        pass
+    def cmp(self, value):
+        reg_a_val = np.uint8(self.registers.get_register(char_to_reg("a") + reg_offset))
 
-    def cnc(self):
-        pass
+        result = reg_a_val - value
 
-    def cnz(self):
-        pass
+        # TODO schauen da anscheinend alle Flags geändert werden und nicht nur zero und carry
+        self.set_zero_flag(result == 0)
+        self.set_carry_flag(result < 0)
 
-    def cp(self):
-        pass
-
-    def cpe(self):
-        pass
-
-    def cpi(self):
-        pass
-
-    def cpo(self):
-        pass
-
-    def cz(self):
-        pass
+    def cpi(self, value):
+        self.cmp(value)
 
     def daa(self):
         pass
