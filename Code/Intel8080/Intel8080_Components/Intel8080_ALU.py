@@ -193,7 +193,7 @@ class Intel8080_ALU():
         self.cmp(value)
 
     def daa(self):
-        reg_a_val = self.registers.get_register_with_offset(char_to_reg("a"))
+        reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
         result = reg_a_val
         ac = self.get_auxiliary_carry_flag()
         cy = self.get_carry_flag()
@@ -203,7 +203,7 @@ class Intel8080_ALU():
         if l_val > 9 or self.get_auxiliary_carry_flag():
             ac, wrong_cy = self.binary_add(reg_a_val, 6, 0)
             self.registers.set_register8_with_offset(char_to_reg("a"), reg_a_val + 6)
-        reg_a_val = self.registers.get_register_with_offset(char_to_reg("a"))
+        reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
         if h_val > 9 or self.get_carry_flag():
             wrong_ac, cy = self.binary_add(reg_a_val, 6 << 4, 0)
             result = np.uint8(reg_a_val + (6 << 4))
