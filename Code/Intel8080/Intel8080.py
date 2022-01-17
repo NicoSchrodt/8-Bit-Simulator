@@ -9,8 +9,8 @@ from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Re
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 
-asm_string = """mvi a, 1bh
-cpi 05h
+asm_string = """mvi a, 9bh
+daa 
 """
 
 
@@ -32,6 +32,7 @@ class Intel8080(AbstractProcessor):
         else:
             return
 
+        # TODO Überträge müssen noch getestet werden
         if instruction == 0xCE:
             self.ALU.aci(self.get_one_byte_data())
         elif (instruction & 0xF8) == 0x88:
@@ -110,7 +111,7 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0x27:
             self.ALU.daa()
         elif (instruction & 0xCF) == 0x09:
-            self.ALU.dad(self.get_reg16_from_inst(instruction))
+            self.dad(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x05:
             self.ALU.dcr(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xCF) == 0x0B:
@@ -321,11 +322,16 @@ class Intel8080(AbstractProcessor):
             return True
         return False
 
+    def rp_is_sp(self, reg8):
+        if reg8 == 3:
+            return True
+        return False
+
     def get_one_byte_data(self):
         self.add_pc(1)
         return np.uint8(self.get_memory_byte(self.get_pc()))
 
-    def build_address(self, high, low):
+    def build_reg16_from_reg8(self, high, low):
         return np.uint16((high << 8) | low)
 
     def call(self, low, high):
@@ -334,7 +340,7 @@ class Intel8080(AbstractProcessor):
         new_sp = np.uint16(self.ALU.get_sp() - 2)
         self.registers.set_register16(1, new_sp)
 
-        self.set_pc(self.build_address(high, low))
+        self.set_pc(self.build_reg16_from_reg8(high, low))
 
     def push_sp(self, value, offset):
         sp = self.ALU.get_sp()
@@ -348,7 +354,7 @@ class Intel8080(AbstractProcessor):
         self.push_sp(pc_high, 1)
         self.push_sp(pc_low, 2)
 
-        self.set_pc(self.build_address(high, low))
+        self.set_pc(self.build_reg16_from_reg8(high, low))
 
     def cc(self, low, high):
         if self.ALU.get_carry_flag():
@@ -397,3 +403,28 @@ class Intel8080(AbstractProcessor):
             self.call_on_(low, high)
         else:
             pass
+
+    def dad(self, rp):
+        if self.rp_is_sp(rp):
+            reg_val = np.uint16(self.registers.get_register(1))
+        else:
+            reg_h = rp * 2
+            reg_l = reg_h + 1
+            reg_h_value = self.registers.get_register_with_offset(reg_h)
+            reg_l_value = self.registers.get_register_with_offset(reg_l)
+            reg_val = self.build_reg16_from_reg8(reg_h_value, reg_l_value)
+
+        h_val = self.registers.get_register_with_offset(char_to_reg("h"))
+        l_val = self.registers.get_register_with_offset(char_to_reg("l"))
+        hl_val = self.build_reg16_from_reg8(h_val, l_val)
+
+        result = np.uint16(hl_val + reg_val)
+        result_h = (result & 0xff00) >> 8
+        result_l = result & 0x00ff
+        self.registers.set_register8_with_offset(char_to_reg("h"), result_h)
+        self.registers.set_register8_with_offset(char_to_reg("l"), result_l)
+
+        if result > (pow(2, 16) - 1):
+            self.ALU.set_carry_flag(True)
+        else:
+            self.ALU.set_carry_flag(False)

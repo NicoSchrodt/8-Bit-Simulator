@@ -100,11 +100,11 @@ class Intel8080_ALU():
         else:
             self.set_parity_flag(False)
 
-    def set_cy_ac_flags(self, cy, ca):
+    def set_cy_ac_flags(self, cy, ac):
         self.set_carry_flag(bool(cy))
-        self.set_auxiliary_carry_flag(bool(ca))
+        self.set_auxiliary_carry_flag(bool(ac))
 
-    def binary_add(self, op1, op2, carry):
+    def binary_add(self, op1, op2, carry: int):
         mask = 0x01
         number, ac, cy = 0, 0, 0
         for cycle in range(8):
@@ -166,8 +166,8 @@ class Intel8080_ALU():
         self.registers.set_register8(reg_offset + reg_a, new)
 
         self.evaluate_zsp_flags(True, True, True, result)
-        ca = ((reg_a_val & 0x8) | (value & 0x8)) >> 3
-        self.set_cy_ac_flags(0, ca)
+        ac = ((reg_a_val & 0x8) | (value & 0x8)) >> 3
+        self.set_cy_ac_flags(0, ac)
 
     def ani(self, value):
         self.ana(value)
@@ -193,7 +193,25 @@ class Intel8080_ALU():
         self.cmp(value)
 
     def daa(self):
-        pass
+        reg_a_val = self.registers.get_register_with_offset(char_to_reg("a"))
+        result = reg_a_val
+        ac = self.get_auxiliary_carry_flag()
+        cy = self.get_carry_flag()
+
+        l_val = reg_a_val & 0x0f
+        h_val = reg_a_val & 0xf0
+        if l_val > 9 or self.get_auxiliary_carry_flag():
+            ac, wrong_cy = self.binary_add(reg_a_val, 6, 0)
+            self.registers.set_register8_with_offset(char_to_reg("a"), reg_a_val + 6)
+        reg_a_val = self.registers.get_register_with_offset(char_to_reg("a"))
+        if h_val > 9 or self.get_carry_flag():
+            wrong_ac, cy = self.binary_add(reg_a_val, 6 << 4, 0)
+            result = np.uint8(reg_a_val + (6 << 4))
+            self.registers.set_register8_with_offset(char_to_reg("a"), result)
+
+        self.evaluate_zsp_flags(True, True, True, result)
+        self.set_cy_ac_flags(cy, ac)
+
 
     def dad(self, reg16):
         pass

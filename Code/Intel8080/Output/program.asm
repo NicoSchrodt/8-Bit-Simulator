@@ -1,2 +1,2 @@
-mvi a, 1bh
-cpi 05h
+mvi a, 9bh
+daa 

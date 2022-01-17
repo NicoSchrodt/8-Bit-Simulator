@@ -26,11 +26,17 @@ class Intel8080_Registers():
     def set_register8(self, register, value):
         self.registers[register] = np.uint8(value)
 
+    def set_register8_with_offset(self, register, value):
+        self.registers[register + reg_offset] = np.uint8(value)
+
     def set_register16(self, register, value):
         self.registers[register] = np.uint16(value)
 
     def get_register(self, register):
         return self.registers[register]
+
+    def get_register_with_offset(self, register):
+        return self.registers[register + reg_offset]
 
     def fill_latch(self, register_pair):
         pair_value = 0
