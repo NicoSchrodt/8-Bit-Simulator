@@ -19,14 +19,29 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>211</width>
+      <width>141</width>
       <height>152</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
-    <attribute name="horizontalHeaderStretchLastSection">
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>0</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>74</number>
+    </attribute>
+    <attribute name="verticalHeaderCascadingSectionResizes">
      <bool>true</bool>
     </attribute>
     <row>
@@ -97,6 +112,122 @@
     <property name="text">
      <string>Next</string>
     </property>
+   </widget>
+   <widget class="QTableWidget" name="AdressLatch_table">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>10</y>
+      <width>621</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>0</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>38</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderCascadingSectionResizes">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="verticalHeaderMinimumSectionSize">
+     <number>10</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>10</number>
+    </attribute>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>A15</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A14</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A13</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A12</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A11</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A10</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A9</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A8</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A7</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A6</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A5</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A4</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A3</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A2</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>A0</string>
+     </property>
+    </column>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

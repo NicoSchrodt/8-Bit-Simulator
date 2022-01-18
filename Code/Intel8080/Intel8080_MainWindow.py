@@ -1,5 +1,7 @@
 import os
 
+import numpy as np
+from PyQt6 import QtCore
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QHeaderView, QFileDialog
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QCloseEvent
@@ -25,6 +27,31 @@ class Intel8080_MainWindow(QMainWindow):
         # Next Instruction
         nextButton = self.next_button
         nextButton.pressed.connect(self.perform_instruction)
+
+        # Adress Latch
+        adressLatch = self.AdressLatch_table
+        adressLatch.setMaximumSize(self.getQTableWidgetSize(adressLatch))
+        adressLatch.setMinimumSize(self.getQTableWidgetSize(adressLatch))
+
+        for column in range(adressLatch.columnCount()):
+            btn = QPushButton(adressLatch)
+            btn.setText('{:x}'.format(0))
+            adressLatch.setCellWidget(0, column, btn)
+            btn.pressed.connect(self.pressed_table_cell)
+
+
+        #reg_tbl = self.Registers_table
+        #reg_tbl.setMaximumSize(self.getQTableWidgetSize(reg_tbl))
+        #reg_tbl.setMinimumSize(self.getQTableWidgetSize(reg_tbl))
+
+    def getQTableWidgetSize(self, object):
+        w = object.verticalHeader().width() + 2  # +2 seems to be needed
+        for i in range(object.columnCount()):
+            w += object.columnWidth(i)  # seems to include gridline (on my machine)
+        h = object.horizontalHeader().height() + 2
+        for i in range(object.rowCount()):
+            h += object.rowHeight(i)
+        return QtCore.QSize(w, h)
 
     def init_ui(self, ui_name):
         base_path = os.path.abspath("..")
@@ -86,3 +113,14 @@ class Intel8080_MainWindow(QMainWindow):
         alu.temp_accumulator = int(Registers_table.cellWidget(3, 0).text(), 16)
         #Registers_table.cellWidget(4, 0).setText('{:x}'.format(registers.instruction_register))  # INST
         registers.instruction_register = int(Registers_table.cellWidget(4, 0).text(), 16)
+
+    def update_adressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
+        AdressLatch_table = self.AdressLatch_table
+        registers = self.processor.registers
+        value = ""
+        for i in range(16):
+            value = value + str(int(AdressLatch_table.cellWidget(0, i).text()))
+        value = int(value, 2)
+        registers.address_latch = np.uint16(value)
+        print(value)
+        pass

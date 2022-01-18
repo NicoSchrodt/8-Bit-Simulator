@@ -31,13 +31,15 @@ class ChangeValueWindow(QMainWindow):
     def check_input(self):
         try:
             value = int(self.lineEdit_value.text(), 16)
-            if 0 <= value < 256:  # May need to be different, depending on register
-                index = self.btn.parent().parent().indexAt(self.btn.pos())
-                print(index.row())
-                print(index.column())
-                self.btn.parent().parent().cellWidget(index.row(), index.column()).setText(self.lineEdit_value.text())
-                if self.btn.parent().parent() == self.Intel8080_MainWindow.Registers_table:
+            index = self.btn.parent().parent().indexAt(self.btn.pos())
+            self.btn.parent().parent().cellWidget(index.row(), index.column()).setText(self.lineEdit_value.text())
+            if self.btn.parent().parent() == self.Intel8080_MainWindow.Registers_table:
+                if 0 <= value < 256:  # May need to be different, depending on register
                     self.Intel8080_MainWindow.update_registers_table()
+                    self.close()
+            elif self.btn.parent().parent() == self.Intel8080_MainWindow.AdressLatch_table:
+                if 0 <= value < 2:  # May need to be different, depending on register
+                    self.Intel8080_MainWindow.update_adressLatch_table()
                     self.close()
         except Exception:
             pass
