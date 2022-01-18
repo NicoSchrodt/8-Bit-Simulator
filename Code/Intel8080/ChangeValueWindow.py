@@ -34,15 +34,15 @@ class ChangeValueWindow(QMainWindow):
             index = self.btn.parent().parent().indexAt(self.btn.pos())
             if self.btn.parent().parent() == self.Intel8080_MainWindow.Registers_table:
                 if 0 <= value < 256:  # May need to be different, depending on register
+                    self.btn.parent().parent().cellWidget(index.row(), index.column()).setText(
+                        self.lineEdit_value.text())
                     self.Intel8080_MainWindow.update_registers_table()
-                    self.btn.parent().parent().cellWidget(index.row(), index.column()).setText(
-                        self.lineEdit_value.text())
                     self.close()
-            elif self.btn.parent().parent() == self.Intel8080_MainWindow.AdressLatch_table:
+            elif self.btn.parent().parent() == self.Intel8080_MainWindow.AddressLatch_table:
                 if 0 <= value < 2:  # May need to be different, depending on register
-                    self.Intel8080_MainWindow.update_adressLatch_table()
                     self.btn.parent().parent().cellWidget(index.row(), index.column()).setText(
                         self.lineEdit_value.text())
+                    self.Intel8080_MainWindow.update_addressLatch_table()
                     self.close()
         except Exception:
             pass

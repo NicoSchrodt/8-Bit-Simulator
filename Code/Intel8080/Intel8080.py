@@ -6,6 +6,7 @@ import numpy as np
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
+from Code.Intel8080.Intel8080_Components.Intel8080_Peripherals import Intel8080_Peripherals
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 
@@ -20,6 +21,7 @@ class Intel8080(AbstractProcessor):
         self.parent = parent_window
         self.registers = Intel8080_Registers()
         self.ALU = Intel8080_ALU(self)
+        self.peripherals = Intel8080_Peripherals()
         self.program = [0] * pow(2, 16)
 
     def nextCycle(self):

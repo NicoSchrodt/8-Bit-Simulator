@@ -28,15 +28,15 @@ class Intel8080_MainWindow(QMainWindow):
         nextButton = self.next_button
         nextButton.pressed.connect(self.perform_instruction)
 
-        # Adress Latch
-        adressLatch = self.AdressLatch_table
-        adressLatch.setMaximumSize(self.getQTableWidgetSize(adressLatch))
-        adressLatch.setMinimumSize(self.getQTableWidgetSize(adressLatch))
+        # Address Latch
+        addressLatch = self.AddressLatch_table
+        addressLatch.setMaximumSize(self.getQTableWidgetSize(addressLatch))
+        addressLatch.setMinimumSize(self.getQTableWidgetSize(addressLatch))
 
-        for column in range(adressLatch.columnCount()):
-            btn = QPushButton(adressLatch)
+        for column in range(addressLatch.columnCount()):
+            btn = QPushButton(addressLatch)
             btn.setText('{:x}'.format(0))
-            adressLatch.setCellWidget(0, column, btn)
+            addressLatch.setCellWidget(0, column, btn)
             btn.pressed.connect(self.pressed_table_cell)
 
 
@@ -114,13 +114,12 @@ class Intel8080_MainWindow(QMainWindow):
         #Registers_table.cellWidget(4, 0).setText('{:x}'.format(registers.instruction_register))  # INST
         registers.instruction_register = int(Registers_table.cellWidget(4, 0).text(), 16)
 
-    def update_adressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
-        AdressLatch_table = self.AdressLatch_table
+    def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
+        AddressLatch_table = self.AddressLatch_table
         registers = self.processor.registers
         value = ""
         for i in range(16):
-            value = value + str(int(AdressLatch_table.cellWidget(0, i).text()))
+            value = value + str(int(AddressLatch_table.cellWidget(0, i).text()))
         value = int(value, 2)
         registers.address_latch = np.uint16(value)
-        print(value)
-        pass
+        self.processor.peripherals.set_address_buffer(value)

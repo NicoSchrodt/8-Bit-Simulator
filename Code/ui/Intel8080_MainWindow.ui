@@ -113,7 +113,7 @@
      <string>Next</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="AdressLatch_table">
+   <widget class="QTableWidget" name="AddressLatch_table">
     <property name="geometry">
      <rect>
       <x>160</x>

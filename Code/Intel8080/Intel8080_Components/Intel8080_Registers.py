@@ -2,6 +2,7 @@ import numpy as np
 
 reg_offset = 2
 
+
 class Intel8080_Registers():
     def __init__(self):
         self.registers = [np.uint16(0),  # Program Counter
