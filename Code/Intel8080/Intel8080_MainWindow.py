@@ -4,7 +4,7 @@ import numpy as np
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QHeaderView, QFileDialog
 from PyQt6.uic import loadUi
-from PyQt6.QtGui import QCloseEvent
+from PyQt6.QtGui import QCloseEvent, QIcon
 
 from Code.Intel8080.Intel8080 import Intel8080
 from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
@@ -39,10 +39,8 @@ class Intel8080_MainWindow(QMainWindow):
             addressLatch.setCellWidget(0, column, btn)
             btn.pressed.connect(self.pressed_table_cell)
 
-
-        #reg_tbl = self.Registers_table
-        #reg_tbl.setMaximumSize(self.getQTableWidgetSize(reg_tbl))
-        #reg_tbl.setMinimumSize(self.getQTableWidgetSize(reg_tbl))
+        self.setWindowTitle("Intel8080 Simulator")
+        self.setWindowIcon(QIcon("../ui/Logo.png"))
 
     def getQTableWidgetSize(self, object):
         w = object.verticalHeader().width() + 2  # +2 seems to be needed
