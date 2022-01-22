@@ -104,6 +104,7 @@ class Intel8080_ALU():
         self.set_carry_flag(bool(cy))
         self.set_auxiliary_carry_flag(bool(ac))
 
+    # 8 Bit calculation
     def binary_add(self, op1, op2, carry: int):
         mask = 0x01
         number, ac, cy = 0, 0, 0
@@ -123,6 +124,11 @@ class Intel8080_ALU():
                 cy = carry
 
         return ac, cy
+
+    # 8 Bit calculation
+    def binary_sub(self, op1, op2):
+        two_complement = (op2 ^ 0xff) + 1
+        return self.binary_add(op1, two_complement, 0)
 
     def no_flags(self):
         pass
@@ -173,7 +179,7 @@ class Intel8080_ALU():
         self.ana(value)
 
     def cma(self):
-        reg_a_val = np.uint8(self.registers.get_register(char_to_reg("a") + reg_offset))
+        reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
         compliment = np.uint8(reg_a_val ^ 0xff)
         self.registers.set_register8(char_to_reg("a") + reg_offset, compliment)
 
@@ -181,7 +187,7 @@ class Intel8080_ALU():
         self.set_carry_flag(not self.get_carry_flag())
 
     def cmp(self, value):
-        reg_a_val = np.uint8(self.registers.get_register(char_to_reg("a") + reg_offset))
+        reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
 
         result = reg_a_val - value
 
@@ -212,11 +218,8 @@ class Intel8080_ALU():
         self.evaluate_zsp_flags(True, True, True, result)
         self.set_cy_ac_flags(cy, ac)
 
+    def dcr(self, value):
 
-    def dad(self, reg16):
-        pass
-
-    def dcr(self, reg8):
         pass
 
     def dcx(self, reg16):

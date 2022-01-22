@@ -1,2 +1,3 @@
-mvi a, 9bh
-daa 
+mvi b, 00h
+mvi c, 00h
+dcx sp

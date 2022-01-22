@@ -30,8 +30,18 @@ class Intel8080_Registers():
     def set_register8_with_offset(self, register, value):
         self.registers[register + reg_offset] = np.uint8(value)
 
+    def set_register8_with_offset(self, register, value):
+        self.registers[register + reg_offset] = np.uint8(value)
+
     def set_register16(self, register, value):
         self.registers[register] = np.uint16(value)
+
+    def set_2_8bit_reg_with_offset(self, first_reg, val_16bit):
+        val_16bit = np.uint16(val_16bit)
+        val_h = (val_16bit & 0xff00) >> 8
+        val_l = val_16bit & 0x00ff
+        self.registers[first_reg + reg_offset] = np.uint8(val_h)
+        self.registers[first_reg + 1 + reg_offset] = np.uint8(val_l)
 
     def get_register(self, register):
         return self.registers[register]
@@ -52,3 +62,4 @@ class Intel8080_Registers():
         self.address_latch = pair_value
         # If I understood it correctly, the latch can only receive data in pairs from BC, DE and HL
         # Other registers can only be read in 8-bit through the multiplexer (Except SP and PC ?)
+

@@ -9,9 +9,14 @@ from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Re
 from Code.Intel8080.Intel8080_Components.Intel8080_Peripherals import Intel8080_Peripherals
 from Code.Intel8080.Intel8080_Assembler import i8080asm
 
-
-asm_string = """mvi a, 9bh
-daa 
+# rp: b -> b,c
+#     d -> d,e
+#     h -> h,l
+#     sp -> sp
+# first register is high order, second is low order
+asm_string = """mvi b, 00h
+mvi c, 00h
+dcx sp
 """
 
 
@@ -39,28 +44,28 @@ class Intel8080(AbstractProcessor):
             self.ALU.aci(self.get_one_byte_data())
         elif (instruction & 0xF8) == 0x88:
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                value = self.program[self.get_h_l_address()]
+                result = self.program[self.get_h_l_address()]
             else:
-                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.adc(value)
+                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.adc(result)
         elif (instruction & 0xF8) == 0x80:
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                value = self.get_h_l_value()
+                result = self.get_h_l_value()
             else:
-                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.add(value)
+                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.add(result)
         elif instruction == 0xC6:
-            value = self.get_one_byte_data()
-            self.ALU.adi(value)
+            result = self.get_one_byte_data()
+            self.ALU.adi(result)
         elif (instruction & 0xF8) == 0xA0:
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                value = self.program[self.get_h_l_address()]
+                result = self.program[self.get_h_l_address()]
             else:
-                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.ana(value)
+                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.ana(result)
         elif instruction == 0xE6:
-            value = self.get_one_byte_data()
-            self.ALU.ani(value)
+            result = self.get_one_byte_data()
+            self.ALU.ani(result)
         elif instruction == 0xCD:
             low = self.get_one_byte_data()
             high = self.get_one_byte_data()
@@ -78,11 +83,11 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0x3F:
             self.ALU.cmc()
         elif (instruction & 0xF8) == 0xB8:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                value = self.program[self.get_h_l_address()]
+            if self.reg_is_mem(self.get_reg8s_from_inst(instruction)):
+                result = self.program[self.get_h_l_address()]
             else:
-                value = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.cmp(value)
+                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+            self.ALU.cmp(result)
         elif instruction == 0xD4:
             low = self.get_one_byte_data()
             high = self.get_one_byte_data()
@@ -100,8 +105,8 @@ class Intel8080(AbstractProcessor):
             high = self.get_one_byte_data()
             self.cpe(low, high)
         elif instruction == 0xFE:
-            value = self.get_one_byte_data()
-            self.ALU.cpi(value)
+            result = self.get_one_byte_data()
+            self.ALU.cpi(result)
         elif instruction == 0xE4:
             low = self.get_one_byte_data()
             high = self.get_one_byte_data()
@@ -115,9 +120,9 @@ class Intel8080(AbstractProcessor):
         elif (instruction & 0xCF) == 0x09:
             self.dad(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x05:
-            self.ALU.dcr(self.get_reg8d_from_inst(instruction))
+            self.dcr(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xCF) == 0x0B:
-            self.ALU.dcx(self.get_reg16_from_inst(instruction))
+            self.dcx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xF3:
             self.ALU.di()
         elif instruction == 0xFB:
@@ -162,11 +167,11 @@ class Intel8080(AbstractProcessor):
         elif (instruction & 0xCF) == 0x01:
             self.ALU.lxi(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x06:
-            value = self.get_one_byte_data()
+            result = self.get_one_byte_data()
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                self.set_memory_byte(self.get_h_l_address(), value)
+                self.set_memory_byte(self.get_h_l_address(), result)
             else:
-                self.ALU.mvi(self.get_reg8d_from_inst(instruction), value)
+                self.ALU.mvi(self.get_reg8d_from_inst(instruction), result)
         elif (instruction & 0xC0) == 0x40:
             self.ALU.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
@@ -301,6 +306,9 @@ class Intel8080(AbstractProcessor):
     def set_pc(self, address):
         self.registers.set_register16(0, np.uint16(address))
 
+    def set_sp(self, address):
+        self.registers.set_register16(1, np.uint16(address))
+
     def run(self):
         i8080asm.convert_to_binary(asm_string)
         self.insert_program()
@@ -333,7 +341,7 @@ class Intel8080(AbstractProcessor):
         self.add_pc(1)
         return np.uint8(self.get_memory_byte(self.get_pc()))
 
-    def build_reg16_from_reg8(self, high, low):
+    def build_16bit_from_8bits(self, high, low):
         return np.uint16((high << 8) | low)
 
     def call(self, low, high):
@@ -342,7 +350,7 @@ class Intel8080(AbstractProcessor):
         new_sp = np.uint16(self.ALU.get_sp() - 2)
         self.registers.set_register16(1, new_sp)
 
-        self.set_pc(self.build_reg16_from_reg8(high, low))
+        self.set_pc(self.build_16bit_from_8bits(high, low))
 
     def push_sp(self, value, offset):
         sp = self.ALU.get_sp()
@@ -356,7 +364,7 @@ class Intel8080(AbstractProcessor):
         self.push_sp(pc_high, 1)
         self.push_sp(pc_low, 2)
 
-        self.set_pc(self.build_reg16_from_reg8(high, low))
+        self.set_pc(self.build_16bit_from_8bits(high, low))
 
     def cc(self, low, high):
         if self.ALU.get_carry_flag():
@@ -414,11 +422,11 @@ class Intel8080(AbstractProcessor):
             reg_l = reg_h + 1
             reg_h_value = self.registers.get_register_with_offset(reg_h)
             reg_l_value = self.registers.get_register_with_offset(reg_l)
-            reg_val = self.build_reg16_from_reg8(reg_h_value, reg_l_value)
+            reg_val = self.build_16bit_from_8bits(reg_h_value, reg_l_value)
 
         h_val = self.registers.get_register_with_offset(char_to_reg("h"))
         l_val = self.registers.get_register_with_offset(char_to_reg("l"))
-        hl_val = self.build_reg16_from_reg8(h_val, l_val)
+        hl_val = self.build_16bit_from_8bits(h_val, l_val)
 
         result = np.uint16(hl_val + reg_val)
         result_h = (result & 0xff00) >> 8
@@ -430,3 +438,31 @@ class Intel8080(AbstractProcessor):
             self.ALU.set_carry_flag(True)
         else:
             self.ALU.set_carry_flag(False)
+
+    def dcr(self, register):
+        if self.reg_is_mem(register):
+            value = np.uint8(self.program[self.get_h_l_address()])
+            result = np.uint8(value - 1)
+            self.set_memory_byte(self.get_h_l_address(), result)
+        else:
+            value = np.uint8(self.ALU.get_reg8_val(register))
+            result = np.uint8(value - 1)
+            self.registers.set_register8_with_offset(register, result)
+
+        self.ALU.evaluate_zsp_flags(True, True, True, result)
+        ac, cy = self.ALU.binary_sub(value, 1)
+        self.ALU.set_auxiliary_carry_flag(ac)
+
+    def dcx(self, rp):
+        if self.rp_is_sp(rp):
+            reg_val = np.uint16(self.registers.get_register(1))
+            result = np.uint16(reg_val - 1)
+            self.set_sp(result)
+        else:
+            reg_h = rp * 2
+            reg_l = reg_h + 1
+            reg_h_value = self.registers.get_register_with_offset(reg_h)
+            reg_l_value = self.registers.get_register_with_offset(reg_l)
+            reg_val = self.build_16bit_from_8bits(reg_h_value, reg_l_value)
+            result = np.uint16(reg_val - 1)
+            self.registers.set_2_8bit_reg_with_offset(reg_h, result)
