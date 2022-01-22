@@ -14,10 +14,12 @@ from Code.Intel8080.Intel8080_Assembler import i8080asm
 #     h -> h,l
 #     sp -> sp
 # first register is high order, second is low order
+
+# LXI SP,0FFFFh
 asm_string = """start:
-mvi a, 255d
-aci 1
-call start
+mvi b, 5h
+mvi c, 6h
+lxi sp, 3fffh
 """
 
 
@@ -159,15 +161,15 @@ class Intel8080(AbstractProcessor):
             self.jz()
             return
         elif instruction == 0x3A:
-            self.ALU.lda()
+            self.lda()
         elif instruction == 0x0A:
-            self.ALU.ldax_b()
+            self.ldax_b()
         elif instruction == 0x1A:
-            self.ALU.ldax_d()
+            self.ldax_d()
         elif instruction == 0x2A:
-            self.ALU.lhld()
+            self.lhld()
         elif (instruction & 0xCF) == 0x01:
-            self.ALU.lxi(self.get_reg16_from_inst(instruction))
+            self.lxi(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xC7) == 0x06:
             result = self.get_one_byte_data()
             if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
@@ -334,7 +336,7 @@ class Intel8080(AbstractProcessor):
             return True
         return False
 
-    def rp_is_sp(self, reg8):
+    def is_rp_meaning_sp(self, reg8):
         if reg8 == 3:
             return True
         return False
@@ -401,7 +403,7 @@ class Intel8080(AbstractProcessor):
         self.call_on(self.ALU.get_zero_flag())
 
     def dad(self, rp):
-        if self.rp_is_sp(rp):
+        if self.is_rp_meaning_sp(rp):
             reg_val = np.uint16(self.registers.get_register(1))
         else:
             reg_h = rp * 2
@@ -440,7 +442,7 @@ class Intel8080(AbstractProcessor):
         self.ALU.set_auxiliary_carry_flag(ac)
 
     def dcx(self, rp):
-        if self.rp_is_sp(rp):
+        if self.is_rp_meaning_sp(rp):
             reg_val = np.uint16(self.registers.get_register(1))
             result = np.uint16(reg_val - 1)
             self.set_sp(result)
@@ -486,7 +488,7 @@ class Intel8080(AbstractProcessor):
     # andere sagt dass es gar nicht möglich ist. Momentaner compiler kann "inx e" nicht. Instruction Code wäre
     # dann auch unklar
     def inx(self, rp):
-        if self.rp_is_sp(rp):
+        if self.is_rp_meaning_sp(rp):
             reg_val = np.uint16(self.registers.get_register(1))
             result = np.uint16(reg_val + 1)
             self.set_sp(result)
@@ -536,3 +538,52 @@ class Intel8080(AbstractProcessor):
 
     def jz(self):
         self.jump_on(self.ALU.get_zero_flag())
+
+    def lda(self):
+        low = self.get_one_byte_data()
+        high = self.get_one_byte_data()
+        address = self.build_16bit_from_8bits(high, low)
+        value = self.get_memory_byte(address)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value)
+
+    def ldax(self, address_l, address_h):
+        address = self.build_16bit_from_8bits(address_h, address_l)
+        value = self.get_memory_byte(address)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value)
+
+    def ldax_b(self):
+        address_h = self.registers.get_register_with_offset(char_to_reg("b"))
+        address_l = self.registers.get_register_with_offset(char_to_reg("c"))
+        self.ldax(address_l, address_h)
+
+    def ldax_d(self):
+        address_h = self.registers.get_register_with_offset(char_to_reg("d"))
+        address_l = self.registers.get_register_with_offset(char_to_reg("e"))
+        self.ldax(address_l, address_h)
+
+    def lhld(self):
+        low = self.get_one_byte_data()
+        high = self.get_one_byte_data()
+
+        address_l = self.build_16bit_from_8bits(high, low)
+        value_l = self.get_memory_byte(address_l)
+        self.registers.set_register8_with_offset(char_to_reg("l"), value_l)
+
+        address_h = np.uint16(address_l + 1)
+        value_h = self.get_memory_byte(address_h)
+        self.registers.set_register8_with_offset(char_to_reg("h"), value_h)
+
+    def lxi(self, rp):
+        low = self.get_one_byte_data()
+        high = self.get_one_byte_data()
+
+        if self.is_rp_meaning_sp(rp):
+            value = self.build_16bit_from_8bits(high, low)
+            self.set_sp(value)
+        else:
+            reg_h = rp * 2
+            reg_l = reg_h + 1
+            self.registers.set_register8_with_offset(reg_h, high)
+            self.registers.set_register8_with_offset(reg_l, low)
+
+

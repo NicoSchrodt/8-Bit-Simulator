@@ -218,42 +218,6 @@ class Intel8080_ALU():
         self.evaluate_zsp_flags(True, True, True, result)
         self.set_cy_ac_flags(cy, ac)
 
-    def jc(self):
-        pass
-
-    def jm(self):
-        pass
-
-    def jmp(self):
-        pass
-
-    def jnc(self):
-        pass
-
-    def jnz(self):
-        pass
-
-    def jp(self):
-        pass
-
-    def jpe(self):
-        pass
-
-    def jpo(self):
-        pass
-
-    def jz(self):
-        pass
-
-    def lda(self):
-        pass
-
-    def ldax_b(self):
-        pass
-
-    def ldax_d(self):
-        pass
-
     def lhld(self):
         pass
 
