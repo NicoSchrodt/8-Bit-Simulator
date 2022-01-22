@@ -14,9 +14,10 @@ from Code.Intel8080.Intel8080_Assembler import i8080asm
 #     h -> h,l
 #     sp -> sp
 # first register is high order, second is low order
-asm_string = """mvi b, 00h
-mvi c, 00h
-dcx sp
+asm_string = """start:
+mvi a, 255d
+aci 1
+call start
 """
 
 
@@ -28,6 +29,8 @@ class Intel8080(AbstractProcessor):
         self.ALU = Intel8080_ALU(self)
         self.peripherals = Intel8080_Peripherals()
         self.program = [0] * pow(2, 16)
+        self.interrupt = False
+        self.halt = False
 
     def nextCycle(self):
         self.registers.increment_pc()
@@ -67,17 +70,15 @@ class Intel8080(AbstractProcessor):
             result = self.get_one_byte_data()
             self.ALU.ani(result)
         elif instruction == 0xCD:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.call(low, high)
+            self.call()
+            # to skip increment of pc at calls
+            return
         elif instruction == 0xDC:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cc(low, high)
+            self.cc()
+            return
         elif instruction == 0xFC:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cm(low, high)
+            self.cm()
+            return
         elif instruction == 0x2F:
             self.ALU.cma()
         elif instruction == 0x3F:
@@ -89,32 +90,26 @@ class Intel8080(AbstractProcessor):
                 result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
             self.ALU.cmp(result)
         elif instruction == 0xD4:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cnc(low, high)
+            self.cnc()
+            return
         elif instruction == 0xC4:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cnz(low, high)
+            self.cnz()
+            return
         elif instruction == 0xF4:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cp(low, high)
+            self.cp()
+            return
         elif instruction == 0xEC:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cpe(low, high)
+            self.cpe()
+            return
         elif instruction == 0xFE:
             result = self.get_one_byte_data()
             self.ALU.cpi(result)
         elif instruction == 0xE4:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cpo(low, high)
+            self.cpo()
+            return
         elif instruction == 0xCC:
-            low = self.get_one_byte_data()
-            high = self.get_one_byte_data()
-            self.cz(low, high)
+            self.cz()
+            return
         elif instruction == 0x27:
             self.ALU.daa()
         elif (instruction & 0xCF) == 0x09:
@@ -124,38 +119,45 @@ class Intel8080(AbstractProcessor):
         elif (instruction & 0xCF) == 0x0B:
             self.dcx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xF3:
-            self.ALU.di()
+            self.di()
         elif instruction == 0xFB:
-            self.ALU.ei()
+            self.ei()
         elif instruction == 0x76:
-            self.ALU.hlt()
+            self.hlt()
         elif instruction == 0xDD:
-            self.ALU.in_put()
+            self.in_put()
         elif (instruction & 0xC7) == 0x04:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                self.set_memory_byte(self.get_h_l_address(), self.get_h_l_value() + 1)
-            else:
-                self.ALU.inr(self.get_reg8d_from_inst(instruction))
+            self.inr(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xCF) == 0x03:
-            self.ALU.inx(self.get_reg16_from_inst(instruction))
+            self.inx(self.get_reg16_from_inst(instruction))
         elif instruction == 0xDA:
-            self.ALU.jc()
+            self.jc()
+            # to skip increment of pc at jumps
+            return
         elif instruction == 0xFa:
-            self.ALU.jm()
+            self.jm()
+            return
         elif instruction == 0xC3:
-            self.ALU.jmp()
+            self.jmp()
+            return
         elif instruction == 0xD2:
-            self.ALU.jnc()
+            self.jnc()
+            return
         elif instruction == 0xC2:
-            self.ALU.jnz()
+            self.jnz()
+            return
         elif instruction == 0xF2:
-            self.ALU.jp()
+            self.jp()
+            return
         elif instruction == 0xEA:
-            self.ALU.jpe()
+            self.jpe()
+            return
         elif instruction == 0xE2:
-            self.ALU.jpo()
+            self.jpo()
+            return
         elif instruction == 0xCA:
-            self.ALU.jz()
+            self.jz()
+            return
         elif instruction == 0x3A:
             self.ALU.lda()
         elif instruction == 0x0A:
@@ -303,11 +305,11 @@ class Intel8080(AbstractProcessor):
             self.registers.increment_pc()
             n -= 1
 
-    def set_pc(self, address):
-        self.registers.set_register16(0, np.uint16(address))
+    def set_pc(self, value16):
+        self.registers.set_register16(0, np.uint16(value16))
 
-    def set_sp(self, address):
-        self.registers.set_register16(1, np.uint16(address))
+    def set_sp(self, value16):
+        self.registers.set_register16(1, np.uint16(value16))
 
     def run(self):
         i8080asm.convert_to_binary(asm_string)
@@ -344,7 +346,21 @@ class Intel8080(AbstractProcessor):
     def build_16bit_from_8bits(self, high, low):
         return np.uint16((high << 8) | low)
 
-    def call(self, low, high):
+    def is_interrupt_enabled(self):
+        return self.interrupt
+
+    def is_halted(self):
+        return self.halt
+
+    def push_sp(self, value, offset):
+        sp = self.ALU.get_sp()
+        address = np.uint16(sp - offset)
+        self.set_memory_byte(address, value)
+
+    def call(self):
+        self.call_on(True)
+
+    def call_general(self, low, high):
         self.push_sp(high, 1)
         self.push_sp(low, 2)
         new_sp = np.uint16(self.ALU.get_sp() - 2)
@@ -352,67 +368,37 @@ class Intel8080(AbstractProcessor):
 
         self.set_pc(self.build_16bit_from_8bits(high, low))
 
-    def push_sp(self, value, offset):
-        sp = self.ALU.get_sp()
-        address = np.uint16(sp - offset)
-        self.set_memory_byte(address, value)
-
-    def call_on_(self, low, high):
-        pc = np.uint16(self.registers.get_register(0))
-        pc_high = pc & 0xff00
-        pc_low = pc & 0x00ff
-        self.push_sp(pc_high, 1)
-        self.push_sp(pc_low, 2)
-
-        self.set_pc(self.build_16bit_from_8bits(high, low))
-
-    def cc(self, low, high):
-        if self.ALU.get_carry_flag():
-            self.call_on_(low, high)
+    def call_on(self, flag: bool):
+        low = self.get_one_byte_data()
+        high = self.get_one_byte_data()
+        if flag:
+            self.call_general(low, high)
         else:
             pass
 
-    def cm(self, low, high):
-        if self.ALU.get_sign_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cc(self):
+        self.call_on(self.ALU.get_carry_flag())
 
-    def cnc(self, low, high):
-        if not self.ALU.get_carry_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cm(self):
+        self.call_on(self.ALU.get_sign_flag())
 
-    def cnz(self, low, high):
-        if not self.ALU.get_zero_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cnc(self):
+        self.call_on(not self.ALU.get_carry_flag())
 
-    def cp(self, low, high):
-        if not self.ALU.get_sign_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cnz(self):
+        self.call_on(not self.ALU.get_zero_flag())
 
-    def cpe(self, low, high):
-        if self.ALU.get_parity_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cp(self):
+        self.call_on(not self.ALU.get_sign_flag())
 
-    def cpo(self, low, high):
-        if not self.ALU.get_parity_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cpe(self):
+        self.call_on(self.ALU.get_parity_flag())
 
-    def cz(self, low, high):
-        if self.ALU.get_zero_flag():
-            self.call_on_(low, high)
-        else:
-            pass
+    def cpo(self):
+        self.call_on(not self.ALU.get_parity_flag())
+
+    def cz(self):
+        self.call_on(self.ALU.get_zero_flag())
 
     def dad(self, rp):
         if self.rp_is_sp(rp):
@@ -466,3 +452,87 @@ class Intel8080(AbstractProcessor):
             reg_val = self.build_16bit_from_8bits(reg_h_value, reg_l_value)
             result = np.uint16(reg_val - 1)
             self.registers.set_2_8bit_reg_with_offset(reg_h, result)
+
+    def di(self):
+        self.interrupt = False
+
+    def ei(self):
+        self.interrupt = True
+
+    def hlt(self):
+        self.halt = True
+
+    def in_put(self):
+        # TODO Daten müssen noch irgendwo her kommen
+        data = self.get_byte_from_data_bus()
+        self.registers.set_register8_with_offset(char_to_reg("a"), data)
+
+    def inr(self, register):
+        if self.reg_is_mem(register):
+            value = self.get_h_l_value()
+            result = np.uint8(value + 1)
+            ac, cy = self.ALU.binary_add(value, 1, 0)
+            self.set_memory_byte(self.get_h_l_address(), result)
+        else:
+            value = self.registers.get_register(register)
+            result = np.uint8(value + 1)
+            ac, cy = self.ALU.binary_add(value, 1, 0)
+            self.registers.set_register8_with_offset(register, result)
+
+        self.ALU.evaluate_zsp_flags(True, True, True, result)
+        self.ALU.set_auxiliary_carry_flag(ac)
+
+    # Eine Dokumentation sagt, dass "inx e" auch möglich und würde den carry vom low byte zum high byte nicht verwenden
+    # andere sagt dass es gar nicht möglich ist. Momentaner compiler kann "inx e" nicht. Instruction Code wäre
+    # dann auch unklar
+    def inx(self, rp):
+        if self.rp_is_sp(rp):
+            reg_val = np.uint16(self.registers.get_register(1))
+            result = np.uint16(reg_val + 1)
+            self.set_sp(result)
+        else:
+            reg_h = rp * 2
+            reg_l = reg_h + 1
+            reg_h_value = self.registers.get_register_with_offset(reg_h)
+            reg_l_value = self.registers.get_register_with_offset(reg_l)
+            reg_val = self.build_16bit_from_8bits(reg_h_value, reg_l_value)
+            result = np.uint16(reg_val + 1)
+            self.registers.set_2_8bit_reg_with_offset(reg_h, result)
+
+    def jump_general(self, low, high):
+        self.set_pc(self.build_16bit_from_8bits(high, low))
+
+    def jump_on(self, flag: bool):
+        low = self.get_one_byte_data()
+        high = self.get_one_byte_data()
+        if flag:
+            self.jump_general(low, high)
+        else:
+            pass
+
+    def jc(self):
+        self.jump_on(self.ALU.get_carry_flag())
+
+    def jm(self):
+        self.jump_on(self.ALU.get_sign_flag())
+
+    def jmp(self):
+        self.jump_on(True)
+
+    def jnc(self):
+        self.jump_on(not self.ALU.get_carry_flag())
+
+    def jnz(self):
+        self.jump_on(not self.ALU.get_zero_flag())
+
+    def jp(self):
+        self.jump_on(not self.ALU.get_sign_flag())
+
+    def jpe(self):
+        self.jump_on(self.ALU.get_parity_flag())
+
+    def jpo(self):
+        self.jump_on(not self.ALU.get_parity_flag())
+
+    def jz(self):
+        self.jump_on(self.ALU.get_zero_flag())

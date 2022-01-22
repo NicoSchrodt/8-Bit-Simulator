@@ -28,7 +28,7 @@ class Intel8080_ALU():
         self.registers = Intel8080.registers
         self.temp_accumulator = np.uint8(0)
         self.flags = [False,  # Zero
-                      False,  # Sign
+                      False,  # Sign: True means negative (value > 127)
                       False,  # Parity
                       False,  # Carry
                       False  # Auxiliary Carry
@@ -217,34 +217,6 @@ class Intel8080_ALU():
 
         self.evaluate_zsp_flags(True, True, True, result)
         self.set_cy_ac_flags(cy, ac)
-
-    def dcr(self, value):
-
-        pass
-
-    def dcx(self, reg16):
-        pass
-
-    def di(self):
-        pass
-
-    def ei(self):
-        pass
-
-    def hlt(self):
-        pass
-
-    def in_put(self):
-        pass
-
-    def inr(self, reg8):
-        current = self.registers.get_register(reg8)
-        new = current + 1
-        self.registers.set_register8(reg_offset + reg8, new)
-        self.evaluate_flags(True, True, True, False, True)
-
-    def inx(self, reg16):
-        pass
 
     def jc(self):
         pass
