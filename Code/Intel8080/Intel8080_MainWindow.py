@@ -17,7 +17,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
         self.processor = Intel8080()
-        # processor.run()
+        self.processor.run()
         self.update_registers_table()
 
         # Menubar File
@@ -38,6 +38,10 @@ class Intel8080_MainWindow(QMainWindow):
             btn.setText('{:x}'.format(0))
             addressLatch.setCellWidget(0, column, btn)
             btn.pressed.connect(self.pressed_table_cell)
+
+        # Program Table
+        Program_table = self.Program_table
+        Program_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
 
         self.setWindowTitle("Intel8080 Simulator")
         self.setWindowIcon(QIcon("../ui/Logo.png"))
@@ -71,6 +75,15 @@ class Intel8080_MainWindow(QMainWindow):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
         if filepath[0] != "":
             self.processor.load_program(filepath[0])
+            self.Program_table.setRowCount(0)  # Clear Table
+            print(self.processor.program_length/2)
+            for i in range(int(self.processor.program_length/2)):
+                row = self.Program_table.rowCount()
+                self.Program_table.insertRow(row)
+                self.Program_table.setItem(row, 0, QTableWidgetItem(""))
+                print(self.processor.program[i])
+                self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
+                                                                    + " " + hex(self.processor.program[i+1])))
         self.update_registers_table()
 
     def closeEvent(self, event: QCloseEvent):

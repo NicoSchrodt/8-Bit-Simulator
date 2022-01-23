@@ -229,6 +229,38 @@
      </property>
     </column>
    </widget>
+   <widget class="QTableWidget" name="Program_table">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>90</y>
+      <width>621</width>
+      <height>471</height>
+     </rect>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>0</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>0</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string/>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string/>
+     </property>
+    </column>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

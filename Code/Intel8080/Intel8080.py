@@ -29,6 +29,7 @@ class Intel8080(AbstractProcessor):
         self.ALU = Intel8080_ALU(self)
         self.peripherals = Intel8080_Peripherals()
         self.program = [0] * pow(2, 16)
+        self.program_length = 0
         self.interrupt = False
         self.halt = False
 
@@ -37,7 +38,7 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextCycle
 
     def nextInstruction(self):
-        if self.get_pc() < len(self.program):
+        if (self.get_pc() < len(self.program)) and (self.get_memory_byte(self.get_pc()) != 0):
             instruction = self.get_memory_byte(self.get_pc())
         else:
             return
@@ -249,6 +250,7 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextInstruction
 
     def load_program(self, filepath):
+        # This is supposed to replace "insert_program"-method later
         with open(filepath, 'rb') as file:
             i = 0
             while True:
@@ -258,6 +260,7 @@ class Intel8080(AbstractProcessor):
                 else:
                     self.program[i] = np.uint8(ord(byte))
                     i += 1
+            self.program_length = i
 
     def insert_program(self):
         output_program = "Intel8080\\Output\\program"
@@ -274,6 +277,7 @@ class Intel8080(AbstractProcessor):
                 else:
                     self.program[i] = np.uint8(ord(byte))
                     i += 1
+            self.program_length = i
 
     def get_address_from_memory(self, first_byte):
         low = self.get_memory_byte(first_byte)
