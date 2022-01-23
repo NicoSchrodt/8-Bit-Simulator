@@ -229,17 +229,16 @@ class Intel8080_ALU():
         self.registers.set_register8(reg_offset + reg8, value)
         self.no_flags()
 
-    def mov(self, from_reg, to_reg):
-        pass
-
     def nop(self):
         pass
 
     def ora(self, reg8):
         pass
 
-    def ori(self):
-        pass
+    def ori(self, value):
+        value_a = self.registers.get_register_with_offset(char_to_reg("a"))
+        value = np.uint8(value | value_a)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value)
 
     def out_put(self):
         pass

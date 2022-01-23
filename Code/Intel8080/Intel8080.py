@@ -17,9 +17,7 @@ from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 # LXI SP,0FFFFh
 asm_string = """start:
-mvi b, 5h
-mvi c, 6h
-lxi sp, 3fffh
+ori 0fh
 """
 
 
@@ -177,13 +175,13 @@ class Intel8080(AbstractProcessor):
             else:
                 self.ALU.mvi(self.get_reg8d_from_inst(instruction), result)
         elif (instruction & 0xC0) == 0x40:
-            self.ALU.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
+            self.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
             self.ALU.nop()
         elif (instruction & 0xF8) == 0xB0:
-            self.ALU.ora(self.get_reg8s_from_inst(instruction))
+            self.ora(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xF6:
-            self.ALU.ori()
+            self.ALU.ori(self.get_one_byte_data())
         elif instruction == 0xD3:
             self.ALU.out_put()
         elif instruction == 0xE9:
@@ -585,5 +583,33 @@ class Intel8080(AbstractProcessor):
             reg_l = reg_h + 1
             self.registers.set_register8_with_offset(reg_h, high)
             self.registers.set_register8_with_offset(reg_l, low)
+
+    def mov(self, from_, to):
+        if to == from_:
+            pass
+
+        if self.reg_is_mem(from_):
+            value = self.get_h_l_value()
+        else:
+            value = np.uint8(self.registers.get_register_with_offset(from_))
+
+        if self.reg_is_mem(to):
+            address = self.get_h_l_address()
+            self.set_memory_byte(address, value)
+        else:
+            self.registers.set_register8_with_offset(to, value)
+
+    def ora(self, register):
+        if self.reg_is_mem(register):
+            value = self.get_h_l_value()
+        else:
+            value = np.uint8(self.registers.get_register_with_offset(register))
+
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        value = np.uint8(value | value_a)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value)
+
+        self.ALU.evaluate_zsp_flags(True, True, True, value)
+        self.ALU.set_cy_ac_flags(False, False)
 
 
