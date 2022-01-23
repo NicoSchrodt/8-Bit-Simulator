@@ -70,6 +70,8 @@ class Intel8080_MainWindow(QMainWindow):
             btn.setText('{:x}'.format(0))
             Registers_table.setCellWidget(row, 0, btn)
             btn.pressed.connect(self.pressed_table_cell)
+        #Registers_table.setMaximumSize(self.getQTableWidgetSize(Registers_table))
+        #Registers_table.setMinimumSize(self.getQTableWidgetSize(Registers_table))
 
     def load_program(self):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")

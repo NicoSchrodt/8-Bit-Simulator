@@ -6,268 +6,258 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>793</width>
-    <height>600</height>
+    <width>974</width>
+    <height>674</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="Registers_table">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>141</width>
-      <height>152</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="horizontalHeaderCascadingSectionResizes">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>0</number>
-    </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>74</number>
-    </attribute>
-    <attribute name="verticalHeaderCascadingSectionResizes">
-     <bool>true</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>PC</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>SP</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>ACC</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>ACC-Latch</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>INST</string>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string/>
-     </property>
-    </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
-    </item>
-    <item row="1" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QTableWidget" name="AddressLatch_table">
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>0</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>38</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>10</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>10</number>
+      </attribute>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>A15</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A14</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A13</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A12</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A11</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A10</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A9</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A8</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A7</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A6</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A5</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A4</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A3</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A2</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A1</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>A0</string>
+       </property>
+      </column>
+     </widget>
     </item>
     <item row="2" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
+     <widget class="QPushButton" name="next_button">
+      <property name="text">
+       <string>Next</string>
+      </property>
+     </widget>
     </item>
-    <item row="3" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
+    <item row="3" column="1">
+     <widget class="QTableWidget" name="Program_table">
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>0</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>0</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
+     </widget>
     </item>
-    <item row="4" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QTableWidget" name="Registers_table">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>140</width>
+        <height>152</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>140</width>
+        <height>152</height>
+       </size>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>0</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>74</number>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <row>
+       <property name="text">
+        <string>PC</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>SP</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>ACC</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>ACC-Latch</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>INST</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="2" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="3" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="4" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+     </widget>
     </item>
-   </widget>
-   <widget class="QPushButton" name="next_button">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>170</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Next</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="AddressLatch_table">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>10</y>
-      <width>621</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>0</number>
-    </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>38</number>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderCascadingSectionResizes">
-     <bool>true</bool>
-    </attribute>
-    <attribute name="verticalHeaderMinimumSectionSize">
-     <number>10</number>
-    </attribute>
-    <attribute name="verticalHeaderDefaultSectionSize">
-     <number>10</number>
-    </attribute>
-    <row>
-     <property name="text">
-      <string/>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string>A15</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A14</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A13</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A12</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A11</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A10</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A9</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A8</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A7</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A6</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A5</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A4</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A3</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A2</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A1</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>A0</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QTableWidget" name="Program_table">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>90</y>
-      <width>621</width>
-      <height>471</height>
-     </rect>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>0</number>
-    </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>0</number>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <column>
-     <property name="text">
-      <string/>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string/>
-     </property>
-    </column>
-   </widget>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>793</width>
+     <width>974</width>
      <height>21</height>
     </rect>
    </property>
