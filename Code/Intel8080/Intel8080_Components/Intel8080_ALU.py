@@ -23,13 +23,17 @@ def char_to_reg(reg: chr):
         return np.uint8(255)
 
 
+def build_16bit_from_8bits(high, low):
+    return np.uint16((high << 8) | low)
+
+
 class Intel8080_ALU():
     def __init__(self, Intel8080):
         self.registers = Intel8080.registers
         self.temp_accumulator = np.uint8(0)
         self.flags = [False,  # Zero
                       False,  # Sign: True means negative (value > 127)
-                      False,  # Parity
+                      False,  # Parity: True means even (value % 2 == 0)
                       False,  # Carry
                       False  # Auxiliary Carry
                       ]
@@ -232,19 +236,10 @@ class Intel8080_ALU():
     def nop(self):
         pass
 
-    def ora(self, reg8):
-        pass
-
     def ori(self, value):
         value_a = self.registers.get_register_with_offset(char_to_reg("a"))
         value = np.uint8(value | value_a)
         self.registers.set_register8_with_offset(char_to_reg("a"), value)
-
-    def out_put(self):
-        pass
-
-    def pchl(self):
-        pass
 
     def pop(self, reg16):
         pass
