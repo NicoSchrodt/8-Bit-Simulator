@@ -1,7 +1,9 @@
 import os
-
 import numpy as np
+
+from time import sleep
 from PyQt6 import QtCore
+from PyQt6.QtCore import QObject, QThread
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QHeaderView, QFileDialog
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QCloseEvent, QIcon
@@ -9,6 +11,14 @@ from PyQt6.QtGui import QCloseEvent, QIcon
 from Code.Intel8080.Intel8080 import Intel8080
 from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
 
+class runThread(QObject):
+    Source = QtCore.pyqtSignal()
+
+    @QtCore.pyqtSlot()
+    def monitor(self):
+        while True:
+            sleep(0.000001)  # Prevents freezing, may need fine-tuning
+            self.Source.emit()
 
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -20,6 +30,12 @@ class Intel8080_MainWindow(QMainWindow):
         self.processor.run()
         self.update_registers_table()
 
+        # Thread Initialization
+        self.monitor = None
+        self.thread = None
+        self.autorun = False
+        self.init_thread()
+
         # Menubar File
         loadFile = self.actionLoad_Program
         loadFile.triggered.connect(self.load_program)
@@ -27,6 +43,10 @@ class Intel8080_MainWindow(QMainWindow):
         # Next Instruction
         nextButton = self.next_button
         nextButton.pressed.connect(self.perform_instruction)
+
+        # Go Instruction
+        goButton = self.go_button
+        goButton.pressed.connect(self.reset_go)
 
         # Address Latch
         addressLatch = self.AddressLatch_table
@@ -60,6 +80,14 @@ class Intel8080_MainWindow(QMainWindow):
         full_path = os.path.join(base_path, ui_name)
         loadUi(full_path, self)
 
+    def init_thread(self):
+        self.monitor = runThread()
+        self.thread = QThread(self)
+        self.monitor.Source.connect(self.tasker_thread)
+        self.monitor.moveToThread(self.thread)
+        self.thread.started.connect(self.monitor.monitor)
+        self.thread.start()
+
     def init_register_table(self):
         Registers_table = self.Registers_table
         # Registers_table.horizontalHeader().setVisible(False)
@@ -86,16 +114,27 @@ class Intel8080_MainWindow(QMainWindow):
                 print(self.processor.program[i])
                 self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
                                                                     + " " + hex(self.processor.program[i+1])))
-        self.update_registers_table()
+        self.reload_registers_table()
+
+    def reset_go(self):
+        self.autorun = not self.autorun
 
     def closeEvent(self, event: QCloseEvent):
         event.accept()
         self.mainW.show()
         # Closes Window and Un-Hides MainMenu
 
+    @QtCore.pyqtSlot()
+    def tasker_thread(self):
+        if self.autorun:
+            print("Performed Instruction, Automatic")
+            self.processor.nextInstruction()
+            self.reload_registers_table()
+
     def perform_instruction(self):
-        self.processor.nextInstruction()
-        self.reload_registers_table()
+        if not self.autorun:
+            self.processor.nextInstruction()
+            self.reload_registers_table()
 
     def pressed_table_cell(self):
         btn = self.sender()

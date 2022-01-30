@@ -273,6 +273,7 @@ class Intel8080(AbstractProcessor):
                     self.program[i] = np.uint8(ord(byte))
                     i += 1
             self.program_length = i
+            self.set_pc(0)
 
     def insert_program(self):
         output_program = "Intel8080\\Output\\program"
