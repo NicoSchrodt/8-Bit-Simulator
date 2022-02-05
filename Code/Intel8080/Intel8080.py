@@ -17,11 +17,9 @@ from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 # LXI SP,0FFFFh
 asm_string = """start:
-mvi a, 255d
-inr a
-mvi a, 20d
-push psw
-pop psw
+mvi a, 100d
+mvi b, 19d
+adc b
 """
 
 
@@ -208,33 +206,52 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0x1F:
             self.ALU.rar()
         elif instruction == 0xD8:
-            self.ALU.rc()
+            self.rc()
+            # to skip increment of pc at jumps
+            return
         elif instruction == 0xC9:
-            self.ALU.ret()
+            self.ret()
+            return
         elif instruction == 0x07:
             self.ALU.rlc()
         elif instruction == 0xF8:
-            self.ALU.rm()
+            self.rm()
+            return
         elif instruction == 0xB0:
-            self.ALU.rnc()
+            self.rnc()
+            return
         elif instruction == 0xC0:
-            self.ALU.rnz()
+            self.rnz()
+            return
         elif instruction == 0xF0:
-            self.ALU.rp()
+            self.rp()
+            return
         elif instruction == 0xE8:
-            self.ALU.rpe()
+            self.rpe()
+            return
         elif instruction == 0x70:
-            self.ALU.rpo()
+            self.rpo()
+            return
         elif instruction == 0x0F:
             self.ALU.rrc()
         elif (instruction & 0xC7) == 0xC7:
-            self.ALU.rst()
+            self.rst(self.get_reg8d_from_inst(instruction))
+            # to skip increment of pc at jumps
+            return
         elif instruction == 0xC8:
-            self.ALU.rz()
+            self.rz()
+            # to skip increment of pc at jumps
+            return
         elif (instruction & 0xF8) == 0x98:
-            self.ALU.sbb(self.get_reg8s_from_inst(instruction))
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                result = self.get_h_l_value()
+            else:
+                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+
+            self.ALU.sbb(result)
         elif instruction == 0xDE:
-            self.ALU.sbi()
+            result = self.get_one_byte_data()
+            self.ALU.sbi(result)
         elif instruction == 0x22:
             self.ALU.shld()
         elif instruction == 0x32:
@@ -246,9 +263,15 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0x37:
             self.ALU.stc()
         elif (instruction & 0xF8) == 0x90:
-            self.ALU.sub(self.get_reg8s_from_inst(instruction))
+            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
+                result = self.get_h_l_value()
+            else:
+                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
+
+            self.ALU.sub(result)
         elif instruction == 0xD6:
-            self.ALU.sui()
+            result = self.get_one_byte_data()
+            self.ALU.sui(result)
         elif instruction == 0xEB:
             self.ALU.xchg()
         elif (instruction & 0xf8) == 0xA8:
@@ -518,9 +541,9 @@ class Intel8080(AbstractProcessor):
         self.ALU.evaluate_zsp_flags(True, True, True, result)
         self.ALU.set_auxiliary_carry_flag(ac)
 
-    # Eine Dokumentation sagt, dass "inx e" auch möglich und würde den carry vom low byte zum high byte nicht verwenden
-    # andere sagt dass es gar nicht möglich ist. Momentaner compiler kann "inx e" nicht. Instruction Code ist
-    # dann 0x76 = NOP
+    # Eine Dokumentation sagt, dass "inx e" auch möglich ist und würde den carry vom low byte zum high byte nicht
+    # verwenden. Andere Doku sagt, dass es gar nicht möglich ist. Momentaner compiler kann "inx e" nicht.
+    # Instruction Code ist dann 0x76 = NOP
     def inx(self, rp):
         if self.is_rp_meaning_sp(rp):
             reg_val = np.uint16(self.registers.get_register(1))
@@ -703,3 +726,51 @@ class Intel8080(AbstractProcessor):
         self.ALU.set_auxiliary_carry_flag((byte & pow(2, 4)) >> 4)
         self.ALU.set_parity_flag((byte & pow(2, 2)) >> 2)
         self.ALU.set_carry_flag(byte & pow(2, 0))
+
+    def return_general(self, low, high):
+        self.set_pc(build_16bit_from_8bits(high, low))
+
+    def return_on(self, flag: bool):
+        if flag:
+            low, high = self.pop()
+            self.return_general(low, high)
+        else:
+            pass
+
+    def rc(self):
+        self.return_on(self.ALU.get_carry_flag())
+
+    def ret(self):
+        self.return_on(True)
+
+    def rm(self):
+        self.return_on(self.ALU.get_sign_flag())
+
+    def rnc(self):
+        self.return_on(not self.ALU.get_carry_flag())
+
+    def rnz(self):
+        self.return_on(not self.ALU.get_zero_flag())
+
+    def rp(self):
+        self.return_on(not self.ALU.get_sign_flag())
+
+    def rpe(self):
+        self.return_on(self.ALU.get_parity_flag())
+
+    def rpo(self):
+        self.return_on(not self.ALU.get_parity_flag())
+
+    def rz(self):
+        self.return_on(self.ALU.get_zero_flag())
+
+    def rst(self, address_code):
+        pc = self.get_pc()
+        pc_high = np.uint8(pc & 0xff00)
+        pc_low = np.uint8(pc & 0x00ff)
+        self.push(pc_high, pc_low)
+        new_address = np.uint16(8 * address_code)
+        self.set_pc(new_address)
+
+    def sbb(self, register):
+        pass

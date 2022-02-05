@@ -35,7 +35,7 @@ class Intel8080_ALU():
                       False,  # Sign: True means negative (value > 127)
                       False,  # Parity: True means even (value % 2 == 0)
                       False,  # Carry
-                      False  # Auxiliary Carry
+                      False  # Auxiliary Carry: Overflow from bit 3 to 4
                       ]
         self.temp_register = np.uint8(0)
 
@@ -108,11 +108,11 @@ class Intel8080_ALU():
         self.set_carry_flag(bool(cy))
         self.set_auxiliary_carry_flag(bool(ac))
 
-    # 8 Bit calculation
+    # 16 Bit calculation
     def binary_add(self, op1, op2, carry: int):
         mask = 0x01
         number, ac, cy = 0, 0, 0
-        for cycle in range(8):
+        for cycle in range(16):
             value = (op1 & mask) + (op2 & mask) + (carry * mask)
 
             number += value & mask
@@ -129,7 +129,7 @@ class Intel8080_ALU():
 
         return ac, cy
 
-    # 8 Bit calculation
+    # 16 Bit calculation
     def binary_sub(self, op1, op2):
         two_complement = (op2 ^ 0xff) + 1
         return self.binary_add(op1, two_complement, 0)
@@ -140,33 +140,30 @@ class Intel8080_ALU():
     def get_sp(self):
         return np.uint16(self.registers.get_register(1))
 
-    def aci(self, value):
+    def get_pc(self):
+        return np.uint16(self.registers.get_register(0))
+
+    def aci(self, val_to_add):
+        if self.get_carry_flag():
+            val_to_add = np.uint8(val_to_add + 1)
+        self.adi(val_to_add)
+
+    def adc(self, val_to_add):
+        self.aci(val_to_add)
+
+    def add(self, val_to_add):
         reg_a = char_to_reg('a')
         reg_a_val = self.registers.get_register(reg_offset + reg_a)
-        result = reg_a_val + value + self.get_carry_flag()
+        result = reg_a_val + val_to_add
         new = np.uint8(result)
         self.registers.set_register8(reg_offset + reg_a, new)
 
         self.evaluate_zsp_flags(True, True, True, result)
-        ac, cy = self.binary_add(reg_a_val, value, self.get_carry_flag())
+        ac, cy = self.binary_add(reg_a_val, val_to_add, 0)
         self.set_cy_ac_flags(cy, ac)
 
-    def adc(self, value):
-        self.aci(value)
-
-    def add(self, value):
-        reg_a = char_to_reg('a')
-        reg_a_val = self.registers.get_register(reg_offset + reg_a)
-        result = reg_a_val + value
-        new = np.uint8(result)
-        self.registers.set_register8(reg_offset + reg_a, new)
-
-        self.evaluate_zsp_flags(True, True, True, result)
-        ac, cy = self.binary_add(reg_a_val, value, 0)
-        self.set_cy_ac_flags(cy, ac)
-
-    def adi(self, value):
-        self.add(value)
+    def adi(self, val_to_add):
+        self.add(val_to_add)
 
     def ana(self, value):
         reg_a = char_to_reg('a')
@@ -222,12 +219,6 @@ class Intel8080_ALU():
         self.evaluate_zsp_flags(True, True, True, result)
         self.set_cy_ac_flags(cy, ac)
 
-    def lhld(self):
-        pass
-
-    def lxi(self, reg16):
-        pass
-
     def mvi(self, reg8, value):
         value = np.uint8(value)
         self.registers.set_register8(reg_offset + reg8, value)
@@ -237,63 +228,66 @@ class Intel8080_ALU():
         pass
 
     def ori(self, value):
-        value_a = self.registers.get_register_with_offset(char_to_reg("a"))
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
         value = np.uint8(value | value_a)
         self.registers.set_register8_with_offset(char_to_reg("a"), value)
 
-    def pop(self, reg16):
-        pass
-
-    def push(self, reg16):
-        pass
-
     def ral(self):
-        pass
+        value_a_old = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        value_a = np.uint8(value_a_old << 1)
+        if self.get_carry_flag():
+            value_a = np.uint8(value_a + 1)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value_a)
+
+        if (value_a_old & 0b10000000) == 128:
+            self.set_carry_flag(True)
+        else:
+            self.set_carry_flag(False)
 
     def rar(self):
-        pass
+        value_a_old = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        value_a = np.uint8(value_a_old >> 1)
+        if self.get_carry_flag():
+            value_a = np.uint8(value_a + 128)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value_a)
 
-    def rc(self):
-        pass
-
-    def ret(self):
-        pass
+        if (value_a_old & 0b00000001) == 1:
+            self.set_carry_flag(True)
+        else:
+            self.set_carry_flag(False)
 
     def rlc(self):
-        pass
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        if (value_a & 0b10000000) == 128:
+            self.set_carry_flag(True)
+        else:
+            self.set_carry_flag(False)
 
-    def rm(self):
-        pass
-
-    def rnc(self):
-        pass
-
-    def rnz(self):
-        pass
-
-    def rp(self):
-        pass
-
-    def rpe(self):
-        pass
-
-    def rpo(self):
-        pass
+        value_a = np.uint8(value_a << 1)
+        if self.get_carry_flag():
+            value_a = np.uint8(value_a + 1)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value_a)
 
     def rrc(self):
-        pass
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        if (value_a & 0b10000000) == 128:
+            self.set_carry_flag(True)
+        else:
+            self.set_carry_flag(False)
 
-    def rst(self):
-        pass
+        value_a = np.uint8(value_a >> 1)
+        if self.get_carry_flag():
+            value_a = np.uint8(value_a + 1)
+        self.registers.set_register8_with_offset(char_to_reg("a"), value_a)
 
-    def rz(self):
-        pass
+    def sbb(self, val_to_subtract):
+        self.sbi(val_to_subtract)
 
-    def sbb(self, reg8):
-        pass
+    def sbi(self, val_to_subtract):
+        if self.get_carry_flag():
+            val_to_subtract = np.uint8(val_to_subtract + 1)
 
-    def sbi(self):
-        pass
+        self.sui(val_to_subtract)
 
     def shld(self):
         pass
@@ -310,11 +304,17 @@ class Intel8080_ALU():
     def stc(self):
         pass
 
-    def sub(self, reg8):
-        pass
+    def sub(self, val_to_subtract):
+        self.sui(val_to_subtract)
 
-    def sui(self):
-        pass
+    def sui(self, val_to_subtract):
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        result = np.uint8(value_a - val_to_subtract)
+        self.registers.set_register8_with_offset(char_to_reg("a"), result)
+
+        ac, cy = self.binary_sub(value_a, val_to_subtract)
+        self.evaluate_zsp_flags(True, True, True, result)
+        self.set_cy_ac_flags(cy, ac)
 
     def xchg(self):
         pass

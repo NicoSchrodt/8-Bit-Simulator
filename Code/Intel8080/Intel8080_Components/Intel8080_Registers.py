@@ -30,9 +30,6 @@ class Intel8080_Registers():
     def set_register8_with_offset(self, register, value):
         self.registers[register + reg_offset] = np.uint8(value)
 
-    def set_register8_with_offset(self, register, value):
-        self.registers[register + reg_offset] = np.uint8(value)
-
     def set_register16(self, register, value):
         self.registers[register] = np.uint16(value)
 
