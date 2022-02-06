@@ -17,9 +17,12 @@ from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 # LXI SP,0FFFFh
 asm_string = """start:
-mvi a, 100d
-mvi b, 19d
-adc b
+mvi h, 12d
+mvi l, 34d
+mvi b, 11d
+mvi c, 22d
+push b
+xthl
 """
 
 
@@ -253,13 +256,15 @@ class Intel8080(AbstractProcessor):
             result = self.get_one_byte_data()
             self.ALU.sbi(result)
         elif instruction == 0x22:
-            self.ALU.shld()
+            self.shld()
+        elif instruction == 0xF9:
+            self.sphl()
         elif instruction == 0x32:
-            self.ALU.sta()
+            self.sta()
         elif instruction == 0x02:
-            self.ALU.stax_b()
+            self.stax_b()
         elif instruction == 0x22:
-            self.ALU.stax_d()
+            self.stax_d()
         elif instruction == 0x37:
             self.ALU.stc()
         elif (instruction & 0xF8) == 0x90:
@@ -275,11 +280,11 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0xEB:
             self.ALU.xchg()
         elif (instruction & 0xf8) == 0xA8:
-            self.ALU.xra(self.get_reg8s_from_inst(instruction))
+            self.xra(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xEE:
-            self.ALU.xri()
+            self.xri()
         elif instruction == 0xE3:
-            self.ALU.xthl()
+            self.xthl()
 
         self.nextCycle()
         # Concrete Implementation of nextInstruction
@@ -772,5 +777,64 @@ class Intel8080(AbstractProcessor):
         new_address = np.uint16(8 * address_code)
         self.set_pc(new_address)
 
-    def sbb(self, register):
-        pass
+    def shld(self):
+        address_low = self.get_one_byte_data()
+        address_high = self.get_one_byte_data()
+        address = build_16bit_from_8bits(address_high, address_low)
+        self.set_memory_byte(address, self.registers.get_register_with_offset(char_to_reg("l")))
+        address = np.uint16(address + 1)
+        self.set_memory_byte(address, self.registers.get_register_with_offset(char_to_reg("h")))
+
+    def sphl(self):
+        val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
+        val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
+        self.push(val_h, val_l)
+
+    def sta(self):
+        address_low = self.get_one_byte_data()
+        address_high = self.get_one_byte_data()
+        address = build_16bit_from_8bits(address_high, address_low)
+        self.stax(address)
+
+    def stax_b(self):
+        address_high = np.uint8(self.registers.get_register_with_offset(char_to_reg("b")))
+        address_low = np.uint8(self.registers.get_register_with_offset(char_to_reg("c")))
+        address = build_16bit_from_8bits(address_high, address_low)
+        self.stax(address)
+
+    def stax_d(self):
+        address_high = np.uint8(self.registers.get_register_with_offset(char_to_reg("d")))
+        address_low = np.uint8(self.registers.get_register_with_offset(char_to_reg("e")))
+        address = build_16bit_from_8bits(address_high, address_low)
+        self.stax(address)
+
+    def stax(self, address):
+        val_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        self.set_memory_byte(address, val_a)
+
+    def excl_or(self, value):
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        result = np.uint8(value ^ value_a)
+        self.registers.set_register8_with_offset(char_to_reg("a"), result)
+
+        self.ALU.evaluate_zsp_flags(True, True, True, result)
+        self.ALU.set_cy_ac_flags(False, False)
+
+    def xra(self, register, value):
+        if self.reg_is_mem(register):
+            value = self.get_h_l_value()
+        else:
+            value = np.uint8(self.registers.get_register_with_offset(register))
+        self.excl_or(value)
+
+    def xri(self):
+        data = self.get_one_byte_data()
+        self.excl_or(data)
+
+    def xthl(self):
+        stack_l, stack_h = self.pop()
+        val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
+        val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
+        self.push(val_h, val_l)
+        self.registers.set_register8_with_offset(char_to_reg("h"), stack_h)
+        self.registers.set_register8_with_offset(char_to_reg("l"), stack_l)

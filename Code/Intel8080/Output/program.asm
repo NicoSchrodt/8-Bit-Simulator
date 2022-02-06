@@ -1,4 +1,7 @@
 start:
-mvi a, 100d
-mvi b, 19d
-adc b
+mvi h, 12d
+mvi l, 34d
+mvi b, 11d
+mvi c, 22d
+push b
+xthl

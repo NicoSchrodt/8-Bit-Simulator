@@ -289,9 +289,6 @@ class Intel8080_ALU():
 
         self.sui(val_to_subtract)
 
-    def shld(self):
-        pass
-
     def sta(self):
         pass
 
@@ -302,7 +299,7 @@ class Intel8080_ALU():
         pass
 
     def stc(self):
-        pass
+        self.set_carry_flag(True)
 
     def sub(self, val_to_subtract):
         self.sui(val_to_subtract)
@@ -317,13 +314,14 @@ class Intel8080_ALU():
         self.set_cy_ac_flags(cy, ac)
 
     def xchg(self):
-        pass
-
-    def xra(self, reg8):
-        pass
-
-    def xri(self):
-        pass
+        val_d = np.uint8(self.registers.get_register_with_offset(char_to_reg("d")))
+        val_e = np.uint8(self.registers.get_register_with_offset(char_to_reg("e")))
+        val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
+        val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
+        self.registers.set_register8_with_offset(char_to_reg("d"), val_h)
+        self.registers.set_register8_with_offset(char_to_reg("e"), val_l)
+        self.registers.set_register8_with_offset(char_to_reg("h"), val_d)
+        self.registers.set_register8_with_offset(char_to_reg("l"), val_e)
 
     def xthl(self):
         pass
