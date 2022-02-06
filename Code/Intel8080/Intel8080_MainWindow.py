@@ -11,14 +11,17 @@ from PyQt6.QtGui import QCloseEvent, QIcon
 from Code.Intel8080.Intel8080 import Intel8080
 from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
 
+
 class runThread(QObject):
     Source = QtCore.pyqtSignal()
+    ExitFlag = False
 
     @QtCore.pyqtSlot()
     def monitor(self):
-        while True:
+        while not self.ExitFlag:
             sleep(0.000001)  # Prevents freezing, may need fine-tuning
             self.Source.emit()
+
 
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -98,28 +101,31 @@ class Intel8080_MainWindow(QMainWindow):
             btn.setText('{:x}'.format(0))
             Registers_table.setCellWidget(row, 0, btn)
             btn.pressed.connect(self.pressed_table_cell)
-        #Registers_table.setMaximumSize(self.getQTableWidgetSize(Registers_table))
-        #Registers_table.setMinimumSize(self.getQTableWidgetSize(Registers_table))
+        # Registers_table.setMaximumSize(self.getQTableWidgetSize(Registers_table))
+        # Registers_table.setMinimumSize(self.getQTableWidgetSize(Registers_table))
 
     def load_program(self):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
         if filepath[0] != "":
             self.processor.load_program(filepath[0])
             self.Program_table.setRowCount(0)  # Clear Table
-            print(self.processor.program_length/2)
-            for i in range(int(self.processor.program_length/2)):
+            print(self.processor.program_length / 2)
+            for i in range(int(self.processor.program_length / 2)):
                 row = self.Program_table.rowCount()
                 self.Program_table.insertRow(row)
                 self.Program_table.setItem(row, 0, QTableWidgetItem(""))
                 print(self.processor.program[i])
                 self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
-                                                                    + " " + hex(self.processor.program[i+1])))
+                                                                    + " " + hex(self.processor.program[i + 1])))
         self.reload_registers_table()
 
     def reset_go(self):
         self.autorun = not self.autorun
 
     def closeEvent(self, event: QCloseEvent):
+        self.monitor.ExitFlag = True
+        self.thread.quit()
+        self.thread.wait()
         event.accept()
         self.mainW.show()
         # Closes Window and Un-Hides MainMenu
@@ -155,15 +161,15 @@ class Intel8080_MainWindow(QMainWindow):
         Registers_table = self.Registers_table
         registers = self.processor.registers
         alu = self.processor.ALU
-        #Registers_table.cellWidget(0, 0).setText('{:x}'.format(registers.registers[0]))  # PC
+        # Registers_table.cellWidget(0, 0).setText('{:x}'.format(registers.registers[0]))  # PC
         registers.registers[0] = int(Registers_table.cellWidget(0, 0).text(), 16)
-        #Registers_table.cellWidget(1, 0).setText('{:x}'.format(registers.registers[1]))  # SP
+        # Registers_table.cellWidget(1, 0).setText('{:x}'.format(registers.registers[1]))  # SP
         registers.registers[1] = int(Registers_table.cellWidget(1, 0).text(), 16)
-        #Registers_table.cellWidget(2, 0).setText('{:x}'.format(registers.registers[9]))  # ACC
+        # Registers_table.cellWidget(2, 0).setText('{:x}'.format(registers.registers[9]))  # ACC
         registers.registers[9] = int(Registers_table.cellWidget(2, 0).text(), 16)
-        #Registers_table.cellWidget(3, 0).setText('{:x}'.format(alu.temp_accumulator))  # Temp-ACC
+        # Registers_table.cellWidget(3, 0).setText('{:x}'.format(alu.temp_accumulator))  # Temp-ACC
         alu.temp_accumulator = int(Registers_table.cellWidget(3, 0).text(), 16)
-        #Registers_table.cellWidget(4, 0).setText('{:x}'.format(registers.instruction_register))  # INST
+        # Registers_table.cellWidget(4, 0).setText('{:x}'.format(registers.instruction_register))  # INST
         registers.instruction_register = int(Registers_table.cellWidget(4, 0).text(), 16)
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation

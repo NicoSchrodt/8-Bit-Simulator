@@ -837,18 +837,3 @@ class Intel8080(AbstractProcessor):
         self.push(val_h, val_l)
         self.registers.set_register8_with_offset(char_to_reg("h"), stack_h)
         self.registers.set_register8_with_offset(char_to_reg("l"), stack_l)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
