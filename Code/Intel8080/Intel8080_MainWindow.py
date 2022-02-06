@@ -51,6 +51,10 @@ class Intel8080_MainWindow(QMainWindow):
         goButton = self.go_button
         goButton.pressed.connect(self.reset_go)
 
+        # Reset Instruction
+        resetButton = self.reset_button
+        resetButton.pressed.connect(self.reset_intel8080)
+
         # Address Latch
         addressLatch = self.AddressLatch_table
         addressLatch.setMaximumSize(self.getQTableWidgetSize(addressLatch))
@@ -121,6 +125,10 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reset_go(self):
         self.autorun = not self.autorun
+
+    def reset_intel8080(self):
+        self.processor.reset_processor()
+        self.reload_registers_table()
 
     def closeEvent(self, event: QCloseEvent):
         self.monitor.ExitFlag = True

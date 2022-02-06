@@ -277,6 +277,11 @@ class Intel8080(AbstractProcessor):
                     i += 1
             self.program_length = i
 
+    def reset_processor(self):
+        self.ALU = Intel8080_ALU(self)
+        self.registers = Intel8080_Registers()
+        self.peripherals = Intel8080_Peripherals()
+
     def get_address_from_memory(self, first_byte):
         low = self.get_memory_byte(first_byte)
         high = self.get_memory_byte(first_byte + 1)
