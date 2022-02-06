@@ -165,15 +165,15 @@ class Intel8080_ALU():
     def adi(self, val_to_add):
         self.add(val_to_add)
 
-    def ana(self, value):
+    def ana(self, val):
         reg_a = char_to_reg('a')
         reg_a_val = self.registers.get_register(reg_offset + reg_a)
-        result = reg_a_val & value
+        result = reg_a_val & val
         new = np.uint8(result)
         self.registers.set_register8(reg_offset + reg_a, new)
 
         self.evaluate_zsp_flags(True, True, True, result)
-        ac = ((reg_a_val & 0x8) | (value & 0x8)) >> 3
+        ac = ((reg_a_val & 0x8) | (val & 0x8)) >> 3
         self.set_cy_ac_flags(0, ac)
 
     def ani(self, value):
@@ -187,17 +187,16 @@ class Intel8080_ALU():
     def cmc(self):
         self.set_carry_flag(not self.get_carry_flag())
 
-    def cmp(self, value):
+    def cmp(self, val):
         reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
-
-        result = reg_a_val - value
+        result = reg_a_val - val
 
         # TODO schauen da anscheinend alle Flags geändert werden und nicht nur zero und carry
         self.set_zero_flag(result == 0)
         self.set_carry_flag(result < 0)
 
-    def cpi(self, value):
-        self.cmp(value)
+    def cpi(self, val):
+        self.cmp(val)
 
     def daa(self):
         reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
@@ -219,18 +218,21 @@ class Intel8080_ALU():
         self.evaluate_zsp_flags(True, True, True, result)
         self.set_cy_ac_flags(cy, ac)
 
-    def mvi(self, reg8, value):
-        value = np.uint8(value)
-        self.registers.set_register8(reg_offset + reg8, value)
+    def mvi(self, reg8, val):
+        val = np.uint8(val)
+        self.registers.set_register8(reg_offset + reg8, val)
         self.no_flags()
 
     def nop(self):
         pass
 
-    def ori(self, value):
+    def ori(self, val):
         value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
-        value = np.uint8(value | value_a)
-        self.registers.set_register8_with_offset(char_to_reg("a"), value)
+        val = np.uint8(val | value_a)
+        self.registers.set_register8_with_offset(char_to_reg("a"), val)
+
+        self.evaluate_zsp_flags(True, True, True, val)
+        self.set_cy_ac_flags(False, False)
 
     def ral(self):
         value_a_old = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
@@ -286,17 +288,7 @@ class Intel8080_ALU():
     def sbi(self, val_to_subtract):
         if self.get_carry_flag():
             val_to_subtract = np.uint8(val_to_subtract + 1)
-
         self.sui(val_to_subtract)
-
-    def sta(self):
-        pass
-
-    def stax_b(self):
-        pass
-
-    def stax_d(self):
-        pass
 
     def stc(self):
         self.set_carry_flag(True)
@@ -323,5 +315,10 @@ class Intel8080_ALU():
         self.registers.set_register8_with_offset(char_to_reg("h"), val_d)
         self.registers.set_register8_with_offset(char_to_reg("l"), val_e)
 
-    def xthl(self):
-        pass
+    def xri(self, val):
+        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        result = np.uint8(val ^ value_a)
+        self.registers.set_register8_with_offset(char_to_reg("a"), result)
+
+        self.evaluate_zsp_flags(True, True, True, result)
+        self.set_cy_ac_flags(False, False)

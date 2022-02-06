@@ -52,29 +52,15 @@ class Intel8080(AbstractProcessor):
         if instruction == 0xCE:
             self.ALU.aci(self.get_one_byte_data())
         elif (instruction & 0xF8) == 0x88:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                result = self.program[self.get_h_l_address()]
-            else:
-                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.adc(result)
+            self.adc(self.get_reg8d_from_inst(instruction))
         elif (instruction & 0xF8) == 0x80:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                result = self.get_h_l_value()
-            else:
-                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.add(result)
+            self.add(self.get_reg8d_from_inst(instruction))
         elif instruction == 0xC6:
-            result = self.get_one_byte_data()
-            self.ALU.adi(result)
+            self.ALU.adi(self.get_one_byte_data())
         elif (instruction & 0xF8) == 0xA0:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                result = self.program[self.get_h_l_address()]
-            else:
-                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.ana(result)
+            self.ana(self.get_reg8d_from_inst(instruction))
         elif instruction == 0xE6:
-            result = self.get_one_byte_data()
-            self.ALU.ani(result)
+            self.ALU.ani(self.get_one_byte_data())
         elif instruction == 0xCD:
             self.call()
             # to skip increment of pc at calls
@@ -90,11 +76,7 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0x3F:
             self.ALU.cmc()
         elif (instruction & 0xF8) == 0xB8:
-            if self.reg_is_mem(self.get_reg8s_from_inst(instruction)):
-                result = self.program[self.get_h_l_address()]
-            else:
-                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-            self.ALU.cmp(result)
+            self.cmp(self.get_reg8d_from_inst(instruction))
         elif instruction == 0xD4:
             self.cnc()
             return
@@ -108,8 +90,7 @@ class Intel8080(AbstractProcessor):
             self.cpe()
             return
         elif instruction == 0xFE:
-            result = self.get_one_byte_data()
-            self.ALU.cpi(result)
+            self.ALU.cpi(self.get_one_byte_data())
         elif instruction == 0xE4:
             self.cpo()
             return
@@ -174,14 +155,10 @@ class Intel8080(AbstractProcessor):
             self.lhld()
         elif (instruction & 0xCF) == 0x01:
             self.lxi(self.get_reg16_from_inst(instruction))
-        elif (instruction & 0xC7) == 0x06:
-            result = self.get_one_byte_data()
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                self.set_memory_byte(self.get_h_l_address(), result)
-            else:
-                self.ALU.mvi(self.get_reg8d_from_inst(instruction), result)
         elif (instruction & 0xC0) == 0x40:
             self.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
+        elif (instruction & 0xC7) == 0x06:
+            self.mvi(self.get_reg8d_from_inst(instruction))
         elif instruction == 0x00:
             self.ALU.nop()
         elif (instruction & 0xF8) == 0xB0:
@@ -193,17 +170,9 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0xE9:
             self.pchl()
         elif (instruction & 0xCF) == 0xC1:
-            rp = self.get_reg16_from_inst(instruction)
-            if self.is_rp_meaning_sp(rp):
-                self.pop_psw()
-            else:
-                self.pop_instr(rp)
+            self.pop_general(self.get_reg16_from_inst(instruction))
         elif (instruction & 0xCF) == 0xC5:
-            rp = self.get_reg16_from_inst(instruction)
-            if self.is_rp_meaning_sp(rp):
-                self.push_psw()
-            else:
-                self.push_instr(rp)
+            self.push_general(self.get_reg16_from_inst(instruction))
         elif instruction == 0x17:
             self.ALU.ral()
         elif instruction == 0x1F:
@@ -246,15 +215,9 @@ class Intel8080(AbstractProcessor):
             # to skip increment of pc at jumps
             return
         elif (instruction & 0xF8) == 0x98:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                result = self.get_h_l_value()
-            else:
-                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-
-            self.ALU.sbb(result)
+            self.sbb(self.get_reg8d_from_inst(instruction))
         elif instruction == 0xDE:
-            result = self.get_one_byte_data()
-            self.ALU.sbi(result)
+            self.ALU.sbi(self.get_one_byte_data())
         elif instruction == 0x22:
             self.shld()
         elif instruction == 0xF9:
@@ -268,21 +231,15 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0x37:
             self.ALU.stc()
         elif (instruction & 0xF8) == 0x90:
-            if self.reg_is_mem(self.get_reg8d_from_inst(instruction)):
-                result = self.get_h_l_value()
-            else:
-                result = self.ALU.get_reg8_val(self.get_reg8s_from_inst(instruction))
-
-            self.ALU.sub(result)
+            self.sub(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xD6:
-            result = self.get_one_byte_data()
-            self.ALU.sui(result)
+            self.ALU.sui(self.get_one_byte_data())
         elif instruction == 0xEB:
             self.ALU.xchg()
         elif (instruction & 0xf8) == 0xA8:
             self.xra(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xEE:
-            self.xri()
+            self.ALU.xri(self.get_one_byte_data())
         elif instruction == 0xE3:
             self.xthl()
 
@@ -430,6 +387,27 @@ class Intel8080(AbstractProcessor):
         self.set_sp(new_sp)
         return val_l, val_h
 
+    def adc(self, reg8):
+        if self.reg_is_mem(reg8):
+            result = self.program[self.get_h_l_address()]
+        else:
+            result = self.ALU.get_reg8_val(reg8)
+        self.ALU.adc(result)
+
+    def add(self, reg8):
+        if self.reg_is_mem(reg8):
+            result = self.get_h_l_value()
+        else:
+            result = self.ALU.get_reg8_val(reg8)
+        self.ALU.add(result)
+
+    def ana(self, reg8):
+        if self.reg_is_mem(reg8):
+            result = self.program[self.get_h_l_address()]
+        else:
+            result = self.ALU.get_reg8_val(reg8)
+        self.ALU.ana(result)
+
     def call(self):
         self.call_on(True)
 
@@ -451,6 +429,13 @@ class Intel8080(AbstractProcessor):
 
     def cm(self):
         self.call_on(self.ALU.get_sign_flag())
+
+    def cmp(self, reg8):
+        if self.reg_is_mem(reg8):
+            result = self.program[self.get_h_l_address()]
+        else:
+            result = self.ALU.get_reg8_val(reg8)
+        self.ALU.cmp(result)
 
     def cnc(self):
         self.call_on(not self.ALU.get_carry_flag())
@@ -492,15 +477,15 @@ class Intel8080(AbstractProcessor):
         else:
             self.ALU.set_carry_flag(False)
 
-    def dcr(self, register):
-        if self.reg_is_mem(register):
+    def dcr(self, reg8):
+        if self.reg_is_mem(reg8):
             value = np.uint8(self.program[self.get_h_l_address()])
             result = np.uint8(value - 1)
             self.set_memory_byte(self.get_h_l_address(), result)
         else:
-            value = np.uint8(self.ALU.get_reg8_val(register))
+            value = np.uint8(self.ALU.get_reg8_val(reg8))
             result = np.uint8(value - 1)
-            self.registers.set_register8_with_offset(register, result)
+            self.registers.set_register8_with_offset(reg8, result)
 
         self.ALU.evaluate_zsp_flags(True, True, True, result)
         ac, cy = self.ALU.binary_sub(value, 1)
@@ -531,17 +516,17 @@ class Intel8080(AbstractProcessor):
         data = self.get_byte_from_data_bus()
         self.registers.set_register8_with_offset(char_to_reg("a"), data)
 
-    def inr(self, register):
-        if self.reg_is_mem(register):
+    def inr(self, reg8):
+        if self.reg_is_mem(reg8):
             value = self.get_h_l_value()
             result = np.uint8(value + 1)
             ac, cy = self.ALU.binary_add(value, 1, 0)
             self.set_memory_byte(self.get_h_l_address(), result)
         else:
-            value = self.registers.get_register_with_offset(register)
+            value = self.registers.get_register_with_offset(reg8)
             result = np.uint8(value + 1)
             ac, cy = self.ALU.binary_add(value, 1, 0)
-            self.registers.set_register8_with_offset(register, result)
+            self.registers.set_register8_with_offset(reg8, result)
 
         self.ALU.evaluate_zsp_flags(True, True, True, result)
         self.ALU.set_auxiliary_carry_flag(ac)
@@ -599,11 +584,9 @@ class Intel8080(AbstractProcessor):
         self.jump_on(self.ALU.get_zero_flag())
 
     def lda(self):
-        low = self.get_one_byte_data()
-        high = self.get_one_byte_data()
-        address = build_16bit_from_8bits(high, low)
-        value = self.get_memory_byte(address)
-        self.registers.set_register8_with_offset(char_to_reg("a"), value)
+        address_l = self.get_one_byte_data()
+        address_h = self.get_one_byte_data()
+        self.ldax(address_l, address_h)
 
     def ldax(self, address_l, address_h):
         address = build_16bit_from_8bits(address_h, address_l)
@@ -660,18 +643,20 @@ class Intel8080(AbstractProcessor):
         else:
             self.registers.set_register8_with_offset(to, value)
 
-    def ora(self, register):
-        if self.reg_is_mem(register):
+    def mvi(self, reg8):
+        data = self.get_one_byte_data()
+        if self.reg_is_mem(reg8):
+            self.set_memory_byte(self.get_h_l_address(), data)
+        else:
+            self.ALU.mvi(reg8, data)
+
+    def ora(self, reg8):
+        if self.reg_is_mem(reg8):
             value = self.get_h_l_value()
         else:
-            value = np.uint8(self.registers.get_register_with_offset(register))
+            value = np.uint8(self.registers.get_register_with_offset(reg8))
 
-        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
-        value = np.uint8(value | value_a)
-        self.registers.set_register8_with_offset(char_to_reg("a"), value)
-
-        self.ALU.evaluate_zsp_flags(True, True, True, value)
-        self.ALU.set_cy_ac_flags(False, False)
+        self.ALU.ori(value)
 
     def out_put(self):
         # TODO Daten müssen noch wohin
@@ -689,6 +674,12 @@ class Intel8080(AbstractProcessor):
         value = build_16bit_from_8bits(val_h, val_l)
         self.set_pc(value)
 
+    def pop_general(self, rp):
+        if self.is_rp_meaning_sp(rp):
+            self.pop_psw()
+        else:
+            self.pop_instr(rp)
+
     def pop_instr(self, rp):
         val_l, val_h = self.pop()
         self.set_rp_values(rp, val_h, val_l)
@@ -698,6 +689,12 @@ class Intel8080(AbstractProcessor):
 
         self.set_processor_status_word(val_flags)
         self.registers.set_register8_with_offset(char_to_reg("a"), val_a)
+
+    def push_general(self, rp):
+        if self.is_rp_meaning_sp(rp):
+            self.push_psw()
+        else:
+            self.push_instr(rp)
 
     def push_instr(self, rp):
         reg_h_value, reg_l_value = self.get_rp_values(rp)
@@ -777,6 +774,13 @@ class Intel8080(AbstractProcessor):
         new_address = np.uint16(8 * address_code)
         self.set_pc(new_address)
 
+    def sbb(self, reg8):
+        if self.reg_is_mem(reg8):
+            result = self.get_h_l_value()
+        else:
+            result = self.ALU.get_reg8_val(reg8)
+        self.ALU.sbb(result)
+
     def shld(self):
         address_low = self.get_one_byte_data()
         address_high = self.get_one_byte_data()
@@ -789,6 +793,10 @@ class Intel8080(AbstractProcessor):
         val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
         val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
         self.push(val_h, val_l)
+
+    def stax(self, address):
+        val_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
+        self.set_memory_byte(address, val_a)
 
     def sta(self):
         address_low = self.get_one_byte_data()
@@ -808,28 +816,19 @@ class Intel8080(AbstractProcessor):
         address = build_16bit_from_8bits(address_high, address_low)
         self.stax(address)
 
-    def stax(self, address):
-        val_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
-        self.set_memory_byte(address, val_a)
+    def sub(self, reg8):
+        if self.reg_is_mem(reg8):
+            result = self.get_h_l_value()
+        else:
+            result = self.ALU.get_reg8_val(reg8)
+        self.ALU.sub(result)
 
-    def excl_or(self, value):
-        value_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
-        result = np.uint8(value ^ value_a)
-        self.registers.set_register8_with_offset(char_to_reg("a"), result)
-
-        self.ALU.evaluate_zsp_flags(True, True, True, result)
-        self.ALU.set_cy_ac_flags(False, False)
-
-    def xra(self, register, value):
-        if self.reg_is_mem(register):
+    def xra(self, reg8):
+        if self.reg_is_mem(reg8):
             value = self.get_h_l_value()
         else:
-            value = np.uint8(self.registers.get_register_with_offset(register))
-        self.excl_or(value)
-
-    def xri(self):
-        data = self.get_one_byte_data()
-        self.excl_or(data)
+            value = np.uint8(self.registers.get_register_with_offset(reg8))
+        self.ALU.xri(value)
 
     def xthl(self):
         stack_l, stack_h = self.pop()
@@ -838,3 +837,18 @@ class Intel8080(AbstractProcessor):
         self.push(val_h, val_l)
         self.registers.set_register8_with_offset(char_to_reg("h"), stack_h)
         self.registers.set_register8_with_offset(char_to_reg("l"), stack_l)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
