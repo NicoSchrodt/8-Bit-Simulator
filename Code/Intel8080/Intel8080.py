@@ -842,3 +842,28 @@ class Intel8080(AbstractProcessor):
         self.push(val_h, val_l)
         self.registers.set_register8_with_offset(char_to_reg("h"), stack_h)
         self.registers.set_register8_with_offset(char_to_reg("l"), stack_l)
+
+    # Invalid Operations (For the purpose of the simulation)
+    def set_acc(self, value):
+        self.registers.set_register8(9, value)
+
+    def get_acc(self):
+        return self.registers.get_register(9)
+
+    def set_temp_acc(self, value):
+        self.ALU.set_temp_acu(value)
+
+    def get_temp_acc(self):
+        return self.ALU.get_temp_acu()
+
+    def set_instruction_reg(self, value):
+        self.registers.set_instruction_reg(value)
+
+    def get_instruction_reg(self):
+        return self.registers.get_instruction_reg()
+
+    def set_latch_bit(self, bit, value):
+        self.registers.manual_latch(bit, value)
+
+    def set_buffer(self, value):
+        self.peripherals.set_address_buffer(value)

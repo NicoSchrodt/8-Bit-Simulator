@@ -60,3 +60,15 @@ class Intel8080_Registers():
         # If I understood it correctly, the latch can only receive data in pairs from BC, DE and HL
         # Other registers can only be read in 8-bit through the multiplexer (Except SP and PC ?)
 
+    def set_instruction_reg(self, value):
+        self.instruction_register = np.uint8(value)
+
+    def get_instruction_reg(self):
+        return self.instruction_register
+
+    # Invalid Operations (For the purpose of the simulation)
+    def manual_latch(self, bit, value): # Technically illegal operation
+        if value == 1:
+            self.address_latch = self.address_latch | (1 << bit)
+        elif value == 0:
+            self.address_latch = self.address_latch & (~(1 << bit))

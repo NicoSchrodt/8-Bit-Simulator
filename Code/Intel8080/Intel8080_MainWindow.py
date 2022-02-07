@@ -30,8 +30,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
         self.processor = Intel8080()
-        self.processor.run()
-        self.update_registers_table()
+        # self.processor.run()
 
         # Thread Initialization
         self.monitor = None
@@ -73,6 +72,8 @@ class Intel8080_MainWindow(QMainWindow):
         self.setWindowTitle("Intel8080 Simulator")
         self.setWindowIcon(QIcon("../ui/Logo.png"))
 
+        self.reload_registers_table()
+
     def getQTableWidgetSize(self, object):
         w = object.verticalHeader().width() + 2  # +2 seems to be needed
         for i in range(object.columnCount()):
@@ -113,12 +114,10 @@ class Intel8080_MainWindow(QMainWindow):
         if filepath[0] != "":
             self.processor.load_program(filepath[0])
             self.Program_table.setRowCount(0)  # Clear Table
-            print(self.processor.program_length / 2)
             for i in range(int(self.processor.program_length / 2)):
                 row = self.Program_table.rowCount()
                 self.Program_table.insertRow(row)
                 self.Program_table.setItem(row, 0, QTableWidgetItem(""))
-                print(self.processor.program[i])
                 self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
                                                                     + " " + hex(self.processor.program[i + 1])))
         self.reload_registers_table()
@@ -157,35 +156,29 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reload_registers_table(self):  # This functions makes the ui match the registers
         Registers_table = self.Registers_table
-        registers = self.processor.registers
-        alu = self.processor.ALU
-        Registers_table.cellWidget(0, 0).setText(str(registers.registers[0]))
-        Registers_table.cellWidget(1, 0).setText(str(registers.registers[1]))
-        Registers_table.cellWidget(2, 0).setText(str(registers.registers[9]))
-        Registers_table.cellWidget(3, 0).setText(str(alu.temp_accumulator))
-        Registers_table.cellWidget(4, 0).setText(str(registers.instruction_register))
+        Processor = self.processor
+
+        Registers_table.cellWidget(0, 0).setText(str(Processor.get_pc()))  # PC
+        Registers_table.cellWidget(1, 0).setText(str(Processor.get_sp()))  # SP
+        Registers_table.cellWidget(2, 0).setText(str(Processor.get_acc()))  # ACC
+        Registers_table.cellWidget(3, 0).setText(str(Processor.get_temp_acc()))  # Temp-ACC
+        Registers_table.cellWidget(4, 0).setText(str(Processor.get_instruction_reg()))  # INST
 
     def update_registers_table(self):  # This function makes the registers match the ui
+        Processor = self.processor
         Registers_table = self.Registers_table
-        registers = self.processor.registers
-        alu = self.processor.ALU
-        # Registers_table.cellWidget(0, 0).setText('{:x}'.format(registers.registers[0]))  # PC
-        registers.registers[0] = int(Registers_table.cellWidget(0, 0).text(), 16)
-        # Registers_table.cellWidget(1, 0).setText('{:x}'.format(registers.registers[1]))  # SP
-        registers.registers[1] = int(Registers_table.cellWidget(1, 0).text(), 16)
-        # Registers_table.cellWidget(2, 0).setText('{:x}'.format(registers.registers[9]))  # ACC
-        registers.registers[9] = int(Registers_table.cellWidget(2, 0).text(), 16)
-        # Registers_table.cellWidget(3, 0).setText('{:x}'.format(alu.temp_accumulator))  # Temp-ACC
-        alu.temp_accumulator = int(Registers_table.cellWidget(3, 0).text(), 16)
-        # Registers_table.cellWidget(4, 0).setText('{:x}'.format(registers.instruction_register))  # INST
-        registers.instruction_register = int(Registers_table.cellWidget(4, 0).text(), 16)
+        Processor.set_pc(int(Registers_table.cellWidget(0, 0).text(), 16))  # PC
+        Processor.set_sp(int(Registers_table.cellWidget(1, 0).text(), 16))  # SP
+        Processor.set_acc(int(Registers_table.cellWidget(2, 0).text(), 16))  # ACC
+        Processor.set_temp_acc(int(Registers_table.cellWidget(3, 0).text(), 16))  # Temp-ACC
+        Processor.set_instruction_reg(int(Registers_table.cellWidget(4, 0).text(), 16))  # INST
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
         AddressLatch_table = self.AddressLatch_table
-        registers = self.processor.registers
-        value = ""
+        string_value = ""
         for i in range(16):
-            value = value + str(int(AddressLatch_table.cellWidget(0, i).text()))
-        value = int(value, 2)
-        registers.address_latch = np.uint16(value)
-        self.processor.peripherals.set_address_buffer(value)
+            value = int(AddressLatch_table.cellWidget(0, i).text())
+            string_value = string_value + str(value)
+            self.processor.set_latch_bit((15 - i), value)
+        value = int(string_value, 2)
+        self.processor.set_buffer(value)
