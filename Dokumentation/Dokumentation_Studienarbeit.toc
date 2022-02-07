@@ -5,34 +5,36 @@
 \contentsline {section}{Abkürzungsverzeichnis}{V}{section*.5}%
 \contentsline {section}{\numberline {1}Einführung}{1}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Ziel der Arbeit}{1}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Theoretische Grundlagen}{2}{subsection.1.2}%
-\contentsline {subsubsection}{\numberline {1.2.1}Architektur eines Prozessors}{2}{subsubsection.1.2.1}%
-\contentsline {subsubsection}{\numberline {1.2.2}Befehlsformate}{2}{subsubsection.1.2.2}%
-\contentsline {subsubsection}{\numberline {1.2.3}CISC und RISC}{3}{subsubsection.1.2.3}%
-\contentsline {subsubsection}{\numberline {1.2.4}Parallelität nach Flynn}{4}{subsubsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2}Zeitplan}{1}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Theoretische Grundlagen}{2}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Architektur eines Prozessors}{2}{subsubsection.1.3.1}%
+\contentsline {subsubsection}{\numberline {1.3.2}Befehlsformate}{2}{subsubsection.1.3.2}%
+\contentsline {subsubsection}{\numberline {1.3.3}CISC und RISC}{3}{subsubsection.1.3.3}%
+\contentsline {subsubsection}{\numberline {1.3.4}Parallelität nach Flynn}{4}{subsubsection.1.3.4}%
+\contentsline {subsection}{\numberline {1.4}Instruction Sets}{5}{subsection.1.4}%
 \contentsline {section}{\numberline {2}Projektplanung}{6}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Zeitplan}{6}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Auswahl geeigneter Varianten}{6}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Instruction Sets}{6}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Intel 8080}{6}{subsection.2.4}%
-\contentsline {subsubsection}{\numberline {2.4.1}Register}{6}{subsubsection.2.4.1}%
-\contentsline {subsubsection}{\numberline {2.4.2}Befehle}{7}{subsubsection.2.4.2}%
-\contentsline {subsubsection}{\numberline {2.4.3}Data Transfer Group}{8}{subsubsection.2.4.3}%
-\contentsline {subsubsection}{\numberline {2.4.4}Arithmetic Group}{8}{subsubsection.2.4.4}%
-\contentsline {subsubsection}{\numberline {2.4.5}Logical Group}{9}{subsubsection.2.4.5}%
-\contentsline {subsubsection}{\numberline {2.4.6}Branch Group}{9}{subsubsection.2.4.6}%
-\contentsline {subsubsection}{\numberline {2.4.7}Stack, I/O and Machine Control Group}{9}{subsubsection.2.4.7}%
-\contentsline {subsubsection}{\numberline {2.4.8}Maschinenzyklen und Typen}{10}{subsubsection.2.4.8}%
-\contentsline {subsection}{\numberline {2.5}Beispielprozessor 2}{10}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Beispielprozessor 3 ...}{10}{subsection.2.6}%
-\contentsline {section}{\numberline {3}Umsetzung}{11}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Abstraktion der Architektur}{11}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}ALU}{11}{subsubsection.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.1.2}Akkumulator}{11}{subsubsection.3.1.2}%
-\contentsline {subsubsection}{\numberline {3.1.3}Instruction Register}{11}{subsubsection.3.1.3}%
-\contentsline {subsubsection}{\numberline {3.1.4}DataBus}{11}{subsubsection.3.1.4}%
-\contentsline {subsubsection}{\numberline {3.1.5}etc.}{11}{subsubsection.3.1.5}%
-\contentsline {subsection}{\numberline {3.2}Ablauf der Simulation}{11}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Tutorials}{11}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Fazit und Ausblick}{12}{section.4}%
-\contentsline {section}{Literatur}{13}{section.4}%
+\contentsline {subsection}{\numberline {2.1}Auswahl geeigneter Varianten}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Intel 8080}{6}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Register}{6}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Befehle}{6}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Data Transfer Group}{7}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}Arithmetic Group}{8}{subsubsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.5}Logical Group}{8}{subsubsection.2.2.5}%
+\contentsline {subsubsection}{\numberline {2.2.6}Branch Group}{9}{subsubsection.2.2.6}%
+\contentsline {subsubsection}{\numberline {2.2.7}Stack, I/O and Machine Control Group}{9}{subsubsection.2.2.7}%
+\contentsline {subsubsection}{\numberline {2.2.8}Maschinenzyklen und Typen}{9}{subsubsection.2.2.8}%
+\contentsline {subsection}{\numberline {2.3}Beispielprozessor 2}{11}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Beispielprozessor 3 ...}{11}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Umsetzung}{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Abstraktion der Architektur}{12}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Prozessor}{12}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}ALU}{12}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Register}{12}{subsubsection.3.1.3}%
+\contentsline {subsubsection}{\numberline {3.1.4}Peripherie}{12}{subsubsection.3.1.4}%
+\contentsline {subsection}{\numberline {3.2}Möglichkeiten des Simulation}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Ablauf der Simulation}{13}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Aufbau der GUI}{13}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Tutorials}{13}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Implementierung}{14}{section.4}%
+\contentsline {section}{\numberline {5}Fazit und Ausblick}{15}{section.5}%
+\contentsline {section}{Literatur}{16}{section.5}%

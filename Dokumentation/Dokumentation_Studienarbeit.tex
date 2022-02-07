@@ -137,13 +137,14 @@ Ort, Datum\hfill Unterschrift\hspace{4cm}
 \cleardoublepage
 \section*{Abkürzungsverzeichnis}
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-ALU - Arithmetic Logic Unit
-CISC - Complex Instruction Set Computer
-MISD - Multiple-instruction stream single-data stream
-MIMD - Multiple-instruction stream multiple-data stream
-RISC - Reduced Instruction Set Computer
-SISD - Single-instruction stream single-data stream
-SIMD - Single-instruction stream multiple-data stream
+\textbf{ALU} - Arithmetic Logic Unit\\
+\textbf{CISC} - Complex Instruction Set Computer\\
+\textbf{GUI} - Graphical User Interface\\
+\textbf{MISD} - Multiple-instruction stream single-data stream\\
+\textbf{MIMD} - Multiple-instruction stream multiple-data stream\\
+\textbf{RISC} - Reduced Instruction Set Computer\\
+\textbf{SISD} - Single-instruction stream single-data stream\\
+\textbf{SIMD} - Single-instruction stream multiple-data stream
 
 \newpage
 \pagenumbering{arabic}
@@ -176,6 +177,9 @@ Dieses Kapitel befasst sich vorwiegend mit relevanten Grundlagen der Arbeit. Unt
 
 \subsection{Ziel der Arbeit}
 In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem mehrere unterschiedliche 8-Bit Prozessoren simuliert werden können. Dazu sollen die Grundlegenden Eigenschaften in kurzen Lernprogrammen erläutert werden. Ebenfalls soll es eine interaktive Einweisung geben wie der Simulator verwendet werden kann.
+
+\subsection{Zeitplan}
+Platzhalter
 
 \newpage
 
@@ -219,7 +223,7 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
  
 
 \subsubsection{Parallelität nach Flynn}
-Von Andreas
+Von Andreas\\
 1966 wurden von Micheal Flynn die folgenden vier Arten von Parallelisierung eingeführt [Flynn 949]:
 
 \begin{itemize}
@@ -228,29 +232,21 @@ Von Andreas
 \item Multiple-instruction stream, single-data stream (MISD)
 \item Multiple-instruction stream, multiple-data stream (MIMD)
 \end{itemize}
-
+\noindent
 \textbf{SISD}\\
 Diese Beschreibung trifft auf die einfachen Einprozessorsysteme zu. Dabei kann immer nur eine Operation gleichzeitig ausgeführt werden und diese werden in nur einer möglichen Reihenfolge aus einem Daten-Strom abgearbeitet.\\
-
+\noindent
 \textbf{SIMD}\\
 Bei SIMD werden Pipelines eingesetzt, die es ermöglichen mehrere korrekte Abfolgen von Programmbefehlen auszuführen. So können unterschiedliche Programme in sich selber in der richtigen Reihenfolge aber mit anderen Programmen abwechselnd ausgeführt werden.\\
-
+\noindent
 \textbf{MISD}\\
 Diese Variante scheint auf Anhieb keinen effizienten Nutzen zu besitzen, da mehrere Prozessoren alle die gleichen Befehle ausführen, die aus einem Daten-Strom stammen. Dies kann aber dazu verwendet werden um die Korrektheit durch Redundanzen zu bestätigen. \\
-
+\noindent
 \textbf{MIMD}\\
 Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutzutage ist dies unter dem Begriff Mehrprozessorsysteme bekannt. So werden für jeden einzelnen Prozessor ein Daten-Strom erzeugt der unabhängig von den anderen Prozessoren arbeiten kann. Dabei ist es für die Prozessoren aber trotzdem möglich die Daten der anderen Prozessoren zu nutzen. Nur durch MIMD oder MISD, also die Ausführung mit mehreren unabhängigen Prozessoren, ist es möglich Programme tatsächlich parallel ablaufen zu lassen. Mit SISD oder SIMD sind nur quasi parallele Ausführungen möglich.\\
 
-\newpage
-
-\section{Projektplanung}
-Platzhalter
-\subsection{Zeitplan}
-\subsection{Auswahl geeigneter Varianten}
-
-
 \subsection{Instruction Sets}
-Von Andreas
+Von Andreas\\
 Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
 \begin{itemize}
 \item Daten Transfer Gruppe
@@ -262,17 +258,25 @@ Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
 Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOVE Befehlen. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. [Intel 8080 S.46 (4-1)]
 \\
 
+\newpage
+
+\section{Projektplanung}
+Platzhalter
+
+\subsection{Auswahl geeigneter Varianten}
+Vor der Implementierung des Simulators müssen einer oder mehrere geeignete Prozessoren ausgewählt werden. In den nachfolgenden Kapiteln werden einige potenzielle Kandidaten näher analysiert und beschrieben.
+
 \subsection{Intel 8080}
-Von Andreas\\
+Der Intel8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Aufgrund der überschaubaren Komplexität besteht auch die Möglichkeit diesen in einem größeren Unmfang zu simulieren.
 
 \subsubsection{Register}
-Von Andreas\noindent
+Von Andreas\\ \noindent
 Der Intel 8080 besitzt ein SRAM Array mit 16-bit Register. Darin enthalten sind der Programm Counter mit 16-bit und der Stack Pointer mit 16-bit. Dazu gibt es noch acht weitere 8-bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-bit Register als ein 16-bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. 
 Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. \textbf{Über das Adress-Latch oder den Incrementer/Decrementer-Circuit ist es möglich 16-Bit aus den Registern weiterzuleiten. Von dort aus können die Werte dann in den Adress-Puffer geschrieben werden.} [Intel 8080 S16 (2-2)]
 
 
 \subsubsection{Befehle}
-Von Andreas\noindent
+Von Andreas\\ \noindent
 Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Opcode oder Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
 \begin{itemize}
 \item Direct
@@ -439,21 +443,35 @@ In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während
 
 
 \subsection{Beispielprozessor 2}
+Fällt vermutlich weg
 \subsection{Beispielprozessor 3 ...}
+s.o.\\
+Kommentar: Ein weiterer Prozessor sollte zumindest in Ansätzen analysiert werden.
 
 \newpage
 
 \section{Umsetzung}
-Platzhalter
+In diesem Kapitel wird darauf eingegangen wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
 \subsection{Abstraktion der Architektur}
+Es ist vorgesehen, dass der Prozessor in verschiedene Unterklassen aufgeteilt wird. Dabei ist vorgesehen das dies in einer Art Stern-Struktur aufgebaut wird, das heißt die verschiedenen Bestandteile des Prozessors sollen alle mit einer zentralen Klasse interagieren, aber nicht untereinander.
+\subsubsection{Prozessor}
+Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zu unterscheiden zwischen zwei Arten von Anfragen, gültige und ungültige. Gemeint ist sind damit Anfragen in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen die unzulässig wären, wie den Programmzähler manuell zu setzen.
 \subsubsection{ALU}
-\subsubsection{Akkumulator}
-\subsubsection{Instruction Register}
-\subsubsection{DataBus}
-\subsubsection{etc.}
+Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten.
+\subsubsection{Register}
+Die Register-Klasse soll ähnlich wie die ALU den Zugriff möglichst realitätsgetreu simulieren. Dabei sollen Methoden die den Zugriff regeln ähnlich aufgebaut werden wie es im echten Prozessor möglich wäre.
+\subsubsection{Peripherie}
+Mit der Peripherie soll alles abgedeckt werden was nicht Teil der zentralen Bestandteile ist, also der Register oder der ALU. Dazu zählt zum Beispiel ein externer Datenbus oder Schnittstellen für bspw. Taktsignal o.ä.
+\subsection{Möglichkeiten des Simulation}
+Um einen Ablauf für die Simulation festzulegen muss erst bestimmt welche Parameter eingestellt, welche Optionen verändert und welche Operationen im Simulator durchgeführt werden können.
 \subsection{Ablauf der Simulation}
+\subsection{Aufbau der GUI}
 \subsection{Tutorials}
 
+\newpage
+
+\section{Implementierung}
+Platzhalter
 \newpage
 
 \section{Fazit und Ausblick}
