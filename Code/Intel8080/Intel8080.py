@@ -724,7 +724,7 @@ class Intel8080(AbstractProcessor):
 
         # Byte besteht aus  7 6 5 4  3 2 1 0
         #                   s z 0 ac 0 p 1 cy
-        byte = cy + 2 + p * pow(2, 2) + ac * pow(2, 4) + z * pow(2, 6) + s * pow(2, 7)
+        byte = s * pow(2, 7) + z * pow(2, 6) + ac * pow(2, 4) + p * pow(2, 2) + 2 + cy
         return np.uint8(byte)
 
     def set_processor_status_word(self, byte):
