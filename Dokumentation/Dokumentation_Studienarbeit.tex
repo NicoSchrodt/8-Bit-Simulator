@@ -59,6 +59,9 @@
 
 \newcommand{\Ort}{Karlsruhe}
 
+
+\newcommand{\imgSpaceBefore}{\\[0.2cm]}
+
 %\newcommand{\Abgabedatum}{16.02.2021}
 
 
@@ -434,7 +437,7 @@ Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Mas
 \end{itemize}\noindent
 Jeder Maschinenzyklus besteht nochmal aus drei bis fünf Zuständen. So kann ein Befehl insgesamt zwischen vier und achtzehn Zuständen andauern.
 In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während des SYNC-Taktes kodiert. Die folgende Abbildung zeigt, wie die Befehlstypen über die \textbf{Data Lines} kodiert werden. [Intel 8080 S17ff. 2-3]
-
+\imgSpaceBefore
 
 \begin{figure}[h]
 \caption{Kodierung der Befehlstypen beim SYNC Takt}
@@ -476,6 +479,7 @@ Um einen Ablauf für die Simulation festzulegen muss erst bestimmt welche Parame
 Mit diesem Simulator soll es möglich sein Assembler Code in ein Textfeld einzugeben und diesen dann ausführen zu können. Damit dies möglich ist muss der Assembler Code erst erstellt werden. Dies wird mit einem einfachen Assembler aus dem Internet gemacht. Dieser erstellt aus dem Source Code (.asm) eine .com-Datei, woraus die Befehle byteweise ausgelesen werden können. Manche Befehle verwenden aber auch mehr als ein Byte. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Lables/Sprungmarken abspeichert.
 
 Unser eigentlicher Simulator verendet nur die .com-Dateien. Aus dieser Datei wird als aller ersten nur ein Byte gelesen. Mithilfe des ersten Bytes wird analysiert um welchen Befehl es sich handelt. Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen Befehl gebraucht werden. Somit werden nie zu wenig oder zu viele Bytes gelesen. Aus der Datei werden immer anhand des Programmzählers die nächsten Bytes ausgelesen. In unserem Programm wurde das so implementiert, dass direkt beim lesen eines Bytes der Programmzähler um eins erhöht wird. Damit muss aber darauf geachtet werden, dass Bytes nicht mehrfach gelesen werden sollen, da, zum einen zwei unterschiedliche Werte gelesen werden und zum anderen der Programmzähler um ein weiteres Mal erhäht wird und somit ein Byte überspringt.
+\imgSpaceBefore
 
 \begin{figure}[h]
 \caption{Implementierung des Lesens eines Bytes}
@@ -503,6 +507,7 @@ wird der Assembler Code compiliert. Um damit später besser arbeiten zu können,
 Um einen Befehl analysieren zu können muss zunächst ein Byte aus dem Array gelesen werden. Dieser Wert wird mehrfach mit vielen Hexadezimalen Werten verglichen. Anhand der Dokumentation des Intel 8080 werden somit alle Befehle unterschieden. 
 [TODO] Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq mit dem Wert 0xCE beschrieben.  
 Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Ebenfalls ist in Abbildung \ref{fig:ReadInstruction} zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei der die ersten 5 Byte mit dem Wert 0x88 übereinstimmen. 
+\imgSpaceBefore
 
 \begin{figure}[h]
 \caption{Implementierung des Lesens des ersten Bytes eines Befehls}
@@ -519,6 +524,31 @@ Bei einigen anderen Befehlen wird diese Mechanik genauso verwendet. Es gibt aber
 
 
 \subsection{Mehrfach verwendete Methoden}
+
+Der Intel 8080 kennt mehrere Befehle, die sowohl eine direkte als auch eine indirekte Variante. Der Unterschied bei diesen Varianten sind nur, dass die Werte, mit denen gerechnet wird, von unterschiedliche Stellen geladen werden. Aus diesem Grund greifen beide Befehle im Hintergrund auf die gleichen Methoden zu. Somit ist sicher gestellt, dass falls nochmal etwas an der Implementierung geändert werden soll, das nur an einer Stelle gemach werden muss.
+
+Ein Beispiel dafür ist die \glqq Subtract register/immediate from A with borrow (SBB/SBI)\grqq. Es gibt für beide Mnemonics eine Methode in der Intel8080-Klasse aber die Methode von SBB leitet später in der ALU-Klasse nur noch auf die SBI-Methode weiter.
+\imgSpaceBefore
+
+\begin{figure}[h]
+\caption{Zugrunde liegende Implementierung von SBB und SBI}
+\centering
+\includegraphics[width=15cm]{Bilder/DoubleUsedMethodSubtract}
+\label{fig:DoubleUsedMethodSubtract}
+\end{figure}
+
+Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelesen und damit die Methode SBI in der ALU-Klasse aufgerufen. Für SBB wird zunächst in der Intel8080-Klasse noch der Wert aus dem Speicher gelesen, da dies von der ALU nicht möglich ist. Mit dem gelesenem Wert wird dann in der ALU-Klasse die SBB-Methode aufgerufen. Diese leitet innnerhalb der Klasse aber nur noch auf die SBI Methode weiter.
+\\
+
+Ähnliches wird auch bei bei den Sprungbefehlen gemacht. Dort gibt es mehrere Varianten, die aber nur auf unterschiedliche Flags reagieren. Deshalb wurde auch dort eine zugrundeliegende Methode geschrieben, auf die alle anderen verweisen. So wird nur für die spezifische Varianten, das verwendete Flag weitergegeben.  Abbildung \ref{fig:JumpVariants} zeigt wie bei den Jump on Carry Befehl vorgegangen wird. So ruft die jc-Methode, die jump\-on-Methode mit dem Carry-Flag auf. In der jump\_on-Methode werden immer die nächsten zwei Bytes gelesen, die auf die Programmstelle weisen, auf die gesprungen werden soll. Nur sofern das übergebene Flag gesetzt ist wird der Sprung ausgeführt. Wenn nicht wird das Programm normal weitergeführt.
+\imgSpaceBefore
+
+\begin{figure}[h]
+\caption{Implementierung der Sprungbefehle}
+\centering
+\includegraphics[width=15cm]{Bilder/JumpVariants}
+\label{fig:JumpVariants}
+\end{figure}
 
 \newpage
 
