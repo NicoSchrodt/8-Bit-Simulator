@@ -35,7 +35,9 @@ class Intel8080(AbstractProcessor):
         self.peripherals = Intel8080_Peripherals()
         self.program = [0] * pow(2, 16)
         self.program_length = 0
-        self.interrupt = False
+        self.interrupt_enabled = False
+        self.interrupted = False
+        self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
         self.halt = False
 
     def nextCycle(self):
@@ -43,208 +45,39 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextCycle
 
     def nextInstruction(self):
+        if self.instruction_is_completed():
+            if self.interrupted:
+                self.interrupted = False
+                self.interrupt_enabled = False
+                self.perform_interrupt_subroutine()
+                self.interrupt_enabled = True
+
+                # to skip increment of pc
+                return
+
         if (self.get_pc() < len(self.program)) and (self.get_memory_byte(self.get_pc()) != 0):
             instruction = self.get_memory_byte(self.get_pc())
         else:
             return
 
-        # TODO Überträge müssen noch getestet werden
-        if instruction == 0xCE:
-            self.ALU.aci(self.get_one_byte_data())
-        elif (instruction & 0xF8) == 0x88:
-            self.adc(self.get_reg8d_from_inst(instruction))
-        elif (instruction & 0xF8) == 0x80:
-            self.add(self.get_reg8d_from_inst(instruction))
-        elif instruction == 0xC6:
-            self.ALU.adi(self.get_one_byte_data())
-        elif (instruction & 0xF8) == 0xA0:
-            self.ana(self.get_reg8d_from_inst(instruction))
-        elif instruction == 0xE6:
-            self.ALU.ani(self.get_one_byte_data())
-        elif instruction == 0xCD:
-            self.call()
-            # to skip increment of pc at calls
-            return
-        elif instruction == 0xDC:
-            self.cc()
-            return
-        elif instruction == 0xFC:
-            self.cm()
-            return
-        elif instruction == 0x2F:
-            self.ALU.cma()
-        elif instruction == 0x3F:
-            self.ALU.cmc()
-        elif (instruction & 0xF8) == 0xB8:
-            self.cmp(self.get_reg8d_from_inst(instruction))
-        elif instruction == 0xD4:
-            self.cnc()
-            return
-        elif instruction == 0xC4:
-            self.cnz()
-            return
-        elif instruction == 0xF4:
-            self.cp()
-            return
-        elif instruction == 0xEC:
-            self.cpe()
-            return
-        elif instruction == 0xFE:
-            self.ALU.cpi(self.get_one_byte_data())
-        elif instruction == 0xE4:
-            self.cpo()
-            return
-        elif instruction == 0xCC:
-            self.cz()
-            return
-        elif instruction == 0x27:
-            self.ALU.daa()
-        elif (instruction & 0xCF) == 0x09:
-            self.dad(self.get_reg16_from_inst(instruction))
-        elif (instruction & 0xC7) == 0x05:
-            self.dcr(self.get_reg8d_from_inst(instruction))
-        elif (instruction & 0xCF) == 0x0B:
-            self.dcx(self.get_reg16_from_inst(instruction))
-        elif instruction == 0xF3:
-            self.di()
-        elif instruction == 0xFB:
-            self.ei()
-        elif instruction == 0x76:
-            self.hlt()
-        elif instruction == 0xDD:
-            self.in_put()
-        elif (instruction & 0xC7) == 0x04:
-            self.inr(self.get_reg8d_from_inst(instruction))
-        elif (instruction & 0xCF) == 0x03:
-            self.inx(self.get_reg16_from_inst(instruction))
-        elif instruction == 0xDA:
-            self.jc()
-            # to skip increment of pc at jumps
-            return
-        elif instruction == 0xFa:
-            self.jm()
-            return
-        elif instruction == 0xC3:
-            self.jmp()
-            return
-        elif instruction == 0xD2:
-            self.jnc()
-            return
-        elif instruction == 0xC2:
-            self.jnz()
-            return
-        elif instruction == 0xF2:
-            self.jp()
-            return
-        elif instruction == 0xEA:
-            self.jpe()
-            return
-        elif instruction == 0xE2:
-            self.jpo()
-            return
-        elif instruction == 0xCA:
-            self.jz()
-            return
-        elif instruction == 0x3A:
-            self.lda()
-        elif instruction == 0x0A:
-            self.ldax_b()
-        elif instruction == 0x1A:
-            self.ldax_d()
-        elif instruction == 0x2A:
-            self.lhld()
-        elif (instruction & 0xCF) == 0x01:
-            self.lxi(self.get_reg16_from_inst(instruction))
-        elif (instruction & 0xC0) == 0x40:
-            self.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
-        elif (instruction & 0xC7) == 0x06:
-            self.mvi(self.get_reg8d_from_inst(instruction))
-        elif instruction == 0x00:
-            self.ALU.nop()
-        elif (instruction & 0xF8) == 0xB0:
-            self.ora(self.get_reg8s_from_inst(instruction))
-        elif instruction == 0xF6:
-            self.ALU.ori(self.get_one_byte_data())
-        elif instruction == 0xD3:
-            self.out_put()
-        elif instruction == 0xE9:
-            self.pchl()
-        elif (instruction & 0xCF) == 0xC1:
-            self.pop_general(self.get_reg16_from_inst(instruction))
-        elif (instruction & 0xCF) == 0xC5:
-            self.push_general(self.get_reg16_from_inst(instruction))
-        elif instruction == 0x17:
-            self.ALU.ral()
-        elif instruction == 0x1F:
-            self.ALU.rar()
-        elif instruction == 0xD8:
-            self.rc()
-            # to skip increment of pc at jumps
-            return
-        elif instruction == 0xC9:
-            self.ret()
-            return
-        elif instruction == 0x07:
-            self.ALU.rlc()
-        elif instruction == 0xF8:
-            self.rm()
-            return
-        elif instruction == 0xB0:
-            self.rnc()
-            return
-        elif instruction == 0xC0:
-            self.rnz()
-            return
-        elif instruction == 0xF0:
-            self.rp()
-            return
-        elif instruction == 0xE8:
-            self.rpe()
-            return
-        elif instruction == 0x70:
-            self.rpo()
-            return
-        elif instruction == 0x0F:
-            self.ALU.rrc()
-        elif (instruction & 0xC7) == 0xC7:
-            self.rst(self.get_reg8d_from_inst(instruction))
-            # to skip increment of pc at jumps
-            return
-        elif instruction == 0xC8:
-            self.rz()
-            # to skip increment of pc at jumps
-            return
-        elif (instruction & 0xF8) == 0x98:
-            self.sbb(self.get_reg8d_from_inst(instruction))
-        elif instruction == 0xDE:
-            self.ALU.sbi(self.get_one_byte_data())
-        elif instruction == 0x22:
-            self.shld()
-        elif instruction == 0xF9:
-            self.sphl()
-        elif instruction == 0x32:
-            self.sta()
-        elif instruction == 0x02:
-            self.stax_b()
-        elif instruction == 0x22:
-            self.stax_d()
-        elif instruction == 0x37:
-            self.ALU.stc()
-        elif (instruction & 0xF8) == 0x90:
-            self.sub(self.get_reg8s_from_inst(instruction))
-        elif instruction == 0xD6:
-            self.ALU.sui(self.get_one_byte_data())
-        elif instruction == 0xEB:
-            self.ALU.xchg()
-        elif (instruction & 0xf8) == 0xA8:
-            self.xra(self.get_reg8s_from_inst(instruction))
-        elif instruction == 0xEE:
-            self.ALU.xri(self.get_one_byte_data())
-        elif instruction == 0xE3:
-            self.xthl()
+        skip_pc_incr = self.identify_and_execute_instruction(instruction)
 
-        self.nextCycle()
+        if not skip_pc_incr:
+            self.nextCycle()
         # Concrete Implementation of nextInstruction
+
+    def instruction_is_completed(self):
+        return True #TODO
+
+    def prepare_interrupt_subroutine(self):
+
+        return
+
+    # Any device may supply an RST instruction (and indeed may supply anyone-byte 8080 instruction).
+    # 9800301D_8080_8085_Assembly_Language_Programming_Manual_May81.pdf
+    def perform_interrupt_subroutine(self):
+        self.identify_and_execute_instruction(self.interrupt_instruction)
+        return
 
     def load_program(self, filepath):
         # This is supposed to replace "insert_program"-method later
@@ -368,7 +201,7 @@ class Intel8080(AbstractProcessor):
         return np.uint8(self.get_memory_byte(self.get_pc()))
 
     def is_interrupt_enabled(self):
-        return self.interrupt
+        return self.interrupt_enabled
 
     def is_halted(self):
         return self.halt
@@ -391,6 +224,203 @@ class Intel8080(AbstractProcessor):
         new_sp = np.uint16(sp + 2)
         self.set_sp(new_sp)
         return val_l, val_h
+
+    def identify_and_execute_instruction(self, instruction):
+        if instruction == 0xCE:
+            self.ALU.aci(self.get_one_byte_data())
+        elif (instruction & 0xF8) == 0x88:
+            self.adc(self.get_reg8d_from_inst(instruction))
+        elif (instruction & 0xF8) == 0x80:
+            self.add(self.get_reg8d_from_inst(instruction))
+        elif instruction == 0xC6:
+            self.ALU.adi(self.get_one_byte_data())
+        elif (instruction & 0xF8) == 0xA0:
+            self.ana(self.get_reg8d_from_inst(instruction))
+        elif instruction == 0xE6:
+            self.ALU.ani(self.get_one_byte_data())
+        elif instruction == 0xCD:
+            self.call()
+            # to skip increment of pc at calls
+            return True
+        elif instruction == 0xDC:
+            self.cc()
+            return True
+        elif instruction == 0xFC:
+            self.cm()
+            return True
+        elif instruction == 0x2F:
+            self.ALU.cma()
+        elif instruction == 0x3F:
+            self.ALU.cmc()
+        elif (instruction & 0xF8) == 0xB8:
+            self.cmp(self.get_reg8d_from_inst(instruction))
+        elif instruction == 0xD4:
+            self.cnc()
+            return True
+        elif instruction == 0xC4:
+            self.cnz()
+            return True
+        elif instruction == 0xF4:
+            self.cp()
+            return True
+        elif instruction == 0xEC:
+            self.cpe()
+            return True
+        elif instruction == 0xFE:
+            self.ALU.cpi(self.get_one_byte_data())
+        elif instruction == 0xE4:
+            self.cpo()
+            return True
+        elif instruction == 0xCC:
+            self.cz()
+            return True
+        elif instruction == 0x27:
+            self.ALU.daa()
+        elif (instruction & 0xCF) == 0x09:
+            self.dad(self.get_reg16_from_inst(instruction))
+        elif (instruction & 0xC7) == 0x05:
+            self.dcr(self.get_reg8d_from_inst(instruction))
+        elif (instruction & 0xCF) == 0x0B:
+            self.dcx(self.get_reg16_from_inst(instruction))
+        elif instruction == 0xF3:
+            self.di()
+        elif instruction == 0xFB:
+            self.ei()
+        elif instruction == 0x76:
+            self.hlt()
+        elif instruction == 0xDD:
+            self.in_put()
+        elif (instruction & 0xC7) == 0x04:
+            self.inr(self.get_reg8d_from_inst(instruction))
+        elif (instruction & 0xCF) == 0x03:
+            self.inx(self.get_reg16_from_inst(instruction))
+        elif instruction == 0xDA:
+            self.jc()
+            # to skip increment of pc at jumps
+            return True
+        elif instruction == 0xFa:
+            self.jm()
+            return True
+        elif instruction == 0xC3:
+            self.jmp()
+            return True
+        elif instruction == 0xD2:
+            self.jnc()
+            return True
+        elif instruction == 0xC2:
+            self.jnz()
+            return True
+        elif instruction == 0xF2:
+            self.jp()
+            return True
+        elif instruction == 0xEA:
+            self.jpe()
+            return True
+        elif instruction == 0xE2:
+            self.jpo()
+            return True
+        elif instruction == 0xCA:
+            self.jz()
+            return True
+        elif instruction == 0x3A:
+            self.lda()
+        elif instruction == 0x0A:
+            self.ldax_b()
+        elif instruction == 0x1A:
+            self.ldax_d()
+        elif instruction == 0x2A:
+            self.lhld()
+        elif (instruction & 0xCF) == 0x01:
+            self.lxi(self.get_reg16_from_inst(instruction))
+        elif (instruction & 0xC0) == 0x40:
+            self.mov(self.get_reg8s_from_inst(instruction), self.get_reg8d_from_inst(instruction))
+        elif (instruction & 0xC7) == 0x06:
+            self.mvi(self.get_reg8d_from_inst(instruction))
+        elif instruction == 0x00:
+            self.ALU.nop()
+        elif (instruction & 0xF8) == 0xB0:
+            self.ora(self.get_reg8s_from_inst(instruction))
+        elif instruction == 0xF6:
+            self.ALU.ori(self.get_one_byte_data())
+        elif instruction == 0xD3:
+            self.out_put()
+        elif instruction == 0xE9:
+            self.pchl()
+        elif (instruction & 0xCF) == 0xC1:
+            self.pop_general(self.get_reg16_from_inst(instruction))
+        elif (instruction & 0xCF) == 0xC5:
+            self.push_general(self.get_reg16_from_inst(instruction))
+        elif instruction == 0x17:
+            self.ALU.ral()
+        elif instruction == 0x1F:
+            self.ALU.rar()
+        elif instruction == 0xD8:
+            self.rc()
+            # to skip increment of pc at jumps
+            return True
+        elif instruction == 0xC9:
+            self.ret()
+            return True
+        elif instruction == 0x07:
+            self.ALU.rlc()
+        elif instruction == 0xF8:
+            self.rm()
+            return True
+        elif instruction == 0xB0:
+            self.rnc()
+            return True
+        elif instruction == 0xC0:
+            self.rnz()
+            return True
+        elif instruction == 0xF0:
+            self.rp()
+            return True
+        elif instruction == 0xE8:
+            self.rpe()
+            return True
+        elif instruction == 0x70:
+            self.rpo()
+            return True
+        elif instruction == 0x0F:
+            self.ALU.rrc()
+        elif (instruction & 0xC7) == 0xC7:
+            self.rst(self.get_reg8d_from_inst(instruction))
+            # to skip increment of pc at jumps
+            return True
+        elif instruction == 0xC8:
+            self.rz()
+            # to skip increment of pc at jumps
+            return True
+        elif (instruction & 0xF8) == 0x98:
+            self.sbb(self.get_reg8d_from_inst(instruction))
+        elif instruction == 0xDE:
+            self.ALU.sbi(self.get_one_byte_data())
+        elif instruction == 0x22:
+            self.shld()
+        elif instruction == 0xF9:
+            self.sphl()
+        elif instruction == 0x32:
+            self.sta()
+        elif instruction == 0x02:
+            self.stax_b()
+        elif instruction == 0x22:
+            self.stax_d()
+        elif instruction == 0x37:
+            self.ALU.stc()
+        elif (instruction & 0xF8) == 0x90:
+            self.sub(self.get_reg8s_from_inst(instruction))
+        elif instruction == 0xD6:
+            self.ALU.sui(self.get_one_byte_data())
+        elif instruction == 0xEB:
+            self.ALU.xchg()
+        elif (instruction & 0xf8) == 0xA8:
+            self.xra(self.get_reg8s_from_inst(instruction))
+        elif instruction == 0xEE:
+            self.ALU.xri(self.get_one_byte_data())
+        elif instruction == 0xE3:
+            self.xthl()
+
+        return False
 
     def adc(self, reg8):
         if self.reg_is_mem(reg8):
@@ -508,10 +538,10 @@ class Intel8080(AbstractProcessor):
             self.registers.set_2_8bit_reg_with_offset((rp * 2), result)
 
     def di(self):
-        self.interrupt = False
+        self.interrupt_enabled = False
 
     def ei(self):
-        self.interrupt = True
+        self.interrupt_enabled = True
 
     def hlt(self):
         self.halt = True
@@ -537,7 +567,7 @@ class Intel8080(AbstractProcessor):
         self.ALU.set_auxiliary_carry_flag(ac)
 
     # Eine Dokumentation sagt, dass "inx e" auch möglich ist und würde den carry vom low byte zum high byte nicht
-    # verwenden. Andere Doku sagt, dass es gar nicht möglich ist. Momentaner compiler kann "inx e" nicht.
+    # verwenden. Andere Doku sagt, dass es gar nicht möglich ist. Momentaner Assembler kann "inx e" nicht.
     # Instruction Code ist dann 0x76 = NOP
     def inx(self, rp):
         if self.is_rp_meaning_sp(rp):

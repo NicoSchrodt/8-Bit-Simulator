@@ -502,7 +502,7 @@ Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implement
 \subsection{Erkennen eines Befehls aus einem Byte}
 Nachdem der Assembler Code in das Textfeld eingegeben wurde und 
 [TODO] auf \glqq Play\grqq gedrückt wurde, 
-wird der Assembler Code compiliert. Um damit später besser arbeiten zu können, werden diese Werte direkt in einem Array für den Prozessor gespeichert. In jeder Zelle steht dann genau ein Byte. 
+wird der Assembler Code erstellt. Um damit später besser arbeiten zu können, werden diese Werte direkt in einem Array für den Prozessor gespeichert. In jeder Zelle steht dann genau ein Byte.
 
 Um einen Befehl analysieren zu können muss zunächst ein Byte aus dem Array gelesen werden. Dieser Wert wird mehrfach mit vielen Hexadezimalen Werten verglichen. Anhand der Dokumentation des Intel 8080 werden somit alle Befehle unterschieden. 
 [TODO] Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq mit dem Wert 0xCE beschrieben.  
