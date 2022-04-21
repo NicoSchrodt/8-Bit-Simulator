@@ -23,6 +23,91 @@ class runThread(QObject):
             self.Source.emit()
 
 
+command_length_dict = {
+    0xCE: 1,  # ACI
+    0x88: 0,  # ADC BIT 0-2 REG --> 0xF8
+    0x80: 0,  # ADD BIT 0-2 REG --> 0xF8
+    0xC6: 1,  # ADI
+    0xA0: 0,  # ANA BIT 0-2 REG --> 0xF8
+    0xE6: 1,  # ANI
+    0xCD: 2,  # CALL
+    0xDC: 2,  # CALL CC
+    0xFC: 2,  # CALL CM
+    0x2F: 0,  # CMA
+    0x3F: 0,  # CMC
+    0xB8: 0,  # CMP BIT 0-2 REG --> 0xF8
+    0xD4: 2,  # CALL CNC
+    0xC4: 2,  # CALL CNZ
+    0xF4: 2,  # CALL CP
+    0xEC: 2,  # CALL CPE
+    0xFE: 1,  # CPI
+    0xE4: 2,  # CALL CPO
+    0xCC: 2,  # CALL CZ
+    0x27: 0,  # DAA
+    0x09: 0,  # DAD BIT 4-5 OP --> 0xCF
+    0x05: 0,  # DCR BIT 3-5 REG --> 0xC7
+    0x0B: 0,  # DCX BIT 4-5 OP --> 0xCF
+    0xF3: 0,  # DI
+    0xFB: 0,  # EI
+    0x76: 0,  # HLT
+    0xDD: 1,  # IN TODO: Maybe wrong, 0xDB?
+    0x00: 0,  # INR
+    0x00: 0,  # INX
+    0x00: 0,  # JC
+    0x00: 0,  # JM
+    0x00: 0,  # JMP
+    0x00: 0,  # JNC
+    0x00: 0,  # JNZ
+    0x00: 0,  # JP
+    0x00: 0,  # JPE
+    0x00: 0,  # JPO
+    0x00: 0,  # JZ
+    0x00: 0,  # LDA
+    0x00: 0,  # LDAX_B
+    0x00: 0,  # LDAX_D
+    0x00: 0,  # LHLD
+    0x00: 0,  # LXI
+    0x00: 0,  # MOV
+    0x00: 0,  # MVI
+    0x00: 0,  # NOP
+    0x00: 0,  # ORA
+    0x00: 0,  # ORI
+    0x00: 0,  # OUT
+    0x00: 0,  # PHCL
+    0x00: 0,  # POP
+    0x00: 0,  # PUSH
+    0x00: 0,  # RAL
+    0x00: 0,  # RAR
+    0x00: 0,  # RC
+    0x00: 0,  # RET
+    0x00: 0,  # RLC
+    0x00: 0,  # RM
+    0x00: 0,  # RNC
+    0x00: 0,  # RNZ
+    0x00: 0,  # RP
+    0x00: 0,  # RPE
+    0x00: 0,  # RPO
+    0x00: 0,  # RRC
+    0x00: 0,  # RST
+    0x00: 0,  # RZ
+    0x00: 0,  # SBB
+    0x00: 0,  # SBI
+    0x00: 0,  # SHLD
+    0x00: 0,  # SPHL
+    0x00: 0,  # STA
+    0x00: 0,  # STAX_B
+    0x00: 0,  # STAX_D
+    0x00: 0,  # STC
+    0x00: 0,  # SUB
+    0x00: 0,  # SUI
+    0x00: 0,  # XCHG
+    0x00: 0,  # XRA
+    0x00: 0,  # XRI
+    0x00: 0,  # XTHL
+}
+
+command_masks = [0xFF, 0xF8, 0xCF, 0xC7]
+
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(Intel8080_MainWindow, self).__init__(None)
@@ -113,13 +198,8 @@ class Intel8080_MainWindow(QMainWindow):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
         if filepath[0] != "":
             self.processor.load_program(filepath[0])
-            self.Program_table.setRowCount(0)  # Clear Table
-            for i in range(int(self.processor.program_length / 2)):
-                row = self.Program_table.rowCount()
-                self.Program_table.insertRow(row)
-                self.Program_table.setItem(row, 0, QTableWidgetItem(""))
-                self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
-                                                                    + " " + hex(self.processor.program[i + 1])))
+            self.fill_program_table()
+            #self.fill_program_table_new()
         self.reload_registers_table()
 
     def reset_go(self):
@@ -153,6 +233,34 @@ class Intel8080_MainWindow(QMainWindow):
         btn = self.sender()
         self.dialog = ChangeValueWindow(self, btn)
         self.dialog.show()
+
+    def fill_program_table(self):
+        self.Program_table.setRowCount(0)  # Clear Table
+        for i in range(int(self.processor.program_length / 2)):
+            row = self.Program_table.rowCount()
+            self.Program_table.insertRow(row)
+            self.Program_table.setItem(row, 0, QTableWidgetItem(""))
+            self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
+                                                                + " " + hex(self.processor.program[i + 1])))
+    def fill_program_table_new(self):
+        self.Program_table.setRowCount(0)  # Clear Table
+        try:
+            for i in range(self.processor.program_length):
+                for j in range(len(command_masks)):
+                    masked_command = self.processor.program[i] & command_masks[j]
+                    if masked_command in command_length_dict:
+                        operands = command_length_dict[self.processor.program[i]]
+                        row = self.Program_table.rowCount()
+                        self.Program_table.insertRow(row)
+                        self.Program_table.setItem(row, 0, QTableWidgetItem(""))
+                        itemtext = hex(self.processor.program[i])
+                        for k in range(i, i + operands):
+                            itemtext = itemtext + " " + hex(self.processor.program[k + 1])
+                        self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
+                        break
+        except Exception as e:
+            print("ERROR: " + str(e))
+
 
     def reload_registers_table(self):  # This functions makes the ui match the registers
         Registers_table = self.Registers_table
