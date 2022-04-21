@@ -67,7 +67,7 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextInstruction
 
     def instruction_is_completed(self):
-        return True #TODO
+        return True # TODO
 
     def prepare_interrupt_subroutine(self):
 
@@ -288,7 +288,7 @@ class Intel8080(AbstractProcessor):
             self.ei()
         elif instruction == 0x76:
             self.hlt()
-        elif instruction == 0xDD:
+        elif instruction == 0xDD:  # TODO: Should be 0xDB I think, Also operand should be used in function call in_put()
             self.in_put()
         elif (instruction & 0xC7) == 0x04:
             self.inr(self.get_reg8d_from_inst(instruction))
