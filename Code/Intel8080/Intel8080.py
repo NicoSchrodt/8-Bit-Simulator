@@ -3,6 +3,9 @@ from pathlib import Path
 
 import numpy as np
 
+from Code.Intel8080.CycleClasses.Parents.Fetch.Fetch import Fetch
+from Code.Intel8080.CycleClasses.Parents.Instruction import Instruction
+from Code.Intel8080.Test.States import States
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
@@ -39,6 +42,38 @@ class Intel8080(AbstractProcessor):
         self.interrupted = False
         self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
         self.halt = False
+
+        self.machine_cycle = Fetch(self)
+        self.state = States.T1
+        self.cpu_instruction_register = 0x00
+        self.current_instruction = Instruction(self)
+
+    def nextState(self):
+        # if instruction was completed
+        if self.current_instruction.next_state():
+            self.nextInstruction()  # noch schauen was richtig ist
+
+
+    # def stateTransitions(self):
+    #     self.machine_cycle.t1(self)
+    #     self.machine_cycle.t2(self)
+    #     if not READY and HLTA:
+    #         if HLTA:
+    #             x=0
+    #             # Rechter Block fehlt Seite 21 Intel8080
+    #         else:
+    #             while not READY:
+    #                 self.machine_cycle.tw(self)
+    #     else:
+    #         if HOLD:
+    #             x=0
+    #             #  Set internal Hold f/f
+    #         else:
+    #             self.machine_cycle.t3(self)
+    #             self.machine_cycle.t4(self)
+    #             self.machine_cycle.t5(self)
+    #         #unterer Teil fehlt
+
 
     def nextCycle(self):
         self.registers.increment_pc()
@@ -428,6 +463,7 @@ class Intel8080(AbstractProcessor):
         else:
             result = self.ALU.get_reg8_val(reg8)
         self.ALU.adc(result)
+
 
     def add(self, reg8):
         if self.reg_is_mem(reg8):

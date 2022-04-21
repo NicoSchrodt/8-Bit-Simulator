@@ -550,6 +550,10 @@ Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelese
 \label{fig:JumpVariants}
 \end{figure}
 
+
+\subsection{Interrupts}
+Interrupts werden erst ausgeführt, wenn der momentane Befehl abgearbeitet wurde. Normalerweise wird ein RESET-Befehl mit einem Interrupt mitgeschickt. Mit 3 Bits kann damit entschieden werden wo die Subroutine beginnen soll. Byte 0, 8, 16 ... 56. Es kann aber auch einfach nur ein 1-Byte Befehl ausgeführt werden. 
+
 \newpage
 
 \section{Fazit und Ausblick}
