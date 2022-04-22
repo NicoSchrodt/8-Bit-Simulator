@@ -6,7 +6,7 @@ from PyQt6 import QtCore
 from PyQt6.QtCore import QObject, QThread
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QHeaderView, QFileDialog
 from PyQt6.uic import loadUi
-from PyQt6.QtGui import QCloseEvent, QIcon
+from PyQt6.QtGui import QCloseEvent, QIcon, QColor
 
 from Code.Intel8080.Intel8080 import Intel8080
 from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
@@ -106,7 +106,7 @@ command_length_dict = {
     0xE3: 0,  # XTHL
 }
 
-command_masks = [0xFF, 0xF8, 0xCF, 0xC0, 0xC7]
+command_masks = [0xFF, 0xF8, 0xCF, 0xC7, 0xC0]
 
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -154,6 +154,9 @@ class Intel8080_MainWindow(QMainWindow):
         Program_table = self.Program_table
         Program_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
 
+        self.instruction_positions = []
+        self.previous_pc = 0
+
         self.setWindowTitle("Intel8080 Simulator")
         self.setWindowIcon(QIcon("../ui/Logo.png"))
 
@@ -200,14 +203,17 @@ class Intel8080_MainWindow(QMainWindow):
             self.processor.load_program(filepath[0])
             #self.fill_program_table()
             self.fill_program_table_new()
+        self.color_program_table()
         self.reload_registers_table()
 
     def reset_go(self):
-        self.autorun = not self.autorun
+        if self.processor.program_length != 0:
+            self.autorun = not self.autorun
 
     def reset_intel8080(self):
         self.processor.reset_processor()
         self.reload_registers_table()
+        self.color_program_table()
 
     def closeEvent(self, event: QCloseEvent):
         self.monitor.ExitFlag = True
@@ -219,14 +225,16 @@ class Intel8080_MainWindow(QMainWindow):
 
     @QtCore.pyqtSlot()
     def tasker_thread(self):
-        if self.autorun:
+        if self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
             print("Performed Instruction, Automatic")
             self.processor.nextInstruction()
+            self.color_program_table()
             self.reload_registers_table()
 
     def perform_instruction(self):
-        if not self.autorun:
+        if not self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
             self.processor.nextInstruction()
+            self.color_program_table()
             self.reload_registers_table()
 
     def pressed_table_cell(self):
@@ -243,13 +251,17 @@ class Intel8080_MainWindow(QMainWindow):
             self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
                                                                 + " " + hex(self.processor.program[i + 1])))
     def fill_program_table_new(self):
+        self.instruction_positions = []
         self.Program_table.setRowCount(0)  # Clear Table
         try:
             i = 0
             while i < self.processor.program_length:
+                self.instruction_positions.append(i)
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
                     if masked_command in command_length_dict:
+                        print("UnMasked:" + str(hex(self.processor.program[i])))
+                        print( "Masked:" + str(hex(masked_command)))
                         operands = command_length_dict[masked_command]
                         row = self.Program_table.rowCount()
                         self.Program_table.insertRow(row)
@@ -262,7 +274,22 @@ class Intel8080_MainWindow(QMainWindow):
                 i += operands + 1
         except Exception as e:
             print("ERROR: " + str(e))
+        print(self.instruction_positions)
 
+    def color_program_table(self):
+        try:
+            previousItem = self.Program_table.item(self.instruction_positions.index(self.previous_pc), 0)
+            previousItem_txt = self.Program_table.item(self.instruction_positions.index(self.previous_pc), 1)
+            previousItem.setBackground(QColor(255, 255, 255))
+            previousItem_txt.setBackground(QColor(255, 255, 255))
+            currentItem = self.Program_table.item(self.instruction_positions.index(self.processor.get_pc()), 0)
+            currentItem_txt = self.Program_table.item(self.instruction_positions.index(self.processor.get_pc()), 1)
+            currentItem.setBackground(QColor(152, 245, 255))
+            currentItem_txt.setBackground(QColor(152, 245, 255))
+
+            self.previous_pc = self.processor.get_pc()
+        except Exception as e:
+            print("Exception" + str(e))
 
     def reload_registers_table(self):  # This functions makes the ui match the registers
         Registers_table = self.Registers_table
