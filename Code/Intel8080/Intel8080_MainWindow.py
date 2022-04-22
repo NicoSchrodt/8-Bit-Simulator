@@ -50,7 +50,7 @@ command_length_dict = {
     0xF3: 0,  # DI
     0xFB: 0,  # EI
     0x76: 0,  # HLT
-    0xDD: 1,  # IN TODO: Maybe wrong, 0xDB?
+    0xDB: 1,  # IN
     0x04: 0,  # INR BIT 3-5 REG --> 0xC7
     0x03: 0,  # INX BIT 4-5 OP --> 0xCF
     0xDA: 2,  # JC
@@ -106,7 +106,7 @@ command_length_dict = {
     0xE3: 0,  # XTHL
 }
 
-command_masks = [0xFF, 0xF8, 0xCF, 0xC7]
+command_masks = [0xFF, 0xF8, 0xCF, 0xC0, 0xC7]
 
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
