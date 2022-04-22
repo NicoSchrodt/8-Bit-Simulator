@@ -403,7 +403,7 @@ class Intel8080(AbstractProcessor):
             self.sta()
         elif instruction == 0x02:
             self.stax_b()
-        elif instruction == 0x22:
+        elif instruction == 0x12:
             self.stax_d()
         elif instruction == 0x37:
             self.ALU.stc()
@@ -413,7 +413,7 @@ class Intel8080(AbstractProcessor):
             self.ALU.sui(self.get_one_byte_data())
         elif instruction == 0xEB:
             self.ALU.xchg()
-        elif (instruction & 0xf8) == 0xA8:
+        elif (instruction & 0xF8) == 0xA8:
             self.xra(self.get_reg8s_from_inst(instruction))
         elif instruction == 0xEE:
             self.ALU.xri(self.get_one_byte_data())

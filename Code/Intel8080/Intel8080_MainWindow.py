@@ -51,58 +51,58 @@ command_length_dict = {
     0xFB: 0,  # EI
     0x76: 0,  # HLT
     0xDD: 1,  # IN TODO: Maybe wrong, 0xDB?
-    0x00: 0,  # INR
-    0x00: 0,  # INX
-    0x00: 0,  # JC
-    0x00: 0,  # JM
-    0x00: 0,  # JMP
-    0x00: 0,  # JNC
-    0x00: 0,  # JNZ
-    0x00: 0,  # JP
-    0x00: 0,  # JPE
-    0x00: 0,  # JPO
-    0x00: 0,  # JZ
-    0x00: 0,  # LDA
-    0x00: 0,  # LDAX_B
-    0x00: 0,  # LDAX_D
-    0x00: 0,  # LHLD
-    0x00: 0,  # LXI
-    0x00: 0,  # MOV
+    0x04: 0,  # INR BIT 3-5 REG --> 0xC7
+    0x03: 0,  # INX BIT 4-5 OP --> 0xCF
+    0xDA: 2,  # JC
+    0xFA: 2,  # JM
+    0xC3: 2,  # JMP
+    0xD2: 2,  # JNC
+    0xC2: 2,  # JNZ
+    0xF2: 2,  # JP
+    0xEA: 2,  # JPE
+    0xE2: 2,  # JPO
+    0xCA: 2,  # JZ
+    0x3A: 2,  # LDA
+    0x0A: 0,  # LDAX_B
+    0x1A: 0,  # LDAX_D
+    0x2A: 2,  # LHLD
+    0x01: 2,  # LXI BIT 4-5 REG --> 0xCF
+    0x40: 0,  # MOV BIT 0-2, 3-5 OP --> 0xC0
     0x06: 1,  # MVI BIT 3-5 DATA --> 0xC7
     0x00: 0,  # NOP
-    0x00: 0,  # ORA
-    0x00: 0,  # ORI
-    0x00: 0,  # OUT
-    0x00: 0,  # PHCL
-    0x00: 0,  # POP
+    0xB0: 0,  # ORA BIT 0-2 REG --> 0xF8
+    0xF6: 1,  # ORI
+    0xD3: 1,  # OUT
+    0xE9: 0,  # PCHL
+    0xC1: 0,  # POP BIT 4-5 OP --> 0xCF
     0xC5: 0,  # PUSH BIT 4-5 OP --> 0xCF
-    0x00: 0,  # RAL
-    0x00: 0,  # RAR
-    0x00: 0,  # RC
-    0x00: 0,  # RET
-    0x00: 0,  # RLC
-    0x00: 0,  # RM
-    0x00: 0,  # RNC
-    0x00: 0,  # RNZ
-    0x00: 0,  # RP
-    0x00: 0,  # RPE
-    0x00: 0,  # RPO
-    0x00: 0,  # RRC
-    0x00: 0,  # RST
-    0x00: 0,  # RZ
-    0x00: 0,  # SBB
-    0x00: 0,  # SBI
-    0x00: 0,  # SHLD
-    0x00: 0,  # SPHL
-    0x00: 0,  # STA
-    0x00: 0,  # STAX_B
-    0x00: 0,  # STAX_D
-    0x00: 0,  # STC
-    0x00: 0,  # SUB
-    0x00: 0,  # SUI
-    0x00: 0,  # XCHG
-    0x00: 0,  # XRA
-    0x00: 0,  # XRI
+    0x17: 0,  # RAL
+    0x1F: 0,  # RAR
+    0xD8: 0,  # RC
+    0xC9: 0,  # RET
+    0x07: 0,  # RLC
+    0xF8: 0,  # RM
+    0xD0: 0,  # RNC
+    0xC0: 0,  # RNZ
+    0xF0: 0,  # RP
+    0xE8: 0,  # RPE
+    0x70: 0,  # RPO
+    0x0F: 0,  # RRC
+    0xC7: 0,  # RST BIT 3-5 OP --> 0xC7
+    0xC8: 0,  # RZ
+    0x98: 0,  # SBB BIT 0-2 REG --> 0xF8
+    0xDE: 1,  # SBI
+    0x22: 2,  # SHLD
+    0xF9: 0,  # SPHL
+    0x32: 2,  # STA
+    0x02: 0,  # STAX_B
+    0x12: 0,  # STAX_D
+    0x37: 0,  # STC
+    0x90: 0,  # SUB BIT 1-3 REG --> 0xF8
+    0xD6: 1,  # SUI
+    0xEB: 0,  # XCHG
+    0xA8: 0,  # XRA BIT 0-2 REG --> 0xF8
+    0xEE: 1,  # XRI
     0xE3: 0,  # XTHL
 }
 
@@ -250,7 +250,6 @@ class Intel8080_MainWindow(QMainWindow):
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
                     if masked_command in command_length_dict:
-                        print("YEEEE")
                         operands = command_length_dict[masked_command]
                         row = self.Program_table.rowCount()
                         self.Program_table.insertRow(row)
