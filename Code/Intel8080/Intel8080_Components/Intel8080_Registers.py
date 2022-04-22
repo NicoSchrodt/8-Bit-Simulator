@@ -41,9 +41,11 @@ class Intel8080_Registers():
         self.registers[first_reg + 1 + reg_offset] = np.uint8(val_l)
 
     def get_register(self, register):
+        register = np.uint8(register)
         return self.registers[register]
 
     def get_register_with_offset(self, register):
+        register = np.uint8(register)
         return self.registers[register + reg_offset]
 
     def fill_latch(self, register_pair):

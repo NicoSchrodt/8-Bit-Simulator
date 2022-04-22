@@ -161,7 +161,7 @@ class Intel8080_MainWindow(QMainWindow):
         Registers_table.cellWidget(0, 0).setText(str(Processor.get_pc()))  # PC
         Registers_table.cellWidget(1, 0).setText(str(Processor.get_sp()))  # SP
         Registers_table.cellWidget(2, 0).setText(str(Processor.get_acc()))  # ACC
-        Registers_table.cellWidget(3, 0).setText(str(Processor.get_temp_acc()))  # Temp-ACC
+        Registers_table.cellWidget(3, 0).setText(str(Processor.get_act()))  # Temp-ACC
         Registers_table.cellWidget(4, 0).setText(str(Processor.get_instruction_reg()))  # INST
 
     def update_registers_table(self):  # This function makes the registers match the ui
@@ -170,7 +170,7 @@ class Intel8080_MainWindow(QMainWindow):
         Processor.set_pc(int(Registers_table.cellWidget(0, 0).text(), 16))  # PC
         Processor.set_sp(int(Registers_table.cellWidget(1, 0).text(), 16))  # SP
         Processor.set_acc(int(Registers_table.cellWidget(2, 0).text(), 16))  # ACC
-        Processor.set_temp_acc(int(Registers_table.cellWidget(3, 0).text(), 16))  # Temp-ACC
+        Processor.set_act(int(Registers_table.cellWidget(3, 0).text(), 16))  # Temp-ACC
         Processor.set_instruction_reg(int(Registers_table.cellWidget(4, 0).text(), 16))  # INST
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation

@@ -3,30 +3,13 @@ from pathlib import Path
 
 import numpy as np
 
-from Code.Intel8080.CycleClasses.Parents.Fetch.Fetch import Fetch
-from Code.Intel8080.CycleClasses.Parents.Instruction import Instruction
-from Code.Intel8080.Test.States import States
+from Code.Intel8080.CycleClasses.Childs.Mov_r_r import Mov_r_r
+from Code.Intel8080.CycleClasses.Parents.Fetch.FetchInstruction import FetchInstruction
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Components.Intel8080_Peripherals import Intel8080_Peripherals
 from Code.Intel8080.Intel8080_Assembler import i8080asm
-
-# rp: b -> b,c
-#     d -> d,e
-#     h -> h,l
-#     sp -> sp
-# first register is high order, second is low order
-
-# LXI SP,0FFFFh
-asm_string = """start:
-mvi h, 12d
-mvi l, 34d
-mvi b, 11d
-mvi c, 22d
-push b
-xthl
-"""
 
 
 class Intel8080(AbstractProcessor):
@@ -43,15 +26,83 @@ class Intel8080(AbstractProcessor):
         self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
         self.halt = False
 
-        self.machine_cycle = Fetch(self)
-        self.state = States.T1
         self.cpu_instruction_register = 0x00
-        self.current_instruction = Instruction(self)
+        self.current_instruction = FetchInstruction(self)
+        self.quittable = True
+        self.instruction_counter = 0
 
-    def nextState(self):
-        # if instruction was completed
-        if self.current_instruction.next_state():
-            self.nextInstruction()  # noch schauen was richtig ist
+        # rp: b -> b,c
+        #     d -> d,e
+        #     h -> h,l
+        #     sp -> sp
+        # first register is high order, second is low order
+
+        # LXI SP,0FFFFh
+        self.asm_string = """start:
+        mvi h, 12d
+        mvi l, 34d
+        mvi b, 11d
+        mvi c, 22d
+        push b
+        xthl
+        """
+
+    def init(self, programm):
+        self.asm_string = programm
+        i8080asm.convert_to_binary(self.asm_string)
+        self.insert_program()
+
+    def run_complete_programm(self, max_instructions=-1):
+        if max_instructions == -1:
+            self.quittable = False
+
+        while not self.quittable or self.instruction_counter < max_instructions:
+            self.current_instruction.next_state()
+            self.current_instruction.next_state()
+            self.current_instruction.next_state()
+            self.decode_instruction()
+
+            while not self.current_instruction.next_state():
+                pass
+
+            self.instruction_counter += 1
+
+    def decode_instruction(self):
+        if (self.cpu_instruction_register & 0xC0) == 0x40:
+            if self.get_sss() == 0b110 or self.get_ddd() == 0b110:
+                x=0
+            else:
+                self.current_instruction = Mov_r_r(self)
+
+        self.current_instruction.load_m1_t4()
+
+    def set_cpu_instruction_register(self, value):
+        self.cpu_instruction_register = np.uint8(value)
+
+    def set_current_instruction(self, instruction):
+        self.current_instruction = instruction
+
+    def get_sss(self):
+        return np.uint8(self.cpu_instruction_register & 0x07)
+
+    def get_sss_value(self):
+        return np.uint8(self.registers.get_register_with_offset(self.get_sss()))
+
+    def get_ddd(self):
+        return np.uint8((self.cpu_instruction_register & 0x38) >> 3)
+
+    def set_ddd(self, value):
+        ddd = np.uint8((self.cpu_instruction_register & 0x38) >> 3)
+        self.registers.set_register8_with_offset(ddd, value)
+
+    def get_byte_from_memory_at_pc(self):
+        return np.uint8(self.get_memory_byte(self.get_pc()))
+
+    def get_tmp(self):
+        return self.ALU.get_tmp()
+
+    def set_tmp(self, value):
+        self.ALU.set_tmp(value)
 
 
     # def stateTransitions(self):
@@ -135,7 +186,7 @@ class Intel8080(AbstractProcessor):
         infile = parent_path.joinpath(output_program + '.com')
 
         with open(infile, 'rb') as file:
-            i = 0
+            i = 1  # verändert von 0
             while True:
                 byte = file.read(1)
                 if byte == b'':
@@ -190,7 +241,7 @@ class Intel8080(AbstractProcessor):
         return np.uint16(self.registers.get_register(1))
 
     def run(self):
-        i8080asm.convert_to_binary(asm_string)
+        i8080asm.convert_to_binary(self.asm_string)
         self.insert_program()
 
         count = 0
@@ -199,10 +250,10 @@ class Intel8080(AbstractProcessor):
             self.nextInstruction()
 
     def get_reg8d_from_inst(self, instruction):
-        return (instruction & 0x38) >> 3
+        return np.uint8((instruction & 0x38) >> 3)
 
     def get_reg8s_from_inst(self, instruction):
-        return instruction & 0x07
+        return np.uint8(instruction & 0x07)
 
     def get_reg16_from_inst(self, instruction):
         return (instruction & 0x30) >> 4
@@ -916,11 +967,11 @@ class Intel8080(AbstractProcessor):
     def get_acc(self):
         return self.registers.get_register(9)
 
-    def set_temp_acc(self, value):
-        self.ALU.set_temp_acu(value)
+    def set_act(self, value):
+        self.ALU.set_act(value)
 
-    def get_temp_acc(self):
-        return self.ALU.get_temp_acu()
+    def get_act(self):
+        return self.ALU.get_act()
 
     def set_instruction_reg(self, value):
         self.registers.set_instruction_reg(value)

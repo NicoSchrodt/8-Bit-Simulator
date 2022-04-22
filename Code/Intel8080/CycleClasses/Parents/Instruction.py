@@ -1,6 +1,9 @@
+#from Code.Intel8080.Intel8080 import Intel8080
+
+
 class Instruction:
 
-    def __init__(self, processor):
+    def __init__(self, processor): #: Intel8080):
         self.machine_cycles = []
         self.last_executed_machine_cycle = 0
         pass
@@ -24,3 +27,6 @@ class Instruction:
     def execute_complete_instruction(self):
         while not self.next_state():
             pass
+
+    def load_m1_t4(self):
+        self.machine_cycles[0].last_executed_state = 3
