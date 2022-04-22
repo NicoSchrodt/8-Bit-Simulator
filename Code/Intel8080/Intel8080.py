@@ -288,7 +288,7 @@ class Intel8080(AbstractProcessor):
             self.ei()
         elif instruction == 0x76:
             self.hlt()
-        elif instruction == 0xDD:  # TODO: Should be 0xDB I think, Also operand should be used in function call in_put()
+        elif instruction == 0xDB:
             self.in_put()
         elif (instruction & 0xC7) == 0x04:
             self.inr(self.get_reg8d_from_inst(instruction))
@@ -298,7 +298,7 @@ class Intel8080(AbstractProcessor):
             self.jc()
             # to skip increment of pc at jumps
             return True
-        elif instruction == 0xFa:
+        elif instruction == 0xFA:
             self.jm()
             return True
         elif instruction == 0xC3:
@@ -366,7 +366,7 @@ class Intel8080(AbstractProcessor):
         elif instruction == 0xF8:
             self.rm()
             return True
-        elif instruction == 0xB0:
+        elif instruction == 0xD0:
             self.rnc()
             return True
         elif instruction == 0xC0:
