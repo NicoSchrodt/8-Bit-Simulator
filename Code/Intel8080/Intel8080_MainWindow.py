@@ -68,14 +68,14 @@ command_length_dict = {
     0x00: 0,  # LHLD
     0x00: 0,  # LXI
     0x00: 0,  # MOV
-    0x00: 0,  # MVI
+    0x06: 1,  # MVI BIT 3-5 DATA --> 0xC7
     0x00: 0,  # NOP
     0x00: 0,  # ORA
     0x00: 0,  # ORI
     0x00: 0,  # OUT
     0x00: 0,  # PHCL
     0x00: 0,  # POP
-    0x00: 0,  # PUSH
+    0xC5: 0,  # PUSH BIT 4-5 OP --> 0xCF
     0x00: 0,  # RAL
     0x00: 0,  # RAR
     0x00: 0,  # RC
@@ -103,7 +103,7 @@ command_length_dict = {
     0x00: 0,  # XCHG
     0x00: 0,  # XRA
     0x00: 0,  # XRI
-    0x00: 0,  # XTHL
+    0xE3: 0,  # XTHL
 }
 
 command_masks = [0xFF, 0xF8, 0xCF, 0xC7]
@@ -198,8 +198,8 @@ class Intel8080_MainWindow(QMainWindow):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
         if filepath[0] != "":
             self.processor.load_program(filepath[0])
-            self.fill_program_table()
-            #self.fill_program_table_new()
+            #self.fill_program_table()
+            self.fill_program_table_new()
         self.reload_registers_table()
 
     def reset_go(self):
@@ -245,11 +245,13 @@ class Intel8080_MainWindow(QMainWindow):
     def fill_program_table_new(self):
         self.Program_table.setRowCount(0)  # Clear Table
         try:
-            for i in range(self.processor.program_length):
+            i = 0
+            while i < self.processor.program_length:
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
                     if masked_command in command_length_dict:
-                        operands = command_length_dict[self.processor.program[i]]
+                        print("YEEEE")
+                        operands = command_length_dict[masked_command]
                         row = self.Program_table.rowCount()
                         self.Program_table.insertRow(row)
                         self.Program_table.setItem(row, 0, QTableWidgetItem(""))
@@ -258,6 +260,7 @@ class Intel8080_MainWindow(QMainWindow):
                             itemtext = itemtext + " " + hex(self.processor.program[k + 1])
                         self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
                         break
+                i += operands + 1
         except Exception as e:
             print("ERROR: " + str(e))
 
