@@ -39,5 +39,5 @@ class TestIntel8080(TestCase):
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(intel.program[100], 2)
-            self.assertEqual(intel.program[99], 3)
+            self.assertEqual(intel.program[99], 2)
+            self.assertEqual(intel.program[98], 3)

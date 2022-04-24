@@ -8,4 +8,4 @@ class rh_mem(State):
     def run(self):
         print("rh_mem")
         high = self.processor.get_rp_values((self.processor.cpu_instruction_register & 0x30) >> 4)
-        self.processor.set_memory_byte(self.processor.get_sp() + 1, high)
+        self.processor.set_memory_byte(self.processor.get_sp() + 2, high)

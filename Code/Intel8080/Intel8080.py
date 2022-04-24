@@ -115,8 +115,7 @@ class Intel8080(AbstractProcessor):
         elif (self.cpu_instruction_register & 0xCF) == 0xC5:
             self.current_instruction = Push_rp(self)
         else:
-            self.current_instruction = FetchInstruction(self)
-            # nacher vllt. NOP
+            self.current_instruction = Nop(self)
 
         self.current_instruction.load_m1_t4()
 
