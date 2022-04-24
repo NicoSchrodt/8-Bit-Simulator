@@ -3,7 +3,10 @@ from pathlib import Path
 
 import numpy as np
 
-from Code.Intel8080.CycleClasses.Childs.Mov_r_r import Mov_r_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
+from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Parents.Fetch.FetchInstruction import FetchInstruction
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
@@ -27,7 +30,9 @@ class Intel8080(AbstractProcessor):
         self.halt = False
 
         self.cpu_instruction_register = 0x00
-        self.current_instruction = FetchInstruction(self)
+        self.current_instruction = Mov_r_r(self)
+        self.current_instruction_state = 1
+
         self.quittable = True
         self.instruction_counter = 0
 
@@ -47,10 +52,36 @@ class Intel8080(AbstractProcessor):
         xthl
         """
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return True
+
     def init(self, programm):
         self.asm_string = programm
         i8080asm.convert_to_binary(self.asm_string)
         self.insert_program()
+
+    def init_test(self, programm):
+        self.asm_string = programm
+        i8080asm.convert_to_binary_for_tests(self.asm_string)
+        self.insert_test_program()
+
+    def next_instruction(self):
+        self.current_instruction.execute_complete_instruction()
+
+    def next_machine_cycle(self):
+        self.current_instruction.next_machine_cycle()
+
+    def next_state(self):
+        if self.current_instruction_state == 4:
+            self.decode_instruction()
+
+        if self.current_instruction.next_state():
+            self.current_instruction_state = 1
+        else:
+            self.current_instruction_state += 1
 
     def run_complete_programm(self, max_instructions=-1):
         if max_instructions == -1:
@@ -73,6 +104,19 @@ class Intel8080(AbstractProcessor):
                 x=0
             else:
                 self.current_instruction = Mov_r_r(self)
+        elif (self.cpu_instruction_register & 0xC7) == 0x06:
+            if self.get_ddd() == 0b110:
+                x=0
+                # memory
+            else:
+                self.current_instruction = Mvi_r(self)
+        elif self.cpu_instruction_register == 0x00:
+            self.current_instruction = Nop(self)
+        elif (self.cpu_instruction_register & 0xCF) == 0xC5:
+            self.current_instruction = Push_rp(self)
+        else:
+            self.current_instruction = FetchInstruction(self)
+            # nacher vllt. NOP
 
         self.current_instruction.load_m1_t4()
 
@@ -181,6 +225,23 @@ class Intel8080(AbstractProcessor):
 
     def insert_program(self):
         output_program = "Intel8080\\Output\\program"
+        parent_path = Path(os.path.abspath(os.path.curdir)).parent
+
+        infile = parent_path.joinpath(output_program + '.com')
+
+        with open(infile, 'rb') as file:
+            i = 1  # verändert von 0
+            while True:
+                byte = file.read(1)
+                if byte == b'':
+                    break
+                else:
+                    self.program[i] = np.uint8(ord(byte))
+                    i += 1
+            self.program_length = i
+
+    def insert_test_program(self):
+        output_program = "Output\\program"
         parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
         infile = parent_path.joinpath(output_program + '.com')

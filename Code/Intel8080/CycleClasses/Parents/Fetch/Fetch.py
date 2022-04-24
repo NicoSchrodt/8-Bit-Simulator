@@ -9,5 +9,4 @@ class Fetch(MachineCycle):
     def __init__(self, processor):
         super().__init__(processor)
         self.states = [FetchState1(processor), FetchState2(processor), FetchState3(processor),
-                       EmptyState(), EmptyState()]
-        self.last_state = 5
+                       ]

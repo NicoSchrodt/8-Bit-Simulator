@@ -6,7 +6,6 @@ class FetchState3(State):
         super().__init__(processor)
 
     def run(self):
-        # instr-> TMP/IR
-        print("fetch state 3: run")
+        print("instr -> IR (Fetch 3)")
         self.processor.cpu_instruction_register = self.processor.get_byte_from_memory_at_pc()
         pass

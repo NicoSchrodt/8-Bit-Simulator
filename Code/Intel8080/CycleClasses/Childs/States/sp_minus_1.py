@@ -1,11 +1,12 @@
+import numpy as np
+
 from Code.Intel8080.CycleClasses.Parents.State import State
 
 
-class FetchState2(State):
+class sp_minus_1(State):
     def __init__(self, processor):
         super().__init__(processor)
 
     def run(self):
-        self.processor.registers.increment_pc()
-        print("PC = PC + 1 (Fetch 2)")
-        pass
+        print("sp_minus_1")
+        self.processor.set_sp(np.uint16(self.processor.get_sp() - 1))

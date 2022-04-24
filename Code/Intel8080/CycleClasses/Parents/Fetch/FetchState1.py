@@ -6,6 +6,5 @@ class FetchState1(State):
         super().__init__(processor)
 
     def run(self):
-        # PC OUT STATUS
-        print("fetch state 1: run")
+        print("PC OUT STATUS (Fetch 1)")
         pass
