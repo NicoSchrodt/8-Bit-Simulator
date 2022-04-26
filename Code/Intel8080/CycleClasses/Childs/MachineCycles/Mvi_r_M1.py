@@ -7,4 +7,3 @@ class M1Mvi_r(Fetch):
         super().__init__(processor)
         self.states.append(EmptyState(processor))
         self.states.append(EmptyState(processor))
-

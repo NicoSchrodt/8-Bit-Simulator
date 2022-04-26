@@ -5,4 +5,5 @@ class EmptyState(State):
     def __init__(self, processor=None):
         super().__init__(processor)
 
-
+    def run(self):
+        print("EmptyState")

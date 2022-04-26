@@ -29,9 +29,10 @@ class Intel8080(AbstractProcessor):
         self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
         self.halt = False
 
-        self.cpu_instruction_register = 0x00
+        self.cpu_instruction_register = np.uint8(0x00)
         self.current_instruction = Mov_r_r(self)
         self.current_instruction_state = 1
+        self.current_machine_cycle = 1
 
         self.quittable = True
         self.instruction_counter = 0
@@ -69,19 +70,40 @@ class Intel8080(AbstractProcessor):
         self.insert_test_program()
 
     def next_instruction(self):
-        self.current_instruction.execute_complete_instruction()
+        while not self.next_machine_cycle():
+            pass
+
+        return self.current_instruction_state == 1
 
     def next_machine_cycle(self):
-        self.current_instruction.next_machine_cycle()
+        while not self.next_state_internal():
+            pass
+
+        return self.current_instruction_state == 1
 
     def next_state(self):
+        self.next_state_internal()
+
+        return self.current_instruction_state == 1
+
+    def next_state_internal(self):
+        if self.current_instruction_state == 1:
+            self.current_instruction = Nop(self)
+
         if self.current_instruction_state == 4:
             self.decode_instruction()
 
         if self.current_instruction.next_state():
-            self.current_instruction_state = 1
+            self.current_instruction_state += 1
+            if self.current_machine_cycle == len(self.current_instruction.get_machine_cycles()):
+                self.current_instruction_state = 1
+                self.current_machine_cycle = 1
+            else:
+                self.current_machine_cycle += 1
+            return True
         else:
             self.current_instruction_state += 1
+            return False
 
     def run_complete_programm(self, max_instructions=-1):
         if max_instructions == -1:
