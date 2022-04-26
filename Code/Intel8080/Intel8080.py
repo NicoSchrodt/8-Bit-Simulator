@@ -132,15 +132,12 @@ class Intel8080(AbstractProcessor):
             return False
 
     def run_complete_programm(self, max_instructions=-1):
-        print(self.next_instruction())
-
         if max_instructions == -1:
             self.quittable = False
 
-        # while not (self.quittable and not self.instruction_counter < max_instructions):
-        #     if self.next_instruction():
-        #         print("i++")
-        #         self.instruction_counter += 1
+        while not (self.quittable and not self.instruction_counter < max_instructions):
+            if self.next_instruction():
+                self.instruction_counter += 1
 
     def decode_instruction(self):
         if (self.cpu_instruction_register & 0xC0) == 0x40:
