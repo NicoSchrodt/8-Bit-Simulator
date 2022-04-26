@@ -8,6 +8,7 @@ class Instruction:
         self.last_executed_machine_cycle = 0
         pass
 
+    # returns True if last state of last machine cycle was executed
     def next_state(self):
         if self.machine_cycles[self.last_executed_machine_cycle].next_state():
             self.last_executed_machine_cycle += 1

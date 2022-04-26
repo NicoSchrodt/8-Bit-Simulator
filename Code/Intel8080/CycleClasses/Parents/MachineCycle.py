@@ -8,6 +8,7 @@ class MachineCycle:
         self.last_executed_state = 0
         pass
 
+    # returns True if last state was executed
     def next_state(self):
         self.states[self.last_executed_state].run()
         self.last_executed_state += 1

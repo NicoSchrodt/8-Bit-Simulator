@@ -7,6 +7,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Intel8080.CycleClasses.Parents.Fetch.FetchInstruction import FetchInstruction
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
@@ -30,7 +31,7 @@ class Intel8080(AbstractProcessor):
         self.halt = False
 
         self.cpu_instruction_register = np.uint8(0x00)
-        self.current_instruction = Mov_r_r(self)
+        self.current_instruction = Nop(self)
         self.current_instruction_state = 1
         self.current_machine_cycle = 1
 
@@ -53,12 +54,6 @@ class Intel8080(AbstractProcessor):
         xthl
         """
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return True
-
     def init(self, programm):
         self.asm_string = programm
         i8080asm.convert_to_binary(self.asm_string)
@@ -66,8 +61,39 @@ class Intel8080(AbstractProcessor):
 
     def init_test(self, programm):
         self.asm_string = programm
-        i8080asm.convert_to_binary_for_tests(self.asm_string)
-        self.insert_test_program()
+        self.reset_ASM()
+        i8080asm.convert_to_binary(self.asm_string, "Output\\program")
+        self.insert_program("Output\\program")
+
+    def reset_ASM(self):
+        # Current source line number.
+        i8080asm.lineno = 0
+
+        # Address of current instruction.
+        i8080asm.address = 0
+
+        # This is a 2-pass assembler, so keep track of which pass we're in.
+        i8080asm.source_pass = 1
+
+        # Assembled machine code.
+        i8080asm.output = b''
+
+        # Tokens
+        i8080asm.label = ''
+        i8080asm.mnemonic = ''
+        i8080asm.operand1 = ''
+        i8080asm.operand2 = ''
+        i8080asm.comment = ''
+
+        # Symbol table: {'label1': <address1>, 'label2': <address2>, ...}
+        i8080asm.symbol_table = {}
+
+        # Immediate operand type, 8-bit or 16-bit. An enum would be overkill and verbose.
+        i8080asm.IMMEDIATE8 = 8
+        i8080asm.IMMEDIATE16 = 16
+
+        # Default output file name
+        i8080asm.OUTFILE = 'program'
 
     def next_instruction(self):
         while not self.next_machine_cycle():
@@ -106,19 +132,15 @@ class Intel8080(AbstractProcessor):
             return False
 
     def run_complete_programm(self, max_instructions=-1):
+        print(self.next_instruction())
+
         if max_instructions == -1:
             self.quittable = False
 
-        while not self.quittable or self.instruction_counter < max_instructions:
-            self.current_instruction.next_state()
-            self.current_instruction.next_state()
-            self.current_instruction.next_state()
-            self.decode_instruction()
-
-            while not self.current_instruction.next_state():
-                pass
-
-            self.instruction_counter += 1
+        # while not (self.quittable and not self.instruction_counter < max_instructions):
+        #     if self.next_instruction():
+        #         print("i++")
+        #         self.instruction_counter += 1
 
     def decode_instruction(self):
         if (self.cpu_instruction_register & 0xC0) == 0x40:
@@ -136,6 +158,8 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Nop(self)
         elif (self.cpu_instruction_register & 0xCF) == 0xC5:
             self.current_instruction = Push_rp(self)
+        elif self.cpu_instruction_register == 0xE3:
+            self.current_instruction = Xthl(self)
         else:
             self.current_instruction = Nop(self)
 
@@ -244,25 +268,7 @@ class Intel8080(AbstractProcessor):
             self.program_length = i
             self.set_pc(0)
 
-    def insert_program(self):
-        output_program = "Intel8080\\Output\\program"
-        parent_path = Path(os.path.abspath(os.path.curdir)).parent
-
-        infile = parent_path.joinpath(output_program + '.com')
-
-        with open(infile, 'rb') as file:
-            i = 1  # verändert von 0
-            while True:
-                byte = file.read(1)
-                if byte == b'':
-                    break
-                else:
-                    self.program[i] = np.uint8(ord(byte))
-                    i += 1
-            self.program_length = i
-
-    def insert_test_program(self):
-        output_program = "Output\\program"
+    def insert_program(self, output_program="Intel8080\\Output\\program"):
         parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
         infile = parent_path.joinpath(output_program + '.com')

@@ -1,4 +1,4 @@
-#Von https://github.com/pamoroso/suite8080/tree/56c2e077dd3d178859d614932b9a1f33fa238e21
+# Von https://github.com/pamoroso/suite8080/tree/56c2e077dd3d178859d614932b9a1f33fa238e21
 
 """An Intel 8080 cross-assembler."""
 
@@ -1282,8 +1282,7 @@ def get_number(input):
     return number
 
 
-def convert_to_binary(program):
-    output_program = "Intel8080\\Output\\program"
+def convert_to_binary(program, output_program="Intel8080\\Output\\program"):
     parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
     infile = parent_path.joinpath(output_program + '.asm')

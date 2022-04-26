@@ -19,6 +19,10 @@ def char_to_reg(reg: chr):
         return np.uint8(5)
     elif reg == 'A':
         return np.uint8(7)
+    elif reg == 'W':
+        return np.uint8(8)
+    elif reg == 'Z':
+        return np.uint8(9)
     else:
         return np.uint8(255)
 
