@@ -11,6 +11,17 @@ class TestIntel8080(TestCase):
     def test_framework(self):
         self.assertTrue(True)
 
+    def test_hlt(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("hlt")
+
+            intel.run_complete_programm(1)
+
+            self.assertTrue(intel.is_halted())
+        except:
+            self.fail()
+
     def test_jmp(self):
         try:
             intel = Intel8080()
@@ -40,17 +51,37 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
-    # def test_Mov_r_m(self):
-    #     try:
-    #         intel = Intel8080()
-    #         intel.init_test("""start:
-    #         mov c, start""")
-    #
-    #         intel.run_complete_programm(1)
-    #
-    #         # self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("C")))
-    #     except:
-    #         self.fail()
+    def test_Mov_r_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("mov b, m")
+
+            intel.program[10] = 55  # from
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)  # to
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(55, intel.registers.get_register_with_offset(char_to_reg("B")))
+        except:
+            self.fail()
+
+    def test_Mov_m_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("mov m, b")
+
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 55)  # from
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)  # to
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(55, intel.program[10])
+        except:
+            self.fail()
 
     def test_mvi_r(self):
         try:
@@ -60,6 +91,20 @@ class TestIntel8080(TestCase):
             intel.next_instruction()
 
             self.assertEqual(12, intel.registers.get_register_with_offset(char_to_reg("H")))
+        except:
+            self.fail()
+
+    def test_mvi_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("mvi m, 12d")
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)  # to
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.next_instruction()
+
+            self.assertEqual(12, intel.program[10])
         except:
             self.fail()
 

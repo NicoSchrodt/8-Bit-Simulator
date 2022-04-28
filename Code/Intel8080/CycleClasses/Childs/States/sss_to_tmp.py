@@ -1,11 +1,10 @@
 from Code.Intel8080.CycleClasses.Parents.State import State
 
 
-class FetchState2(State):
+class sss_to_tmp(State):
     def __init__(self, processor):
         super().__init__(processor)
 
     def run(self):
-        self.processor.registers.increment_pc()
-        print("PC = PC + 1 (Fetch 2)")
-        pass
+        print("sss_to_tmp")
+        self.processor.set_tmp(self.processor.get_sss_value())

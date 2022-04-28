@@ -3,9 +3,12 @@ from pathlib import Path
 
 import numpy as np
 
+from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_m_r import Mov_m_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_m import Mov_r_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
@@ -144,17 +147,19 @@ class Intel8080(AbstractProcessor):
         if self.cpu_instruction_register == 0xC3:
             self.current_instruction = Jmp(self)
         elif (self.cpu_instruction_register & 0xC0) == 0x40:
-            if self.get_sss() == 0b110 or self.get_ddd() == 0b110:
-                if self.get_sss() == 0b110:
-                    self.current_instruction = Mov_r_m(self)
+            if self.get_sss() == 0b110:
+                if self.get_ddd() == 0b110:
+                    self.current_instruction = Hlt(self)
                 else:
-                    x=0
+                    self.current_instruction = Mov_r_m(self)
             else:
-                self.current_instruction = Mov_r_r(self)
+                if self.get_ddd() == 0b110:
+                    self.current_instruction = Mov_m_r(self)
+                else:
+                    self.current_instruction = Mov_r_r(self)
         elif (self.cpu_instruction_register & 0xC7) == 0x06:
             if self.get_ddd() == 0b110:
-                x=0
-                # memory
+                self.current_instruction = Mvi_m(self)
             else:
                 self.current_instruction = Mvi_r(self)
         elif self.cpu_instruction_register == 0x00:
@@ -165,6 +170,7 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Xthl(self)
         else:
             self.current_instruction = Nop(self)
+            raise Exception("Decode Instruction konnte kein passenden Befehl finden")
 
         self.current_instruction.load_m1_t4()
 
@@ -188,7 +194,7 @@ class Intel8080(AbstractProcessor):
         self.registers.set_register8_with_offset(ddd, value)
 
     def get_byte_from_memory_at_pc_minus_1(self):
-        return np.uint8(self.get_memory_byte(self.get_pc()- 1))
+        return np.uint8(self.get_memory_byte(self.get_pc() - 1))
 
     def get_tmp(self):
         return self.ALU.get_tmp()

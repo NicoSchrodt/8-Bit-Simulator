@@ -1,5 +1,5 @@
 from Code.Intel8080.CycleClasses.Parents.EmtpyState import EmptyState
-from Code.Intel8080.CycleClasses.Parents.Fetch.Fetch import Fetch
+from Code.Intel8080.CycleClasses.Childs.MachineCycles.Fetch import Fetch
 
 
 class Xthl_M1(Fetch):
