@@ -7,4 +7,4 @@ class byte_at_pc_to_ddd(State):
 
     def run(self):
         print("byte_at_pc_to_ddd")
-        self.processor.set_ddd(self.processor.get_byte_from_memory_at_pc())
+        self.processor.set_ddd(self.processor.get_byte_from_memory_at_pc_minus_1())

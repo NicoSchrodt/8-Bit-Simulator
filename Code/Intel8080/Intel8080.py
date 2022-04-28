@@ -3,12 +3,13 @@ from pathlib import Path
 
 import numpy as np
 
+from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_m import Mov_r_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
-from Code.Intel8080.CycleClasses.Parents.Fetch.FetchInstruction import FetchInstruction
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
@@ -140,9 +141,14 @@ class Intel8080(AbstractProcessor):
                 self.instruction_counter += 1
 
     def decode_instruction(self):
-        if (self.cpu_instruction_register & 0xC0) == 0x40:
+        if self.cpu_instruction_register == 0xC3:
+            self.current_instruction = Jmp(self)
+        elif (self.cpu_instruction_register & 0xC0) == 0x40:
             if self.get_sss() == 0b110 or self.get_ddd() == 0b110:
-                x=0
+                if self.get_sss() == 0b110:
+                    self.current_instruction = Mov_r_m(self)
+                else:
+                    x=0
             else:
                 self.current_instruction = Mov_r_r(self)
         elif (self.cpu_instruction_register & 0xC7) == 0x06:
@@ -181,8 +187,8 @@ class Intel8080(AbstractProcessor):
         ddd = np.uint8((self.cpu_instruction_register & 0x38) >> 3)
         self.registers.set_register8_with_offset(ddd, value)
 
-    def get_byte_from_memory_at_pc(self):
-        return np.uint8(self.get_memory_byte(self.get_pc()))
+    def get_byte_from_memory_at_pc_minus_1(self):
+        return np.uint8(self.get_memory_byte(self.get_pc()- 1))
 
     def get_tmp(self):
         return self.ALU.get_tmp()
@@ -271,7 +277,7 @@ class Intel8080(AbstractProcessor):
         infile = parent_path.joinpath(output_program + '.com')
 
         with open(infile, 'rb') as file:
-            i = 1  # verändert von 0
+            i = 0  # verändert von 0
             while True:
                 byte = file.read(1)
                 if byte == b'':

@@ -7,5 +7,5 @@ class FetchState3(State):
 
     def run(self):
         print("instr -> IR (Fetch 3)")
-        self.processor.cpu_instruction_register = self.processor.get_byte_from_memory_at_pc()
+        self.processor.cpu_instruction_register = self.processor.get_byte_from_memory_at_pc_minus_1()
         pass

@@ -11,6 +11,21 @@ class TestIntel8080(TestCase):
     def test_framework(self):
         self.assertTrue(True)
 
+    def test_jmp(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                        Nop
+                        Nop
+                        Loop:
+                            jmp Loop""")
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(3, intel.get_pc())
+        except:
+            self.fail()
+
     def test_Mov_r_r(self):
         try:
             intel = Intel8080()
@@ -24,6 +39,18 @@ class TestIntel8080(TestCase):
             self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("C")))
         except:
             self.fail()
+
+    # def test_Mov_r_m(self):
+    #     try:
+    #         intel = Intel8080()
+    #         intel.init_test("""start:
+    #         mov c, start""")
+    #
+    #         intel.run_complete_programm(1)
+    #
+    #         # self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("C")))
+    #     except:
+    #         self.fail()
 
     def test_mvi_r(self):
         try:
