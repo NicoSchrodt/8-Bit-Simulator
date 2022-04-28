@@ -2,7 +2,7 @@ from Code.Intel8080.CycleClasses.Parents.EmtpyState import EmptyState
 from Code.Intel8080.CycleClasses.Childs.MachineCycles.Fetch import Fetch
 
 
-class M1Mvi_r(Fetch):
+class Mvi_r_M1(Fetch):
     def __init__(self, processor):
         super().__init__(processor)
         self.states.append(EmptyState(processor))

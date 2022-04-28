@@ -193,7 +193,9 @@ class Intel8080(AbstractProcessor):
         ddd = np.uint8((self.cpu_instruction_register & 0x38) >> 3)
         self.registers.set_register8_with_offset(ddd, value)
 
-    def get_byte_from_memory_at_pc_minus_1(self):
+    # returns the content of the correct address:
+    # when pc = 1 then returns content of program[0], first byte of program
+    def get_byte_from_memory_address_at_pc(self):
         return np.uint8(self.get_memory_byte(self.get_pc() - 1))
 
     def get_tmp(self):

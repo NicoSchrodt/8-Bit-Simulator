@@ -86,11 +86,11 @@ class TestIntel8080(TestCase):
     def test_mvi_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("mvi h, 12d")
+            intel.init_test("mvi b, 12d")
 
-            intel.next_instruction()
+            intel.run_complete_programm(1)
 
-            self.assertEqual(12, intel.registers.get_register_with_offset(char_to_reg("H")))
+            self.assertEqual(12, intel.registers.get_register_with_offset(char_to_reg("B")))
         except:
             self.fail()
 
@@ -102,7 +102,7 @@ class TestIntel8080(TestCase):
             intel.registers.set_register8_with_offset(char_to_reg("H"), 0)  # to
             intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
 
-            intel.next_instruction()
+            intel.run_complete_programm(1)
 
             self.assertEqual(12, intel.program[10])
         except:

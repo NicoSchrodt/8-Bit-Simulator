@@ -7,5 +7,5 @@ class instr_to_instruction_register(State):
 
     def run(self):
         print("instr -> IR (Fetch 3)")
-        self.processor.cpu_instruction_register = self.processor.get_byte_from_memory_at_pc_minus_1()
+        self.processor.cpu_instruction_register = self.processor.get_byte_from_memory_address_at_pc()
         pass

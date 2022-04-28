@@ -1,10 +1,10 @@
-from Code.Intel8080.CycleClasses.Parents.State import State
+from Code.Intel8080.CycleClasses.Childs.States.byte_at_pc_ import byte_at_pc_
 
-# byte 2 to ddd
-class byte_at_pc_to_ddd(State):
+
+class byte_at_pc_to_ddd(byte_at_pc_):
     def __init__(self, processor):
         super().__init__(processor)
 
-    def run(self):
+    def write_to(self):
         print("byte_at_pc_to_ddd")
-        self.processor.set_ddd(self.processor.get_byte_from_memory_at_pc_minus_1())
+        self.processor.set_ddd(self.b2)
