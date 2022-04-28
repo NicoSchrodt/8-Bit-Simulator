@@ -119,11 +119,25 @@ class TestIntel8080(TestCase):
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(intel.program[79], 2)
-            self.assertEqual(intel.program[78], 3)
+            self.assertEqual(2, intel.program[79])
+            self.assertEqual(3, intel.program[78])
         except:
             self.fail()
 
+    def test_sphl(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sphl")
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 2)  # high
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 3)  # low
+            intel.set_sp(80)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual((2 << 8) + 3, intel.get_sp())
+        except:
+            self.fail()
 
     def test_xthl(self):
         try:
@@ -138,9 +152,9 @@ class TestIntel8080(TestCase):
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(intel.program[80], 22)
-            self.assertEqual(intel.program[79], 33)
-            self.assertEqual(intel.registers.get_register_with_offset(char_to_reg("H")), 2)
-            self.assertEqual(intel.registers.get_register_with_offset(char_to_reg("L")), 3)
+            self.assertEqual(22, intel.program[80])
+            self.assertEqual(33, intel.program[79])
+            self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("H")))
+            self.assertEqual(3, intel.registers.get_register_with_offset(char_to_reg("L")))
         except:
             self.fail()

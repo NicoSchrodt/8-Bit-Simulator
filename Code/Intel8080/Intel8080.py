@@ -12,6 +12,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
@@ -166,6 +167,8 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Nop(self)
         elif (self.cpu_instruction_register & 0xCF) == 0xC5:
             self.current_instruction = Push_rp(self)
+        elif self.cpu_instruction_register == 0xF9:
+            self.current_instruction = Sphl(self)
         elif self.cpu_instruction_register == 0xE3:
             self.current_instruction = Xthl(self)
         else:
@@ -1013,7 +1016,7 @@ class Intel8080(AbstractProcessor):
     def sphl(self):
         val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
         val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
-        self.push(val_h, val_l)
+        self.set_sp(build_16bit_from_8bits(val_h, val_l))
 
     def stax(self, address):
         val_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
