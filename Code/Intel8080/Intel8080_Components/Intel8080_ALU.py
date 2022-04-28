@@ -27,14 +27,13 @@ def char_to_reg(reg: chr):
         return np.uint8(255)
 
 
-def build_16bit_from_8bits(high, low):
+def build_16bit_from_8bit(high, low):
     return np.uint16((high << 8) | low)
 
 
 class Intel8080_ALU():
     def __init__(self, Intel8080):
         self.registers = Intel8080.registers
-        self.acc = np.uint8(0)  # Accumulator
         self.act = np.uint8(0)  # Temporary accumulator
         self.tmp = np.uint8(0)  # Temporary register
         self.flags = [False,  # Zero
@@ -50,12 +49,6 @@ class Intel8080_ALU():
 
     def get_reg8_val(self, reg8):
         return np.uint8(self.registers.get_register(reg_offset + reg8))
-
-    def get_acc(self):
-        return np.uint8(self.acc)
-
-    def set_acc(self, value):
-        self.acc = np.uint8(value)
 
     def get_act(self):
         return np.uint8(self.act)

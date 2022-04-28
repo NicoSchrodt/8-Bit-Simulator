@@ -1,4 +1,4 @@
-from Code.Intel8080.CycleClasses.Childs.MachineCycles.Fetch import Fetch
+from Code.Intel8080.CycleClasses.Childs.MachineCycles.SubParents.Fetch import Fetch
 from Code.Intel8080.CycleClasses.Parents.EmtpyState import EmptyState
 
 

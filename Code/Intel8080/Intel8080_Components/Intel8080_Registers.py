@@ -14,7 +14,7 @@ class Intel8080_Registers():
                           np.uint8(0),  # H-REG 100
                           np.uint8(0),  # L-REG 101
                           np.uint8(0),  # Space for better REG allocation (110 -> Memory)
-                          np.uint8(0),  # A-REG 111
+                          np.uint8(0),  # A-REG 111 / Accumulator acc
                           np.uint8(0),  # W-REG
                           np.uint8(0),  # Z-REG
                           ]

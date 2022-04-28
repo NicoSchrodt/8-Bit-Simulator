@@ -1,4 +1,4 @@
-from Code.Intel8080.CycleClasses.Childs.States.data_to_ import data_to_
+from Code.Intel8080.CycleClasses.Childs.States.SubParents.data_to_ import data_to_
 
 
 class data_to_tmp(data_to_):

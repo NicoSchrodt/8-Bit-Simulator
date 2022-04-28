@@ -5,6 +5,8 @@ import numpy as np
 
 from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
+from Code.Intel8080.CycleClasses.Childs.Instructions.Lxi import Lxi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_m_r import Mov_m_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_m import Mov_r_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
@@ -15,7 +17,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
-from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
+from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bit
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Components.Intel8080_Peripherals import Intel8080_Peripherals
 from Code.Intel8080.Intel8080_Assembler import i8080asm
@@ -147,6 +149,10 @@ class Intel8080(AbstractProcessor):
     def decode_instruction(self):
         if self.cpu_instruction_register == 0xC3:
             self.current_instruction = Jmp(self)
+        elif self.cpu_instruction_register == 0x3A:
+            self.current_instruction = Lda(self)
+        elif (self.cpu_instruction_register & 0xCF) == 0x01:
+            self.current_instruction = Lxi(self)
         elif (self.cpu_instruction_register & 0xC0) == 0x40:
             if self.get_sss() == 0b110:
                 if self.get_ddd() == 0b110:
@@ -206,6 +212,12 @@ class Intel8080(AbstractProcessor):
 
     def set_tmp(self, value):
         self.ALU.set_tmp(value)
+
+    def get_acc(self):
+        return self.registers.get_register_with_offset(char_to_reg("A"))
+
+    def set_acc(self, value):
+        self.registers.set_register8_with_offset(char_to_reg("A"), value)
 
 
     # def stateTransitions(self):
@@ -369,6 +381,9 @@ class Intel8080(AbstractProcessor):
         if reg8 == 3:
             return True
         return False
+
+    def get_rp(self):
+        return np.uint8((self.cpu_instruction_register & 0x30) >> 4)
 
     def get_rp_values(self, rp):
         reg_h = rp * 2
@@ -638,7 +653,7 @@ class Intel8080(AbstractProcessor):
     def call_general(self, low, high):
         self.push(high, low)
 
-        self.set_pc(build_16bit_from_8bits(high, low))
+        self.set_pc(build_16bit_from_8bit(high, low))
 
     def call_on(self, flag: bool):
         low = self.get_one_byte_data()
@@ -684,11 +699,11 @@ class Intel8080(AbstractProcessor):
             reg_val = np.uint16(self.registers.get_register(1))
         else:
             reg_h_value, reg_l_value = self.get_rp_values(rp)
-            reg_val = build_16bit_from_8bits(reg_h_value, reg_l_value)
+            reg_val = build_16bit_from_8bit(reg_h_value, reg_l_value)
 
         h_val = self.registers.get_register_with_offset(char_to_reg("h"))
         l_val = self.registers.get_register_with_offset(char_to_reg("l"))
-        hl_val = build_16bit_from_8bits(h_val, l_val)
+        hl_val = build_16bit_from_8bit(h_val, l_val)
 
         result = np.uint16(hl_val + reg_val)
         result_h = (result & 0xff00) >> 8
@@ -722,7 +737,7 @@ class Intel8080(AbstractProcessor):
             self.set_sp(result)
         else:
             reg_h_value, reg_l_value = self.get_rp_values(rp)
-            reg_val = build_16bit_from_8bits(reg_h_value, reg_l_value)
+            reg_val = build_16bit_from_8bit(reg_h_value, reg_l_value)
             result = np.uint16(reg_val - 1)
             self.registers.set_2_8bit_reg_with_offset((rp * 2), result)
 
@@ -765,12 +780,12 @@ class Intel8080(AbstractProcessor):
             self.set_sp(result)
         else:
             reg_h_value, reg_l_value = self.get_rp_values(rp)
-            reg_val = build_16bit_from_8bits(reg_h_value, reg_l_value)
+            reg_val = build_16bit_from_8bit(reg_h_value, reg_l_value)
             result = np.uint16(reg_val + 1)
             self.registers.set_2_8bit_reg_with_offset(rp * 2, result)
 
     def jump_general(self, low, high):
-        self.set_pc(build_16bit_from_8bits(high, low))
+        self.set_pc(build_16bit_from_8bit(high, low))
 
     def jump_on(self, flag: bool):
         low = self.get_one_byte_data()
@@ -813,7 +828,7 @@ class Intel8080(AbstractProcessor):
         self.ldax(address_l, address_h)
 
     def ldax(self, address_l, address_h):
-        address = build_16bit_from_8bits(address_h, address_l)
+        address = build_16bit_from_8bit(address_h, address_l)
         value = self.get_memory_byte(address)
         self.registers.set_register8_with_offset(char_to_reg("a"), value)
 
@@ -831,7 +846,7 @@ class Intel8080(AbstractProcessor):
         low = self.get_one_byte_data()
         high = self.get_one_byte_data()
 
-        address_l = build_16bit_from_8bits(high, low)
+        address_l = build_16bit_from_8bit(high, low)
         value_l = self.get_memory_byte(address_l)
         self.registers.set_register8_with_offset(char_to_reg("l"), value_l)
 
@@ -844,7 +859,7 @@ class Intel8080(AbstractProcessor):
         high = self.get_one_byte_data()
 
         if self.is_rp_meaning_sp(rp):
-            value = build_16bit_from_8bits(high, low)
+            value = build_16bit_from_8bit(high, low)
             self.set_sp(value)
         else:
             reg_h = rp * 2
@@ -888,14 +903,14 @@ class Intel8080(AbstractProcessor):
         self.write_byte_on_data_bus(data)
 
         exp = self.get_one_byte_data()
-        port_address = build_16bit_from_8bits(exp, exp)
+        port_address = build_16bit_from_8bit(exp, exp)
         self.write_address_on_address_bus(port_address)
         pass
 
     def pchl(self):
         val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
         val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
-        value = build_16bit_from_8bits(val_h, val_l)
+        value = build_16bit_from_8bit(val_h, val_l)
         self.set_pc(value)
 
     def pop_general(self, rp):
@@ -954,7 +969,7 @@ class Intel8080(AbstractProcessor):
         self.ALU.set_carry_flag(byte & pow(2, 0))
 
     def return_general(self, low, high):
-        self.set_pc(build_16bit_from_8bits(high, low))
+        self.set_pc(build_16bit_from_8bit(high, low))
 
     def return_on(self, flag: bool):
         if flag:
@@ -1008,7 +1023,7 @@ class Intel8080(AbstractProcessor):
     def shld(self):
         address_low = self.get_one_byte_data()
         address_high = self.get_one_byte_data()
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.set_memory_byte(address, self.registers.get_register_with_offset(char_to_reg("l")))
         address = np.uint16(address + 1)
         self.set_memory_byte(address, self.registers.get_register_with_offset(char_to_reg("h")))
@@ -1016,7 +1031,7 @@ class Intel8080(AbstractProcessor):
     def sphl(self):
         val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
         val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
-        self.set_sp(build_16bit_from_8bits(val_h, val_l))
+        self.set_sp(build_16bit_from_8bit(val_h, val_l))
 
     def stax(self, address):
         val_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
@@ -1025,19 +1040,19 @@ class Intel8080(AbstractProcessor):
     def sta(self):
         address_low = self.get_one_byte_data()
         address_high = self.get_one_byte_data()
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.stax(address)
 
     def stax_b(self):
         address_high = np.uint8(self.registers.get_register_with_offset(char_to_reg("b")))
         address_low = np.uint8(self.registers.get_register_with_offset(char_to_reg("c")))
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.stax(address)
 
     def stax_d(self):
         address_high = np.uint8(self.registers.get_register_with_offset(char_to_reg("d")))
         address_low = np.uint8(self.registers.get_register_with_offset(char_to_reg("e")))
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.stax(address)
 
     def sub(self, reg8):

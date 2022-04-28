@@ -1,6 +1,6 @@
 from Code.Intel8080.CycleClasses.Childs.States.sss_to_tmp import sss_to_tmp
 from Code.Intel8080.CycleClasses.Childs.States.tmp_to_ddd import tmp_to_ddd
-from Code.Intel8080.CycleClasses.Childs.MachineCycles.Fetch import Fetch
+from Code.Intel8080.CycleClasses.Childs.MachineCycles.SubParents.Fetch import Fetch
 
 
 class M1Mov_r_r(Fetch):

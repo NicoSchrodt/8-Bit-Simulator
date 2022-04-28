@@ -37,6 +37,33 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_lda(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("lda 0Ah")
+
+            intel.program[10] = 55
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(55, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_lxi(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""Nop
+                        label:
+                        lxi b, label""")
+
+            intel.run_complete_programm(2)
+
+            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("B")))
+            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("C")))
+        except:
+            self.fail()
+
     def test_Mov_r_r(self):
         try:
             intel = Intel8080()
