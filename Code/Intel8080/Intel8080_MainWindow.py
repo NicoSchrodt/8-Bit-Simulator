@@ -23,90 +23,91 @@ class runThread(QObject):
             self.Source.emit()
 
 
-command_length_dict = {
-    0xCE: 1,  # ACI
-    0x88: 0,  # ADC BIT 0-2 REG --> 0xF8
-    0x80: 0,  # ADD BIT 0-2 REG --> 0xF8
-    0xC6: 1,  # ADI
-    0xA0: 0,  # ANA BIT 0-2 REG --> 0xF8
-    0xE6: 1,  # ANI
-    0xCD: 2,  # CALL
-    0xDC: 2,  # CALL CC
-    0xFC: 2,  # CALL CM
-    0x2F: 0,  # CMA
-    0x3F: 0,  # CMC
-    0xB8: 0,  # CMP BIT 0-2 REG --> 0xF8
-    0xD4: 2,  # CALL CNC
-    0xC4: 2,  # CALL CNZ
-    0xF4: 2,  # CALL CP
-    0xEC: 2,  # CALL CPE
-    0xFE: 1,  # CPI
-    0xE4: 2,  # CALL CPO
-    0xCC: 2,  # CALL CZ
-    0x27: 0,  # DAA
-    0x09: 0,  # DAD BIT 4-5 OP --> 0xCF
-    0x05: 0,  # DCR BIT 3-5 REG --> 0xC7
-    0x0B: 0,  # DCX BIT 4-5 OP --> 0xCF
-    0xF3: 0,  # DI
-    0xFB: 0,  # EI
-    0x76: 0,  # HLT
-    0xDB: 1,  # IN
-    0x04: 0,  # INR BIT 3-5 REG --> 0xC7
-    0x03: 0,  # INX BIT 4-5 OP --> 0xCF
-    0xDA: 2,  # JC
-    0xFA: 2,  # JM
-    0xC3: 2,  # JMP
-    0xD2: 2,  # JNC
-    0xC2: 2,  # JNZ
-    0xF2: 2,  # JP
-    0xEA: 2,  # JPE
-    0xE2: 2,  # JPO
-    0xCA: 2,  # JZ
-    0x3A: 2,  # LDA
-    0x0A: 0,  # LDAX_B
-    0x1A: 0,  # LDAX_D
-    0x2A: 2,  # LHLD
-    0x01: 2,  # LXI BIT 4-5 REG --> 0xCF
-    0x40: 0,  # MOV BIT 0-2, 3-5 OP --> 0xC0
-    0x06: 1,  # MVI BIT 3-5 DATA --> 0xC7
-    0x00: 0,  # NOP
-    0xB0: 0,  # ORA BIT 0-2 REG --> 0xF8
-    0xF6: 1,  # ORI
-    0xD3: 1,  # OUT
-    0xE9: 0,  # PCHL
-    0xC1: 0,  # POP BIT 4-5 OP --> 0xCF
-    0xC5: 0,  # PUSH BIT 4-5 OP --> 0xCF
-    0x17: 0,  # RAL
-    0x1F: 0,  # RAR
-    0xD8: 0,  # RC
-    0xC9: 0,  # RET
-    0x07: 0,  # RLC
-    0xF8: 0,  # RM
-    0xD0: 0,  # RNC
-    0xC0: 0,  # RNZ
-    0xF0: 0,  # RP
-    0xE8: 0,  # RPE
-    0x70: 0,  # RPO
-    0x0F: 0,  # RRC
-    0xC7: 0,  # RST BIT 3-5 OP --> 0xC7
-    0xC8: 0,  # RZ
-    0x98: 0,  # SBB BIT 0-2 REG --> 0xF8
-    0xDE: 1,  # SBI
-    0x22: 2,  # SHLD
-    0xF9: 0,  # SPHL
-    0x32: 2,  # STA
-    0x02: 0,  # STAX_B
-    0x12: 0,  # STAX_D
-    0x37: 0,  # STC
-    0x90: 0,  # SUB BIT 1-3 REG --> 0xF8
-    0xD6: 1,  # SUI
-    0xEB: 0,  # XCHG
-    0xA8: 0,  # XRA BIT 0-2 REG --> 0xF8
-    0xEE: 1,  # XRI
-    0xE3: 0,  # XTHL
+command_dict = {
+    0xCE: [1, "ACI"],  # ACI
+    0x88: [0, "ADC"],  # ADC BIT 0-2 REG --> 0xF8
+    0x80: [0, "ADD"],  # ADD BIT 0-2 REG --> 0xF8
+    0xC6: [1, "ADI"],  # ADI
+    0xA0: [0, "ANA"],  # ANA BIT 0-2 REG --> 0xF8
+    0xE6: [1, "ANI"],  # ANI
+    0xCD: [2, "CALL"],  # CALL
+    0xDC: [2, "CALL CC"],  # CALL CC
+    0xFC: [2, "CALL CM"],  # CALL CM
+    0x2F: [0, "CMA"],  # CMA
+    0x3F: [0, "CMC"],  # CMC
+    0xB8: [0, "CMP"],  # CMP BIT 0-2 REG --> 0xF8
+    0xD4: [2, "CALL CNC"],  # CALL CNC
+    0xC4: [2, "CALL CNZ"],  # CALL CNZ
+    0xF4: [2, "CALL CP"],  # CALL CP
+    0xEC: [2, "CALL CPE"],  # CALL CPE
+    0xFE: [1, "CPI"],  # CPI
+    0xE4: [2, "CALL CPO"],  # CALL CPO
+    0xCC: [2, "CALL CZ"],  # CALL CZ
+    0x27: [0, "DAA"],  # DAA
+    0x09: [0, "DAD"],  # DAD BIT 4-5 OP --> 0xCF
+    0x05: [0, "DCR"],  # DCR BIT 3-5 REG --> 0xC7
+    0x0B: [0, "DCX"],  # DCX BIT 4-5 OP --> 0xCF
+    0xF3: [0, "DI"],  # DI
+    0xFB: [0, "EI"],  # EI
+    0x76: [0, "HLT"],  # HLT
+    0xDB: [1, "IN"],  # IN
+    0x04: [0, "INR"],  # INR BIT 3-5 REG --> 0xC7
+    0x03: [0, "INX"],  # INX BIT 4-5 OP --> 0xCF
+    0xDA: [2, "JC"],  # JC
+    0xFA: [2, "JM"],  # JM
+    0xC3: [2, "JMP"],  # JMP
+    0xD2: [2, "JNC"],  # JNC
+    0xC2: [2, "JNZ"],  # JNZ
+    0xF2: [2, "JP"],  # JP
+    0xEA: [2, "JPE"],  # JPE
+    0xE2: [2, "JPO"],  # JPO
+    0xCA: [2, "JZ"],  # JZ
+    0x3A: [2, "LDA"],  # LDA
+    0x0A: [0, "LDAX B"],  # LDAX_B
+    0x1A: [0, " LDAX D"],  # LDAX_D
+    0x2A: [2, "LHLD"],  # LHLD
+    0x01: [2, "LXI"],  # LXI BIT 4-5 REG --> 0xCF
+    0x40: [0, "MOV"],  # MOV BIT 0-2, 3-5 OP --> 0xC0
+    0x06: [1, "MVI"],  # MVI BIT 3-5 DATA --> 0xC7
+    0x00: [0, "NOP"],  # NOP
+    0xB0: [0, "ORA"],  # ORA BIT 0-2 REG --> 0xF8
+    0xF6: [1, "ORI"],  # ORI
+    0xD3: [1, "OUT"],  # OUT
+    0xE9: [0, "PCHL"],  # PCHL
+    0xC1: [0, "POP"],  # POP BIT 4-5 OP --> 0xCF
+    0xC5: [0, "PUSH"],  # PUSH BIT 4-5 OP --> 0xCF
+    0x17: [0, "RAL"],  # RAL
+    0x1F: [0, "RAR"],  # RAR
+    0xD8: [0, "RC"],  # RC
+    0xC9: [0, "RET"],  # RET
+    0x07: [0, "RLC"],  # RLC
+    0xF8: [0, "RM"],  # RM
+    0xD0: [0, "RNC"],  # RNC
+    0xC0: [0, "RNZ"],  # RNZ
+    0xF0: [0, "RP"],  # RP
+    0xE8: [0, "RPE"],  # RPE
+    0x70: [0, "RPO"],  # RPO
+    0x0F: [0, "RRC"],  # RRC
+    0xC7: [0, "RST"],  # RST BIT 3-5 OP --> 0xC7
+    0xC8: [0, "RZ"],  # RZ
+    0x98: [0, "SBB"],  # SBB BIT 0-2 REG --> 0xF8
+    0xDE: [1, "SBI"],  # SBI
+    0x22: [2, "SHLD"],  # SHLD
+    0xF9: [0, "SPHL"],  # SPHL
+    0x32: [2, "STA"],  # STA
+    0x02: [0, "STAX B"],  # STAX_B
+    0x12: [0, "STAX D"],  # STAX_D
+    0x37: [0, "STC"],  # STC
+    0x90: [0, "SUB"],  # SUB BIT 1-3 REG --> 0xF8
+    0xD6: [1, "SUI"],  # SUI
+    0xEB: [0, "XCHG"],  # XCHG
+    0xA8: [0, "XRA"],  # XRA BIT 0-2 REG --> 0xF8
+    0xEE: [1, "XRI"],  # XRI
+    0xE3: [0, "XTHL"],  # XTHL
 }
 
 command_masks = [0xFF, 0xF8, 0xCF, 0xC7, 0xC0]
+
 
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -201,8 +202,7 @@ class Intel8080_MainWindow(QMainWindow):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
         if filepath[0] != "":
             self.processor.load_program(filepath[0])
-            #self.fill_program_table()
-            self.fill_program_table_new()
+            self.fill_program_table()
         self.color_program_table()
         self.reload_registers_table()
 
@@ -243,14 +243,6 @@ class Intel8080_MainWindow(QMainWindow):
         self.dialog.show()
 
     def fill_program_table(self):
-        self.Program_table.setRowCount(0)  # Clear Table
-        for i in range(int(self.processor.program_length / 2)):
-            row = self.Program_table.rowCount()
-            self.Program_table.insertRow(row)
-            self.Program_table.setItem(row, 0, QTableWidgetItem(""))
-            self.Program_table.setItem(row, 1, QTableWidgetItem(hex(self.processor.program[i])
-                                                                + " " + hex(self.processor.program[i + 1])))
-    def fill_program_table_new(self):
         self.instruction_positions = []
         self.Program_table.setRowCount(0)  # Clear Table
         try:
@@ -259,14 +251,15 @@ class Intel8080_MainWindow(QMainWindow):
                 self.instruction_positions.append(i)
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
-                    if masked_command in command_length_dict:
+                    if masked_command in command_dict:
                         print("UnMasked:" + str(hex(self.processor.program[i])))
-                        print( "Masked:" + str(hex(masked_command)))
-                        operands = command_length_dict[masked_command]
+                        print("Masked:" + str(hex(masked_command)))
+                        operands = command_dict[masked_command][0]
                         row = self.Program_table.rowCount()
                         self.Program_table.insertRow(row)
                         self.Program_table.setItem(row, 0, QTableWidgetItem(""))
-                        itemtext = hex(self.processor.program[i])
+                        itemtext = command_dict[masked_command][1]
+                        itemtext = itemtext + " " + hex(self.processor.program[i])
                         for k in range(i, i + operands):
                             itemtext = itemtext + " " + hex(self.processor.program[k + 1])
                         self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
