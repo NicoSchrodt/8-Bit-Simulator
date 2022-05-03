@@ -1,0 +1,12 @@
+.gitignore
+.coveragerc
+venv
+.idea
+/Dokumentation/Dokumentation_Studienarbeit.aux
+/Dokumentation/Dokumentation_Studienarbeit.lof
+/Dokumentation/Dokumentation_Studienarbeit.log
+/Dokumentation/Dokumentation_Studienarbeit.lol
+/Dokumentation/Dokumentation_Studienarbeit.lot
+/Dokumentation/Dokumentation_Studienarbeit.out
+/Dokumentation/Dokumentation_Studienarbeit.synctex.gz
+/Dokumentation/Dokumentation_Studienarbeit.toc
