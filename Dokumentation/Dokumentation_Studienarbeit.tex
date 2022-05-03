@@ -484,12 +484,15 @@ Platzhalter
 Das Simulieren des Prozessors ist die eine Seite dieses Projekts. Gleichermaßen wichtig für einen funktionierenden Simulator ist aber auch die Benutzeroberfläche mit der dieser bedient wird. In diesem Abschnitts werden die einzelnen Aspekte dieser analysiert.
 \subsubsection{Hauptmenü}
 Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=6cm]{bilder/Hauptmenue}
 \caption{Hauptmenü}
 \label{fig:Hauptmenue}
 \end{figure}
+
+\noindent
 Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jeweils eine Funktion erfüllen.
 \begin{itemize}
 	\item Intel8080: Öffnet das Simulationsfenster des Intel8080 Prozessors
@@ -498,9 +501,27 @@ Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jewei
 \end{itemize}
 
 \subsubsection{Intel8080 Simulationsfenster}
-Platzhalter
+In Abbildung \ref{fig:I8080MW} ist eine Version des Simulationsfensters für den Intel8080 zu sehen.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=15cm]{bilder/Intel8080_MainWindow}
+\caption{Intel8080 Sumulationsfenster}
+\label{fig:I8080MW}
+\end{figure}
 
+\noindent
+Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{bilder/LoadFile}
+\caption{File Reiter}
+\label{fig:LoadFile}
+\end{figure}
+
+\noindent
+Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Abgesehen davon kann über 'Exit' auch ins Hauptmenü zurückgekehrt werden.
 \subsection{Tutorials}
 
 \newpage
