@@ -449,6 +449,7 @@ In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während
 
 \subsection{Beispielprozessor 2}
 Fällt vermutlich weg
+
 \subsection{Beispielprozessor 3 ...}
 s.o.\\
 Kommentar: Ein weiterer Prozessor sollte zumindest in Ansätzen analysiert werden.
@@ -457,20 +458,49 @@ Kommentar: Ein weiterer Prozessor sollte zumindest in Ansätzen analysiert werde
 
 \section{Umsetzung}
 In diesem Kapitel wird darauf eingegangen wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
+
 \subsection{Abstraktion der Architektur}
 Es ist vorgesehen, dass der Prozessor in verschiedene Unterklassen aufgeteilt wird. Dabei ist vorgesehen das dies in einer Art Stern-Struktur aufgebaut wird, das heißt die verschiedenen Bestandteile des Prozessors sollen alle mit einer zentralen Klasse interagieren, aber nicht untereinander.
+
 \subsubsection{Prozessor}
 Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zu unterscheiden zwischen zwei Arten von Anfragen, gültige und ungültige. Gemeint ist sind damit Anfragen in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen die unzulässig wären, wie den Programmzähler manuell zu setzen.
+
 \subsubsection{ALU}
 Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten.
+
 \subsubsection{Register}
 Die Register-Klasse soll ähnlich wie die ALU den Zugriff möglichst realitätsgetreu simulieren. Dabei sollen Methoden die den Zugriff regeln ähnlich aufgebaut werden wie es im echten Prozessor möglich wäre.
+
 \subsubsection{Peripherie}
 Mit der Peripherie soll alles abgedeckt werden was nicht Teil der zentralen Bestandteile ist, also der Register oder der ALU. Dazu zählt zum Beispiel ein externer Datenbus oder Schnittstellen für bspw. Taktsignal o.ä.
-\subsection{Möglichkeiten des Simulation}
+
+\subsection{Möglichkeiten der Simulation}
 Um einen Ablauf für die Simulation festzulegen muss erst bestimmt welche Parameter eingestellt, welche Optionen verändert und welche Operationen im Simulator durchgeführt werden können.
+
 \subsection{Ablauf der Simulation}
+Platzhalter
+
 \subsection{Aufbau der GUI}
+Das Simulieren des Prozessors ist die eine Seite dieses Projekts. Gleichermaßen wichtig für einen funktionierenden Simulator ist aber auch die Benutzeroberfläche mit der dieser bedient wird. In diesem Abschnitts werden die einzelnen Aspekte dieser analysiert.
+\subsubsection{Hauptmenü}
+Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{bilder/Hauptmenue}
+\caption{Hauptmenü}
+\label{fig:Hauptmenue}
+\end{figure}
+Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jeweils eine Funktion erfüllen.
+\begin{itemize}
+	\item Intel8080: Öffnet das Simulationsfenster des Intel8080 Prozessors
+	\item Tutorial: Öffnet ein Fenster welches eine kurze Einweisung gibt in die Handhabung des Simulators für den Intel8080
+	\item Exit: Schließt das Fenster und alle laufenden Hintergrundprozesse, für den Fall das ein Simulatorprozess in der selben Session verwendet wurde.
+\end{itemize}
+
+\subsubsection{Intel8080 Simulationsfenster}
+Platzhalter
+
+
 \subsection{Tutorials}
 
 \newpage
