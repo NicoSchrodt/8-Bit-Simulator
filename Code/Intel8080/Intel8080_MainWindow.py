@@ -115,6 +115,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.mainW = parent
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
+        self.init_register_array_table()
         self.processor = Intel8080()
         # self.processor.run()
 
@@ -197,6 +198,15 @@ class Intel8080_MainWindow(QMainWindow):
             btn.pressed.connect(self.pressed_table_cell)
         # Registers_table.setMaximumSize(self.getQTableWidgetSize(Registers_table))
         # Registers_table.setMinimumSize(self.getQTableWidgetSize(Registers_table))
+
+    def init_register_array_table(self):
+        Register_array_table = self.Register_array_table
+        for row in range(Register_array_table.rowCount()):
+            for column in range(Register_array_table.columnCount()):
+                btn = QPushButton(Register_array_table)
+                btn.setText('{:x}'.format(0))
+                Register_array_table.setCellWidget(row, column, btn)
+                btn.pressed.connect(self.pressed_table_cell)
 
     def load_program(self):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
@@ -302,6 +312,12 @@ class Intel8080_MainWindow(QMainWindow):
         Processor.set_acc(int(Registers_table.cellWidget(2, 0).text(), 16))  # ACC
         Processor.set_temp_acc(int(Registers_table.cellWidget(3, 0).text(), 16))  # Temp-ACC
         Processor.set_instruction_reg(int(Registers_table.cellWidget(4, 0).text(), 16))  # INST
+
+    def reload_register_array_table(self):
+        pass
+
+    def update_register_array_table(self):
+        pass
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
         AddressLatch_table = self.AddressLatch_table

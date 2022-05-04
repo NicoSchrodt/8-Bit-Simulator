@@ -15,6 +15,112 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" rowspan="2">
+     <widget class="QTableWidget" name="Registers_table">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>140</width>
+        <height>152</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>140</width>
+        <height>152</height>
+       </size>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>0</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>74</number>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <row>
+       <property name="text">
+        <string>PC</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>SP</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>ACC</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>ACC-Latch</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>INST</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="2" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="3" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="4" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="next_button">
+      <property name="text">
+       <string>Next</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QPushButton" name="reset_button">
+      <property name="text">
+       <string>Reset</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="2">
      <widget class="QTableWidget" name="AddressLatch_table">
       <attribute name="horizontalHeaderVisible">
@@ -125,99 +231,7 @@
       </column>
      </widget>
     </item>
-    <item row="0" column="0" rowspan="2">
-     <widget class="QTableWidget" name="Registers_table">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>140</width>
-        <height>152</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>140</width>
-        <height>152</height>
-       </size>
-      </property>
-      <attribute name="horizontalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="horizontalHeaderCascadingSectionResizes">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="horizontalHeaderMinimumSectionSize">
-       <number>0</number>
-      </attribute>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>74</number>
-      </attribute>
-      <attribute name="verticalHeaderCascadingSectionResizes">
-       <bool>true</bool>
-      </attribute>
-      <row>
-       <property name="text">
-        <string>PC</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>SP</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>ACC</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>ACC-Latch</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>INST</string>
-       </property>
-      </row>
-      <column>
-       <property name="text">
-        <string/>
-       </property>
-      </column>
-      <item row="0" column="0">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </item>
-      <item row="1" column="0">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </item>
-      <item row="2" column="0">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </item>
-      <item row="3" column="0">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </item>
-      <item row="4" column="0">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="6" column="2">
+    <item row="6" column="2" colspan="2">
      <widget class="QTableWidget" name="Program_table">
       <attribute name="horizontalHeaderVisible">
        <bool>false</bool>
@@ -243,13 +257,6 @@
       </column>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="next_button">
-      <property name="text">
-       <string>Next</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="0">
      <widget class="QPushButton" name="go_button">
       <property name="text">
@@ -257,11 +264,74 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QPushButton" name="reset_button">
-      <property name="text">
-       <string>Reset</string>
+    <item row="0" column="3">
+     <widget class="QTableWidget" name="Register_array_table">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>202</width>
+        <height>122</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>202</width>
+        <height>122</height>
+       </size>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>0</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>0</number>
+      </attribute>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string/>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
      </widget>
     </item>
    </layout>
