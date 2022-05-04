@@ -64,5 +64,5 @@ class ChangeValueWindow(QMainWindow):
                         self.lineEdit_value.text())
                     self.Intel8080_MainWindow.update_register_array_table()
                     self.close()
-        except Exception:
+        except Exception as e:
             pass

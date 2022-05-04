@@ -163,6 +163,9 @@ class Intel8080_MainWindow(QMainWindow):
         self.setWindowIcon(QIcon("../ui/Logo.png"))
 
         self.reload_registers_table()
+        self.reload_register_array_table()
+
+        print(self.processor.registers.registers)
 
     def getQTableWidgetSize(self, object):
         w = object.verticalHeader().width() + 2  # +2 seems to be needed
@@ -215,6 +218,7 @@ class Intel8080_MainWindow(QMainWindow):
             self.fill_program_table()
         self.color_program_table()
         self.reload_registers_table()
+        self.reload_register_array_table()
 
     def reset_go(self):
         if self.processor.program_length != 0:
@@ -223,6 +227,7 @@ class Intel8080_MainWindow(QMainWindow):
     def reset_intel8080(self):
         self.processor.reset_processor()
         self.reload_registers_table()
+        self.reload_register_array_table()
         self.color_program_table()
 
     def closeEvent(self, event: QCloseEvent):
@@ -240,12 +245,14 @@ class Intel8080_MainWindow(QMainWindow):
             self.processor.nextInstruction()
             self.color_program_table()
             self.reload_registers_table()
+            self.reload_register_array_table()
 
     def perform_instruction(self):
         if not self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
             self.processor.nextInstruction()
             self.color_program_table()
             self.reload_registers_table()
+            self.reload_register_array_table()
 
     def pressed_table_cell(self):
         btn = self.sender()
@@ -295,8 +302,8 @@ class Intel8080_MainWindow(QMainWindow):
             print("Exception" + str(e))
 
     def reload_registers_table(self):  # This functions makes the ui match the registers
-        Registers_table = self.Registers_table
         Processor = self.processor
+        Registers_table = self.Registers_table
 
         Registers_table.cellWidget(0, 0).setText(str(Processor.get_pc()))  # PC
         Registers_table.cellWidget(1, 0).setText(str(Processor.get_sp()))  # SP
@@ -314,10 +321,29 @@ class Intel8080_MainWindow(QMainWindow):
         Processor.set_instruction_reg(int(Registers_table.cellWidget(4, 0).text(), 16))  # INST
 
     def reload_register_array_table(self):
-        pass
+        Processor = self.processor
+        Register_array_table = self.Register_array_table
+
+        Register_array_table.cellWidget(0, 0).setText(str(Processor.get_reg_array_direct('w')))
+        Register_array_table.cellWidget(0, 1).setText(str(Processor.get_reg_array_direct('z')))
+        Register_array_table.cellWidget(1, 0).setText(str(Processor.get_reg_array_direct('b')))
+        Register_array_table.cellWidget(1, 1).setText(str(Processor.get_reg_array_direct('c')))
+        Register_array_table.cellWidget(2, 0).setText(str(Processor.get_reg_array_direct('d')))
+        Register_array_table.cellWidget(2, 1).setText(str(Processor.get_reg_array_direct('e')))
+        Register_array_table.cellWidget(3, 0).setText(str(Processor.get_reg_array_direct('h')))
+        Register_array_table.cellWidget(3, 1).setText(str(Processor.get_reg_array_direct('l')))
 
     def update_register_array_table(self):
-        pass
+        Processor = self.processor
+        Register_array_table = self.Register_array_table
+        Processor.set_reg_array_direct('w', int(Register_array_table.cellWidget(0, 0).text(), 16))
+        Processor.set_reg_array_direct('z', int(Register_array_table.cellWidget(0, 1).text(), 16))
+        Processor.set_reg_array_direct('b', int(Register_array_table.cellWidget(1, 0).text(), 16))
+        Processor.set_reg_array_direct('c', int(Register_array_table.cellWidget(1, 1).text(), 16))
+        Processor.set_reg_array_direct('d', int(Register_array_table.cellWidget(2, 0).text(), 16))
+        Processor.set_reg_array_direct('e', int(Register_array_table.cellWidget(2, 1).text(), 16))
+        Processor.set_reg_array_direct('h', int(Register_array_table.cellWidget(3, 0).text(), 16))
+        Processor.set_reg_array_direct('l', int(Register_array_table.cellWidget(3, 1).text(), 16))
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
         AddressLatch_table = self.AddressLatch_table

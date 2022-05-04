@@ -897,3 +897,19 @@ class Intel8080(AbstractProcessor):
 
     def set_buffer(self, value):
         self.peripherals.set_address_buffer(value)
+
+    def set_reg_array_direct(self, reg, value):
+        if reg.upper() not in ['W', 'Z']:
+            self.registers.set_register8_with_offset(char_to_reg(reg), value)
+        elif reg.upper() == 'W':
+            self.registers.set_register8(10, value)
+        elif reg.upper() == "Z":
+            self.registers.set_register8(11, value)
+
+    def get_reg_array_direct(self, reg):
+        if reg.upper() not in ['W', 'Z']:
+            return self.registers.get_register_with_offset(char_to_reg(reg))
+        elif reg.upper() == 'W':
+            return self.registers.get_register(10)
+        elif reg.upper() == "Z":
+            return self.registers.get_register(11)
