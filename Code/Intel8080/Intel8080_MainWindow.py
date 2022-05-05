@@ -165,8 +165,6 @@ class Intel8080_MainWindow(QMainWindow):
         self.reload_registers_table()
         self.reload_register_array_table()
 
-        print(self.processor.registers.registers)
-
     def getQTableWidgetSize(self, object):
         w = object.verticalHeader().width() + 2  # +2 seems to be needed
         for i in range(object.columnCount()):
@@ -214,6 +212,7 @@ class Intel8080_MainWindow(QMainWindow):
     def load_program(self):
         filepath = QFileDialog.getOpenFileName(self, 'Open file', os.path.dirname(os.path.realpath(__file__)), "*.com")
         if filepath[0] != "":
+            self.reset_intel8080()
             self.processor.load_program(filepath[0])
             self.fill_program_table()
         self.color_program_table()
@@ -226,9 +225,10 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reset_intel8080(self):
         self.processor.reset_processor()
+        self.color_program_table()
         self.reload_registers_table()
         self.reload_register_array_table()
-        self.color_program_table()
+        self.reload_addressLatch_table()
 
     def closeEvent(self, event: QCloseEvent):
         self.monitor.ExitFlag = True
@@ -246,6 +246,7 @@ class Intel8080_MainWindow(QMainWindow):
             self.color_program_table()
             self.reload_registers_table()
             self.reload_register_array_table()
+            self.reload_addressLatch_table()
 
     def perform_instruction(self):
         if not self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
@@ -253,6 +254,7 @@ class Intel8080_MainWindow(QMainWindow):
             self.color_program_table()
             self.reload_registers_table()
             self.reload_register_array_table()
+            self.reload_addressLatch_table()
 
     def pressed_table_cell(self):
         btn = self.sender()
@@ -344,6 +346,13 @@ class Intel8080_MainWindow(QMainWindow):
         Processor.set_reg_array_direct('e', int(Register_array_table.cellWidget(2, 1).text(), 16))
         Processor.set_reg_array_direct('h', int(Register_array_table.cellWidget(3, 0).text(), 16))
         Processor.set_reg_array_direct('l', int(Register_array_table.cellWidget(3, 1).text(), 16))
+
+    def reload_addressLatch_table(self):
+        AddressLatch_table = self.AddressLatch_table
+        BufferValue = self.processor.get_buffer()
+        for i in range(16):
+            AddressLatch_table.cellWidget(0, 15 - i).setText(str(BufferValue & (0b1 << i)))
+
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
         AddressLatch_table = self.AddressLatch_table
