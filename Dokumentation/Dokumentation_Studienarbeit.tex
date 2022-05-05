@@ -541,8 +541,24 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits der
 \end{figure}
 
 \noindent
-Über 'Next' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück.
+Über 'Next' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=5cm]{bilder/Register}
+\caption{Ausgewählte besondere Register}
+\label{fig:Register}
+\end{figure}
+
+Die gezeigten Einträge sind:
+
+\begin{itemize}
+	\item PC: Program Counter Register
+	\item SP: Stack Pointer Register
+	\item ACC: Accumulator Register
+	\item ACC-Latch: Accumulator-Latch Register
+	\item INST: Instruction Register
+\end{itemize}
 
 \subsection{Tutorials}
 
