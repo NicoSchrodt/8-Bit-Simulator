@@ -482,6 +482,7 @@ Um einen Ablauf für die Simulation festzulegen muss erst bestimmt welche Parame
 Platzhalter
 
 \subsection{Aufbau der GUI}
+\label{chp:AufbauGUI}
 Das Simulieren des Prozessors ist die eine Seite dieses Projekts. Gleichermaßen wichtig für einen funktionierenden Simulator ist aber auch die Benutzeroberfläche mit der dieser bedient wird. In diesem Abschnitts werden die einzelnen Aspekte dieser analysiert.
 \subsubsection{Hauptmenü}
 Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.
@@ -532,7 +533,17 @@ Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgew
 \end{figure}
 
 \noindent
-Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits der Bytecode als auch die Bezeichnung des Befehls sowie zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Um das Programm auszuführen werden drei Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).
+Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits der Bytecode als auch die Bezeichnung des Befehls sowie zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{bilder/Breakpoint}
+\caption{Breakpoint}
+\label{fig:Break}
+\end{figure}
+
+\noindent
+Diese sind relevant wenn das Programm automatisch ausgeführt wird (sehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Um das Programm auszuführen werden drei Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\newpage
 
 \begin{figure}[h]
 \centering
@@ -564,7 +575,7 @@ Die gezeigten Einträge stehen für:
 
 \noindent
 Über die Knöpfe daneben in denen auch die Werte stehen lässt sich über klicken dieser ein Fenster öffnen, welches erlaubt den Wert zu ändern.
-Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.
+Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.\newpage
 
 \begin{figure}[h]
 \centering
@@ -665,6 +676,7 @@ Ein Beispiel dafür ist die \glqq Subtract register/immediate from A with borrow
 \label{fig:DoubleUsedMethodSubtract}
 \end{figure}
 
+\noindent
 Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelesen und damit die Methode SBI in der ALU-Klasse aufgerufen. Für SBB wird zunächst in der Intel8080-Klasse noch der Wert aus dem Speicher gelesen, da dies von der ALU nicht möglich ist. Mit dem gelesenem Wert wird dann in der ALU-Klasse die SBB-Methode aufgerufen. Diese leitet innnerhalb der Klasse aber nur noch auf die SBI Methode weiter.
 \\
 \noindent
@@ -677,6 +689,9 @@ Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelese
 \includegraphics[width=15cm]{Bilder/JumpVariants}
 \label{fig:JumpVariants}
 \end{figure}
+
+\subsection{GUI-Methoden}
+Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
 \newpage
 
