@@ -155,6 +155,7 @@ class Intel8080_MainWindow(QMainWindow):
         # Program Table
         Program_table = self.Program_table
         Program_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        Program_table.cellClicked.connect(self.breakpoint_check)
 
         self.instruction_positions = []
         self.previous_pc = 0
@@ -260,6 +261,16 @@ class Intel8080_MainWindow(QMainWindow):
         btn = self.sender()
         self.dialog = ChangeValueWindow(self, btn)
         self.dialog.show()
+
+    def breakpoint_check(self, row, column):
+        if self.processor.program_length != 0:
+            if column == 0:
+                if (self.Program_table.item(row, column) is None):
+                    self.Program_table.setItem(row, column, QTableWidgetItem("B"))
+                elif self.Program_table.item(row, column).text() != "B":
+                    self.Program_table.setItem(row, column, QTableWidgetItem("B"))
+                else:
+                    self.Program_table.setItem(row, column, QTableWidgetItem(""))
 
     def fill_program_table(self):
         self.instruction_positions = []
