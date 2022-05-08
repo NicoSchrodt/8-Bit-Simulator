@@ -1,5 +1,4 @@
 import os
-import numpy as np
 
 from time import sleep
 from PyQt6 import QtCore
@@ -166,6 +165,8 @@ class Intel8080_MainWindow(QMainWindow):
         self.reload_registers_table()
         self.reload_register_array_table()
 
+        self.ProgramMemory_table.resizeColumnsToContents()
+
     def getQTableWidgetSize(self, object):
         w = object.verticalHeader().width() + 2  # +2 seems to be needed
         for i in range(object.columnCount()):
@@ -216,9 +217,11 @@ class Intel8080_MainWindow(QMainWindow):
             self.reset_intel8080()
             self.processor.load_program(filepath[0])
             self.fill_program_table()
-        self.color_program_table()
-        self.reload_registers_table()
-        self.reload_register_array_table()
+        self.update_ui()
+
+    def reload_program(self):
+        self.fill_program_table()
+        self.update_ui()
 
     def reset_go(self):
         if self.processor.program_length != 0:
@@ -226,6 +229,9 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reset_intel8080(self):
         self.processor.reset_processor()
+        self.update_ui()
+
+    def update_ui(self):
         self.color_program_table()
         self.reload_registers_table()
         self.reload_register_array_table()
