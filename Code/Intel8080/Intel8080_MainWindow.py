@@ -401,7 +401,7 @@ class Intel8080_MainWindow(QMainWindow):
         for i in range(8):
             for j in range(16):
                 address = i * 8 + j  # one rows = 8 bits, one column 1 bit
-                value = self.processor.get_memory_byte(address)
+                value = str(hex(self.processor.get_memory_byte(address))).replace('0x', '')
                 self.ProgramMemory_table.cellWidget(i, j).setText(str(value))
 
     def update_memory_table(self):  # make program memory match the ui
@@ -409,6 +409,6 @@ class Intel8080_MainWindow(QMainWindow):
         for i in range(8):
             for j in range(16):
                 address = i * 8 + j  # one rows = 8 bits, one column 1 bit
-                value = int(self.ProgramMemory_table.cellWidget(i, j).text())
+                value = int(self.ProgramMemory_table.cellWidget(i, j).text(), 16)
                 self.processor.set_memory_byte(address, value)
         # TODO: Make sure to fix programTable as well after changing the program memory
