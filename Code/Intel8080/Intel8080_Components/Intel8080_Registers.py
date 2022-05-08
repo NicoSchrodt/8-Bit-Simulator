@@ -6,7 +6,7 @@ reg_offset = 2
 class Intel8080_Registers():
     def __init__(self):
         self.registers = [np.uint16(0),  # Program Counter
-                          np.uint16(0x0030),  # Stack Pointer 48d
+                          np.uint16(100),  # Stack Pointer 100d  TODO muss noch festgelegt werden
                           np.uint8(0),  # B-REG 000
                           np.uint8(0),  # C-REG 001
                           np.uint8(0),  # D-REG 010
@@ -14,7 +14,7 @@ class Intel8080_Registers():
                           np.uint8(0),  # H-REG 100
                           np.uint8(0),  # L-REG 101
                           np.uint8(0),  # Space for better REG allocation (110 -> Memory)
-                          np.uint8(0),  # A-REG 111
+                          np.uint8(0),  # A-REG 111 / Accumulator acc
                           np.uint8(0),  # W-REG
                           np.uint8(0),  # Z-REG
                           ]
@@ -41,9 +41,11 @@ class Intel8080_Registers():
         self.registers[first_reg + 1 + reg_offset] = np.uint8(val_l)
 
     def get_register(self, register):
+        register = np.uint8(register)
         return self.registers[register]
 
     def get_register_with_offset(self, register):
+        register = np.uint8(register)
         return self.registers[register + reg_offset]
 
     def fill_latch(self, register_pair):

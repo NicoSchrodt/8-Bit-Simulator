@@ -3,27 +3,24 @@ from pathlib import Path
 
 import numpy as np
 
+from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
+from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
+from Code.Intel8080.CycleClasses.Childs.Instructions.Lxi import Lxi
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_m_r import Mov_m_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_m import Mov_r_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
+from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
+from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
-from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bits
+from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bit
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Components.Intel8080_Peripherals import Intel8080_Peripherals
 from Code.Intel8080.Intel8080_Assembler import i8080asm
-
-# rp: b -> b,c
-#     d -> d,e
-#     h -> h,l
-#     sp -> sp
-# first register is high order, second is low order
-
-# LXI SP,0FFFFh
-asm_string = """start:
-mvi h, 12d
-mvi l, 34d
-mvi b, 11d
-mvi c, 22d
-push b
-xthl
-"""
 
 
 class Intel8080(AbstractProcessor):
@@ -39,6 +36,210 @@ class Intel8080(AbstractProcessor):
         self.interrupted = False
         self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
         self.halt = False
+
+        self.cpu_instruction_register = np.uint8(0x00)
+        self.current_instruction = Nop(self)
+        self.current_instruction_state = 1
+        self.current_machine_cycle = 1
+
+        self.quittable = True
+        self.instruction_counter = 0
+
+        # rp: b -> b,c
+        #     d -> d,e
+        #     h -> h,l
+        #     sp -> sp
+        # first register is high order, second is low order
+
+        # LXI SP,0FFFFh
+        self.asm_string = """start:
+        mvi h, 12d
+        mvi l, 34d
+        mvi b, 11d
+        mvi c, 22d
+        push b
+        xthl
+        """
+
+    def init(self, programm):
+        self.asm_string = programm
+        i8080asm.convert_to_binary(self.asm_string)
+        self.insert_program()
+
+    def init_test(self, programm):
+        self.asm_string = programm
+        self.reset_ASM()
+        i8080asm.convert_to_binary(self.asm_string, "Output\\program")
+        self.insert_program("Output\\program")
+
+    def reset_ASM(self):
+        # Current source line number.
+        i8080asm.lineno = 0
+
+        # Address of current instruction.
+        i8080asm.address = 0
+
+        # This is a 2-pass assembler, so keep track of which pass we're in.
+        i8080asm.source_pass = 1
+
+        # Assembled machine code.
+        i8080asm.output = b''
+
+        # Tokens
+        i8080asm.label = ''
+        i8080asm.mnemonic = ''
+        i8080asm.operand1 = ''
+        i8080asm.operand2 = ''
+        i8080asm.comment = ''
+
+        # Symbol table: {'label1': <address1>, 'label2': <address2>, ...}
+        i8080asm.symbol_table = {}
+
+        # Immediate operand type, 8-bit or 16-bit. An enum would be overkill and verbose.
+        i8080asm.IMMEDIATE8 = 8
+        i8080asm.IMMEDIATE16 = 16
+
+        # Default output file name
+        i8080asm.OUTFILE = 'program'
+
+    def next_instruction(self):
+        while not self.next_machine_cycle():
+            pass
+
+        return self.current_instruction_state == 1
+
+    def next_machine_cycle(self):
+        while not self.next_state_internal():
+            pass
+
+        return self.current_instruction_state == 1
+
+    def next_state(self):
+        self.next_state_internal()
+
+        return self.current_instruction_state == 1
+
+    def next_state_internal(self):
+        if self.current_instruction_state == 1:
+            self.current_instruction = Nop(self)
+
+        if self.current_instruction_state == 4:
+            self.decode_instruction()
+
+        if self.current_instruction.next_state():
+            self.current_instruction_state += 1
+            if self.current_machine_cycle == len(self.current_instruction.get_machine_cycles()):
+                self.current_instruction_state = 1
+                self.current_machine_cycle = 1
+            else:
+                self.current_machine_cycle += 1
+            return True
+        else:
+            self.current_instruction_state += 1
+            return False
+
+    def run_complete_programm(self, max_instructions=-1):
+        if max_instructions == -1:
+            self.quittable = False
+
+        while not (self.quittable and not self.instruction_counter < max_instructions):
+            if self.next_instruction():
+                self.instruction_counter += 1
+
+    def decode_instruction(self):
+        if self.cpu_instruction_register == 0xC3:
+            self.current_instruction = Jmp(self)
+        elif self.cpu_instruction_register == 0x3A:
+            self.current_instruction = Lda(self)
+        elif (self.cpu_instruction_register & 0xCF) == 0x01:
+            self.current_instruction = Lxi(self)
+        elif (self.cpu_instruction_register & 0xC0) == 0x40:
+            if self.get_sss() == 0b110:
+                if self.get_ddd() == 0b110:
+                    self.current_instruction = Hlt(self)
+                else:
+                    self.current_instruction = Mov_r_m(self)
+            else:
+                if self.get_ddd() == 0b110:
+                    self.current_instruction = Mov_m_r(self)
+                else:
+                    self.current_instruction = Mov_r_r(self)
+        elif (self.cpu_instruction_register & 0xC7) == 0x06:
+            if self.get_ddd() == 0b110:
+                self.current_instruction = Mvi_m(self)
+            else:
+                self.current_instruction = Mvi_r(self)
+        elif self.cpu_instruction_register == 0x00:
+            self.current_instruction = Nop(self)
+        elif (self.cpu_instruction_register & 0xCF) == 0xC5:
+            self.current_instruction = Push_rp(self)
+        elif self.cpu_instruction_register == 0xF9:
+            self.current_instruction = Sphl(self)
+        elif self.cpu_instruction_register == 0xE3:
+            self.current_instruction = Xthl(self)
+        else:
+            self.current_instruction = Nop(self)
+            raise Exception("Decode Instruction konnte kein passenden Befehl finden")
+
+        self.current_instruction.load_m1_t4()
+
+    def set_cpu_instruction_register(self, value):
+        self.cpu_instruction_register = np.uint8(value)
+
+    def set_current_instruction(self, instruction):
+        self.current_instruction = instruction
+
+    def get_sss(self):
+        return np.uint8(self.cpu_instruction_register & 0x07)
+
+    def get_sss_value(self):
+        return np.uint8(self.registers.get_register_with_offset(self.get_sss()))
+
+    def get_ddd(self):
+        return np.uint8((self.cpu_instruction_register & 0x38) >> 3)
+
+    def set_ddd(self, value):
+        ddd = np.uint8((self.cpu_instruction_register & 0x38) >> 3)
+        self.registers.set_register8_with_offset(ddd, value)
+
+    # returns the content of the correct address:
+    # when pc = 1 then returns content of program[0], first byte of program
+    def get_byte_from_memory_address_at_pc(self):
+        return np.uint8(self.get_memory_byte(self.get_pc() - 1))
+
+    def get_tmp(self):
+        return self.ALU.get_tmp()
+
+    def set_tmp(self, value):
+        self.ALU.set_tmp(value)
+
+    def get_acc(self):
+        return self.registers.get_register_with_offset(char_to_reg("A"))
+
+    def set_acc(self, value):
+        self.registers.set_register8_with_offset(char_to_reg("A"), value)
+
+
+    # def stateTransitions(self):
+    #     self.machine_cycle.t1(self)
+    #     self.machine_cycle.t2(self)
+    #     if not READY and HLTA:
+    #         if HLTA:
+    #             x=0
+    #             # Rechter Block fehlt Seite 21 Intel8080
+    #         else:
+    #             while not READY:
+    #                 self.machine_cycle.tw(self)
+    #     else:
+    #         if HOLD:
+    #             x=0
+    #             #  Set internal Hold f/f
+    #         else:
+    #             self.machine_cycle.t3(self)
+    #             self.machine_cycle.t4(self)
+    #             self.machine_cycle.t5(self)
+    #         #unterer Teil fehlt
+
 
     def nextCycle(self):
         self.registers.increment_pc()
@@ -93,14 +294,13 @@ class Intel8080(AbstractProcessor):
             self.program_length = i
             self.set_pc(0)
 
-    def insert_program(self):
-        output_program = "Intel8080\\Output\\program"
+    def insert_program(self, output_program="Intel8080\\Output\\program"):
         parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
         infile = parent_path.joinpath(output_program + '.com')
 
         with open(infile, 'rb') as file:
-            i = 0
+            i = 0  # verändert von 0
             while True:
                 byte = file.read(1)
                 if byte == b'':
@@ -155,7 +355,7 @@ class Intel8080(AbstractProcessor):
         return np.uint16(self.registers.get_register(1))
 
     def run(self):
-        i8080asm.convert_to_binary(asm_string)
+        i8080asm.convert_to_binary(self.asm_string)
         self.insert_program()
 
         count = 0
@@ -164,10 +364,10 @@ class Intel8080(AbstractProcessor):
             self.nextInstruction()
 
     def get_reg8d_from_inst(self, instruction):
-        return (instruction & 0x38) >> 3
+        return np.uint8((instruction & 0x38) >> 3)
 
     def get_reg8s_from_inst(self, instruction):
-        return instruction & 0x07
+        return np.uint8(instruction & 0x07)
 
     def get_reg16_from_inst(self, instruction):
         return (instruction & 0x30) >> 4
@@ -181,6 +381,9 @@ class Intel8080(AbstractProcessor):
         if reg8 == 3:
             return True
         return False
+
+    def get_rp(self):
+        return np.uint8((self.cpu_instruction_register & 0x30) >> 4)
 
     def get_rp_values(self, rp):
         reg_h = rp * 2
@@ -429,6 +632,7 @@ class Intel8080(AbstractProcessor):
             result = self.ALU.get_reg8_val(reg8)
         self.ALU.adc(result)
 
+
     def add(self, reg8):
         if self.reg_is_mem(reg8):
             result = self.get_h_l_value()
@@ -449,7 +653,7 @@ class Intel8080(AbstractProcessor):
     def call_general(self, low, high):
         self.push(high, low)
 
-        self.set_pc(build_16bit_from_8bits(high, low))
+        self.set_pc(build_16bit_from_8bit(high, low))
 
     def call_on(self, flag: bool):
         low = self.get_one_byte_data()
@@ -495,11 +699,11 @@ class Intel8080(AbstractProcessor):
             reg_val = np.uint16(self.registers.get_register(1))
         else:
             reg_h_value, reg_l_value = self.get_rp_values(rp)
-            reg_val = build_16bit_from_8bits(reg_h_value, reg_l_value)
+            reg_val = build_16bit_from_8bit(reg_h_value, reg_l_value)
 
         h_val = self.registers.get_register_with_offset(char_to_reg("h"))
         l_val = self.registers.get_register_with_offset(char_to_reg("l"))
-        hl_val = build_16bit_from_8bits(h_val, l_val)
+        hl_val = build_16bit_from_8bit(h_val, l_val)
 
         result = np.uint16(hl_val + reg_val)
         result_h = (result & 0xff00) >> 8
@@ -533,7 +737,7 @@ class Intel8080(AbstractProcessor):
             self.set_sp(result)
         else:
             reg_h_value, reg_l_value = self.get_rp_values(rp)
-            reg_val = build_16bit_from_8bits(reg_h_value, reg_l_value)
+            reg_val = build_16bit_from_8bit(reg_h_value, reg_l_value)
             result = np.uint16(reg_val - 1)
             self.registers.set_2_8bit_reg_with_offset((rp * 2), result)
 
@@ -576,12 +780,12 @@ class Intel8080(AbstractProcessor):
             self.set_sp(result)
         else:
             reg_h_value, reg_l_value = self.get_rp_values(rp)
-            reg_val = build_16bit_from_8bits(reg_h_value, reg_l_value)
+            reg_val = build_16bit_from_8bit(reg_h_value, reg_l_value)
             result = np.uint16(reg_val + 1)
             self.registers.set_2_8bit_reg_with_offset(rp * 2, result)
 
     def jump_general(self, low, high):
-        self.set_pc(build_16bit_from_8bits(high, low))
+        self.set_pc(build_16bit_from_8bit(high, low))
 
     def jump_on(self, flag: bool):
         low = self.get_one_byte_data()
@@ -624,7 +828,7 @@ class Intel8080(AbstractProcessor):
         self.ldax(address_l, address_h)
 
     def ldax(self, address_l, address_h):
-        address = build_16bit_from_8bits(address_h, address_l)
+        address = build_16bit_from_8bit(address_h, address_l)
         value = self.get_memory_byte(address)
         self.registers.set_register8_with_offset(char_to_reg("a"), value)
 
@@ -642,7 +846,7 @@ class Intel8080(AbstractProcessor):
         low = self.get_one_byte_data()
         high = self.get_one_byte_data()
 
-        address_l = build_16bit_from_8bits(high, low)
+        address_l = build_16bit_from_8bit(high, low)
         value_l = self.get_memory_byte(address_l)
         self.registers.set_register8_with_offset(char_to_reg("l"), value_l)
 
@@ -655,7 +859,7 @@ class Intel8080(AbstractProcessor):
         high = self.get_one_byte_data()
 
         if self.is_rp_meaning_sp(rp):
-            value = build_16bit_from_8bits(high, low)
+            value = build_16bit_from_8bit(high, low)
             self.set_sp(value)
         else:
             reg_h = rp * 2
@@ -699,14 +903,14 @@ class Intel8080(AbstractProcessor):
         self.write_byte_on_data_bus(data)
 
         exp = self.get_one_byte_data()
-        port_address = build_16bit_from_8bits(exp, exp)
+        port_address = build_16bit_from_8bit(exp, exp)
         self.write_address_on_address_bus(port_address)
         pass
 
     def pchl(self):
         val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
         val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
-        value = build_16bit_from_8bits(val_h, val_l)
+        value = build_16bit_from_8bit(val_h, val_l)
         self.set_pc(value)
 
     def pop_general(self, rp):
@@ -765,7 +969,7 @@ class Intel8080(AbstractProcessor):
         self.ALU.set_carry_flag(byte & pow(2, 0))
 
     def return_general(self, low, high):
-        self.set_pc(build_16bit_from_8bits(high, low))
+        self.set_pc(build_16bit_from_8bit(high, low))
 
     def return_on(self, flag: bool):
         if flag:
@@ -819,7 +1023,7 @@ class Intel8080(AbstractProcessor):
     def shld(self):
         address_low = self.get_one_byte_data()
         address_high = self.get_one_byte_data()
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.set_memory_byte(address, self.registers.get_register_with_offset(char_to_reg("l")))
         address = np.uint16(address + 1)
         self.set_memory_byte(address, self.registers.get_register_with_offset(char_to_reg("h")))
@@ -827,7 +1031,7 @@ class Intel8080(AbstractProcessor):
     def sphl(self):
         val_l = np.uint8(self.registers.get_register_with_offset(char_to_reg("l")))
         val_h = np.uint8(self.registers.get_register_with_offset(char_to_reg("h")))
-        self.push(val_h, val_l)
+        self.set_sp(build_16bit_from_8bit(val_h, val_l))
 
     def stax(self, address):
         val_a = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
@@ -836,19 +1040,19 @@ class Intel8080(AbstractProcessor):
     def sta(self):
         address_low = self.get_one_byte_data()
         address_high = self.get_one_byte_data()
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.stax(address)
 
     def stax_b(self):
         address_high = np.uint8(self.registers.get_register_with_offset(char_to_reg("b")))
         address_low = np.uint8(self.registers.get_register_with_offset(char_to_reg("c")))
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.stax(address)
 
     def stax_d(self):
         address_high = np.uint8(self.registers.get_register_with_offset(char_to_reg("d")))
         address_low = np.uint8(self.registers.get_register_with_offset(char_to_reg("e")))
-        address = build_16bit_from_8bits(address_high, address_low)
+        address = build_16bit_from_8bit(address_high, address_low)
         self.stax(address)
 
     def sub(self, reg8):
@@ -880,11 +1084,11 @@ class Intel8080(AbstractProcessor):
     def get_acc(self):
         return self.registers.get_register(9)
 
-    def set_temp_acc(self, value):
-        self.ALU.set_temp_acu(value)
+    def set_act(self, value):
+        self.ALU.set_act(value)
 
-    def get_temp_acc(self):
-        return self.ALU.get_temp_acu()
+    def get_act(self):
+        return self.ALU.get_act()
 
     def set_instruction_reg(self, value):
         self.registers.set_instruction_reg(value)

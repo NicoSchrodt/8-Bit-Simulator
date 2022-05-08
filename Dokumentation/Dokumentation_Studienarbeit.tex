@@ -693,6 +693,10 @@ Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelese
 \subsection{GUI-Methoden}
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
+
+\subsection{Interrupts}
+Interrupts werden erst ausgeführt, wenn der momentane Befehl abgearbeitet wurde. Normalerweise wird ein RESET-Befehl mit einem Interrupt mitgeschickt. Mit 3 Bits kann damit entschieden werden wo die Subroutine beginnen soll. Byte 0, 8, 16 ... 56. Es kann aber auch einfach nur ein 1-Byte Befehl ausgeführt werden.
+
 \newpage
 
 \section{Fazit und Ausblick}

@@ -19,25 +19,29 @@ def char_to_reg(reg: chr):
         return np.uint8(5)
     elif reg == 'A':
         return np.uint8(7)
+    elif reg == 'W':
+        return np.uint8(8)
+    elif reg == 'Z':
+        return np.uint8(9)
     else:
         return np.uint8(255)
 
 
-def build_16bit_from_8bits(high, low):
+def build_16bit_from_8bit(high, low):
     return np.uint16((high << 8) | low)
 
 
 class Intel8080_ALU():
     def __init__(self, Intel8080):
         self.registers = Intel8080.registers
-        self.temp_accumulator = np.uint8(0)
+        self.act = np.uint8(0)  # Temporary accumulator
+        self.tmp = np.uint8(0)  # Temporary register
         self.flags = [False,  # Zero
                       False,  # Sign: True means negative (value > 127)
                       False,  # Parity: True means even (value % 2 == 0)
                       False,  # Carry
                       False  # Auxiliary Carry: Overflow from bit 3 to 4
                       ]
-        self.temp_register = np.uint8(0)
 
     def perform_operation(self):
         pass
@@ -46,17 +50,17 @@ class Intel8080_ALU():
     def get_reg8_val(self, reg8):
         return np.uint8(self.registers.get_register(reg_offset + reg8))
 
-    def set_temp_acu(self, value):
-        self.temp_accumulator = value
+    def get_act(self):
+        return np.uint8(self.act)
 
-    def get_temp_acu(self):
-        return self.temp_accumulator
+    def set_act(self, value):
+        self.act = np.uint8(value)
 
-    def set_temp_register(self, value):
-        self.temp_register = value
+    def get_tmp(self):
+        return np.uint8(self.tmp)
 
-    def get_temp_register(self):
-        return self.temp_register
+    def set_tmp(self, value):
+        self.tmp = np.uint8(value)
 
     def set_zero_flag(self, state):
         self.flags[0] = state
