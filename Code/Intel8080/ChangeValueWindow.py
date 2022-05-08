@@ -64,5 +64,11 @@ class ChangeValueWindow(QMainWindow):
                         self.lineEdit_value.text())
                     self.Intel8080_MainWindow.update_register_array_table()
                     self.close()
+            elif self.btn.parent().parent() == self.Intel8080_MainWindow.ProgramMemory_table:
+                if 0 <= value < 256:
+                    self.btn.parent().parent().cellWidget(index.row(), index.column()).setText(
+                        self.lineEdit_value.text())
+                    self.Intel8080_MainWindow.update_memory_table()
+                    self.close()
         except Exception as e:
             pass

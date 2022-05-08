@@ -128,9 +128,10 @@ class Intel8080_MainWindow(QMainWindow):
         loadFile = self.actionLoad_Program
         loadFile.triggered.connect(self.load_program)
 
-        # Next Instruction
-        nextButton = self.next_button
-        nextButton.pressed.connect(self.perform_instruction)
+        # Next Instruction/MachineCycle/State
+        self.next_button.pressed.connect(self.perform_instruction)
+        self.next_mc_button.pressed.connect(self.perform_mc)
+        self.next_state_button.pressed.connect(self.perform_state)
 
         # Go Instruction
         goButton = self.go_button
@@ -151,6 +152,15 @@ class Intel8080_MainWindow(QMainWindow):
             addressLatch.setCellWidget(0, column, btn)
             btn.pressed.connect(self.pressed_table_cell)
 
+        # Program Memory Table
+        for row in range(self.ProgramMemory_table.rowCount()):
+            for column in range(self.ProgramMemory_table.columnCount()):
+                btn = QPushButton(self.ProgramMemory_table)
+                btn.setText('{:x}'.format(0))
+                self.ProgramMemory_table.setCellWidget(row, column, btn)
+                btn.pressed.connect(self.pressed_table_cell)
+        self.ProgramMemory_table.resizeColumnsToContents()
+
         # Program Table
         Program_table = self.Program_table
         Program_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
@@ -162,10 +172,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.setWindowTitle("Intel8080 Simulator")
         self.setWindowIcon(QIcon("../ui/Logo.png"))
 
-        self.reload_registers_table()
-        self.reload_register_array_table()
-
-        self.ProgramMemory_table.resizeColumnsToContents()
+        self.update_ui()
 
     def getQTableWidgetSize(self, object):
         w = object.verticalHeader().width() + 2  # +2 seems to be needed
@@ -233,6 +240,7 @@ class Intel8080_MainWindow(QMainWindow):
 
     def update_ui(self):
         self.color_program_table()
+        self.reload_memory_table()
         self.reload_registers_table()
         self.reload_register_array_table()
         self.reload_addressLatch_table()
@@ -250,18 +258,25 @@ class Intel8080_MainWindow(QMainWindow):
         if self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
             print("Performed Instruction, Automatic")
             self.processor.nextInstruction()
-            self.color_program_table()
-            self.reload_registers_table()
-            self.reload_register_array_table()
-            self.reload_addressLatch_table()
+            self.update_ui()
 
     def perform_instruction(self):
-        if not self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
+        if self.actionCheck():
             self.processor.nextInstruction()
-            self.color_program_table()
-            self.reload_registers_table()
-            self.reload_register_array_table()
-            self.reload_addressLatch_table()
+            self.update_ui()
+
+    def perform_mc(self):
+        if self.actionCheck():
+            self.processor.next_machine_cycle()
+            self.update_ui()
+
+    def perform_state(self):
+        if self.actionCheck():
+            self.processor.next_state()
+            self.update_ui()
+
+    def actionCheck(self):
+        return not self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc()
 
     def pressed_table_cell(self):
         btn = self.sender()
@@ -366,10 +381,10 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reload_addressLatch_table(self):
         AddressLatch_table = self.AddressLatch_table
+        #  TODO: Error here, mistake in calculation
         BufferValue = self.processor.get_buffer()
         for i in range(16):
             AddressLatch_table.cellWidget(0, 15 - i).setText(str(BufferValue & (0b1 << i)))
-
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
         AddressLatch_table = self.AddressLatch_table
@@ -380,3 +395,20 @@ class Intel8080_MainWindow(QMainWindow):
             self.processor.set_latch_bit((15 - i), value)
         value = int(string_value, 2)
         self.processor.set_buffer(value)
+
+    def reload_memory_table(self):  # make ui match the program memory
+        # TODO: Make use of UI that lets you set a range
+        for i in range(8):
+            for j in range(16):
+                address = i * 8 + j  # one rows = 8 bits, one column 1 bit
+                value = self.processor.get_memory_byte(address)
+                self.ProgramMemory_table.cellWidget(i, j).setText(str(value))
+
+    def update_memory_table(self):  # make program memory match the ui
+        # TODO: Make use of UI that lets you set a range
+        for i in range(8):
+            for j in range(16):
+                address = i * 8 + j  # one rows = 8 bits, one column 1 bit
+                value = int(self.ProgramMemory_table.cellWidget(i, j).text())
+                self.processor.set_memory_byte(address, value)
+        # TODO: Make sure to fix programTable as well after changing the program memory

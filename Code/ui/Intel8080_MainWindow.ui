@@ -133,7 +133,21 @@
       <item>
        <widget class="QPushButton" name="next_button">
         <property name="text">
-         <string>Next</string>
+         <string>Next Instruction</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="next_mc_button">
+        <property name="text">
+         <string>Next Machine Cycle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="next_state_button">
+        <property name="text">
+         <string>Next State</string>
         </property>
        </widget>
       </item>
@@ -262,6 +276,12 @@
       </property>
       <attribute name="horizontalHeaderMinimumSectionSize">
        <number>35</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>35</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>23</number>
       </attribute>
       <row>
        <property name="text">
