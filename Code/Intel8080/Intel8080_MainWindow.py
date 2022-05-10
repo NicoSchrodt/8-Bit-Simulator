@@ -251,6 +251,7 @@ class Intel8080_MainWindow(QMainWindow):
 
     def update_ui(self):
         self.color_program_table()
+        self.color_cycle_state()
         self.reload_memory_table()
         self.reload_registers_table()
         self.reload_register_array_table()
@@ -273,7 +274,7 @@ class Intel8080_MainWindow(QMainWindow):
 
     def perform_instruction(self):
         if self.actionCheck():
-            self.processor.nextInstruction()
+            self.processor.next_instruction()
             self.update_ui()
 
     def perform_mc(self):
@@ -330,6 +331,20 @@ class Intel8080_MainWindow(QMainWindow):
         except Exception as e:
             print("ERROR: " + str(e))
         print(self.instruction_positions)
+
+    def color_cycle_state(self):
+        CurrentMachineCycle = self.processor.current_machine_cycle - 1
+        CurrentState = self.processor.current_instruction.machine_cycles[self.processor.current_machine_cycle - 1].last_executed_state
+        print(CurrentMachineCycle)
+        print(CurrentState)
+        CST = self.CycleState_table
+        # ToDo: Technically Wrong, doesn't differentiate what Machine cycle it is
+        for i in range(10):
+            CST.item(0, i).setBackground(QColor(255, 255, 255))
+        CST.item(0, CurrentMachineCycle).setBackground(QColor(152, 245, 255))
+        for i in range(6):
+            CST.item(1, i).setBackground(QColor(255, 255, 255))
+        CST.item(1, CurrentState).setBackground(QColor(152, 245, 255))
 
     def color_program_table(self):
         try:
