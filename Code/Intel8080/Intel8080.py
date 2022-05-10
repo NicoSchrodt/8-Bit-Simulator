@@ -32,6 +32,9 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_r import Mov_r_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_m import Ora_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_r import Ora_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ori import Ori
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_m import Sbb_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_r import Sbb_r
@@ -43,6 +46,9 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_m import Sub_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_r import Sub_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sui import Sui
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xchg import Xchg
+from Code.Intel8080.CycleClasses.Childs.Instructions.Xra_m import Xra_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Xra_r import Xra_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Xri import Xri
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bit
@@ -253,6 +259,13 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Mvi_r(self)
         elif self.cpu_instruction_register == 0x00:
             self.current_instruction = Nop(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0xB0:
+            if self.cpu_instruction_register == 0xB6:
+                self.current_instruction = Ora_m(self)
+            else:
+                self.current_instruction = Ora_r(self)
+        elif self.cpu_instruction_register == 0xF6:
+            self.current_instruction = Ori(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0xC5:
             self.current_instruction = Push_rp(self)
         elif self.cpu_instruction_register == 0x22:
@@ -279,6 +292,13 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Xchg(self)
         elif self.cpu_instruction_register == 0xE3:
             self.current_instruction = Xthl(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0xA8:
+            if self.cpu_instruction_register == 0xAE:
+                self.current_instruction = Xra_m(self)
+            else:
+                self.current_instruction = Xra_r(self)
+        elif self.cpu_instruction_register == 0xEE:
+            self.current_instruction = Xri(self)
         else:
             self.current_instruction = Nop(self)
             raise Exception("Decode Instruction konnte kein passenden Befehl finden")

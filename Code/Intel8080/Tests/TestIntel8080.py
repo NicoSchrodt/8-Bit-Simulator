@@ -130,7 +130,7 @@ class TestIntel8080(TestCase):
     def test_ani(self):
         try:
             intel = Intel8080()
-            intel.init_test("ani 0fh")  # TODO Fehler "ana d" wird auch zu sss = 000
+            intel.init_test("ani 0fh")
 
             intel.set_acc(0xFC)
 
@@ -403,6 +403,49 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_ora_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ora b")  # TODO Fehler "xra d" wird auch zu sss = 000
+
+            intel.set_acc(0xAA)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xAF, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_ora_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ora m")
+
+            intel.set_acc(0xAA)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 0x0F
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xAF, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_ori(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ori 0Fh")
+
+            intel.set_acc(0xAA)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xAF, intel.get_acc())
+        except:
+            self.fail()
+
     def test_push_rp(self):
         try:
             intel = Intel8080()
@@ -603,5 +646,48 @@ class TestIntel8080(TestCase):
             self.assertEqual(33, intel.program[79])
             self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("H")))
             self.assertEqual(3, intel.registers.get_register_with_offset(char_to_reg("L")))
+        except:
+            self.fail()
+
+    def test_xra_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("xra b")  # TODO Fehler "xra d" wird auch zu sss = 000
+
+            intel.set_acc(0xAA)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xA5, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_xra_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("xra m")
+
+            intel.set_acc(0xAA)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 0x0F
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xA5, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_xri(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("xri 0Fh")
+
+            intel.set_acc(0xAA)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xA5, intel.get_acc())
         except:
             self.fail()
