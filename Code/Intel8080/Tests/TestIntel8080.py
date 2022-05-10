@@ -50,6 +50,22 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+
+    def test_ldax(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ldax b")
+
+            intel.program[10] = 55
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0)  # high
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 10)  # low
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(55, intel.get_acc())
+        except:
+            self.fail()
+
     def test_lhld(self):
         try:
             intel = Intel8080()
@@ -207,6 +223,23 @@ class TestIntel8080(TestCase):
             intel.run_complete_programm(1)
 
             self.assertEqual(22, intel.get_memory_byte(0x000f))
+
+        except:
+            self.fail()
+
+    def test_stax(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("stax b")
+
+            intel.set_acc(22)
+
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0)
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(22, intel.get_memory_byte(10))
 
         except:
             self.fail()
