@@ -6,6 +6,7 @@ import numpy as np
 from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
+from Code.Intel8080.CycleClasses.Childs.Instructions.Lhld import Lhld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lxi import Lxi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_m_r import Mov_m_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_r_m import Mov_r_m
@@ -14,7 +15,9 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sta import Sta
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bit
@@ -151,6 +154,8 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Jmp(self)
         elif self.cpu_instruction_register == 0x3A:
             self.current_instruction = Lda(self)
+        elif self.cpu_instruction_register == 0x2A:
+            self.current_instruction = Lhld(self)
         elif (self.cpu_instruction_register & 0xCF) == 0x01:
             self.current_instruction = Lxi(self)
         elif (self.cpu_instruction_register & 0xC0) == 0x40:
@@ -173,8 +178,12 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Nop(self)
         elif (self.cpu_instruction_register & 0xCF) == 0xC5:
             self.current_instruction = Push_rp(self)
+        elif self.cpu_instruction_register == 0x22:
+            self.current_instruction = Shld(self)
         elif self.cpu_instruction_register == 0xF9:
             self.current_instruction = Sphl(self)
+        elif self.cpu_instruction_register == 0x32:
+            self.current_instruction = Sta(self)
         elif self.cpu_instruction_register == 0xE3:
             self.current_instruction = Xthl(self)
         else:
@@ -219,6 +228,15 @@ class Intel8080(AbstractProcessor):
     def set_acc(self, value):
         self.registers.set_register8_with_offset(char_to_reg("A"), value)
 
+    def get_wz(self):
+        return build_16bit_from_8bit(self.registers.get_register_with_offset(char_to_reg("W")),
+                                     self.registers.get_register_with_offset(char_to_reg("Z")))
+
+    def set_wz(self, value):
+        w = value & 0xff00
+        z = value & 0x00ff
+        self.registers.set_register8_with_offset(char_to_reg("W"), w)
+        self.registers.set_register8_with_offset(char_to_reg("Z"), z)
 
     # def stateTransitions(self):
     #     self.machine_cycle.t1(self)

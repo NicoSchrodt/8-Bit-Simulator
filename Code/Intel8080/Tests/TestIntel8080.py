@@ -50,6 +50,21 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_lhld(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("lhld 0Ah")
+
+            intel.program[10] = 55
+            intel.program[11] = 66
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(55, intel.registers.get_register_with_offset(char_to_reg("L")))
+            self.assertEqual(66, intel.registers.get_register_with_offset(char_to_reg("H")))
+        except:
+            self.fail()
+
     def test_lxi(self):
         try:
             intel = Intel8080()
@@ -151,6 +166,22 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_shld(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("shld 0Ah")
+
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 55)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 66)
+            intel.set_sp(80)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(55, intel.program[10])
+            self.assertEqual(66, intel.program[11])
+        except:
+            self.fail()
+
     def test_sphl(self):
         try:
             intel = Intel8080()
@@ -165,6 +196,21 @@ class TestIntel8080(TestCase):
             self.assertEqual((2 << 8) + 3, intel.get_sp())
         except:
             self.fail()
+
+    def test_sta(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sta 000fh")
+
+            intel.registers.set_register8_with_offset(char_to_reg("A"), 22)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(22, intel.get_memory_byte(0x000f))
+
+        except:
+            self.fail()
+
 
     def test_xthl(self):
         try:
