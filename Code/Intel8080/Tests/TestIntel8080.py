@@ -108,6 +108,45 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_dcr_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("dcr m")
+
+            intel.program[10] = 55
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(54, intel.program[10])
+        except:
+            self.fail()
+
+    def test_dcr_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("dcr b")
+
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 22)
+            intel.run_complete_programm(1)
+
+            self.assertEqual(21, intel.registers.get_register_with_offset(char_to_reg("B")))
+        except:
+            self.fail()
+
+    def test_dcx(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("dcx b")
+
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 5)
+            intel.run_complete_programm(1)
+
+            self.assertEqual(4, intel.registers.get_register_with_offset(char_to_reg("C")))
+        except:
+            self.fail()
+
     def test_inr_m(self):
         try:
             intel = Intel8080()
@@ -126,11 +165,24 @@ class TestIntel8080(TestCase):
     def test_inr_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("inr b")
+            intel.init_test("inr c")
 
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 5)
             intel.run_complete_programm(1)
 
-            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("B")))
+            self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("C")))
+        except:
+            self.fail()
+
+    def test_inx(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inx b")
+
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 5)
+            intel.run_complete_programm(1)
+
+            self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("C")))
         except:
             self.fail()
 

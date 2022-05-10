@@ -7,4 +7,6 @@ class ddd_to_tmp(State):
 
     def run(self):
         print("ddd_to_tmp")
-        self.processor.set_tmp(self.processor.get_ddd())
+        ddd = self.processor.get_ddd()
+        ddd_val = self.processor.registers.get_register_with_offset(ddd)
+        self.processor.set_tmp(ddd_val)

@@ -10,5 +10,5 @@ class acc_to_mem_from_rp(byte_at_pc_minus_1_):
         acc = self.processor.get_acc()
         rp_address = self.processor.get_rp_address()
 
-        if self.processor.get_rp() <= 1:
+        if self.processor.get_current_rp() <= 1:
             self.processor.set_memory_byte(rp_address, acc)

@@ -7,5 +7,5 @@ class byte_at_pc_to_rh(byte_at_pc_):
 
     def write_to(self):
         print("byte_at_pc_to_rh")
-        rp = self.processor.get_rp() * 2 + 1
+        rp = self.processor.get_current_rp() * 2 + 1
         self.processor.registers.set_register8_with_offset(rp, self.byte)
