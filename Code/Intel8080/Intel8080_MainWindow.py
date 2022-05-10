@@ -172,6 +172,11 @@ class Intel8080_MainWindow(QMainWindow):
                 btn.pressed.connect(self.pressed_table_cell)
         # self.ProgramMemory_table.resizeColumnsToContents()
 
+        # Program Memory Range
+        self.From_sb.valueChanged.connect(self.adjust_to)
+        self.To_sb.valueChanged.connect(self.adjust_from)
+        self.lock = False
+
         # Program Table
         Program_table = self.Program_table
         Program_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
@@ -236,6 +241,29 @@ class Intel8080_MainWindow(QMainWindow):
             self.processor.load_program(filepath[0])
             self.fill_program_table()
         self.update_ui()
+
+    def adjust_to(self, value):
+        if self.lock is False:
+            print(value - (value % 16))
+            self.lock = True
+            if value % 16 != 0:
+                self.From_sb.setValue(value - (value % 16))
+                self.To_sb.setValue(value + 16 - (value % 16))
+            else:
+                self.To_sb.setValue(value + 16)
+            self.lock = False
+
+    def adjust_from(self, value):
+        if self.lock is False:
+            print("x")
+            self.lock = True
+            if value % 16 != 0:
+                self.From_sb.setValue(value - (value % 16))
+                self.From_sb.setValue(value - 16 - (value % 16))
+                self.lock = False
+            else:
+                self.From_sb.setValue(value - 16)
+            self.lock = False
 
     def reload_program(self):
         self.fill_program_table()
