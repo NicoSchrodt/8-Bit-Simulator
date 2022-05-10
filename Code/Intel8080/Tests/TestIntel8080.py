@@ -11,6 +11,92 @@ class TestIntel8080(TestCase):
     def test_framework(self):
         self.assertTrue(True)
 
+    def test_aci(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("aci 63")
+
+            intel.set_acc(7)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(70, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_adc_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("adc b")
+
+            intel.set_acc(7)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(70, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_adc_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("adc m")
+
+            intel.set_acc(7)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 63
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(70, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_add_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("add m")
+
+            intel.set_acc(7)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 63
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(70, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_add_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("add b")
+
+            intel.set_acc(7)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(70, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_adi(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("adi 63")
+
+            intel.set_acc(7)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(70, intel.get_acc())
+        except:
+            self.fail()
+
     def test_hlt(self):
         try:
             intel = Intel8080()
@@ -244,6 +330,24 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_xchg(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("xchg")
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 22)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 33)
+            intel.registers.set_register8_with_offset(char_to_reg("D"), 44)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 55)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(22, intel.registers.get_register_with_offset(char_to_reg("D")))
+            self.assertEqual(33, intel.registers.get_register_with_offset(char_to_reg("E")))
+            self.assertEqual(44, intel.registers.get_register_with_offset(char_to_reg("H")))
+            self.assertEqual(55, intel.registers.get_register_with_offset(char_to_reg("L")))
+        except:
+            self.fail()
 
     def test_xthl(self):
         try:
