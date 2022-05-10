@@ -97,6 +97,49 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_ana_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ana m")
+
+            intel.set_acc(0xFC)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 0x0F
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x0C, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_ana_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ana b")  # TODO Fehler "ana d" wird auch zu sss = 000
+
+            intel.set_acc(0xFC)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x0C, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_ani(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ani 0fh")  # TODO Fehler "ana d" wird auch zu sss = 000
+
+            intel.set_acc(0xFC)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x0C, intel.get_acc())
+        except:
+            self.fail()
+
     def test_hlt(self):
         try:
             intel = Intel8080()
