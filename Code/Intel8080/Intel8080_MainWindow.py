@@ -159,7 +159,7 @@ class Intel8080_MainWindow(QMainWindow):
                 btn.setText('{:x}'.format(0))
                 self.ProgramMemory_table.setCellWidget(row, column, btn)
                 btn.pressed.connect(self.pressed_table_cell)
-        self.ProgramMemory_table.resizeColumnsToContents()
+        #self.ProgramMemory_table.resizeColumnsToContents()
 
         # Program Table
         Program_table = self.Program_table
