@@ -9,6 +9,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Adc_r import Adc_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Add_m import Add_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Add_r import Add_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Adi import Adi
+from Code.Intel8080.CycleClasses.Childs.Instructions.Daa import Daa
+from Code.Intel8080.CycleClasses.Childs.Instructions.Dad import Dad
 from Code.Intel8080.CycleClasses.Childs.Instructions.Dcr_m import Dcr_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Dcr_r import Dcr_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Dcx import Dcx
@@ -192,6 +194,10 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Adc_r(self)
         elif self.cpu_instruction_register == 0xC6:
             self.current_instruction = Adi(self)
+        elif self.cpu_instruction_register == 0x27:
+            self.current_instruction = Daa(self)
+        elif (self.cpu_instruction_register & self.rp_inv_mask) == 0x09:
+            self.current_instruction = Dad(self)
         elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0x05:
             if self.cpu_instruction_register == 0x35:
                 self.current_instruction = Dcr_m(self)

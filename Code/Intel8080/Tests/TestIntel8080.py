@@ -108,6 +108,36 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_daa(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("daa")
+
+            intel.set_acc(0x9B)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(1, intel.get_acc())
+            self.assertTrue(intel.ALU.get_auxiliary_carry_flag())
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_dad(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("dad h")
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 22)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 33)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(44, intel.registers.get_register_with_offset(char_to_reg("H")))
+            self.assertEqual(66, intel.registers.get_register_with_offset(char_to_reg("L")))
+        except:
+            self.fail()
+
     def test_dcr_m(self):
         try:
             intel = Intel8080()
