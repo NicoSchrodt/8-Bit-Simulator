@@ -3,7 +3,7 @@ from Code.Intel8080.CycleClasses.Childs.States.tmp_to_ddd import tmp_to_ddd
 from Code.Intel8080.CycleClasses.Childs.MachineCycles.SubParents.Fetch import Fetch
 
 
-class M1Mov_r_r(Fetch):
+class Mov_r_r_M1(Fetch):
     def __init__(self, processor):
         super().__init__(processor)
         self.states.append(sss_to_tmp(processor))

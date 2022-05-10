@@ -115,11 +115,11 @@ class Intel8080_ALU():
     # 16 Bit calculation
     def binary_add(self, op1, op2, carry: int):
         mask = 0x01
-        number, ac, cy = 0, 0, 0
+        result, ac, cy = 0, 0, 0
         for cycle in range(16):
             value = (op1 & mask) + (op2 & mask) + (carry * mask)
 
-            number += value & mask
+            result += value & mask
             mask <<= 1
             if value & mask:
                 carry = 1
@@ -131,7 +131,7 @@ class Intel8080_ALU():
             if cycle == 7:
                 cy = carry
 
-        return ac, cy
+        return ac, cy, result
 
     # 16 Bit calculation
     def binary_sub(self, op1, op2):

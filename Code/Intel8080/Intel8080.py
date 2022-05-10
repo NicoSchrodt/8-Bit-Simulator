@@ -3,9 +3,16 @@ from pathlib import Path
 
 import numpy as np
 
+from Code.Intel8080.CycleClasses.Childs.Instructions.Aci import Aci
+from Code.Intel8080.CycleClasses.Childs.Instructions.Adc_m import Adc_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Adc_r import Adc_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Add_m import Add_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Add_r import Add_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Adi import Adi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ldax import Ldax
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lhld import Lhld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lxi import Lxi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mov_m_r import Mov_m_r
@@ -18,6 +25,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sta import Sta
+from Code.Intel8080.CycleClasses.Childs.Instructions.Stax import Stax
+from Code.Intel8080.CycleClasses.Childs.Instructions.Xchg import Xchg
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bit
@@ -48,6 +57,10 @@ class Intel8080(AbstractProcessor):
 
         self.quittable = True
         self.instruction_counter = 0
+
+        self.rp_mask = 0xCF
+        self.sss_mask = 0x07
+        self.sss_inv_mask = self.sss_mask ^ 0xff
 
         # rp: b -> b,c
         #     d -> d,e
@@ -151,13 +164,32 @@ class Intel8080(AbstractProcessor):
                 self.instruction_counter += 1
 
     def decode_instruction(self):
-        if self.cpu_instruction_register == 0xC3:
+        if self.cpu_instruction_register == 0xCE:
+            self.current_instruction = Aci(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x80:
+            if self.cpu_instruction_register == 0x86:
+                self.current_instruction = Add_m(self)
+            else:
+                self.current_instruction = Add_r(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x88:
+            if self.cpu_instruction_register == 0x8E:
+                self.current_instruction = Adc_m(self)
+            else:
+                self.current_instruction = Adc_r(self)
+        elif self.cpu_instruction_register == 0xC6:
+            self.current_instruction = Adi(self)
+        elif self.cpu_instruction_register == 0xC3:
             self.current_instruction = Jmp(self)
         elif self.cpu_instruction_register == 0x3A:
             self.current_instruction = Lda(self)
+        elif (self.cpu_instruction_register & self.rp_mask) == 0x0A:
+            if self.cpu_instruction_register == 0x2A:
+                self.current_instruction = Lhld(self)
+            else:
+                self.current_instruction = Ldax(self)
         elif self.cpu_instruction_register == 0x2A:
             self.current_instruction = Lhld(self)
-        elif (self.cpu_instruction_register & 0xCF) == 0x01:
+        elif (self.cpu_instruction_register & self.rp_mask) == 0x01:
             self.current_instruction = Lxi(self)
         elif (self.cpu_instruction_register & 0xC0) == 0x40:
             if self.get_sss() == 0b110:
@@ -177,7 +209,7 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Mvi_r(self)
         elif self.cpu_instruction_register == 0x00:
             self.current_instruction = Nop(self)
-        elif (self.cpu_instruction_register & 0xCF) == 0xC5:
+        elif (self.cpu_instruction_register & self.rp_mask) == 0xC5:
             self.current_instruction = Push_rp(self)
         elif self.cpu_instruction_register == 0x22:
             self.current_instruction = Shld(self)
@@ -185,6 +217,10 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Sphl(self)
         elif self.cpu_instruction_register == 0x32:
             self.current_instruction = Sta(self)
+        elif (self.cpu_instruction_register & self.rp_mask) == 0x02:
+            self.current_instruction = Stax(self)
+        elif self.cpu_instruction_register == 0xEB:
+            self.current_instruction = Xchg(self)
         elif self.cpu_instruction_register == 0xE3:
             self.current_instruction = Xthl(self)
         else:
@@ -416,6 +452,12 @@ class Intel8080(AbstractProcessor):
 
     def get_rp(self):
         return np.uint8((self.cpu_instruction_register & 0x30) >> 4)
+
+    def get_rp_address(self):
+        rp = self.get_rp()
+        high = self.registers.get_register_with_offset(2 * rp)
+        low = self.registers.get_register_with_offset(2 * rp + 1)
+        return build_16bit_from_8bit(high, low)
 
     def get_rp_values(self, rp):
         reg_h = rp * 2
