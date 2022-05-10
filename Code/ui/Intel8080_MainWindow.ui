@@ -15,160 +15,8 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QTableWidget" name="AddressLatch_table">
-      <attribute name="horizontalHeaderVisible">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="horizontalHeaderMinimumSectionSize">
-       <number>0</number>
-      </attribute>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>38</number>
-      </attribute>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="verticalHeaderCascadingSectionResizes">
-       <bool>true</bool>
-      </attribute>
-      <attribute name="verticalHeaderMinimumSectionSize">
-       <number>10</number>
-      </attribute>
-      <attribute name="verticalHeaderDefaultSectionSize">
-       <number>10</number>
-      </attribute>
-      <row>
-       <property name="text">
-        <string/>
-       </property>
-      </row>
-      <column>
-       <property name="text">
-        <string>A15</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A14</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A13</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A12</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A11</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A10</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A9</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A8</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A7</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A6</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A5</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A4</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A3</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A2</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A1</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A0</string>
-       </property>
-      </column>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <layout class="QVBoxLayout" name="ProgramInstructions">
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <item>
-       <widget class="QPushButton" name="next_button">
-        <property name="text">
-         <string>Next Instruction</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="next_mc_button">
-        <property name="text">
-         <string>Next Machine Cycle</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="next_state_button">
-        <property name="text">
-         <string>Next State</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="go_button">
-        <property name="text">
-         <string>Go</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="reset_button">
-        <property name="text">
-         <string>Reset</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout_7">
+     <layout class="QGridLayout" name="SpecialRegisters">
       <property name="leftMargin">
        <number>6</number>
       </property>
@@ -269,141 +117,19 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="2" rowspan="5">
-     <widget class="QTableWidget" name="ProgramMemory_table">
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
+    <item row="7" column="0">
+     <layout class="QGridLayout" name="MessageLog">
+      <property name="leftMargin">
+       <number>6</number>
       </property>
-      <attribute name="horizontalHeaderMinimumSectionSize">
-       <number>35</number>
-      </attribute>
-      <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>35</number>
-      </attribute>
-      <attribute name="verticalHeaderDefaultSectionSize">
-       <number>23</number>
-      </attribute>
-      <row>
-       <property name="text">
-        <string>0x0000</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0008</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0010</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0018</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0020</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0028</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0030</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>0x0038</string>
-       </property>
-      </row>
-      <column>
-       <property name="text">
-        <string>0</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>1</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>2</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>3</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>4</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>5</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>6</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>7</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>8</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>9</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>A</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>B</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>E</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>F</string>
-       </property>
-      </column>
-     </widget>
+      <item row="0" column="0">
+       <widget class="QPlainTextEdit" name="MessageLog_plaintext">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item row="4" column="4">
      <layout class="QGridLayout" name="MemoryDisplaySettings">
@@ -447,7 +173,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:7.875pt;&quot;&gt;0x0040&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:7.875pt;&quot;&gt;0x0070&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>
@@ -467,44 +193,8 @@ p, li { white-space: pre-wrap; }
       </item>
      </layout>
     </item>
-    <item row="7" column="0" colspan="5">
-     <layout class="QGridLayout" name="gridLayout_8">
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QTableWidget" name="Program_table">
-        <attribute name="horizontalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>0</number>
-        </attribute>
-        <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>0</number>
-        </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="4">
-     <layout class="QGridLayout" name="gridLayout_9">
+     <layout class="QGridLayout" name="GenericRegisters">
       <property name="rightMargin">
        <number>6</number>
       </property>
@@ -576,6 +266,509 @@ p, li { white-space: pre-wrap; }
           <string/>
          </property>
         </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="7" column="1" colspan="4">
+     <layout class="QGridLayout" name="ProgramTable">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="Program_table">
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>0</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>0</number>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="4" column="0">
+     <layout class="QVBoxLayout" name="ProgramInstructions">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="next_button">
+        <property name="text">
+         <string>Next Instruction</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="next_mc_button">
+        <property name="text">
+         <string>Next Machine Cycle</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="next_state_button">
+        <property name="text">
+         <string>Next State</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="go_button">
+        <property name="text">
+         <string>Go</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="reset_button">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="4" column="1" colspan="2">
+     <layout class="QGridLayout" name="ProgramMemory">
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="ProgramMemory_table">
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
+        <attribute name="horizontalHeaderCascadingSectionResizes">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>0</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>25</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>23</number>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>0x0000</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0010</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0020</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0030</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0040</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0050</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0060</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>0x0070</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>4</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>5</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>6</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>7</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>8</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>9</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>B</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>C</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>D</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>E</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>F</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1" colspan="2">
+     <layout class="QGridLayout" name="AddressLatchCycleState">
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="AddressLatch_table">
+        <attribute name="horizontalHeaderVisible">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>0</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>38</number>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderCascadingSectionResizes">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>10</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>10</number>
+        </attribute>
+        <row>
+         <property name="text">
+          <string/>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>A15</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A14</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A13</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A12</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A11</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A10</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A9</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A8</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A7</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A6</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A5</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A4</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A3</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>A0</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QTableWidget" name="CycleState_table">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderMinimumSectionSize">
+         <number>0</number>
+        </attribute>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>55</number>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderCascadingSectionResizes">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderMinimumSectionSize">
+         <number>25</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>25</number>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>Cycle</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>State</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>4</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>5</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>6</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>7</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>8</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>9</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>Fetch(M1)</string>
+         </property>
+        </item>
+        <item row="0" column="1">
+         <property name="text">
+          <string>MemRead</string>
+         </property>
+        </item>
+        <item row="0" column="2">
+         <property name="text">
+          <string>MemWrite</string>
+         </property>
+        </item>
+        <item row="0" column="3">
+         <property name="text">
+          <string>StackRead</string>
+         </property>
+        </item>
+        <item row="0" column="4">
+         <property name="text">
+          <string>StackWrite</string>
+         </property>
+        </item>
+        <item row="0" column="5">
+         <property name="text">
+          <string>Input</string>
+         </property>
+        </item>
+        <item row="0" column="6">
+         <property name="text">
+          <string>Output</string>
+         </property>
+        </item>
+        <item row="0" column="7">
+         <property name="text">
+          <string>Interrupt</string>
+         </property>
+        </item>
+        <item row="0" column="8">
+         <property name="text">
+          <string>Halt</string>
+         </property>
+        </item>
+        <item row="0" column="9">
+         <property name="text">
+          <string>HaltInterrupt</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>T1</string>
+         </property>
+        </item>
+        <item row="1" column="1">
+         <property name="text">
+          <string>T2</string>
+         </property>
+        </item>
+        <item row="1" column="2">
+         <property name="text">
+          <string>T3</string>
+         </property>
+        </item>
+        <item row="1" column="3">
+         <property name="text">
+          <string>T4</string>
+         </property>
+        </item>
+        <item row="1" column="4">
+         <property name="text">
+          <string>T5</string>
+         </property>
+        </item>
+        <item row="1" column="5">
+         <property name="text">
+          <string>TW</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>

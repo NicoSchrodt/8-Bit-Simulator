@@ -42,6 +42,7 @@ class Intel8080(AbstractProcessor):
         self.registers = Intel8080_Registers()
         self.ALU = Intel8080_ALU(self)
         self.peripherals = Intel8080_Peripherals()
+
         self.program = [0] * pow(2, 16)
         self.program_length = 0
         self.interrupt_enabled = False
@@ -368,6 +369,19 @@ class Intel8080(AbstractProcessor):
         self.ALU = Intel8080_ALU(self)
         self.registers = Intel8080_Registers()
         self.peripherals = Intel8080_Peripherals()
+
+        self.interrupt_enabled = False
+        self.interrupted = False
+        self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
+        self.halt = False
+
+        self.cpu_instruction_register = np.uint8(0x00)
+        self.current_instruction = Nop(self)
+        self.current_instruction_state = 1
+        self.current_machine_cycle = 1
+
+        self.quittable = True
+        self.instruction_counter = 0
 
     def get_address_from_memory(self, first_byte):
         low = self.get_memory_byte(first_byte)
