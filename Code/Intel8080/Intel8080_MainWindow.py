@@ -148,20 +148,19 @@ class Intel8080_MainWindow(QMainWindow):
         addressLatch.setMaximumSize(self.getQTableWidgetSize(addressLatch))
         addressLatch.setMinimumSize(self.getQTableWidgetSize(addressLatch))
 
-
         for column in range(addressLatch.columnCount()):
             btn = QPushButton(addressLatch)
             btn.setText('{:x}'.format(0))
             addressLatch.setCellWidget(0, column, btn)
             btn.pressed.connect(self.pressed_table_cell)
 
-        # Cycle State Table #ToDo: Fix this horrible mess (at least it look proper now)
+        # Cycle State Table #ToDo: Fix this horrible mess (at least it looks proper now)
         CycleStateTable = self.CycleState_table
         qz = self.getQTableWidgetSize(CycleStateTable)
         qz.setWidth(qz.width() + 34)
         qz.setHeight(alh + 2)
         CycleStateTable.setMaximumSize(qz)
-        #CycleStateTable.setMinimumSize(qz)
+        # CycleStateTable.setMinimumSize(qz)
         CycleStateTable.resizeColumnsToContents()
 
         # Program Memory Table
@@ -171,7 +170,7 @@ class Intel8080_MainWindow(QMainWindow):
                 btn.setText('{:x}'.format(0))
                 self.ProgramMemory_table.setCellWidget(row, column, btn)
                 btn.pressed.connect(self.pressed_table_cell)
-        #self.ProgramMemory_table.resizeColumnsToContents()
+        # self.ProgramMemory_table.resizeColumnsToContents()
 
         # Program Table
         Program_table = self.Program_table
@@ -393,10 +392,9 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reload_addressLatch_table(self):
         AddressLatch_table = self.AddressLatch_table
-        #  TODO: Error here, mistake in calculation
         BufferValue = self.processor.get_buffer()
         for i in range(16):
-            AddressLatch_table.cellWidget(0, 15 - i).setText(str(BufferValue & (0b1 << i)))
+            AddressLatch_table.cellWidget(0, i).setText(str(((BufferValue & (0b1000000000000000 >> i)) >> (15 - i))))
 
     def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
         AddressLatch_table = self.AddressLatch_table
