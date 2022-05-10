@@ -140,6 +140,52 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_cmp_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("cmp m")
+
+            intel.set_acc(0x0A)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 0x05
+
+            intel.run_complete_programm(1)
+
+            self.assertFalse(intel.ALU.get_zero_flag())
+            self.assertFalse(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_cmp_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("cmp b")  # (TODO Fehler "xra d" wird auch zu sss = 000)
+
+            intel.set_acc(0x0A)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0A)
+
+            intel.run_complete_programm(1)
+
+            self.assertTrue(intel.ALU.get_zero_flag())
+            self.assertFalse(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_cpi(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("cpi 0Bh")
+
+            intel.set_acc(0x0A)
+
+            intel.run_complete_programm(1)
+
+            self.assertFalse(intel.ALU.get_zero_flag())
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
     def test_hlt(self):
         try:
             intel = Intel8080()
@@ -403,20 +449,6 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
-    def test_ora_r(self):
-        try:
-            intel = Intel8080()
-            intel.init_test("ora b")  # TODO Fehler "xra d" wird auch zu sss = 000
-
-            intel.set_acc(0xAA)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
-
-            intel.run_complete_programm(1)
-
-            self.assertEqual(0xAF, intel.get_acc())
-        except:
-            self.fail()
-
     def test_ora_m(self):
         try:
             intel = Intel8080()
@@ -426,6 +458,20 @@ class TestIntel8080(TestCase):
             intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
             intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
             intel.program[10] = 0x0F
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xAF, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_ora_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ora b")  # TODO Fehler "xra d" wird auch zu sss = 000
+
+            intel.set_acc(0xAA)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
 
             intel.run_complete_programm(1)
 

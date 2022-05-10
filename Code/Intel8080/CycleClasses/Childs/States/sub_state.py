@@ -1,12 +1,12 @@
 from Code.Intel8080.CycleClasses.Parents.State import State
 
 
-class act_minus_tmp_to_acc(State):
+class sub_state(State):
     def __init__(self, processor):
         super().__init__(processor)
 
     def run(self):
-        print("act_minus_tmp_to_acc")
+        print("sub_state")
         act = self.processor.get_act()
         tmp = self.processor.get_tmp()
 

@@ -1,5 +1,5 @@
 from Code.Intel8080.CycleClasses.Childs.MachineCycles.acc_to_act_mc import acc_to_act_mc
-from Code.Intel8080.CycleClasses.Childs.MachineCycles.act_XOR_tmp_to_acc_mc import act_XOR_tmp_to_acc_mc
+from Code.Intel8080.CycleClasses.Childs.MachineCycles.Xor_MC import Xor_MC
 from Code.Intel8080.CycleClasses.Childs.MachineCycles.data_to_tmp_mc import data_to_tmp_mc
 from Code.Intel8080.CycleClasses.Parents.Instruction import Instruction
 
@@ -9,5 +9,5 @@ class Xra_m(Instruction):
         super().__init__(processor)
         self.machine_cycles = [acc_to_act_mc(processor),
                                data_to_tmp_mc(processor),
-                               act_XOR_tmp_to_acc_mc(processor)]
+                               Xor_MC(processor)]
         pass
