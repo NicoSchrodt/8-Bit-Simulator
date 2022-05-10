@@ -335,6 +335,7 @@ class Intel8080_MainWindow(QMainWindow):
     def color_cycle_state(self):
         CurrentMachineCycle = self.processor.current_machine_cycle - 1
         CurrentState = self.processor.current_instruction.machine_cycles[self.processor.current_machine_cycle - 1].last_executed_state
+        print(self.processor.get_pc())
         print(CurrentMachineCycle)
         print(CurrentState)
         CST = self.CycleState_table
