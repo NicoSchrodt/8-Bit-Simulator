@@ -10,6 +10,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Add_m import Add_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Add_r import Add_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Adi import Adi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
+from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_m import Inr_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_r import Inr_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ldax import Ldax
@@ -22,10 +24,15 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_m import Sbb_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_r import Sbb_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sta import Sta
 from Code.Intel8080.CycleClasses.Childs.Instructions.Stax import Stax
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_m import Sub_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_r import Sub_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sui import Sui
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xchg import Xchg
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
@@ -61,6 +68,8 @@ class Intel8080(AbstractProcessor):
         self.rp_mask = 0xCF
         self.sss_mask = 0x07
         self.sss_inv_mask = self.sss_mask ^ 0xff
+        self.ddd_mask = 0x38
+        self.ddd_inv_mask = self.ddd_mask ^ 0xff
 
         # rp: b -> b,c
         #     d -> d,e
@@ -178,6 +187,11 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Adc_r(self)
         elif self.cpu_instruction_register == 0xC6:
             self.current_instruction = Adi(self)
+        elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0x04:
+            if self.cpu_instruction_register == 0x34:
+                self.current_instruction = Inr_m(self)
+            else:
+                self.current_instruction = Inr_r(self)
         elif self.cpu_instruction_register == 0xC3:
             self.current_instruction = Jmp(self)
         elif self.cpu_instruction_register == 0x3A:
@@ -219,6 +233,18 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Sta(self)
         elif (self.cpu_instruction_register & self.rp_mask) == 0x02:
             self.current_instruction = Stax(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x98:
+            if self.cpu_instruction_register == 0x9D:
+                self.current_instruction = Sbb_m(self)
+            else:
+                self.current_instruction = Sbb_r(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x90:
+            if self.cpu_instruction_register == 0x96:
+                self.current_instruction = Sub_m(self)
+            else:
+                self.current_instruction = Sub_r(self)
+        elif self.cpu_instruction_register == 0xD6:
+            self.current_instruction = Sui(self)
         elif self.cpu_instruction_register == 0xEB:
             self.current_instruction = Xchg(self)
         elif self.cpu_instruction_register == 0xE3:

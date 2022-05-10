@@ -108,6 +108,32 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_inr_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr m")
+
+            intel.program[10] = 55
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(56, intel.program[10])
+        except:
+            self.fail()
+
+    def test_inr_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr b")
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("B")))
+        except:
+            self.fail()
+
     def test_jmp(self):
         try:
             intel = Intel8080()
@@ -327,6 +353,92 @@ class TestIntel8080(TestCase):
 
             self.assertEqual(22, intel.get_memory_byte(10))
 
+        except:
+            self.fail()
+
+    def test_sbb_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sbb b")
+
+            intel.set_acc(70)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(7, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_sbb_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sub m")
+
+            intel.set_acc(70)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 63
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(7, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_sbi(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sui 63")
+
+            intel.set_acc(70)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(7, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_sub_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sub b")
+
+            intel.set_acc(70)
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(7, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_sub_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sub m")
+
+            intel.set_acc(70)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 00)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+            intel.program[10] = 63
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(7, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_sui(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("sui 63")
+
+            intel.set_acc(70)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(7, intel.get_acc())
         except:
             self.fail()
 
