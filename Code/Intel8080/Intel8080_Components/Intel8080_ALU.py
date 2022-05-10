@@ -136,7 +136,9 @@ class Intel8080_ALU():
     # 16 Bit calculation
     def binary_sub(self, op1, op2):
         two_complement = (op2 ^ 0xff) + 1
-        return self.binary_add(op1, two_complement, 0)
+        ac, cy, result = self.binary_add(op1, two_complement, 0)
+        result = np.uint8(result)
+        return ac, cy, result
 
     def no_flags(self):
         pass

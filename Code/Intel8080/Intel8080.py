@@ -22,10 +22,15 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_m import Mvi_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Mvi_r import Mvi_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_m import Sbb_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_r import Sbb_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sta import Sta
 from Code.Intel8080.CycleClasses.Childs.Instructions.Stax import Stax
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_m import Sub_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_r import Sub_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Sui import Sui
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xchg import Xchg
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
 from Code.Main.AbstractProcessor import AbstractProcessor
@@ -219,6 +224,18 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Sta(self)
         elif (self.cpu_instruction_register & self.rp_mask) == 0x02:
             self.current_instruction = Stax(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x98:
+            if self.cpu_instruction_register == 0x9D:
+                self.current_instruction = Sbb_m(self)
+            else:
+                self.current_instruction = Sbb_r(self)
+        elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x90:
+            if self.cpu_instruction_register == 0x96:
+                self.current_instruction = Sub_m(self)
+            else:
+                self.current_instruction = Sub_r(self)
+        elif self.cpu_instruction_register == 0xD6:
+            self.current_instruction = Sui(self)
         elif self.cpu_instruction_register == 0xEB:
             self.current_instruction = Xchg(self)
         elif self.cpu_instruction_register == 0xE3:
