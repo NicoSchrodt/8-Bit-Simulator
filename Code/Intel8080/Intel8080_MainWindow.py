@@ -176,6 +176,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.From_sb.valueChanged.connect(self.adjust_to)
         self.To_sb.valueChanged.connect(self.adjust_from)
         self.lock = False
+        self.Display_button.pressed.connect(self.reload_memory_table)
 
         # Program Table
         Program_table = self.Program_table
@@ -244,7 +245,6 @@ class Intel8080_MainWindow(QMainWindow):
 
     def adjust_to(self, value):
         if self.lock is False:
-            print(value - (value % 16))
             self.lock = True
             if value % 16 != 0:
                 self.From_sb.setValue(value - (value % 16))
@@ -255,10 +255,9 @@ class Intel8080_MainWindow(QMainWindow):
 
     def adjust_from(self, value):
         if self.lock is False:
-            print("x")
             self.lock = True
             if value % 16 != 0:
-                self.From_sb.setValue(value - (value % 16))
+                self.To_sb.setValue(value - (value % 16))
                 self.From_sb.setValue(value - 16 - (value % 16))
                 self.lock = False
             else:
@@ -343,8 +342,6 @@ class Intel8080_MainWindow(QMainWindow):
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
                     if masked_command in command_dict:
-                        print("UnMasked:" + str(hex(self.processor.program[i])))
-                        print("Masked:" + str(hex(masked_command)))
                         operands = command_dict[masked_command][0]
                         row = self.Program_table.rowCount()
                         self.Program_table.insertRow(row)
@@ -358,14 +355,10 @@ class Intel8080_MainWindow(QMainWindow):
                 i += operands + 1
         except Exception as e:
             print("ERROR: " + str(e))
-        print(self.instruction_positions)
 
     def color_cycle_state(self):
         CurrentMachineCycle = self.processor.current_machine_cycle - 1
         CurrentState = self.processor.current_instruction.machine_cycles[self.processor.current_machine_cycle - 1].last_executed_state
-        print(self.processor.get_pc())
-        print(CurrentMachineCycle)
-        print(CurrentState)
         CST = self.CycleState_table
         # ToDo: Technically Wrong, doesn't differentiate what Machine cycle it is
         for i in range(10):
@@ -452,11 +445,16 @@ class Intel8080_MainWindow(QMainWindow):
 
     def reload_memory_table(self):  # make ui match the program memory
         # TODO: Make use of UI that lets you set a range
+        Startvalue = self.From_sb.value()
         for i in range(8):
             for j in range(16):
-                address = i * 8 + j  # one rows = 8 bits, one column 1 bit
+                address = Startvalue + i * 16 + j  # one rows = 16 bits, one column 1 bit
                 value = str(hex(self.processor.get_memory_byte(address))).replace('0x', '')
                 self.ProgramMemory_table.cellWidget(i, j).setText(str(value))
+        values = []
+        for i in range(Startvalue, Startvalue + 144, 16):
+            values.append(hex(i))
+        self.ProgramMemory_table.setVerticalHeaderLabels(values)
 
     def update_memory_table(self):  # make program memory match the ui
         # TODO: Make use of UI that lets you set a range
