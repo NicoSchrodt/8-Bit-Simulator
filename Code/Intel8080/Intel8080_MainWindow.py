@@ -143,14 +143,26 @@ class Intel8080_MainWindow(QMainWindow):
 
         # Address Latch
         addressLatch = self.AddressLatch_table
+        alw = self.getQTableWidgetSize(addressLatch).width()
+        alh = self.getQTableWidgetSize(addressLatch).height()
         addressLatch.setMaximumSize(self.getQTableWidgetSize(addressLatch))
         addressLatch.setMinimumSize(self.getQTableWidgetSize(addressLatch))
+
 
         for column in range(addressLatch.columnCount()):
             btn = QPushButton(addressLatch)
             btn.setText('{:x}'.format(0))
             addressLatch.setCellWidget(0, column, btn)
             btn.pressed.connect(self.pressed_table_cell)
+
+        # Cycle State Table #ToDo: Fix this horrible mess (at least it look proper now)
+        CycleStateTable = self.CycleState_table
+        qz = self.getQTableWidgetSize(CycleStateTable)
+        qz.setWidth(qz.width() + 34)
+        qz.setHeight(alh + 2)
+        CycleStateTable.setMaximumSize(qz)
+        #CycleStateTable.setMinimumSize(qz)
+        CycleStateTable.resizeColumnsToContents()
 
         # Program Memory Table
         for row in range(self.ProgramMemory_table.rowCount()):
