@@ -108,6 +108,32 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_inr_m(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr m")
+
+            intel.program[10] = 55
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(56, intel.program[10])
+        except:
+            self.fail()
+
+    def test_inr_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr b")
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("B")))
+        except:
+            self.fail()
+
     def test_jmp(self):
         try:
             intel = Intel8080()

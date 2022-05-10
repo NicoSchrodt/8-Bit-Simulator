@@ -10,6 +10,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Add_m import Add_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Add_r import Add_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Adi import Adi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
+from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_m import Inr_m
+from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_r import Inr_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ldax import Ldax
@@ -66,6 +68,8 @@ class Intel8080(AbstractProcessor):
         self.rp_mask = 0xCF
         self.sss_mask = 0x07
         self.sss_inv_mask = self.sss_mask ^ 0xff
+        self.ddd_mask = 0x38
+        self.ddd_inv_mask = self.ddd_mask ^ 0xff
 
         # rp: b -> b,c
         #     d -> d,e
@@ -183,6 +187,11 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Adc_r(self)
         elif self.cpu_instruction_register == 0xC6:
             self.current_instruction = Adi(self)
+        elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0x04:
+            if self.cpu_instruction_register == 0x34:
+                self.current_instruction = Inr_m(self)
+            else:
+                self.current_instruction = Inr_r(self)
         elif self.cpu_instruction_register == 0xC3:
             self.current_instruction = Jmp(self)
         elif self.cpu_instruction_register == 0x3A:
