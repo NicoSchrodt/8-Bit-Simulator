@@ -7,5 +7,11 @@ class rh_to_act(State):
 
     def run(self):
         print("rh_to_act")
-        high, low = self.processor.get_rp_values((self.processor.cpu_instruction_register & 0x30) >> 4)
-        self.processor.set_act(high)
+        rp = self.processor.get_current_rp()
+
+        if self.processor.rp_means_sp():
+            sp_high = self.processor.get_sp() & 0xff00
+            self.processor.set_act(sp_high)
+        else:
+            high, low = self.processor.get_rp_values(rp)
+            self.processor.set_act(high)

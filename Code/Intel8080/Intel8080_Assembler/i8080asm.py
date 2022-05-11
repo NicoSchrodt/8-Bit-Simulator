@@ -1340,7 +1340,4 @@ if __name__ == '__main__':
   mvi b, 20
   mvi c, 30
   mov a, b
-  add c
-
-myArray:
-  db 10h, 20h, 30h, 10h, 20h, 0""", "Output\\program")
+  add c""", "Output\\program")

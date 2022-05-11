@@ -337,18 +337,35 @@ class TestIntel8080(TestCase):
     def test_dad(self):
         try:
             intel = Intel8080()
-            intel.init_test("dad b")
+            intel.init_test("dad d")
 
             intel.registers.set_register8_with_offset(char_to_reg("H"), 22)
             intel.registers.set_register8_with_offset(char_to_reg("L"), 33)
 
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 22)
-            intel.registers.set_register8_with_offset(char_to_reg("C"), 33)
+            intel.registers.set_register8_with_offset(char_to_reg("D"), 22)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 33)
 
             intel.run_complete_programm(1)
 
             self.assertEqual(44, intel.registers.get_register_with_offset(char_to_reg("H")))
             self.assertEqual(66, intel.registers.get_register_with_offset(char_to_reg("L")))
+        except:
+            self.fail()
+
+    def test_dad_sp(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("dad sp")
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 22)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 33)
+
+            intel.set_sp(80)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(22, intel.registers.get_register_with_offset(char_to_reg("H")))
+            self.assertEqual(113, intel.registers.get_register_with_offset(char_to_reg("L")))
         except:
             self.fail()
 
@@ -389,6 +406,19 @@ class TestIntel8080(TestCase):
             intel.run_complete_programm(1)
 
             self.assertEqual(4, intel.registers.get_register_with_offset(char_to_reg("E")))
+        except:
+            self.fail()
+
+    def test_dcx_sp(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("dcx sp")
+
+            intel.set_sp(80)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(79, intel.get_sp())
         except:
             self.fail()
 
@@ -466,6 +496,21 @@ class TestIntel8080(TestCase):
             intel.run_complete_programm(1)
 
             self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("E")))
+        except:
+            self.fail()
+
+    def test_inx_sp(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                              inx sp
+                            """)
+
+            intel.set_sp(80)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(81, intel.get_sp())
         except:
             self.fail()
 
@@ -589,14 +634,27 @@ class TestIntel8080(TestCase):
     def test_lxi(self):
         try:
             intel = Intel8080()
-            intel.init_test("""Nop
-                        label:
-                        lxi d, label""")
+            intel.init_test("""
+                                lxi d, 10
+                            """)
 
             intel.run_complete_programm(2)
 
-            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("D")))
-            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("E")))
+            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("D")))
+            self.assertEqual(10, intel.registers.get_register_with_offset(char_to_reg("E")))
+        except:
+            self.fail()
+
+    def test_lxi_sp(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                lxi sp, 0dd33h
+                            """)
+
+            intel.run_complete_programm(2)
+
+            self.assertEqual(0xdd33, intel.get_sp())
         except:
             self.fail()
 

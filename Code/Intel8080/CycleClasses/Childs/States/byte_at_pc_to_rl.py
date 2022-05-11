@@ -7,5 +7,9 @@ class byte_at_pc_to_rl(byte_at_pc_):
 
     def write_to(self):
         print("byte_at_pc_to_rl")
-        rp = self.processor.get_current_rp() * 2
-        self.processor.registers.set_register8_with_offset(rp, self.byte)
+        rp = self.processor.get_current_rp()
+
+        if self.processor.rp_means_sp():
+            self.processor.set_sp_l(self.byte)
+        else:
+            self.processor.registers.set_register8_with_offset(rp * 2 + 1, self.byte)

@@ -9,5 +9,5 @@ class sp_minus_1_to_rl(State):
         print("sp_minus_1_to_rp")
         old_sp = self.processor.get_memory_byte(self.processor.get_sp() - 1)
 
-        rp = self.processor.get_rp()
+        rp = self.processor.get_current_rp()
         self.processor.registers.set_register8_with_offset(rp * 2 + 1, old_sp)

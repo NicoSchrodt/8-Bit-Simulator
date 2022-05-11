@@ -391,9 +391,6 @@ class Intel8080(AbstractProcessor):
     def set_current_instruction(self, instruction):
         self.current_instruction = instruction
 
-    def get_rp(self):
-        return np.uint8((self.cpu_instruction_register & self.rp_mask) >> 4)
-
     def get_nnn(self):
         return self.get_ddd()
 
@@ -584,6 +581,16 @@ class Intel8080(AbstractProcessor):
     def set_sp(self, value16):
         self.registers.set_register16(1, np.uint16(value16))
 
+    def set_sp_l(self, value8):
+        current_sp = self.get_sp()
+        new_sp = (current_sp & 0xff00) | value8
+        self.set_sp(new_sp)
+
+    def set_sp_h(self, value8):
+        current_sp = self.get_sp()
+        new_sp = (current_sp & 0x00ff) | (value8 << 8)
+        self.set_sp(new_sp)
+
     def get_sp(self):
         return np.uint16(self.registers.get_register(1))
 
@@ -615,8 +622,13 @@ class Intel8080(AbstractProcessor):
             return True
         return False
 
+    def rp_means_sp(self):
+        if self.get_current_rp() == 3:
+            return True
+        return False
+
     def get_current_rp(self):
-        return np.uint8((self.cpu_instruction_register & 0x30) >> 4)
+        return np.uint8((self.cpu_instruction_register & self.rp_mask) >> 4)
 
     def get_rp_address(self):
         rp = self.get_current_rp()

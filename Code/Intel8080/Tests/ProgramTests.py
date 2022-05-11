@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from Code.Intel8080.Intel8080 import Intel8080
+from Code.Intel8080.Intel8080_Components.Intel8080_ALU import char_to_reg
 
 
 class ProgramTests(TestCase):
