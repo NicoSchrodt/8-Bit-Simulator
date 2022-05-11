@@ -9,6 +9,7 @@ from PyQt6.QtGui import QCloseEvent, QIcon, QColor
 
 from Code.Intel8080.Intel8080 import Intel8080
 from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
+from Code.Intel8080.StateLogger import StateLogger
 
 
 class runThread(QObject):
@@ -116,6 +117,8 @@ class Intel8080_MainWindow(QMainWindow):
         self.init_register_table()
         self.init_register_array_table()
         self.processor = Intel8080()
+        self.Logger = StateLogger(self.MessageLog_plaintext)
+        self.Logger.addEntry("Welcome :)")
         # self.processor.run()
 
         # Thread Initialization
@@ -141,27 +144,14 @@ class Intel8080_MainWindow(QMainWindow):
         resetButton = self.reset_button
         resetButton.pressed.connect(self.reset_intel8080)
 
-        # Address Latch
-        addressLatch = self.AddressLatch_table
-        alw = self.getQTableWidgetSize(addressLatch).width()
-        alh = self.getQTableWidgetSize(addressLatch).height()
-        addressLatch.setMaximumSize(self.getQTableWidgetSize(addressLatch))
-        addressLatch.setMinimumSize(self.getQTableWidgetSize(addressLatch))
-
-        for column in range(addressLatch.columnCount()):
-            btn = QPushButton(addressLatch)
-            btn.setText('{:x}'.format(0))
-            addressLatch.setCellWidget(0, column, btn)
-            btn.pressed.connect(self.pressed_table_cell)
-
         # Cycle State Table #ToDo: Fix this horrible mess (at least it looks proper now)
         CycleStateTable = self.CycleState_table
         qz = self.getQTableWidgetSize(CycleStateTable)
-        qz.setWidth(qz.width() + 34)
-        qz.setHeight(alh + 2)
+        qz.setWidth(qz.width() + 38)
+        #qz.setHeight(alh + 2)
         CycleStateTable.setMaximumSize(qz)
         # CycleStateTable.setMinimumSize(qz)
-        CycleStateTable.resizeColumnsToContents()
+        #CycleStateTable.resizeColumnsToContents()
 
         # Program Memory Table
         for row in range(self.ProgramMemory_table.rowCount()):
@@ -248,20 +238,22 @@ class Intel8080_MainWindow(QMainWindow):
             self.lock = True
             if value % 16 != 0:
                 self.From_sb.setValue(value - (value % 16))
-                self.To_sb.setValue(value + 16 - (value % 16))
+                self.To_sb.setValue(value + 128 - (value % 16))
             else:
-                self.To_sb.setValue(value + 16)
+                self.To_sb.setValue(value + 128)
             self.lock = False
 
     def adjust_from(self, value):
         if self.lock is False:
             self.lock = True
+            if value < 128:
+                value = 128
             if value % 16 != 0:
                 self.To_sb.setValue(value - (value % 16))
-                self.From_sb.setValue(value - 16 - (value % 16))
+                self.From_sb.setValue(value - 128 - (value % 16))
                 self.lock = False
             else:
-                self.From_sb.setValue(value - 16)
+                self.From_sb.setValue(value - 128)
             self.lock = False
 
     def reload_program(self):
@@ -282,7 +274,6 @@ class Intel8080_MainWindow(QMainWindow):
         self.reload_memory_table()
         self.reload_registers_table()
         self.reload_register_array_table()
-        self.reload_addressLatch_table()
 
     def closeEvent(self, event: QCloseEvent):
         self.monitor.ExitFlag = True
@@ -368,10 +359,10 @@ class Intel8080_MainWindow(QMainWindow):
         CurrentState = self.processor.current_instruction.machine_cycles[self.processor.current_machine_cycle - 1].last_executed_state
         CST = self.CycleState_table
         # ToDo: Technically Wrong, doesn't differentiate what Machine cycle it is
-        for i in range(10):
+        for i in range(5):
             CST.item(0, i).setBackground(QColor(255, 255, 255))
         CST.item(0, CurrentMachineCycle).setBackground(QColor(152, 245, 255))
-        for i in range(6):
+        for i in range(5):
             CST.item(1, i).setBackground(QColor(255, 255, 255))
         CST.item(1, CurrentState).setBackground(QColor(152, 245, 255))
 
@@ -436,22 +427,6 @@ class Intel8080_MainWindow(QMainWindow):
         Processor.set_reg_array_direct('e', int(Register_array_table.cellWidget(2, 1).text(), 16))
         Processor.set_reg_array_direct('h', int(Register_array_table.cellWidget(3, 0).text(), 16))
         Processor.set_reg_array_direct('l', int(Register_array_table.cellWidget(3, 1).text(), 16))
-
-    def reload_addressLatch_table(self):
-        AddressLatch_table = self.AddressLatch_table
-        BufferValue = self.processor.get_buffer()
-        for i in range(16):
-            AddressLatch_table.cellWidget(0, i).setText(str(((BufferValue & (0b1000000000000000 >> i)) >> (15 - i))))
-
-    def update_addressLatch_table(self):  # Technically an illegal operation, allowed for the purpose of the simulation
-        AddressLatch_table = self.AddressLatch_table
-        string_value = ""
-        for i in range(16):
-            value = int(AddressLatch_table.cellWidget(0, i).text())
-            string_value = string_value + str(value)
-            self.processor.set_latch_bit((15 - i), value)
-        value = int(string_value, 2)
-        self.processor.set_buffer(value)
 
     def reload_memory_table(self):  # make ui match the program memory
         Startvalue = self.From_sb.value()
