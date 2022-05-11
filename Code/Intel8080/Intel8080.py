@@ -30,6 +30,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_m import Inr_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_r import Inr_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inx import Inx
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp_cond import Jmp_cond
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lda import Lda
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ldax import Ldax
 from Code.Intel8080.CycleClasses.Childs.Instructions.Lhld import Lhld
@@ -84,7 +85,7 @@ class Intel8080(AbstractProcessor):
         self.ALU = Intel8080_ALU(self)
         self.peripherals = Intel8080_Peripherals()
 
-        self.program = [8] * pow(2, 16)
+        self.program = [0] * pow(2, 16)
         self.program_length = 0
         self.interrupt_enabled = False
         self.interrupted = False
@@ -105,6 +106,8 @@ class Intel8080(AbstractProcessor):
         self.sss_inv_mask = self.sss_mask ^ 0xff
         self.ddd_mask = 0x38
         self.ddd_inv_mask = self.ddd_mask ^ 0xff
+
+        self.skip_rest_of_instruction = False
 
         # rp: b -> b,c
         #     d -> d,e
@@ -189,7 +192,8 @@ class Intel8080(AbstractProcessor):
 
         if self.current_instruction.next_state():
             self.current_instruction_state += 1
-            if self.current_machine_cycle == len(self.current_instruction.get_machine_cycles()):
+            if self.current_machine_cycle == len(self.current_instruction.get_machine_cycles()) or self.skip_rest_of_instruction:
+                self.skip_rest_of_instruction = False
                 self.current_instruction_state = 1
                 self.current_machine_cycle = 1
             else:
@@ -265,6 +269,8 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Inr_r(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0x03:
             self.current_instruction = Inx(self)
+        elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0xC2:
+            self.current_instruction = Jmp_cond(self)
         elif self.cpu_instruction_register == 0xC3:
             self.current_instruction = Jmp(self)
         elif self.cpu_instruction_register == 0x3A:

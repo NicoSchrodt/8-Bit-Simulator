@@ -11,6 +11,7 @@ class MachineCycle:
     # returns True if last state was executed
     def next_state(self):
         self.states[self.last_executed_state].run()
+
         self.last_executed_state += 1
         if self.last_executed_state == len(self.states):
             self.last_executed_state = 0

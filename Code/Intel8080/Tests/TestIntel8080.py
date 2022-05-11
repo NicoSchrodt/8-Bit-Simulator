@@ -386,14 +386,72 @@ class TestIntel8080(TestCase):
         try:
             intel = Intel8080()
             intel.init_test("""
-                        Nop
-                        Nop
-                        Loop:
-                            jmp Loop""")
+                                    Start:
+                                        Nop
+                                        Di
+                                    Loop:
+                                        jmp start""")
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(0, intel.get_pc())
+        except:
+            self.fail()
+
+    def test_jmp_cond_skip(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Nop
+                                    Loop:
+                                        jc start""")
+
+            intel.set_sp(80)
+            intel.ALU.set_carry_flag(False)
 
             intel.run_complete_programm(3)
 
             self.assertEqual(3, intel.get_pc())
+        except:
+            self.fail()
+
+    def test_jc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Nop
+                                    Loop:
+                                        jc start""")
+
+            intel.set_sp(80)
+            intel.ALU.set_carry_flag(True)
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(0, intel.get_pc())
+        except:
+            self.fail()
+
+    def test_jnc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Nop
+                                    Loop:
+                                        jnc start""")
+
+            intel.set_sp(80)
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(0, intel.get_pc())
         except:
             self.fail()
 
@@ -741,7 +799,7 @@ class TestIntel8080(TestCase):
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(25, intel.get_pc())
+            self.assertEqual(24, intel.get_pc())
             self.assertEqual(78, intel.get_sp())
             self.assertEqual(0, intel.program[79])
             self.assertEqual(1, intel.program[78])
