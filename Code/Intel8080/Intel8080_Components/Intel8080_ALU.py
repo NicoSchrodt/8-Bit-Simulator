@@ -107,20 +107,23 @@ class Intel8080_ALU():
         return self.flags[4]
 
     def evaluate_zsp_flags(self, z: bool, s: bool, p: bool, result):
-        if z and result == 0:
-            self.set_zero_flag(True)
-        else:
-            self.set_zero_flag(False)
+        if z:
+            if result == 0:
+                self.set_zero_flag(True)
+            else:
+                self.set_zero_flag(False)
 
-        if s and result > 127:
-            self.set_sign_flag(True)
-        else:
-            self.set_sign_flag(False)
+        if s:
+            if result > 127:
+                self.set_sign_flag(True)
+            else:
+                self.set_sign_flag(False)
 
-        if p and result % 2 == 0:
-            self.set_parity_flag(True)
-        else:
-            self.set_parity_flag(False)
+        if p:
+            if result % 2 == 0:
+                self.set_parity_flag(True)
+            else:
+                self.set_parity_flag(False)
 
     def set_cy_ac_flags(self, cy, ac):
         self.set_carry_flag(bool(cy))

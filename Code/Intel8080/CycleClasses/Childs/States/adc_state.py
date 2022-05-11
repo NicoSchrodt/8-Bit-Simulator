@@ -1,3 +1,5 @@
+import numpy as np
+
 from Code.Intel8080.CycleClasses.Parents.State import State
 
 
@@ -12,6 +14,7 @@ class adc_state(State):
         cy = self.processor.ALU.get_carry_flag()
 
         ac, cy, result = self.processor.ALU.binary_add(act, tmp, cy)
+        result = np.uint8(result)
         self.processor.ALU.set_cy_ac_flags(cy, ac)
         self.processor.ALU.evaluate_zsp_flags(True, True, True, result)
         # TODO Anmerkung [9] auf Seite 34 vermerken in doku

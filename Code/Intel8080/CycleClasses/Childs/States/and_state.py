@@ -10,4 +10,5 @@ class and_state(State):
         result = self.processor.get_act() & self.processor.get_tmp()
         self.processor.set_acc(result)
 
-        self.processor.ALU.set_carry_flag(False)
+        self.processor.ALU.set_cy_ac_flags(False, False)
+        self.processor.ALU.evaluate_zsp_flags(True, True, True, result)
