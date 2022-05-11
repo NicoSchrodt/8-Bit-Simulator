@@ -581,6 +581,65 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_pop_rp(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("pop b")
+
+            intel.program[79] = 3
+            intel.program[78] = 2
+            intel.set_sp(78)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(3, intel.registers.get_register_with_offset(char_to_reg("B")))
+            self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertEqual(80, intel.get_sp())
+        except:
+            self.fail()
+
+    def test_pop_psw(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("pop psw")
+
+            intel.program[79] = 3
+            intel.program[78] = 0b01000111
+            intel.set_sp(78)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(3, intel.get_acc())
+            self.assertEqual(True, intel.ALU.get_carry_flag())
+            self.assertEqual(False, intel.ALU.get_auxiliary_carry_flag())
+            self.assertEqual(True, intel.ALU.get_zero_flag())
+            self.assertEqual(True, intel.ALU.get_parity_flag())
+            self.assertEqual(False, intel.ALU.get_sign_flag())
+            self.assertEqual(80, intel.get_sp())
+        except:
+            self.fail()
+
+    def test_push_psw(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("push psw")
+
+            intel.set_acc(0x55)  # high
+            intel.ALU.set_carry_flag(True)
+            intel.ALU.set_auxiliary_carry_flag(False)
+            intel.ALU.set_zero_flag(True)
+            intel.ALU.set_parity_flag(True)
+            intel.ALU.set_sign_flag(False)
+            intel.set_sp(80)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x55, intel.program[79])
+            self.assertEqual(0b01000111, intel.program[78])
+            self.assertEqual(78, intel.get_sp())
+        except:
+            self.fail()
+
     def test_push_rp(self):
         try:
             intel = Intel8080()
@@ -594,6 +653,7 @@ class TestIntel8080(TestCase):
 
             self.assertEqual(2, intel.program[79])
             self.assertEqual(3, intel.program[78])
+            self.assertEqual(78, intel.get_sp())
         except:
             self.fail()
 

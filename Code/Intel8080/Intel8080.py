@@ -44,6 +44,9 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_m import Ora_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_r import Ora_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ori import Ori
 from Code.Intel8080.CycleClasses.Childs.Instructions.Out_inst import Out_inst
+from Code.Intel8080.CycleClasses.Childs.Instructions.Pop_psw import Pop_psw
+from Code.Intel8080.CycleClasses.Childs.Instructions.Pop_rp import Pop_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Push_psw import Push_psw
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ral import Ral
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rar import Rar
@@ -300,8 +303,16 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Ori(self)
         elif self.cpu_instruction_register == 0xD3:
             self.current_instruction = Out_inst(self)
+        elif (self.cpu_instruction_register & self.rp_inv_mask) == 0xC1:
+            if self.cpu_instruction_register == 0xF1:
+                self.current_instruction = Pop_psw(self)
+            else:
+                self.current_instruction = Pop_rp(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0xC5:
-            self.current_instruction = Push_rp(self)
+            if self.cpu_instruction_register == 0xf5:
+                self.current_instruction = Push_psw(self)
+            else:
+                self.current_instruction = Push_rp(self)
         elif self.cpu_instruction_register == 0x17:
             self.current_instruction = Ral(self)
         elif self.cpu_instruction_register == 0x1F:
@@ -355,17 +366,20 @@ class Intel8080(AbstractProcessor):
     def set_current_instruction(self, instruction):
         self.current_instruction = instruction
 
+    def get_rp(self):
+        return np.uint8(self.cpu_instruction_register & self.rp_mask)
+
     def get_sss(self):
-        return np.uint8(self.cpu_instruction_register & 0x07)
+        return np.uint8(self.cpu_instruction_register & self.sss_mask)
 
     def get_sss_value(self):
         return np.uint8(self.registers.get_register_with_offset(self.get_sss()))
 
     def get_ddd(self):
-        return np.uint8((self.cpu_instruction_register & 0x38) >> 3)
+        return np.uint8((self.cpu_instruction_register & self.ddd_mask) >> 3)
 
     def set_ddd(self, value):
-        ddd = np.uint8((self.cpu_instruction_register & 0x38) >> 3)
+        ddd = np.uint8((self.cpu_instruction_register & self.ddd_mask) >> 3)
         self.registers.set_register8_with_offset(ddd, value)
 
     # returns the content of the correct address:
