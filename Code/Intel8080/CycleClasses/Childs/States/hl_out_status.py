@@ -7,3 +7,4 @@ class hl_out_status(State):
 
     def run(self):
         print("hl_out_status")
+        self.processor.StateLogger.addEntry("hl_out_status")

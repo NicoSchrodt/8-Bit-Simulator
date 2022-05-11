@@ -15,3 +15,4 @@ class swap_hl_with_de(State):
 
         self.processor.registers.set_2_8bit_reg_with_offset(char_to_reg("H"), de_val)
         self.processor.registers.set_2_8bit_reg_with_offset(char_to_reg("D"), hl_val)
+        self.processor.StateLogger.addEntry("swap_hl_with_de")

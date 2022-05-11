@@ -15,3 +15,4 @@ class rh_to_act(State):
         else:
             high, low = self.processor.get_rp_values(rp)
             self.processor.set_act(high)
+        self.processor.StateLogger.addEntry("rh_to_act")

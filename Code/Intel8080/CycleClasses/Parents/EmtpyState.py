@@ -7,3 +7,6 @@ class EmptyState(State):
 
     def run(self):
         print("EmptyState")
+        print(self.processor)
+        print(self.processor.StateLogger)
+        self.processor.StateLogger.addEntry("EmptyState")

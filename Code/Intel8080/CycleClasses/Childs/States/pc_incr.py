@@ -8,4 +8,4 @@ class pc_incr(State):
     def run(self):
         self.processor.registers.increment_pc()
         print("PC = PC + 1 (Fetch 2)")
-        pass
+        self.processor.StateLogger.addEntry("PC = PC + 1 (Fetch 2)")

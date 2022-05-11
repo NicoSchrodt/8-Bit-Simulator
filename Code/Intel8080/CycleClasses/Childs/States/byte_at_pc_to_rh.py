@@ -13,3 +13,4 @@ class byte_at_pc_to_rh(byte_at_pc_):
         else:
             rp = self.processor.get_current_rp() * 2
             self.processor.registers.set_register8_with_offset(rp, self.byte)
+        self.processor.StateLogger.addEntry("byte_at_pc_to_rh")

@@ -12,3 +12,4 @@ class h_to_wz(State):
         wz = self.processor.get_wz()
 
         self.processor.set_memory_byte(wz, h_val)
+        self.processor.StateLogger.addEntry("h_to_wz")

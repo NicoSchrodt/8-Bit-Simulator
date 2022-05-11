@@ -8,3 +8,4 @@ class cmc_state(State):
     def run(self):
         print("cmc_state")
         self.processor.ALU.set_carry_flag(self.processor.ALU.get_carry_flag() ^ 1)
+        self.processor.StateLogger.addEntry("cmc_state")

@@ -13,3 +13,4 @@ class wz_to_hl(State):
 
         self.processor.registers.set_register8_with_offset(char_to_reg("H"), w_val)
         self.processor.registers.set_register8_with_offset(char_to_reg("L"), z_val)
+        self.processor.StateLogger.addEntry("wz_to_hl")

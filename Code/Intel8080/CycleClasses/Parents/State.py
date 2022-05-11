@@ -8,4 +8,5 @@ class State:
 
     def run(self):
         print("default state: run")
+        self.processor.StateLogger.addEntry("default state: run")
         pass

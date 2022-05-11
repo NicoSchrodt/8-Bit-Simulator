@@ -8,3 +8,4 @@ class sss_to_tmp(State):
     def run(self):
         print("sss_to_tmp")
         self.processor.set_tmp(self.processor.get_sss_value())
+        self.processor.StateLogger.addEntry("sss_to_tmp")

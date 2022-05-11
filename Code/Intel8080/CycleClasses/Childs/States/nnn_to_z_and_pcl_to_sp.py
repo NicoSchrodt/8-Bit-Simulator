@@ -17,3 +17,4 @@ class nnn_to_z_and_pcl_to_sp(State):
 
         pcl = np.uint8(self.processor.get_pc() & 0x00FF)
         self.processor.set_memory_byte(self.processor.get_sp(), pcl)
+        self.processor.StateLogger.addEntry("nnn_to_z_and_pcl_to_sp_plus_1")

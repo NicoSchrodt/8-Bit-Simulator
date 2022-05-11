@@ -12,3 +12,4 @@ class acc_to_mem_from_rp(byte_at_pc_minus_1_):
 
         if self.processor.get_current_rp() <= 1:
             self.processor.set_memory_byte(rp_address, acc)
+        self.processor.StateLogger.addEntry("acc_to_mem_from_rp")

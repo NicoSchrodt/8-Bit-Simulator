@@ -13,3 +13,4 @@ class sss_to_tmp_and_acc_to_act(byte_at_pc_minus_1_):
 
         acc = self.processor.get_acc()
         self.processor.set_act(acc)
+        self.processor.StateLogger.addEntry("sss_to_tmp_and_acc_to_act")

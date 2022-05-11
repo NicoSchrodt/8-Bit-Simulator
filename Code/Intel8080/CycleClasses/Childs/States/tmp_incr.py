@@ -11,3 +11,4 @@ class tmp_incr(State):
         print("tmp_incr")
         tmp = np.uint8(self.processor.get_tmp() + 1)
         self.processor.set_tmp(tmp)
+        self.processor.StateLogger.addEntry("tmp_incr")

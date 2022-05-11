@@ -16,3 +16,4 @@ class acc_to_mem(State):
         address = build_16bit_from_8bit(w_val, z_val)
 
         self.processor.set_memory_byte(address, acc)
+        self.processor.StateLogger.addEntry("acc_to_mem")

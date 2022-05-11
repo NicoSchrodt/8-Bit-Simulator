@@ -35,3 +35,4 @@ class ccc_if_true_then_sp_decr(State):
             self.processor.c_cond_skip = True
         else:
             self.processor.set_sp(np.uint16(self.processor.get_sp() - 1))
+        self.processor.StateLogger.addEntry("ccc_if_true_then_sp_decr")

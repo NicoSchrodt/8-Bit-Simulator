@@ -8,3 +8,4 @@ class mem_to_ddd(State):
     def run(self):
         print("mem_to_ddd")
         mem_val = self.processor.get_memory_byte()
+        self.processor.StateLogger.addEntry("mem_to_ddd")

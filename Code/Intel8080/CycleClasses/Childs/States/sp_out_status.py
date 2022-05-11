@@ -7,3 +7,4 @@ class sp_out_status(State):
 
     def run(self):
         print("sp_out_status")
+        self.processor.StateLogger.addEntry("sp_out_status")

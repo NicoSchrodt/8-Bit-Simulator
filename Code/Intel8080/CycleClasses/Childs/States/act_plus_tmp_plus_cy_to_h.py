@@ -15,3 +15,4 @@ class act_plus_tmp_plus_cy_to_h(State):
         ac, cy, result = self.processor.ALU.binary_add(act, tmp, cy)
         self.processor.ALU.set_carry_flag(cy)
         self.processor.registers.set_register8_with_offset(char_to_reg("H"), result)
+        self.processor.StateLogger.addEntry("act_plus_tmp_plus_cy_to_h")

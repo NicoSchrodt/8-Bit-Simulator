@@ -13,3 +13,4 @@ class ral_state(State):
         self.processor.ALU.set_alu_cy((acc & 0x80) == 0x80)
         acc = np.uint8((acc << 1) + self.processor.ALU.get_carry_flag())
         self.processor.ALU.set_alu(acc)
+        self.processor.StateLogger.addEntry("ral_state")

@@ -8,3 +8,4 @@ class hl_to_sp(State):
     def run(self):
         print("hl_to_sp")
         self.processor.set_sp(self.processor.get_h_l_address())
+        self.processor.StateLogger.addEntry("hl_to_sp")

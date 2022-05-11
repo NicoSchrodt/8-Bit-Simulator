@@ -8,3 +8,4 @@ class byte_at_pc_to_tmp(byte_at_pc_):
     def write_to(self):
         print("byte_at_pc_to_tmp")
         self.processor.set_tmp(self.byte)
+        self.processor.StateLogger.addEntry("byte_at_pc_to_tmp")

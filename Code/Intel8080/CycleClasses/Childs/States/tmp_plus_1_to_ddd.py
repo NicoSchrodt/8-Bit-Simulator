@@ -11,3 +11,4 @@ class tmp_plus_1_to_ddd(State):
         print("tmp_plus_one_to_ddd")
         tmp = np.uint8(self.processor.get_tmp() + 1)
         self.processor.set_ddd(tmp)
+        self.processor.StateLogger.addEntry("tmp_plus_one_to_ddd")

@@ -8,3 +8,4 @@ class data_to_tmp(data_to_):
     def write_to(self):
         print("data_to_tmp")
         self.processor.set_tmp(self.data)
+        self.processor.StateLogger.addEntry("data_to_tmp")

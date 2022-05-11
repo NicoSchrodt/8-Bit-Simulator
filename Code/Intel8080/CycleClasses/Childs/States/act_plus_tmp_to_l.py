@@ -14,3 +14,4 @@ class act_plus_tmp_to_l(State):
         ac, cy, result = self.processor.ALU.binary_add(act, tmp, 0)
         self.processor.ALU.set_carry_flag(cy)
         self.processor.registers.set_register8_with_offset(char_to_reg("L"), result)
+        self.processor.StateLogger.addEntry("act_plus_tmp_to_l")

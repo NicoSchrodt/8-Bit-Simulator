@@ -14,3 +14,4 @@ class sub_state(State):
         self.processor.ALU.set_cy_ac_flags(cy, ac)
         self.processor.ALU.evaluate_zsp_flags(True, True, True, result)
         self.processor.set_acc(result)
+        self.processor.StateLogger.addEntry("sub_state")

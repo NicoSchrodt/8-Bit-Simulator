@@ -9,3 +9,4 @@ class alu_to_a_and_cy(State):
         print("alu_to_a_and_cy")
         self.processor.set_acc(self.processor.ALU.get_alu())
         self.processor.ALU.set_carry_flag(self.processor.ALU.get_alu_cy())
+        self.processor.StateLogger.addEntry("alu_to_a_and_cy")

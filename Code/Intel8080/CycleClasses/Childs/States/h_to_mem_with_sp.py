@@ -10,3 +10,4 @@ class h_to_mem_with_sp(State):
         print("h_to_mem_with_sp")
         h_val = self.processor.registers.get_register_with_offset(char_to_reg("H"))
         self.processor.set_memory_byte(self.processor.get_sp(), h_val)
+        self.processor.StateLogger.addEntry("h_to_mem_with_sp")

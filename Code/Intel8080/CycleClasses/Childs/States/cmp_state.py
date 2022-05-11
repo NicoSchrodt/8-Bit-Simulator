@@ -13,3 +13,4 @@ class cmp_state(State):
 
         self.processor.ALU.set_zero_flag(result == 0)
         self.processor.ALU.set_carry_flag(result < 0)
+        self.processor.StateLogger.addEntry("cmp_state")

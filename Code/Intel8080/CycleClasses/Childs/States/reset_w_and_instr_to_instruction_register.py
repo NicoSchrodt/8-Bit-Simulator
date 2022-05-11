@@ -10,3 +10,4 @@ class reset_w_and_instr_to_instruction_register(State):
         self.processor.registers.set_register8_with_offset("W", 0)
 
         self.processor.cpu_instruction_register = self.processor.get_byte_from_memory_address_at_pc()
+        self.processor.StateLogger.addEntry("reset_w_and_instr_to_instruction_register")

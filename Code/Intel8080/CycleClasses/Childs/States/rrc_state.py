@@ -13,3 +13,4 @@ class rrc_state(State):
         self.processor.ALU.set_alu_cy((acc & 0x01) == 0x01)
         acc = np.uint8((acc >> 1) + (self.processor.ALU.get_alu_cy() * 0x80))
         self.processor.ALU.set_alu(acc)
+        self.processor.StateLogger.addEntry("rrc_state")

@@ -10,3 +10,4 @@ class sp_minus_1_to_psw(State):
         old_sp = self.processor.get_memory_byte(self.processor.get_sp() - 1)
 
         self.processor.set_processor_status_word(old_sp)
+        self.processor.StateLogger.addEntry("sp_minus_1_to_psw")

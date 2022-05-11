@@ -11,3 +11,4 @@ class sp_minus_1_to_rl(State):
 
         rp = self.processor.get_current_rp()
         self.processor.registers.set_register8_with_offset(rp * 2 + 1, old_sp)
+        self.processor.StateLogger.addEntry("sp_minus_1_to_rp")

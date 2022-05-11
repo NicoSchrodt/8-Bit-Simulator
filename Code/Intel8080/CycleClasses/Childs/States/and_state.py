@@ -11,3 +11,4 @@ class and_state(State):
         self.processor.set_acc(result)
 
         self.processor.ALU.set_carry_flag(False)
+        self.processor.StateLogger.addEntry("and_state")

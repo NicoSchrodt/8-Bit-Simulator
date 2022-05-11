@@ -8,3 +8,4 @@ class ei_state(State):
     def run(self):
         print("ei_state")
         self.processor.interrupt_enabled = True
+        self.processor.StateLogger.addEntry("ei_state")

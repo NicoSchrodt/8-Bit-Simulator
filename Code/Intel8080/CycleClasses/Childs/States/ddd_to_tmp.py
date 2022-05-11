@@ -10,3 +10,4 @@ class ddd_to_tmp(State):
         ddd = self.processor.get_ddd()
         ddd_val = self.processor.registers.get_register_with_offset(ddd)
         self.processor.set_tmp(ddd_val)
+        self.processor.StateLogger.addEntry("ddd_to_tmp")

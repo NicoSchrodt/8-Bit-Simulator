@@ -12,3 +12,4 @@ class wz_to_h(State):
 
         wz_val = self.processor.get_memory_byte(wz)
         self.processor.registers.set_register8_with_offset(char_to_reg("H"), wz_val)
+        self.processor.StateLogger.addEntry("wz_to_h")

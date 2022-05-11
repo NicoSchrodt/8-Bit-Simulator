@@ -10,3 +10,4 @@ class sp_to_w(State):
         print("sp_to_w")
         old_sp_plus_1 = self.processor.get_memory_byte(self.processor.get_sp())
         self.processor.registers.set_register8_with_offset(char_to_reg("W"), old_sp_plus_1)
+        self.processor.StateLogger.addEntry("sp_to_w")

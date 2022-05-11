@@ -9,3 +9,4 @@ class psw_to_sp(State):
         print("psw_to_sp")
         psw = self.processor.get_processor_status_word()
         self.processor.set_memory_byte(self.processor.get_sp(), psw)
+        self.processor.StateLogger.addEntry("psw_to_sp")

@@ -7,4 +7,6 @@ class pc_out_status(State):
 
     def run(self):
         print("PC OUT STATUS (Fetch 1)")
-        pass
+        print(self.processor)
+        print(self.processor.StateLogger)
+        self.processor.StateLogger.addEntry("PC OUT STATUS (Fetch 1)")

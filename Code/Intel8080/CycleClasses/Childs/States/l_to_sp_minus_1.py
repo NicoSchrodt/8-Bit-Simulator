@@ -10,3 +10,4 @@ class l_to_sp_minus_1(State):
         print("l_to_sp_minus_1")
         l_val = self.processor.registers.get_register_with_offset(char_to_reg("L"))
         self.processor.set_memory_byte(self.processor.get_sp() - 1, l_val)
+        self.processor.StateLogger.addEntry("l_to_sp_minus_1")

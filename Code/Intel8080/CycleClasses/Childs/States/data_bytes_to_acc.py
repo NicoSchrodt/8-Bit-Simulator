@@ -14,3 +14,4 @@ class data_bytes_to_acc(State):
         address = build_16bit_from_8bit(w_val, z_val)
         value = self.processor.get_memory_byte(address)
         self.processor.set_acc(value)
+        self.processor.StateLogger.addEntry("data_bytes_to_acc")

@@ -31,3 +31,4 @@ class ccc_is_true(State):
 
         if not result:
             self.processor.skip_rest_of_instruction = True
+        self.processor.StateLogger.addEntry("ccc_is_true")

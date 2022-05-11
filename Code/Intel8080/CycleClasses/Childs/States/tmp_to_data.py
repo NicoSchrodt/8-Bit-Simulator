@@ -8,3 +8,4 @@ class tmp_to_data(State):
     def run(self):
         print("tmp_to_data")
         self.processor.set_memory_byte(self.processor.get_h_l_address(), self.processor.get_tmp())
+        self.processor.StateLogger.addEntry("tmp_to_data")

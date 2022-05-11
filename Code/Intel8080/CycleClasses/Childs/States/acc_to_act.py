@@ -9,3 +9,4 @@ class acc_to_act(State):
         print("acc_to_act")
         acc = self.processor.get_acc()
         self.processor.set_act(acc)
+        self.processor.StateLogger.addEntry("acc_to_act")

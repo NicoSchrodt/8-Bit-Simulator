@@ -24,3 +24,4 @@ class daa_state(State):
 
         self.processor.ALU.set_auxiliary_carry_flag(ac)
         self.processor.ALU.set_carry_flag(cy)
+        self.processor.StateLogger.addEntry("daa_state")

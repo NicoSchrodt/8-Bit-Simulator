@@ -10,3 +10,4 @@ class sp_minus_1_to_z(State):
         print("sp_minus_1_to_z")
         old_sp = self.processor.get_memory_byte(self.processor.get_sp() - 1)
         self.processor.registers.set_register8_with_offset(char_to_reg("Z"), old_sp)
+        self.processor.StateLogger.addEntry("sp_minus_1_to_z")

@@ -9,3 +9,4 @@ class acc_to_sp_plus_1(State):
         print("acc_to_sp_plus_1")
         acc = self.processor.get_acc()
         self.processor.set_memory_byte(self.processor.get_sp() + 1, acc)
+        self.processor.StateLogger.addEntry("acc_to_sp_plus_1")

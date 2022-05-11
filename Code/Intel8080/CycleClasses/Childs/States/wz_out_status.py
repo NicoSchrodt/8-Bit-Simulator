@@ -7,3 +7,4 @@ class wz_out_status(State):
 
     def run(self):
         print("wz_out_status")
+        self.processor.StateLogger.addEntry("wz_out_status")

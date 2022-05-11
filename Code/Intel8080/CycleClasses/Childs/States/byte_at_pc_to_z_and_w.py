@@ -10,3 +10,4 @@ class byte_at_pc_to_z_and_w(byte_at_pc_):
         print("byte_at_pc_to_z_and_w")
         self.processor.registers.set_register8_with_offset(char_to_reg("Z"), self.byte)
         self.processor.registers.set_register8_with_offset(char_to_reg("W"), self.byte)
+        self.processor.StateLogger.addEntry("byte_at_pc_to_z_and_w")

@@ -9,3 +9,4 @@ class byte_at_pc_to_z(byte_at_pc_):
     def write_to(self):
         print("byte_at_pc_to_z")
         self.processor.registers.set_register8_with_offset(char_to_reg("Z"), self.byte)
+        self.processor.StateLogger.addEntry("byte_at_pc_to_z")

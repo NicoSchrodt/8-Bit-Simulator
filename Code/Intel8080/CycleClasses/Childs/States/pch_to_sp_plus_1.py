@@ -11,3 +11,4 @@ class pch_to_sp_plus_1(State):
         print("pch_to_sp_plus_1")
         pch = np.uint8((self.processor.get_pc() & 0xFF00) >> 8)
         self.processor.set_memory_byte(self.processor.get_sp() + 1, pch)
+        self.processor.StateLogger.addEntry("pch_to_sp_plus_1")

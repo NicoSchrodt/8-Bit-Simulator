@@ -116,8 +116,8 @@ class Intel8080_MainWindow(QMainWindow):
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
         self.init_register_array_table()
-        self.processor = Intel8080()
         self.Logger = StateLogger(self.MessageLog_plaintext)
+        self.processor = Intel8080(parent_window=None, logger=self.Logger)
         self.Logger.addEntry("Welcome :)")
         # self.processor.run()
 

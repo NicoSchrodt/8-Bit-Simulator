@@ -9,3 +9,4 @@ class cma_state(State):
         print("cma_state")
         acc = self.processor.get_acc() ^ 0xFF
         self.processor.set_acc(acc)
+        self.processor.StateLogger.addEntry("cma_state")

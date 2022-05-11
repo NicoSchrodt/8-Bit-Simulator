@@ -8,3 +8,4 @@ class stc_state(State):
     def run(self):
         print("stc_state")
         self.processor.ALU.set_carry_flag(True)
+        self.processor.StateLogger.addEntry("stc_state")

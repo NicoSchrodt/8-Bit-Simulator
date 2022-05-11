@@ -12,3 +12,4 @@ class byte_at_pc_to_w_break(byte_at_pc_):
 
         if self.processor.c_cond_skip:
             self.processor.skip_rest_of_instruction = True
+        self.processor.StateLogger.addEntry("byte_at_pc_to_w_break")

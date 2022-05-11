@@ -10,3 +10,4 @@ class h_to_tmp(State):
         print("h_to_tmp")
         h_val = self.processor.registers.get_register_with_offset(char_to_reg("H"))
         self.processor.set_tmp(h_val)
+        self.processor.StateLogger.addEntry("h_to_tmp")

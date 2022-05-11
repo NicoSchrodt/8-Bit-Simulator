@@ -8,3 +8,4 @@ class di_state(State):
     def run(self):
         print("di_state")
         self.processor.interrupt_enabled = False
+        self.processor.StateLogger.addEntry("di_state")

@@ -8,3 +8,4 @@ class data_to_ddd(data_to_):
     def write_to(self):
         print("data_to_ddd")
         self.processor.set_ddd(self.data)
+        self.processor.StateLogger.addEntry("data_to_ddd")

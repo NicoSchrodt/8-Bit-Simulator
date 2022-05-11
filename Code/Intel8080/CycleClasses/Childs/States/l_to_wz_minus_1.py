@@ -14,3 +14,4 @@ class l_to_wz_minus_1(State):
         wz = np.uint16(self.processor.get_wz() - 1)
 
         self.processor.set_memory_byte(wz, l_val)
+        self.processor.StateLogger.addEntry("l_to_wz_minus_1")

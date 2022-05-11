@@ -8,3 +8,4 @@ class tmp_to_ddd(State):
     def run(self):
         print("tmp_to_ddd")
         self.processor.set_ddd(self.processor.get_tmp())
+        self.processor.StateLogger.addEntry("tmp_to_ddd")

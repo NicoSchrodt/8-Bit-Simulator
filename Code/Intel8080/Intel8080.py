@@ -82,12 +82,13 @@ from Code.Intel8080.Intel8080_Assembler import i8080asm
 
 
 class Intel8080(AbstractProcessor):
-    def __init__(self, parent_window=None):
+    def __init__(self, parent_window=None, logger=None):
         super().__init__()
         self.parent = parent_window
         self.registers = Intel8080_Registers()
         self.ALU = Intel8080_ALU(self)
         self.peripherals = Intel8080_Peripherals()
+        self.StateLogger = logger
 
         self.program = [0] * pow(2, 16)
         self.program_length = 0

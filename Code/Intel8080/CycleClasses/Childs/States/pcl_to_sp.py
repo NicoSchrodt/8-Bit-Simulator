@@ -11,3 +11,4 @@ class pcl_to_sp(State):
         print("pcl_to_sp")
         pcl = np.uint8(self.processor.get_pc() & 0x00FF)
         self.processor.set_memory_byte(self.processor.get_sp(), pcl)
+        self.processor.StateLogger.addEntry("pcl_to_sp")

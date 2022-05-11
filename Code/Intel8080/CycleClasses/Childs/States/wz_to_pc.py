@@ -14,3 +14,4 @@ class wz_to_pc(State):
         z_val = self.processor.registers.get_register_with_offset(char_to_reg("Z"))
         new_pc = np.uint16(build_16bit_from_8bit(w_val, z_val))
         self.processor.set_pc(new_pc)
+        self.processor.StateLogger.addEntry("wz_to_pc")

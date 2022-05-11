@@ -10,3 +10,4 @@ class sp_incr(State):
     def run(self):
         print("sp_incr")
         self.processor.set_sp(np.uint16(self.processor.get_sp() + 1))
+        self.processor.StateLogger.addEntry("sp_incr")

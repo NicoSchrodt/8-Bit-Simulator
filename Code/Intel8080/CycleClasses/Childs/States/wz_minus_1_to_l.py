@@ -15,3 +15,4 @@ class wz_minus_1_to_l(State):
 
         wz_val = self.processor.get_memory_byte(wz)
         self.processor.registers.set_register8_with_offset(char_to_reg("L"), wz_val)
+        self.processor.StateLogger.addEntry("wz_minus_1_to_l")

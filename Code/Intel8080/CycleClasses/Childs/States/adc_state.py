@@ -16,3 +16,4 @@ class adc_state(State):
         self.processor.ALU.evaluate_zsp_flags(True, True, True, result)
         # TODO Anmerkung [9] auf Seite 34 vermerken in doku
         self.processor.set_acc(result)
+        self.processor.StateLogger.addEntry("adc_state")
