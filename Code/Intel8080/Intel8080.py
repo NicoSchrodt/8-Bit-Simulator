@@ -54,6 +54,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Push_psw import Push_psw
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ral import Ral
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rar import Rar
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ret import Ret
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ret_cond import Ret_cond
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rlc import Rlc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rrc import Rrc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rst import Rst
@@ -334,6 +336,10 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Ral(self)
         elif self.cpu_instruction_register == 0x1F:
             self.current_instruction = Rar(self)
+        elif self.cpu_instruction_register == 0xC9:
+            self.current_instruction = Ret(self)
+        elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0xC0:
+            self.current_instruction = Ret_cond(self)
         elif self.cpu_instruction_register == 0x07:
             self.current_instruction = Rlc(self)
         elif self.cpu_instruction_register == 0x0F:

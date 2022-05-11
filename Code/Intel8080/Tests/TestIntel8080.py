@@ -842,6 +842,73 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_ret(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ret")
+
+            intel.set_sp(78)
+            intel.program[79] = 0
+            intel.program[78] = 2
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(2, intel.get_pc())
+            self.assertEqual(80, intel.get_sp())
+        except:
+            self.fail()
+
+    def test_ret_cond_skip(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rc")
+
+            intel.ALU.set_carry_flag(False)
+            intel.set_sp(78)
+            intel.program[79] = 0
+            intel.program[78] = 2
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(1, intel.get_pc())
+            self.assertEqual(78, intel.get_sp())
+        except:
+            self.fail()
+
+    def test_rc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rc")
+
+            intel.ALU.set_carry_flag(True)
+            intel.set_sp(78)
+            intel.program[79] = 0
+            intel.program[78] = 2
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(2, intel.get_pc())
+            self.assertEqual(80, intel.get_sp())
+        except:
+            self.fail()
+
+    def test_rnc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rnc")
+
+            intel.ALU.set_carry_flag(False)
+            intel.set_sp(78)
+            intel.program[79] = 0
+            intel.program[78] = 2
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(2, intel.get_pc())
+            self.assertEqual(80, intel.get_sp())
+        except:
+            self.fail()
+
     def test_rlc(self):
         try:
             intel = Intel8080()
