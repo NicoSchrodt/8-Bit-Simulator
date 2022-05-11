@@ -39,6 +39,10 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_m import Ora_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_r import Ora_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ori import Ori
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ral import Ral
+from Code.Intel8080.CycleClasses.Childs.Instructions.Rar import Rar
+from Code.Intel8080.CycleClasses.Childs.Instructions.Rlc import Rlc
+from Code.Intel8080.CycleClasses.Childs.Instructions.Rrc import Rrc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_m import Sbb_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_r import Sbb_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
@@ -278,6 +282,14 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Ori(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0xC5:
             self.current_instruction = Push_rp(self)
+        elif self.cpu_instruction_register == 0x17:
+            self.current_instruction = Ral(self)
+        elif self.cpu_instruction_register == 0x1F:
+            self.current_instruction = Rar(self)
+        elif self.cpu_instruction_register == 0x07:
+            self.current_instruction = Rlc(self)
+        elif self.cpu_instruction_register == 0x0F:
+            self.current_instruction = Rrc(self)
         elif self.cpu_instruction_register == 0x22:
             self.current_instruction = Shld(self)
         elif self.cpu_instruction_register == 0xF9:

@@ -508,6 +508,66 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_ral(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ral")
+
+            intel.set_acc(0xAA)
+            intel.ALU.set_carry_flag(True)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x55, intel.get_acc())
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_rar(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rar")
+
+            intel.set_acc(0xAA)
+            intel.ALU.set_carry_flag(True)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xD5, intel.get_acc())
+            self.assertFalse(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_rlc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rlc")
+
+            intel.set_acc(0xAA)
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x55, intel.get_acc())
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_rrc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rrc")
+
+            intel.set_acc(0xAB)
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xD5, intel.get_acc())
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
     def test_shld(self):
         try:
             intel = Intel8080()

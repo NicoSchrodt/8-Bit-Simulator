@@ -42,6 +42,8 @@ class Intel8080_ALU():
                       False,  # Carry
                       False  # Auxiliary Carry: Overflow from bit 3 to 4
                       ]
+        self.alu = np.uint8(8)  # No real register
+        self.alu_cy = False
 
     def perform_operation(self):
         pass
@@ -49,6 +51,18 @@ class Intel8080_ALU():
 
     def get_reg8_val(self, reg8):
         return np.uint8(self.registers.get_register(reg_offset + reg8))
+
+    def get_alu(self):
+        return np.uint8(self.alu)
+
+    def set_alu(self, value):
+        self.alu = np.uint8(value)
+
+    def get_alu_cy(self):
+        return self.alu_cy
+
+    def set_alu_cy(self, value):
+        self.alu_cy = value
 
     def get_act(self):
         return np.uint8(self.act)
