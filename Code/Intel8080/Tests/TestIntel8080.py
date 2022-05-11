@@ -140,6 +140,45 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_cma(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("cma")
+
+            intel.set_acc(0x51)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0xAE, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_cmc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("cmc")
+
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(1)
+
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_cmc_2(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("cmc")
+
+            intel.ALU.set_carry_flag(True)
+
+            intel.run_complete_programm(1)
+
+            self.assertFalse(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
     def test_cmp_m(self):
         try:
             intel = Intel8080()
@@ -627,6 +666,32 @@ class TestIntel8080(TestCase):
 
             self.assertEqual(22, intel.get_memory_byte(10))
 
+        except:
+            self.fail()
+
+    def test_stc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("stc")
+
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(1)
+
+            self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_stc_2(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("stc")
+
+            intel.ALU.set_carry_flag(True)
+
+            intel.run_complete_programm(1)
+
+            self.assertTrue(intel.ALU.get_carry_flag())
         except:
             self.fail()
 

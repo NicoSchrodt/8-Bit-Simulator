@@ -12,6 +12,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Adi import Adi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ana_m import Ana_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ana_r import Ana_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ani import Ani
+from Code.Intel8080.CycleClasses.Childs.Instructions.Cma import Cma
+from Code.Intel8080.CycleClasses.Childs.Instructions.Cmc import Cmc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Cmp_m import Cmp_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Cmp_r import Cmp_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Cpi import Cpi
@@ -49,6 +51,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sphl import Sphl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sta import Sta
 from Code.Intel8080.CycleClasses.Childs.Instructions.Stax import Stax
+from Code.Intel8080.CycleClasses.Childs.Instructions.Stc import Stc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_m import Sub_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sub_r import Sub_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sui import Sui
@@ -217,6 +220,10 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Ana_r(self)
         elif self.cpu_instruction_register == 0xE6:
             self.current_instruction = Ani(self)
+        elif self.cpu_instruction_register == 0x2F:
+            self.current_instruction = Cma(self)
+        elif self.cpu_instruction_register == 0x3F:
+            self.current_instruction = Cmc(self)
         elif (self.cpu_instruction_register & self.sss_inv_mask) == 0xB8:
             if self.cpu_instruction_register == 0xBE:
                 self.current_instruction = Cmp_m(self)
@@ -298,6 +305,8 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Sta(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0x02:
             self.current_instruction = Stax(self)
+        elif self.cpu_instruction_register == 0x37:
+            self.current_instruction = Stc(self)
         elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x98:
             if self.cpu_instruction_register == 0x9D:
                 self.current_instruction = Sbb_m(self)
