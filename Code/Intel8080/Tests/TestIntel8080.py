@@ -305,6 +305,44 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_di(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("di")
+
+            intel.interrupt_enabled = True
+
+            intel.run_complete_programm(1)
+
+            self.assertFalse(intel.interrupt_enabled)
+        except:
+            self.fail()
+
+    def test_ei(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("ei")
+
+            intel.interrupt_enabled = False
+
+            intel.run_complete_programm(1)
+
+            self.assertTrue(intel.interrupt_enabled)
+        except:
+            self.fail()
+
+    def test_in(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("in 0Ah")
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x0A, intel.registers.get_register_with_offset(char_to_reg("Z")))
+            self.assertEqual(0x0A, intel.registers.get_register_with_offset(char_to_reg("W")))
+        except:
+            self.fail()
+
     def test_inr_m(self):
         try:
             intel = Intel8080()
@@ -528,6 +566,18 @@ class TestIntel8080(TestCase):
             intel.run_complete_programm(1)
 
             self.assertEqual(0xAF, intel.get_acc())
+        except:
+            self.fail()
+
+    def test_out(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("out 0Ah")
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x0A, intel.registers.get_register_with_offset(char_to_reg("Z")))
+            self.assertEqual(0x0A, intel.registers.get_register_with_offset(char_to_reg("W")))
         except:
             self.fail()
 

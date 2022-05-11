@@ -22,7 +22,10 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Dad import Dad
 from Code.Intel8080.CycleClasses.Childs.Instructions.Dcr_m import Dcr_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Dcr_r import Dcr_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Dcx import Dcx
+from Code.Intel8080.CycleClasses.Childs.Instructions.Di import Di
+from Code.Intel8080.CycleClasses.Childs.Instructions.Ei import Ei
 from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
+from Code.Intel8080.CycleClasses.Childs.Instructions.In_inst import In_inst
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_m import Inr_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_r import Inr_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inx import Inx
@@ -40,6 +43,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Nop import Nop
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_m import Ora_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_r import Ora_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ori import Ori
+from Code.Intel8080.CycleClasses.Childs.Instructions.Out_inst import Out_inst
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_rp import Push_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ral import Ral
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rar import Rar
@@ -195,6 +199,7 @@ class Intel8080(AbstractProcessor):
             self.quittable = False
 
         while not (self.quittable and not self.instruction_counter < max_instructions):
+            print("[Next Instruction]")
             if self.next_instruction():
                 self.instruction_counter += 1
 
@@ -242,6 +247,12 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Dcr_r(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0x0B:
             self.current_instruction = Dcx(self)
+        elif self.cpu_instruction_register == 0xF3:
+            self.current_instruction = Di(self)
+        elif self.cpu_instruction_register == 0xFB:
+            self.current_instruction = Ei(self)
+        elif self.cpu_instruction_register == 0xDB:
+            self.current_instruction = In_inst(self)
         elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0x04:
             if self.cpu_instruction_register == 0x34:
                 self.current_instruction = Inr_m(self)
@@ -287,6 +298,8 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Ora_r(self)
         elif self.cpu_instruction_register == 0xF6:
             self.current_instruction = Ori(self)
+        elif self.cpu_instruction_register == 0xD3:
+            self.current_instruction = Out_inst(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0xC5:
             self.current_instruction = Push_rp(self)
         elif self.cpu_instruction_register == 0x17:
