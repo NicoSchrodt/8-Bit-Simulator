@@ -27,10 +27,10 @@ class TestIntel8080(TestCase):
     def test_adc_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("adc b")
+            intel.init_test("adc e")
 
             intel.set_acc(7)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 63)
 
             intel.run_complete_programm(1)
 
@@ -73,10 +73,10 @@ class TestIntel8080(TestCase):
     def test_add_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("add b")
+            intel.init_test("add c")
 
             intel.set_acc(7)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 63)
 
             intel.run_complete_programm(1)
 
@@ -116,10 +116,10 @@ class TestIntel8080(TestCase):
     def test_ana_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("ana b")  # TODO Fehler "ana d" wird auch zu sss = 000
+            intel.init_test("ana d")
 
             intel.set_acc(0xFC)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
+            intel.registers.set_register8_with_offset(char_to_reg("D"), 0x0F)
 
             intel.run_complete_programm(1)
 
@@ -282,10 +282,10 @@ class TestIntel8080(TestCase):
     def test_cmp_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("cmp b")  # (TODO Fehler "xra d" wird auch zu sss = 000)
+            intel.init_test("cmp a")
 
             intel.set_acc(0x0A)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0A)
+            intel.registers.set_register8_with_offset(char_to_reg("A"), 0x0A)
 
             intel.run_complete_programm(1)
 
@@ -337,10 +337,13 @@ class TestIntel8080(TestCase):
     def test_dad(self):
         try:
             intel = Intel8080()
-            intel.init_test("dad h")
+            intel.init_test("dad b")
 
             intel.registers.set_register8_with_offset(char_to_reg("H"), 22)
             intel.registers.set_register8_with_offset(char_to_reg("L"), 33)
+
+            intel.registers.set_register8_with_offset(char_to_reg("B"), 22)
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 33)
 
             intel.run_complete_programm(1)
 
@@ -367,24 +370,25 @@ class TestIntel8080(TestCase):
     def test_dcr_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("dcr b")
+            intel.init_test("dcr e")
 
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 22)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 22)
             intel.run_complete_programm(1)
 
-            self.assertEqual(21, intel.registers.get_register_with_offset(char_to_reg("B")))
+            self.assertEqual(21, intel.registers.get_register_with_offset(char_to_reg("E")))
         except:
             self.fail()
 
     def test_dcx(self):
         try:
             intel = Intel8080()
-            intel.init_test("dcx b")
+            intel.init_test("dcx d")
 
-            intel.registers.set_register8_with_offset(char_to_reg("C"), 5)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 5)
+
             intel.run_complete_programm(1)
 
-            self.assertEqual(4, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertEqual(4, intel.registers.get_register_with_offset(char_to_reg("E")))
         except:
             self.fail()
 
@@ -456,12 +460,12 @@ class TestIntel8080(TestCase):
     def test_inx(self):
         try:
             intel = Intel8080()
-            intel.init_test("inx b")
+            intel.init_test("inx d")
 
-            intel.registers.set_register8_with_offset(char_to_reg("C"), 5)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 5)
             intel.run_complete_programm(1)
 
-            self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("E")))
         except:
             self.fail()
 
@@ -555,11 +559,11 @@ class TestIntel8080(TestCase):
     def test_ldax(self):
         try:
             intel = Intel8080()
-            intel.init_test("ldax b")
+            intel.init_test("ldax d")
 
             intel.program[10] = 55
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0)  # high
-            intel.registers.set_register8_with_offset(char_to_reg("C"), 10)  # low
+            intel.registers.set_register8_with_offset(char_to_reg("D"), 0)  # high
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 10)  # low
 
             intel.run_complete_programm(1)
 
@@ -587,21 +591,21 @@ class TestIntel8080(TestCase):
             intel = Intel8080()
             intel.init_test("""Nop
                         label:
-                        lxi b, label""")
+                        lxi d, label""")
 
             intel.run_complete_programm(2)
 
-            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("B")))
-            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertEqual(1, intel.registers.get_register_with_offset(char_to_reg("D")))
+            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("E")))
         except:
             self.fail()
 
     def test_Mov_r_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("mov c, b")
+            intel.init_test("mov c, e")
 
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 2)  # from
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 2)  # from
             intel.registers.set_register8_with_offset(char_to_reg("C"), 3)  # to
 
             intel.run_complete_programm(1)
@@ -613,7 +617,7 @@ class TestIntel8080(TestCase):
     def test_Mov_r_m(self):
         try:
             intel = Intel8080()
-            intel.init_test("mov b, m")
+            intel.init_test("mov d, m")
 
             intel.program[10] = 55  # from
 
@@ -622,16 +626,16 @@ class TestIntel8080(TestCase):
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(55, intel.registers.get_register_with_offset(char_to_reg("B")))
+            self.assertEqual(55, intel.registers.get_register_with_offset(char_to_reg("D")))
         except:
             self.fail()
 
     def test_Mov_m_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("mov m, b")
+            intel.init_test("mov m, e")
 
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 55)  # from
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 55)  # from
 
             intel.registers.set_register8_with_offset(char_to_reg("H"), 0)  # to
             intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
@@ -645,11 +649,11 @@ class TestIntel8080(TestCase):
     def test_mvi_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("mvi b, 12d")
+            intel.init_test("mvi c, 12d")
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(12, intel.registers.get_register_with_offset(char_to_reg("B")))
+            self.assertEqual(12, intel.registers.get_register_with_offset(char_to_reg("C")))
         except:
             self.fail()
 
@@ -686,10 +690,10 @@ class TestIntel8080(TestCase):
     def test_ora_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("ora b")  # TODO Fehler "xra d" wird auch zu sss = 000
+            intel.init_test("ora h")
 
             intel.set_acc(0xAA)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0x0F)
 
             intel.run_complete_programm(1)
 
@@ -739,7 +743,7 @@ class TestIntel8080(TestCase):
     def test_pop_rp(self):
         try:
             intel = Intel8080()
-            intel.init_test("pop b")
+            intel.init_test("pop h")
 
             intel.program[79] = 3
             intel.program[78] = 2
@@ -747,8 +751,8 @@ class TestIntel8080(TestCase):
 
             intel.run_complete_programm(1)
 
-            self.assertEqual(3, intel.registers.get_register_with_offset(char_to_reg("B")))
-            self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertEqual(3, intel.registers.get_register_with_offset(char_to_reg("H")))
+            self.assertEqual(2, intel.registers.get_register_with_offset(char_to_reg("L")))
             self.assertEqual(80, intel.get_sp())
         except:
             self.fail()
@@ -798,10 +802,10 @@ class TestIntel8080(TestCase):
     def test_push_rp(self):
         try:
             intel = Intel8080()
-            intel.init_test("push b")
+            intel.init_test("push d")
 
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 2)  # high
-            intel.registers.set_register8_with_offset(char_to_reg("C"), 3)  # low
+            intel.registers.set_register8_with_offset(char_to_reg("D"), 2)  # high
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 3)  # low
             intel.set_sp(80)
 
             intel.run_complete_programm(1)
@@ -1006,12 +1010,12 @@ class TestIntel8080(TestCase):
     def test_stax(self):
         try:
             intel = Intel8080()
-            intel.init_test("stax b")
+            intel.init_test("stax d")
 
             intel.set_acc(22)
 
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0)
-            intel.registers.set_register8_with_offset(char_to_reg("C"), 10)
+            intel.registers.set_register8_with_offset(char_to_reg("D"), 0)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 10)
 
             intel.run_complete_programm(1)
 
@@ -1049,10 +1053,10 @@ class TestIntel8080(TestCase):
     def test_sbb_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("sbb b")
+            intel.init_test("sbb l")
 
             intel.set_acc(70)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 63)
 
             intel.run_complete_programm(1)
 
@@ -1092,10 +1096,10 @@ class TestIntel8080(TestCase):
     def test_sub_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("sub b")
+            intel.init_test("sub h")
 
             intel.set_acc(70)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 63)
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 63)
 
             intel.run_complete_programm(1)
 
@@ -1174,10 +1178,10 @@ class TestIntel8080(TestCase):
     def test_xra_r(self):
         try:
             intel = Intel8080()
-            intel.init_test("xra b")  # TODO Fehler "xra d" wird auch zu sss = 000
+            intel.init_test("xra e")
 
             intel.set_acc(0xAA)
-            intel.registers.set_register8_with_offset(char_to_reg("B"), 0x0F)
+            intel.registers.set_register8_with_offset(char_to_reg("E"), 0x0F)
 
             intel.run_complete_programm(1)
 

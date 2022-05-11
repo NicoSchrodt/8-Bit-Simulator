@@ -14,4 +14,4 @@ class rp_decr(State):
         h_val, l_val = self.processor.get_rp_values(rp)
         hl_val = build_16bit_from_8bit(h_val, l_val)
         hl_val = np.uint16(hl_val - 1)
-        self.processor.registers.set_2_8bit_reg_with_offset(rp, hl_val)
+        self.processor.registers.set_2_8bit_reg_with_offset(rp * 2, hl_val)

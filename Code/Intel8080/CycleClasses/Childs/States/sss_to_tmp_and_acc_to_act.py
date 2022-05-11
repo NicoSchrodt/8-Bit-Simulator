@@ -5,7 +5,7 @@ class sss_to_tmp_and_acc_to_act(byte_at_pc_minus_1_):
     def __init__(self, processor):
         super().__init__(processor)
 
-    def run(self):
+    def write_to(self):
         print("sss_to_tmp_and_acc_to_act")
         sss = self.byte & self.processor.sss_mask
         rp = self.processor.registers.get_register_with_offset(sss)

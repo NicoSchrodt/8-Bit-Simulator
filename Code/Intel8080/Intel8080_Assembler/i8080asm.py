@@ -1337,16 +1337,10 @@ def write_symbol_table(table, filename):
 
 if __name__ == '__main__':
     convert_to_binary("""Loop:
-  ldax b
-  cpi 0
-  jz Done
-  add d
-  mov d, a
-  inr c
-  jmp Loop
-
-Done:
-  hlt
+  mvi b, 20
+  mvi c, 30
+  mov a, b
+  add c
 
 myArray:
-  db 10h, 20h, 30h, 10h, 20h, 0""")
+  db 10h, 20h, 30h, 10h, 20h, 0""", "Output\\program")

@@ -191,6 +191,7 @@ class Intel8080(AbstractProcessor):
     def next_state_internal(self):
         if self.current_instruction_state == 1:
             self.current_instruction = Nop(self)
+            print("-------------------new Instruction-------------------")
 
         if self.current_instruction_state == 4:
             self.decode_instruction()
@@ -213,7 +214,6 @@ class Intel8080(AbstractProcessor):
             self.quittable = False
 
         while not (self.quittable and not self.instruction_counter < max_instructions):
-            print("[Next Instruction]")
             if self.next_instruction():
                 self.instruction_counter += 1
 
@@ -357,7 +357,7 @@ class Intel8080(AbstractProcessor):
         elif self.cpu_instruction_register == 0x37:
             self.current_instruction = Stc(self)
         elif (self.cpu_instruction_register & self.sss_inv_mask) == 0x98:
-            if self.cpu_instruction_register == 0x9D:
+            if self.cpu_instruction_register == 0x9E:
                 self.current_instruction = Sbb_m(self)
             else:
                 self.current_instruction = Sbb_r(self)
@@ -392,7 +392,7 @@ class Intel8080(AbstractProcessor):
         self.current_instruction = instruction
 
     def get_rp(self):
-        return np.uint8(self.cpu_instruction_register & self.rp_mask)
+        return np.uint8((self.cpu_instruction_register & self.rp_mask) >> 4)
 
     def get_nnn(self):
         return self.get_ddd()
