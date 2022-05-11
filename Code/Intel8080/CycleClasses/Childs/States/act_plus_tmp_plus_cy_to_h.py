@@ -1,3 +1,5 @@
+import numpy as np
+
 from Code.Intel8080.CycleClasses.Parents.State import State
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import char_to_reg
 
@@ -13,6 +15,7 @@ class act_plus_tmp_plus_cy_to_h(State):
         cy = self.processor.ALU.get_carry_flag()
 
         ac, cy, result = self.processor.ALU.binary_add(act, tmp, cy)
+        result = np.uint8(result)
         self.processor.ALU.set_carry_flag(cy)
         self.processor.registers.set_register8_with_offset(char_to_reg("H"), result)
         self.processor.StateLogger.addEntry("act_plus_tmp_plus_cy_to_h")

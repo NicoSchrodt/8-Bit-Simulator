@@ -9,6 +9,8 @@ class tmp_incr(State):
 
     def run(self):
         print("tmp_incr")
-        tmp = np.uint8(self.processor.get_tmp() + 1)
-        self.processor.set_tmp(tmp)
+        ac, cy, result = self.processor.ALU.binary_add(self.processor.get_tmp(), 1, 0)
+        self.processor.ALU.evaluate_zsp_flags(True, True, True, result)
+        self.processor.ALU.set_auxiliary_carry_flag(ac)
+        self.processor.set_tmp(result)
         self.processor.StateLogger.addEntry("tmp_incr")
