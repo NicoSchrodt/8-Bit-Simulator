@@ -581,6 +581,20 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_pchl(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("pchl")
+
+            intel.registers.set_register8_with_offset(char_to_reg("H"), 0)  # to
+            intel.registers.set_register8_with_offset(char_to_reg("L"), 10)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0x000A, intel.get_pc())
+        except:
+            self.fail()
+
     def test_pop_rp(self):
         try:
             intel = Intel8080()
@@ -714,6 +728,25 @@ class TestIntel8080(TestCase):
 
             self.assertEqual(0xD5, intel.get_acc())
             self.assertTrue(intel.ALU.get_carry_flag())
+        except:
+            self.fail()
+
+    def test_rst(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("rst 3")
+
+            intel.set_sp(80)
+            intel.registers.set_register8_with_offset(char_to_reg("W"), 0)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(25, intel.get_pc())
+            self.assertEqual(78, intel.get_sp())
+            self.assertEqual(0, intel.program[79])
+            self.assertEqual(1, intel.program[78])
+            self.assertEqual(3 << 3, intel.get_tmp())
+            self.assertEqual(3 << 3, intel.registers.get_register_with_offset(char_to_reg("Z")))
         except:
             self.fail()
 

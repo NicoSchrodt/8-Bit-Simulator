@@ -44,6 +44,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_m import Ora_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ora_r import Ora_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ori import Ori
 from Code.Intel8080.CycleClasses.Childs.Instructions.Out_inst import Out_inst
+from Code.Intel8080.CycleClasses.Childs.Instructions.Pchl import Pchl
 from Code.Intel8080.CycleClasses.Childs.Instructions.Pop_psw import Pop_psw
 from Code.Intel8080.CycleClasses.Childs.Instructions.Pop_rp import Pop_rp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Push_psw import Push_psw
@@ -52,6 +53,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Ral import Ral
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rar import Rar
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rlc import Rlc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Rrc import Rrc
+from Code.Intel8080.CycleClasses.Childs.Instructions.Rst import Rst
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_m import Sbb_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Sbb_r import Sbb_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Shld import Shld
@@ -82,7 +84,7 @@ class Intel8080(AbstractProcessor):
         self.ALU = Intel8080_ALU(self)
         self.peripherals = Intel8080_Peripherals()
 
-        self.program = [0] * pow(2, 16)
+        self.program = [8] * pow(2, 16)
         self.program_length = 0
         self.interrupt_enabled = False
         self.interrupted = False
@@ -303,6 +305,8 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Ori(self)
         elif self.cpu_instruction_register == 0xD3:
             self.current_instruction = Out_inst(self)
+        elif self.cpu_instruction_register == 0xE9:
+            self.current_instruction = Pchl(self)
         elif (self.cpu_instruction_register & self.rp_inv_mask) == 0xC1:
             if self.cpu_instruction_register == 0xF1:
                 self.current_instruction = Pop_psw(self)
@@ -321,6 +325,8 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Rlc(self)
         elif self.cpu_instruction_register == 0x0F:
             self.current_instruction = Rrc(self)
+        elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0xC7:
+            self.current_instruction = Rst(self)
         elif self.cpu_instruction_register == 0x22:
             self.current_instruction = Shld(self)
         elif self.cpu_instruction_register == 0xF9:
@@ -368,6 +374,12 @@ class Intel8080(AbstractProcessor):
 
     def get_rp(self):
         return np.uint8(self.cpu_instruction_register & self.rp_mask)
+
+    def get_nnn(self):
+        return self.get_ddd()
+
+    def get_ccc(self):
+        return self.get_ddd()
 
     def get_sss(self):
         return np.uint8(self.cpu_instruction_register & self.sss_mask)
