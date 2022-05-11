@@ -58,26 +58,6 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
-    def test_sbb_r_carry(self):
-        try:
-            intel = Intel8080()
-            intel.init_test("sbb l")
-
-            intel.set_acc(70)
-            intel.registers.set_register8_with_offset(char_to_reg("L"), 63)
-            intel.ALU.set_carry_flag(True)
-
-            intel.run_complete_programm(1)
-
-            self.assertEqual(6, intel.get_acc())
-            self.assertTrue(intel.ALU.get_carry_flag())
-            self.assertFalse(intel.ALU.get_auxiliary_carry_flag())
-            self.assertFalse(intel.ALU.get_zero_flag())
-            self.assertFalse(intel.ALU.get_sign_flag())
-            self.assertTrue(intel.ALU.get_parity_flag())
-        except:
-            self.fail()
-
     def test_adc_r_overflow_with_carry(self):
         try:
             intel = Intel8080()
@@ -624,6 +604,81 @@ class TestIntel8080(TestCase):
             intel.run_complete_programm(1)
 
             self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("C")))
+        except:
+            self.fail()
+
+    def test_inr_r(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr c")
+
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 5)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(6, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertFalse(intel.ALU.get_carry_flag())
+            self.assertFalse(intel.ALU.get_auxiliary_carry_flag())
+            self.assertFalse(intel.ALU.get_zero_flag())
+            self.assertFalse(intel.ALU.get_sign_flag())
+            self.assertTrue(intel.ALU.get_parity_flag())
+        except:
+            self.fail()
+
+    def test_inr_r_overflow(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr c")
+
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 255)
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertFalse(intel.ALU.get_carry_flag())
+            self.assertTrue(intel.ALU.get_auxiliary_carry_flag())
+            self.assertTrue(intel.ALU.get_zero_flag())
+            self.assertFalse(intel.ALU.get_sign_flag())
+            self.assertTrue(intel.ALU.get_parity_flag())
+        except:
+            self.fail()
+
+    def test_inr_r_carry_unaffected(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr c")
+
+            intel.ALU.set_carry_flag(True)
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 255)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(0, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertTrue(intel.ALU.get_carry_flag())
+            self.assertTrue(intel.ALU.get_auxiliary_carry_flag())
+            self.assertTrue(intel.ALU.get_zero_flag())
+            self.assertFalse(intel.ALU.get_sign_flag())
+            self.assertTrue(intel.ALU.get_parity_flag())
+        except:
+            self.fail()
+
+    def test_inr_r_sign(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("inr c")
+
+            intel.ALU.set_carry_flag(True)
+            intel.registers.set_register8_with_offset(char_to_reg("C"), 254)
+
+            intel.run_complete_programm(1)
+
+            self.assertEqual(255, intel.registers.get_register_with_offset(char_to_reg("C")))
+            self.assertTrue(intel.ALU.get_carry_flag())
+            self.assertFalse(intel.ALU.get_auxiliary_carry_flag())
+            self.assertFalse(intel.ALU.get_zero_flag())
+            self.assertTrue(intel.ALU.get_sign_flag())
+            self.assertFalse(intel.ALU.get_parity_flag())
         except:
             self.fail()
 

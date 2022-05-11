@@ -10,6 +10,7 @@ class tmp_plus_1_to_ddd(State):
     def run(self):
         print("tmp_plus_one_to_ddd")
         ac, cy, result = self.processor.ALU.binary_add(self.processor.get_tmp(), 1, 0)
+        result = np.uint8(result)
         self.processor.ALU.evaluate_zsp_flags(True, True, True, result)
         self.processor.ALU.set_auxiliary_carry_flag(ac)
         self.processor.set_ddd(result)
