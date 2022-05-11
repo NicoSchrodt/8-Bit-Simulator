@@ -117,71 +117,6 @@
       </item>
      </layout>
     </item>
-    <item row="7" column="0">
-     <layout class="QGridLayout" name="MessageLog">
-      <property name="leftMargin">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="MessageLog_plaintext">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="4">
-     <layout class="QGridLayout" name="MemoryDisplaySettings">
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="To_sb">
-        <property name="minimum">
-         <number>16</number>
-        </property>
-        <property name="maximum">
-         <number>65536</number>
-        </property>
-        <property name="singleStep">
-         <number>16</number>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="QPushButton" name="Display_button">
-        <property name="text">
-         <string>Display</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>From:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>To:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="From_sb">
-        <property name="maximum">
-         <number>65408</number>
-        </property>
-        <property name="singleStep">
-         <number>16</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="4">
      <layout class="QGridLayout" name="GenericRegisters">
       <property name="rightMargin">
@@ -245,42 +180,6 @@
           <string/>
          </property>
         </row>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="7" column="1" colspan="4">
-     <layout class="QGridLayout" name="ProgramTable">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QTableWidget" name="Program_table">
-        <attribute name="horizontalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>0</number>
-        </attribute>
-        <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>0</number>
-        </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
         <column>
          <property name="text">
           <string/>
@@ -480,120 +379,126 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="1" colspan="2">
-     <layout class="QGridLayout" name="AddressLatchCycleState">
+    <item row="7" column="1" colspan="4">
+     <layout class="QGridLayout" name="ProgramTable">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
       <item row="0" column="0">
-       <widget class="QTableWidget" name="AddressLatch_table">
+       <widget class="QTableWidget" name="Program_table">
         <attribute name="horizontalHeaderVisible">
-         <bool>true</bool>
+         <bool>false</bool>
         </attribute>
         <attribute name="horizontalHeaderMinimumSectionSize">
          <number>0</number>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>38</number>
+         <number>0</number>
         </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
         </attribute>
-        <attribute name="verticalHeaderCascadingSectionResizes">
-         <bool>true</bool>
-        </attribute>
-        <attribute name="verticalHeaderMinimumSectionSize">
-         <number>10</number>
-        </attribute>
-        <attribute name="verticalHeaderDefaultSectionSize">
-         <number>10</number>
-        </attribute>
-        <row>
+        <column>
          <property name="text">
           <string/>
          </property>
-        </row>
-        <column>
-         <property name="text">
-          <string>A15</string>
-         </property>
         </column>
         <column>
          <property name="text">
-          <string>A14</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A13</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A12</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A11</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A10</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A9</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A8</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A7</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A6</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A5</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A4</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A3</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A2</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A1</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>A0</string>
+          <string/>
          </property>
         </column>
        </widget>
       </item>
-      <item row="1" column="0">
+     </layout>
+    </item>
+    <item row="7" column="0">
+     <layout class="QGridLayout" name="MessageLog">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QPlainTextEdit" name="MessageLog_plaintext">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="4" column="4">
+     <layout class="QGridLayout" name="MemoryDisplaySettings">
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="To_sb">
+        <property name="minimum">
+         <number>128</number>
+        </property>
+        <property name="maximum">
+         <number>65536</number>
+        </property>
+        <property name="singleStep">
+         <number>16</number>
+        </property>
+        <property name="value">
+         <number>128</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QPushButton" name="Display_button">
+        <property name="text">
+         <string>Display</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>From:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>To:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="From_sb">
+        <property name="maximum">
+         <number>65408</number>
+        </property>
+        <property name="singleStep">
+         <number>16</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1" colspan="2">
+     <layout class="QGridLayout" name="AddressLatchCycleState">
+      <item row="3" column="0">
        <widget class="QTableWidget" name="CycleState_table">
+        <property name="minimumSize">
+         <size>
+          <width>315</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>350</width>
+          <height>100</height>
+         </size>
+        </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
@@ -601,7 +506,7 @@
          <bool>false</bool>
         </attribute>
         <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>0</number>
+         <number>25</number>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>55</number>
@@ -653,79 +558,29 @@
           <string>4</string>
          </property>
         </column>
-        <column>
-         <property name="text">
-          <string>5</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>6</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>7</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>8</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>9</string>
-         </property>
-        </column>
         <item row="0" column="0">
          <property name="text">
-          <string>Fetch(M1)</string>
+          <string>M1</string>
          </property>
         </item>
         <item row="0" column="1">
          <property name="text">
-          <string>MemRead</string>
+          <string>M2</string>
          </property>
         </item>
         <item row="0" column="2">
          <property name="text">
-          <string>MemWrite</string>
+          <string>M3</string>
          </property>
         </item>
         <item row="0" column="3">
          <property name="text">
-          <string>StackRead</string>
+          <string>M4</string>
          </property>
         </item>
         <item row="0" column="4">
          <property name="text">
-          <string>StackWrite</string>
-         </property>
-        </item>
-        <item row="0" column="5">
-         <property name="text">
-          <string>Input</string>
-         </property>
-        </item>
-        <item row="0" column="6">
-         <property name="text">
-          <string>Output</string>
-         </property>
-        </item>
-        <item row="0" column="7">
-         <property name="text">
-          <string>Interrupt</string>
-         </property>
-        </item>
-        <item row="0" column="8">
-         <property name="text">
-          <string>Halt</string>
-         </property>
-        </item>
-        <item row="0" column="9">
-         <property name="text">
-          <string>HaltInterrupt</string>
+          <string>M5</string>
          </property>
         </item>
         <item row="1" column="0">
@@ -753,11 +608,20 @@
           <string>T5</string>
          </property>
         </item>
-        <item row="1" column="5">
-         <property name="text">
-          <string>TW</string>
-         </property>
-        </item>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Send Interrupt Byte</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="text">
+         <string>0x00</string>
+        </property>
        </widget>
       </item>
      </layout>
