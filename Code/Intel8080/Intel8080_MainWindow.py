@@ -18,7 +18,7 @@ class runThread(QObject):
     @QtCore.pyqtSlot()
     def monitor(self):
         while not self.ExitFlag:
-            sleep(0.000001)  # Prevents freezing, may need fine-tuning
+            sleep(0.1)  # Prevents freezing, may need fine-tuning
             self.Source.emit()
 
 
@@ -269,14 +269,14 @@ class Intel8080_MainWindow(QMainWindow):
         self.update_ui()
 
     def reset_go(self):
-        if self.processor.program_length != 0:
-            self.autorun = not self.autorun
+        self.autorun = not self.autorun
 
     def reset_intel8080(self):
         self.processor.reset_processor()
         self.update_ui()
 
     def update_ui(self):
+        self.fill_program_table()
         self.color_program_table()
         self.color_cycle_state()
         self.reload_memory_table()
@@ -294,9 +294,9 @@ class Intel8080_MainWindow(QMainWindow):
 
     @QtCore.pyqtSlot()
     def tasker_thread(self):
-        if self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc():
+        if self.autorun:
             print("Performed Instruction, Automatic")
-            self.processor.nextInstruction()
+            self.processor.next_instruction()
             self.update_ui()
 
     def perform_instruction(self):
@@ -315,7 +315,7 @@ class Intel8080_MainWindow(QMainWindow):
             self.update_ui()
 
     def actionCheck(self):
-        return not self.autorun and self.processor.program_length != 0 and self.processor.program_length > self.processor.get_pc()
+        return not self.autorun
 
     def pressed_table_cell(self):
         btn = self.sender()
@@ -323,35 +323,42 @@ class Intel8080_MainWindow(QMainWindow):
         self.dialog.show()
 
     def breakpoint_check(self, row, column):
-        if self.processor.program_length != 0:
-            if column == 0:
-                if (self.Program_table.item(row, column) is None):
-                    self.Program_table.setItem(row, column, QTableWidgetItem("B"))
-                elif self.Program_table.item(row, column).text() != "B":
-                    self.Program_table.setItem(row, column, QTableWidgetItem("B"))
-                else:
-                    self.Program_table.setItem(row, column, QTableWidgetItem(""))
+        if column == 0:
+            if self.Program_table.item(row, column) is None:
+                self.Program_table.setItem(row, column, QTableWidgetItem("B"))
+            elif self.Program_table.item(row, column).text() != "B":
+                self.Program_table.setItem(row, column, QTableWidgetItem("B"))
+            else:
+                self.Program_table.setItem(row, column, QTableWidgetItem(""))
 
     def fill_program_table(self):
         self.instruction_positions = []
         self.Program_table.setRowCount(0)  # Clear Table
         try:
             i = 0
-            while i < self.processor.program_length:
-                self.instruction_positions.append(i)
+            nop_counter = 0
+            while i < pow(2, 16):
+                if nop_counter < 1:
+                    self.instruction_positions.append(i)
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
                     if masked_command in command_dict:
-                        operands = command_dict[masked_command][0]
-                        row = self.Program_table.rowCount()
-                        self.Program_table.insertRow(row)
-                        self.Program_table.setItem(row, 0, QTableWidgetItem(""))
-                        itemtext = command_dict[masked_command][1]
-                        itemtext = itemtext + " " + hex(self.processor.program[i])
-                        for k in range(i, i + operands):
-                            itemtext = itemtext + " " + hex(self.processor.program[k + 1])
-                        self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
-                        break
+                        if masked_command == 0x00:
+                            nop_counter += 1
+                        else:
+                            nop_counter = 0
+                        if not (nop_counter > 1):
+                            operands = command_dict[masked_command][0]
+                            row = self.Program_table.rowCount()
+                            self.Program_table.insertRow(row)
+                            self.Program_table.setItem(row, 0, QTableWidgetItem(""))
+                            itemtext = str(i)
+                            itemtext = itemtext + " " + command_dict[masked_command][1]
+                            itemtext = itemtext + " " + hex(self.processor.program[i])
+                            for k in range(i, i + operands):
+                                itemtext = itemtext + " " + hex(self.processor.program[k + 1])
+                            self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
+                            break
                 i += operands + 1
         except Exception as e:
             print("ERROR: " + str(e))
@@ -370,18 +377,21 @@ class Intel8080_MainWindow(QMainWindow):
 
     def color_program_table(self):
         try:
-            previousItem = self.Program_table.item(self.instruction_positions.index(self.previous_pc), 0)
-            previousItem_txt = self.Program_table.item(self.instruction_positions.index(self.previous_pc), 1)
-            previousItem.setBackground(QColor(255, 255, 255))
-            previousItem_txt.setBackground(QColor(255, 255, 255))
-            currentItem = self.Program_table.item(self.instruction_positions.index(self.processor.get_pc()), 0)
-            currentItem_txt = self.Program_table.item(self.instruction_positions.index(self.processor.get_pc()), 1)
-            currentItem.setBackground(QColor(152, 245, 255))
-            currentItem_txt.setBackground(QColor(152, 245, 255))
-
-            self.previous_pc = self.processor.get_pc()
+            index = -1
+            current_pc = self.processor.get_pc()
+            while index == -1:
+                if current_pc in self.instruction_positions:
+                    index = self.instruction_positions.index(current_pc)
+                else:
+                    current_pc -= 1
+            if index != 0:
+                self.Program_table.item(self.instruction_positions.index(index) - 1, 0).setBackground(QColor(255, 255, 255))
+                self.Program_table.item(self.instruction_positions.index(index) - 1, 1).setBackground(QColor(255, 255, 255))
+            self.Program_table.item(self.instruction_positions.index(index), 0).setBackground(QColor(152, 245, 255))
+            self.Program_table.item(self.instruction_positions.index(index), 1).setBackground(QColor(152, 245, 255))
         except Exception as e:
             print("Exception" + str(e))
+        return
 
     def reload_registers_table(self):  # This functions makes the ui match the registers
         Processor = self.processor
@@ -444,7 +454,6 @@ class Intel8080_MainWindow(QMainWindow):
         self.processor.set_buffer(value)
 
     def reload_memory_table(self):  # make ui match the program memory
-        # TODO: Make use of UI that lets you set a range
         Startvalue = self.From_sb.value()
         for i in range(8):
             for j in range(16):
@@ -457,10 +466,10 @@ class Intel8080_MainWindow(QMainWindow):
         self.ProgramMemory_table.setVerticalHeaderLabels(values)
 
     def update_memory_table(self):  # make program memory match the ui
-        # TODO: Make use of UI that lets you set a range
+        Startvalue = self.From_sb.value()
         for i in range(8):
             for j in range(16):
-                address = i * 8 + j  # one rows = 8 bits, one column 1 bit
+                address = Startvalue + i * 16 + j  # one row = 16 bits, one column 1 bit
                 value = int(self.ProgramMemory_table.cellWidget(i, j).text(), 16)
                 self.processor.set_memory_byte(address, value)
         # TODO: Make sure to fix programTable as well after changing the program memory
