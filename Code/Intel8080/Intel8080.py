@@ -12,6 +12,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Adi import Adi
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ana_m import Ana_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ana_r import Ana_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Ani import Ani
+from Code.Intel8080.CycleClasses.Childs.Instructions.Call import Call
+from Code.Intel8080.CycleClasses.Childs.Instructions.Call_cond import Call_cond
 from Code.Intel8080.CycleClasses.Childs.Instructions.Cma import Cma
 from Code.Intel8080.CycleClasses.Childs.Instructions.Cmc import Cmc
 from Code.Intel8080.CycleClasses.Childs.Instructions.Cmp_m import Cmp_m
@@ -108,6 +110,7 @@ class Intel8080(AbstractProcessor):
         self.ddd_inv_mask = self.ddd_mask ^ 0xff
 
         self.skip_rest_of_instruction = False
+        self.c_cond_skip = False
 
         # rp: b -> b,c
         #     d -> d,e
@@ -234,6 +237,10 @@ class Intel8080(AbstractProcessor):
                 self.current_instruction = Ana_r(self)
         elif self.cpu_instruction_register == 0xE6:
             self.current_instruction = Ani(self)
+        elif self.cpu_instruction_register == 0xCD:
+            self.current_instruction = Call(self)
+        elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0xC4:
+            self.current_instruction = Call_cond(self)
         elif self.cpu_instruction_register == 0x2F:
             self.current_instruction = Cma(self)
         elif self.cpu_instruction_register == 0x3F:

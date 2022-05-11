@@ -140,6 +140,89 @@ class TestIntel8080(TestCase):
         except:
             self.fail()
 
+    def test_call(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Di
+                                    Loop:
+                                        call 11ddh""")
+
+            intel.set_sp(80)
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(0x11dd, intel.get_pc())
+            self.assertEqual(0, intel.program[79])
+            self.assertEqual(5, intel.program[78])
+        except:
+            self.fail()
+
+    def test_call_cond_skip(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Di
+                                    Loop:
+                                        cc 11ddh""")
+
+            intel.set_sp(80)
+            intel.ALU.set_carry_flag(False)
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(5, intel.get_pc())
+            self.assertEqual(0, intel.program[79])
+            self.assertEqual(0, intel.program[78])
+        except:
+            self.fail()
+
+    def test_cc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Di
+                                    Loop:
+                                        cc 11ddh""")
+
+            intel.ALU.set_carry_flag(True)
+            intel.set_sp(80)
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(0x11dd, intel.get_pc())
+            self.assertEqual(0, intel.program[79])
+            self.assertEqual(5, intel.program[78])
+        except:
+            self.fail()
+
+    def test_cnc(self):
+        try:
+            intel = Intel8080()
+            intel.init_test("""
+                                    Start:
+                                        Nop
+                                        Di
+                                    Loop:
+                                        cnc 11ddh""")
+
+            intel.ALU.set_carry_flag(False)
+            intel.set_sp(80)
+
+            intel.run_complete_programm(3)
+
+            self.assertEqual(0x11dd, intel.get_pc())
+            self.assertEqual(0, intel.program[79])
+            self.assertEqual(5, intel.program[78])
+        except:
+            self.fail()
+
     def test_cma(self):
         try:
             intel = Intel8080()
