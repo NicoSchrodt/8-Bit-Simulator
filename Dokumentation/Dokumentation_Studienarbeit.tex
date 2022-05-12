@@ -644,7 +644,7 @@ Die gezeigten Einträge stehen für:
 \end{itemize}
 
 \noindent
-Über die Knöpfe daneben in denen auch die Werte stehen lässt sich über klicken dieser ein Fenster öffnen, welches erlaubt den Wert zu ändern.
+Über die Knöpfe daneben in denen die entsprechenden Werte stehen lässt sich über klicken dieser ein Fenster öffnen, welches erlaubt den Wert zu ändern.
 Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.
 
 \begin{figure}[h]
@@ -666,10 +666,30 @@ Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Regis
 \end{figure}
 
 \noindent
-Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. 
+Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. Über die in Abbildung \ref{fig:Interrupt} dargestellte Funktion ist es möglich ein Interrupt mit einem gültigen Interrupt-Bytevektor auszulösen.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{bilder/Interrupt}
+\caption{Interrupt Byte senden}
+\label{fig:Interrupt}
+\end{figure}
 
-Das letzte Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.
+\noindent
+Dabei wird geprüft ob die Operation gültig ist, wenn nicht wird eine Fehlermeldung ausgegeben. Ist sie gültig wird sie beim nächstmöglichen Zustand berücksichtigt und ausgeführt.
+\newpage
+\noindent
+Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet werden die in jedem State vorgenommen werden (siehe Abbildung \ref{fig:Logger}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{bilder/Logger}
+\caption{State Log für aufeinanderfolgende NOP-Befehle}
+\label{fig:Logger}
+\end{figure}
+
+\noindent
+Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.
 
 \begin{figure}[h]
 \centering
@@ -679,7 +699,7 @@ Das letzte Register, welches dem Nutzer angezeigt wird und welches bearbeitet we
 \end{figure}
 
 \noindent
-Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten über das Bussystem zuständig ist. Die Darstellung wurde hier bitweise gewählt, das heißt, statt die ganzen 2 Byte des Registers zu bearbeiten, steuert man die Bits einzeln an. Generell ist noch zu sagen, dass als Bedingung für das Bearbeiten der Werte innerhalb der generischen oder besonderen Register gilt, dass ein Programm geladen ist sowie der Simulator gerade nicht im automatischen Betrieb für dieses ist.
+Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten über das Bussystem zuständig ist. Die Darstellung wurde hier bitweise gewählt, das heißt, statt die ganzen 2 Byte des Registers zu bearbeiten, steuert man die Bits einzeln an.
 
 \subsection{Tutorial}
 
