@@ -488,9 +488,6 @@ class Intel8080(AbstractProcessor):
     def instruction_is_completed(self):
         return True # TODO
 
-    def prepare_interrupt_subroutine(self):
-
-        return
 
     # Any device may supply an RST instruction (and indeed may supply anyone-byte 8080 instruction).
     # 9800301D_8080_8085_Assembly_Language_Programming_Manual_May81.pdf
