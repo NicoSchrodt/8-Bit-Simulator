@@ -552,7 +552,7 @@ Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jewei
 \end{itemize}
 
 \subsubsection{Intel8080 Simulationsfenster}
-In Abbildung \ref{fig:I8080MW} ist eine Version des Simulationsfensters für den Intel8080 zu sehen.
+In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.
 
 \begin{figure}[h]
 \centering
@@ -562,7 +562,7 @@ In Abbildung \ref{fig:I8080MW} ist eine Version des Simulationsfensters für den
 \end{figure}
 
 \noindent
-Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).
+Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).
 
 \begin{figure}[h]
 \centering
@@ -582,7 +582,7 @@ Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgew
 \end{figure}
 
 \noindent
-Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits der Bytecode als auch die Bezeichnung des Befehls sowie zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).
+Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die Position des Bytebefehls im Speicher, die Bezeichnung des Befehls, der Bytecode selbst als auch zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).
 
 \begin{figure}[h]
 \centering
@@ -592,7 +592,7 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits der
 \end{figure}
 
 \noindent
-Diese sind relevant wenn das Programm automatisch ausgeführt wird (sehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Um das Programm auszuführen werden drei Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\newpage
+Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Um das Programm auszuführen werden drei Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\newpage
 
 \begin{figure}[h]
 \centering
