@@ -272,17 +272,24 @@ Bei dem Multi-Prozessor-Simulator war geplant, dass nur die Befehle direkt ausf�
 Der Single-Prozessor-Simulator sollte etwas genauer darstellen wie ein Prozessor arbeitet. Dafür wurde der Intel 8080 als Prozessor ausgewählt. Ein Intel 8080 Befehl besteht aus mindestens einem und maximal fünf bzw. in diesem Simulator sechs Maschinen Zyklen. Jeder dieser Maschinen Zyklen besteht wiederum aus mindestens drei und maximal fünf Zuständen. Mit dieser Implementierung kann jeder einzelne Zustand nachvollzogen werden. Dadurch werden auch die W- und Z-Register verwendet, auf die der Anwender normalerweise keinen Zugriff hat und deshalb beim Multi-Prozessor-Simulator nicht beachtet wurden.
 
 
-\section{Multi-Prozessor-Simulator}
+\subsection{Multi-Prozessor-Simulator}
 
-\section{Single-Prozessor-Simulator}
-
-\section{Projektplanung alt}
-
-\subsection{Auswahl geeigneter Varianten}
+\subsubsection{Auswahl geeigneter Varianten}
 Vor der Implementierung des Simulators müssen einer oder mehrere geeignete Prozessoren ausgewählt werden. In den nachfolgenden Kapiteln werden einige potenzielle Kandidaten näher analysiert und beschrieben.
 
-\subsection{Intel 8080}
-Der Intel8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Aufgrund der überschaubaren Komplexität besteht auch die Möglichkeit diesen in einem größeren Unmfang zu simulieren.
+\subsubsection{Beispielprozessor 2}
+Fällt vermutlich weg
+
+\subsubsection{Beispielprozessor 3 ...}
+s.o.\\
+Kommentar: Ein weiterer Prozessor sollte zumindest in Ansätzen analysiert werden.
+
+
+
+
+\subsection{Single-Prozessor-Simulator}
+
+Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Aufgrund der überschaubaren Komplexität besteht auch die Möglichkeit diesen in einem größeren Unmfang zu simulieren.
 
 \subsubsection{Register}
 \label{RegisterSection}
@@ -459,13 +466,6 @@ In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während
 \end{figure}
 
 
-\subsection{Beispielprozessor 2}
-Fällt vermutlich weg
-
-\subsection{Beispielprozessor 3 ...}
-s.o.\\
-Kommentar: Ein weiterer Prozessor sollte zumindest in Ansätzen analysiert werden.
-
 \newpage
 
 \section{Umsetzung}
@@ -624,6 +624,8 @@ Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten 
 \newpage
 
 \section{Implementierung}
+
+\subsection{Multi-Prozessor-Simulator}
 Mit diesem Simulator soll es möglich sein Assembler Code in ein Textfeld einzugeben und diesen dann ausführen zu können. Damit dies möglich ist muss der Assembler Code erst erstellt werden. Dies wird mit einem einfachen Assembler aus dem Internet gemacht. Dieser erstellt aus dem Source Code (.asm) eine .com-Datei, woraus die Befehle byteweise ausgelesen werden können. Manche Befehle verwenden aber auch mehr als ein Byte. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Lables/Sprungmarken abspeichert.
 \noindent
 Unser eigentlicher Simulator verwendet nur die .com-Dateien. Aus dieser Datei wird als aller erstes nur ein Byte gelesen. Mithilfe des ersten Bytes wird analysiert, um welchen Befehl es sich handelt. Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen Befehl gebraucht werden. Somit werden nie zu wenig oder zu viele Bytes gelesen. Aus der Datei werden immer anhand des Programmzählers die nächsten Bytes ausgelesen. In unserem Programm wurde das so implementiert, dass direkt beim lesen eines Bytes der Programmzähler um eins erhöht wird. Damit muss aber darauf geachtet werden, dass Bytes nicht mehrfach gelesen werden sollen, da zum einen zwei unterschiedliche Werte gelesen werden und zum anderen der Programmzähler um ein weiteres Mal erhöht wird und somit ein Byte überspringt.
@@ -648,7 +650,7 @@ Nachdem erkannt wurde um welchen Befehl es sich handelt werden, werden zwei Arte
 Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implementiert. Die anderen entsprechend in der ALU. 
 
 
-\subsection{Erkennen eines Befehls aus einem Byte}
+\subsubsection{Erkennen eines Befehls aus einem Byte}
 Nachdem der Assembler Code in das Textfeld eingegeben wurde und 
 [TODO] auf \glqq Play\grqq gedrückt wurde, 
 wird der Assembler Code erstellt. Um damit später besser arbeiten zu können, werden diese Werte direkt in einem Array für den Prozessor gespeichert. In jeder Zelle steht dann genau ein Byte.
@@ -673,7 +675,7 @@ Bei einigen anderen Befehlen wird diese Mechanik genauso verwendet. Es gibt aber
 
 
 
-\subsection{Mehrfach verwendete Methoden}
+\subsubsection{Mehrfach verwendete Methoden}
 
 Der Intel 8080 kennt mehrere Befehle, die sowohl eine direkte als auch eine indirekte Variante. Der Unterschied bei diesen Varianten sind nur, dass die Werte, mit denen gerechnet wird, von unterschiedliche Stellen geladen werden. Aus diesem Grund greifen beide Befehle im Hintergrund auf die gleichen Methoden zu. Somit ist sicher gestellt, dass falls nochmal etwas an der Implementierung geändert werden soll, das nur an einer Stelle gemach werden muss.
 
@@ -701,12 +703,14 @@ Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelese
 \label{fig:JumpVariants}
 \end{figure}
 
-\subsection{GUI-Methoden}
+\subsubsection{GUI-Methoden}
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
 
-\subsection{Interrupts}
+\subsubsection{Interrupts}
 Interrupts werden erst ausgeführt, wenn der momentane Befehl abgearbeitet wurde. Normalerweise wird ein RESET-Befehl mit einem Interrupt mitgeschickt. Mit 3 Bits kann damit entschieden werden wo die Subroutine beginnen soll. Byte 0, 8, 16 ... 56. Es kann aber auch einfach nur ein 1-Byte Befehl ausgeführt werden.
+
+\subsection{Single-Prozessor-Simulator}
 
 \newpage
 
