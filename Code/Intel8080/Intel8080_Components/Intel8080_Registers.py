@@ -6,7 +6,7 @@ reg_offset = 2
 class Intel8080_Registers():
     def __init__(self):
         self.registers = [np.uint16(0),  # Program Counter
-                          np.uint16(100),  # Stack Pointer 100d  TODO muss noch festgelegt werden
+                          np.uint16(100),  # Stack Pointer 100d
                           np.uint8(0),  # B-REG 000
                           np.uint8(0),  # C-REG 001
                           np.uint8(0),  # D-REG 010

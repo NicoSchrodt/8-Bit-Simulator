@@ -199,7 +199,8 @@ class Intel8080(AbstractProcessor):
 
         if self.current_instruction.next_state():
             self.current_instruction_state += 1
-            if self.current_machine_cycle == len(self.current_instruction.get_machine_cycles()) or self.skip_rest_of_instruction:
+            if self.current_machine_cycle == len(
+                    self.current_instruction.get_machine_cycles()) or self.skip_rest_of_instruction:
                 self.skip_rest_of_instruction = False
                 self.current_instruction_state = 1
                 self.current_machine_cycle = 1
@@ -458,7 +459,6 @@ class Intel8080(AbstractProcessor):
     #             self.machine_cycle.t5(self)
     #         #unterer Teil fehlt
 
-
     def nextCycle(self):
         self.registers.increment_pc()
         # Concrete Implementation of nextCycle
@@ -486,8 +486,7 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextInstruction
 
     def instruction_is_completed(self):
-        return True # TODO
-
+        return True  # TODO
 
     # Any device may supply an RST instruction (and indeed may supply anyone-byte 8080 instruction).
     # 9800301D_8080_8085_Assembly_Language_Programming_Manual_May81.pdf
@@ -880,7 +879,6 @@ class Intel8080(AbstractProcessor):
         else:
             result = self.ALU.get_reg8_val(reg8)
         self.ALU.adc(result)
-
 
     def add(self, reg8):
         if self.reg_is_mem(reg8):
@@ -1325,13 +1323,6 @@ class Intel8080(AbstractProcessor):
         self.push(val_h, val_l)
         self.registers.set_register8_with_offset(char_to_reg("h"), stack_h)
         self.registers.set_register8_with_offset(char_to_reg("l"), stack_l)
-
-    # Invalid Operations (For the purpose of the simulation)
-    def set_acc(self, value):
-        self.registers.set_register8(9, value)
-
-    def get_acc(self):
-        return self.registers.get_register(9)
 
     def set_act(self, value):
         self.ALU.set_act(value)

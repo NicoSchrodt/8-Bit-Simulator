@@ -8,5 +8,5 @@ class Inr_m_M3(MachineCycle):
     def __init__(self, processor):
         super().__init__(processor)
         self.states.append(hl_out_status(processor))
-        self.states.append(EmptyState(processor))  # TODO zwei states Pfeil werden mit empty state aufgefüllt
+        self.states.append(EmptyState(processor))  # zwei states Pfeil werden mit empty state aufgefüllt
         self.states.append(tmp_to_data(processor))

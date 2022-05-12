@@ -214,7 +214,6 @@ class Intel8080_ALU():
         reg_a_val = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
         result = reg_a_val - val
 
-        # TODO schauen da anscheinend alle Flags geändert werden und nicht nur zero und carry
         self.set_zero_flag(result == 0)
         self.set_carry_flag(result < 0)
 

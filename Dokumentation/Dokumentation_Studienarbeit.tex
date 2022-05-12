@@ -21,6 +21,7 @@
 \usepackage{color, colortbl}
 %\usepackage{pdfpages}
 \usepackage{amssymb}
+\usepackage{float}
 
 \geometry{a4paper, top=25mm, left=35mm, right=25mm, bottom=25mm, headsep=13mm, footskip=12mm, head=14.5pt}
 
@@ -303,6 +304,16 @@ Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewäh
 Der Intel 8080 besitzt ein SRAM Array mit 16-bit Register. Darin enthalten sind der Programm Counter mit 16-bit und der Stack Pointer mit 16-bit. Dazu gibt es noch acht weitere 8-bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-bit Register als ein 16-bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. Bei manchen Befehlen wird der Stackpointer als 16-Bit Register verwendet.
 Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. \textbf{Über das Adress-Latch oder den Incrementer/Decrementer-Circuit ist es möglich 16-Bit aus den Registern weiterzuleiten. Von dort aus können die Werte dann in den Adress-Puffer geschrieben werden.} [Intel 8080 S16 (2-2)]
 
+\textbf{TODO} Register zuweisung b = 000 etc. einfügen
+
+
+
+\begin{figure}[h]
+\caption{Kodierung der Register}
+\centering
+\includegraphics[width=10cm]{Bilder/register_kodierung}
+\label{fig:register_kodierung}
+\end{figure}
 
 \subsubsection{Befehle}
 
@@ -660,15 +671,14 @@ Mit diesem Simulator soll es möglich sein Assembler Code in ein Textfeld einzug
 
 \subsubsection{Programmablauf}
 Der eigentliche Simulator verwendet nur die .com-Dateien. Als aller erstes wird die .com-Datei ausgelesen und in den Programmspeicher des Prozessors geschrieben. Um den ersten Befehl ausführen zu können wird zuerst nur ein Byte aus dem Programmspeicher, an der Stelle des Programmzählers, eingelesen. Danach wird das erste Byte dekodiert. 
-Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen Befehl benötigt werden. Sobald alle nötigen Informationen eingelesen wurden, wird der Befehl ausgeführt. Jeder Befehl muss entsprechend den Programmzähler anpassen, damit der nächste Befehl wieder korrekt eingelesen werden kann. Mit diesem Simulator ist es auch möglich Interrupts auszulösen. Vor jedem Befehl wird geschaut, ob ein Interrupt ausgelöst wurde. Falls das der Fall ist, wird das Interrupt-Byte ausgewertet und ausgeführt. Meistens ist dies ein Reset-Befehl, der an eine von acht Stellen springt und die dort liegenden Befehle ausführt. Es ist aber auch möglich, dass ein anderer ein Byte Befehl übergeben und direkt ausgeführt wird. Während des Interrupts werden weitere Interrupts ignoriert außer in der Interrupt Service Routine werden Interrupts explizit wieder aktiviert.
-
+Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen Befehl benötigt werden. Sobald alle nötigen Informationen eingelesen wurden, wird der Befehl ausgeführt. Jeder Befehl muss entsprechend den Programmzähler anpassen, damit der nächste Befehl wieder korrekt eingelesen werden kann. Mit diesem Simulator ist es auch möglich Interrupts auszulösen. Vor jedem Befehl wird geschaut, ob ein Interrupt ausgelöst wurde. Falls das der Fall ist, wird das Interrupt-Byte ausgewertet und ausgeführt. Normalerweise wird dieses Byte von dem Interrupt Erzeuger mitgeschickt. Meistens ist dies ein Reset-Befehl, der an eine von acht Stellen springt und die dort liegenden Befehle ausführt. Mit 3 Bits kann damit entschieden werden wo die Subroutine beginnen soll. Byte 0, 8, 16 ... 56. Es ist aber auch möglich, dass ein anderer, ein Byte Befehl übergeben, und direkt ausgeführt wird. Während des Interrupts werden weitere Interrupts ignoriert außer in der Interrupt Service Routine werden Interrupts explizit wieder aktiviert.
 
 
 \subsubsection{Dekodieren eines Befehls}
 \noindent
 Um aus einem Byte ein Befehl analysieren zu können, wird dieser Wert mehrfach mit vielen Hexadezimalen Werten verglichen. Anhand der Dokumentation des Intel 8080 werden somit alle Befehle unterschieden. 
 \textbf{[TODO]} Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq mit dem Wert 0xCE assoziiert.  
-Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. 
+Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.
 \imgSpaceBefore
 
 \begin{figure}[h]
@@ -682,7 +692,7 @@ Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auc
 Dieses Vorgehen wird bei einigen Befehlen verwendet. In Kapitel \ref{chapter:opcode} wird genauer gezeigt, wie die Register in den Befehlen codiert werden.
 
 
-\subsubsection{Programmaufbau TODO}
+\subsubsection{Programmaufbau}
 
 Der Simulator besteht hauptsächlich aus drei Klassen:
 
@@ -705,15 +715,37 @@ Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Metho
 \end{figure}
 
 \noindent
+Der Befehl DCX reduziert das angegebene 16-Bit Register um 1. 
+Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX Befehls. 
+Dort ist zu sehen, dass es bei den 16-Bit Registern ein grundlegende Unterscheidung gibt. Es gibt einen Fall für den Stackpointer und einen für die anderen 16-Bit Register, die aus zwei 8-Bit Registern zusammengesetzt werden. Mittels des Übergebenen Parameter rp kann ermittelt werden ob es sich um den Stackpointer (rp  == 3 bedeutet Stackpointer) handelt, der angepasst werden soll. 
+Der Stackpointer kann einfach einmal ausgelesen, um 1 reduziert und dann wieder in sein Register gespeichert werden.
+Bei den zusammengesetzten 16-Bit Registern, werden zuerst beide 8-Bit Register ausgelesen und dann zusammengebaut. Dieses Ergebnis kann dann um 1 reduziert werden. Danach wird der 16-Bit Wert wieder aufgetrennt und in die 8-Bit Register gespeichert. 
+
+\begin{figure}[H]
+\caption{Implementierung des DCX-Befehls}
+\centering
+\includegraphics[width=15cm]{Bilder/dcx_impl}
+\label{fig:dcx_impl}
+\end{figure}
+
+\noindent
+Die zusammengesetzten Register können alle gleich behandelt werden, da bei dem Programmkonzept daran gedacht wurde, dass dies öfter vorkommen kann. Deshalb wurden die Register so positioniert, dass auf die Register anhand ihrer Kodierung (siehe. \ref{fig:register_kodierung}) direkt zugegriffen werden kann. Ebenso liegt damit das High Byte eines 16-Bit Registers einen Platz vor dem Low Byte. Mit dieser Anordnung kann mittels einfacher mathematischer Berechnungen die entsprechenden Array-Stelle ermittelt werden. So kann aus einem rp-Wert (0-2) das entsprechende Array-Feld (High Byte) mittels einer Multiplikation mit 2 und der Addition eines Offsets berechnet werden. Um auf das Low Byte zu kommen, muss dann nur noch 1 addiert werden.
+
+\begin{figure}[H]
+\caption{Register Array des Intel8080}
+\centering
+\includegraphics[width=15cm]{Bilder/register_array}
+\label{fig:reg_array}
+\end{figure}
 
 
-
+\noindent
 
 
 \subsubsection{Befehlsvarianten}
 
-Der Intel 8080 kennt mehrere Befehle, die sowohl eine direkte als auch eine indirekte Variante besitzen. Der Unterschied ist nur, dass die Werte, mit denen gerechnet wird, von unterschiedliche Stellen geladen werden. Aus diesem Grund greifen beide Befehle im Hintergrund auf die gleichen Methoden zu. Somit ist sicher gestellt, dass falls nochmal etwas an der Implementierung geändert werden soll, das nur an einer Stelle gemacht werden muss.
-
+Der Intel 8080 kennt mehrere Befehle, die sowohl eine direkte als auch eine indirekte Variante besitzen. Der Unterschied ist nur, dass die Werte, mit denen gerechnet wird, von unterschiedliche Stellen geladen werden. Aus diesem Grund greifen beide Befehle im Hintergrund auf die gleichen Methoden zu. Somit ist sicher gestellt, dass falls etwas an der Implementierung geändert werden soll, das nur an einer Stelle gemacht werden muss.
+\\
 Ein Beispiel dafür ist die \glqq Subtract register/immediate from A with borrow (SBB/SBI)\grqq. Es gibt für beide Mnemonics eine Methode in der Intel8080-Klasse aber die Methode von SBB leitet später in der ALU-Klasse nur noch auf die SBI-Methode weiter.
 \imgSpaceBefore
 
@@ -725,25 +757,35 @@ Ein Beispiel dafür ist die \glqq Subtract register/immediate from A with borrow
 \end{figure}
 
 \noindent
-Zu Beginn der Analyse der Befehle, wird für SBI direkt das nächste Byte gelesen und damit die Methode SBI in der ALU-Klasse aufgerufen. Für SBB wird zuerst in der Intel8080-Klasse noch der Wert aus dem Speicher gelesen, da dies von der ALU nicht möglich ist. Mit dem gelesenem Wert wird dann in der ALU-Klasse die SBB-Methode aufgerufen. Diese leitet innerhalb der Klasse nur noch auf die SBI Methode weiter.
-\\
-\noindent
-Ähnliches wird auch bei bei den Sprungbefehlen gemacht. Dort gibt es mehrere Varianten, die aber nur auf unterschiedliche Flags reagieren. Deshalb wurde auch dort eine zugrundeliegende Methode geschrieben, auf die alle anderen verweisen. So wird nur für die spezifische Varianten, das verwendete Flag weitergegeben.  Abbildung \ref{fig:JumpVariants} zeigt wie bei den Jump on Carry Befehl vorgegangen wird. So ruft die jc-Methode, die jump\-on-Methode mit dem Carry-Flag auf. In der jump\_on-Methode werden immer die nächsten zwei Bytes gelesen, die auf die Programmstelle weisen, auf die gesprungen werden soll. Nur sofern das übergebene Flag gesetzt ist wird der Sprung ausgeführt. Wenn nicht wird das Programm normal weitergeführt.
+Die direkten Befehle lesen das zweite Byte, das zu diesem Befehl gehört und rufen die
+Methode SBI in der ALU-Klasse auf. Für indirekte Befehle wie SBB wird zuerst in der Intel8080-Klasse noch der Wert aus dem Speicher gelesen. Dies wird deshalb gemacht, da die ALU eigentlich keinen direkten Zugriff auf den Speicher hat. Mit dem gelesenem Wert wird dann in der ALU-Klasse die SBB-Methode aufgerufen. Diese leitet innerhalb der Klasse nur noch auf die SBI Methode weiter.
+\\\\
+Ähnliches wird auch bei bei den Sprungbefehlen gemacht. Dort gibt es mehrere Varianten, die aber nur auf unterschiedliche Flags reagieren. Deshalb wurde auch dort eine zugrundeliegende Methode geschrieben, auf die alle anderen verweisen. So wird nur für die spezifische Varianten, das verwendete Flag weitergegeben.  Abbildung \ref{fig:JumpVariants} zeigt wie bei dem Jump on Carry Befehl vorgegangen wird. So ruft die jc-Methode, die jump\-on-Methode mit dem Carry-Flag auf. In der jump\_on-Methode werden immer die nächsten zwei Bytes gelesen, die die Adresse beinhaltet, auf die gesprungen werden soll. Nur sofern das übergebene Flag gesetzt ist wird der Sprung ausgeführt. Wenn nicht wird das Programm normal weitergeführt.
 \imgSpaceBefore
 
-\begin{figure}[h]
+
+\begin{figure}[H]
 \caption{Implementierung der Sprungbefehle}
 \centering
-\includegraphics[width=15cm]{Bilder/JumpVariants}
+\includegraphics[width=10cm]{Bilder/JumpVariants}
 \label{fig:JumpVariants}
 \end{figure}
+
+
+\subsubsection{Binäre Addition uns Subtraktion}
+Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag verändern, musste eine manuelle Addition implementiert werden. Das Carry-Flag, das anzeigt, ob ein Überlauf beim siebten Bit stattgefunden hat, hätte noch ohne eine eigene Implementierung der Addition funktioniert. Dafür müsste nur vor dem Casten in einen 8-Bit Wert überprüft werden, ob der Wert größer als 255 ist. Da aber zusätzlich noch das Auxiliary-Carry-Flag beachtet werden musste, dass einen Überlauf von Bit 3 anzeigt, wurde die Addition selber implementiert. Diese Implementierung liefert das Carry-, Auxiliary-Carry-Flag und das Ergebnis der Addition. Somit können die Flags korrekt gesetzt werden sofern die Befehle diese Flags ändern. Sofern eines der beiden Flags verändert wird, wird darauf zurückgegriffen. Der INX-Befehl, der einen 16-Bit Wert um 1 erhöht, verändert aber keine Flags, weshalb dort eine normale Addition durchgeführt wird.
+
+\begin{figure}[H]
+\caption{Implementierung der binären Addition}
+\centering
+\includegraphics[width=10cm]{Bilder/binaere_addition}
+\label{fig:binaere_addition}
+\end{figure}
+
 
 \subsubsection{GUI-Methoden}
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
-
-\subsubsection{Interrupts}
-Interrupts werden erst ausgeführt, wenn der momentane Befehl abgearbeitet wurde. Normalerweise wird ein RESET-Befehl mit einem Interrupt mitgeschickt. Mit 3 Bits kann damit entschieden werden wo die Subroutine beginnen soll. Byte 0, 8, 16 ... 56. Es kann aber auch einfach nur ein 1-Byte Befehl ausgeführt werden.
 
 \subsection{Single-Prozessor-Simulator}
 
