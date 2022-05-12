@@ -7,3 +7,14 @@ class StateLogger:
 
     def addEntry(self, string):
         self.Widget.appendPlainText(string)
+
+
+class DummyLogger:
+    def __init__(self):
+        pass
+
+    def clearLog(self):
+        pass
+
+    def addEntry(self, string):
+        pass
