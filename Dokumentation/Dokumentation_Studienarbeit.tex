@@ -662,6 +662,10 @@ Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten 
 \newpage
 
 \section{Implementierung}
+Von Andreas
+\\
+\noindent
+In diesem Kapitel wird gezeigt, was programmiert wurde, bis sich entschlossen wurde nur einen Prozessor zu simulieren. Obwohl dieser Simulator eigentlich mehrere Prozessoren simulieren können sollte, konnte dieser nie mehr als den Intel 8080 simulieren. Bei der Vorbereitung einen neuen Prozessor zu simulieren, ist aufgefallen, dass die Prozessoren sich nur minimal Unterscheiden werden. Mit dieser Erkenntnis wurde dann der bisherige Simulator so umgebaut, dass ein Prozessor detaillierter simuliert wird. Dessen Implementierung wurde in Kapitel \ref{SPS_impl} beschrieben.
 
 
 \subsection{Multi-Prozessor-Simulator}
@@ -788,6 +792,33 @@ Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss
 
 
 \subsection{Single-Prozessor-Simulator}
+\label{SPS_impl}
+Von Andreas
+\\
+
+In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinen Zyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinen Zyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors. 
+
+\subsubsection{Aufbau eines Befehls}
+
+Jeder Befehl besteht aus einem Array von Maschinen Zyklen. Zusätzlich enthält jeder Befehl auch einen Zähler, wie viele Maschinen Zyklen, der Befehl schon ausgeführt hat. Ein Befehl hat auch nur eine wichtige Methode. Die next\_state()-Methode sorgt dafür, dass der aktuelle Maschinen Zyklus seine next\_state()-Methode ausführt. Wenn die Maschinen Zyklus next\_state()-Methode True zurückliefert, bedeutet das, dass der letzte Zustand des Maschinen Zyklus ausgeführt wurde. Wenn dies der Fall ist, wird der Maschinen Zyklus Zähler um eins erhöht und es wird ebenfalls ein True zurückgeliefert. Dieses Signal des Maschinen Zyklus wird bis in die äußerste Schicht weitergeleitet, damit dort spezielle Ereignisse ausgeführt werden können z.B. die GUI aktualisieren. Beim nächsten Aufruf von next\_state() wird somit der erste Zustand des nächsten Maschinen Zyklus ausgeführt.
+\\
+
+\noindent
+Jeder Maschinen Zyklus besteht aus einem Array von Zuständen, einem Zähler, der die bisher ausgeführten Zustände zählt und eine Referenz auf den Prozessor. Diese Referenz ist notwendig, damit die Zustände, die in den Maschinen Zyklen ausgeführt werden, den Prozessor verändern und dessen Methoden verwenden können. Die next\_state()-Methode führt immer die run()-Methode der Zustände aus und erhöht seinen Zähler um eins. Wenn der eben ausgeführte Zustand der letzte im Maschinen Zyklus war, wird der Zähler zurückgesetzt und ein True zurückgegeben.
+\\
+
+\noindent
+Ein Zustand besitzt nur eine Referenz zum Prozessor und eine run()-Methode, die den Zustand ausführt. Da ein Zustand zu allen möglichen Stellen in einem Maschinen Zyklus verwendet werden kann, besitzt der Zustand selber keine weiteren Informationen.
+
+
+\subsubsection{Programmablauf}
+
+Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinen Zyklus oder Zustand auslöst. Bei dem \glqq Next State\grqq -Knopf wird genau ein Zustand ausgeführt. Bei dem \glqq Next Machine Cycle\grqq -Knopf wird der aktuelle Maschinen Zyklus bis zum Schluss ausgeführt. Der  \glqq Next Instruction\grqq -Knopf verhält sich wie der Maschinen Zyklus-Knopf. Der \glqq Go\grqq -Knopf führt zu solange den nächsten Zustand aus bis der Knopf wieder gedrückt wird. Die drei ersten Knöpfe sind auf eine Methode im Intel8080 gebunden, die den selben Namen trägt wie der Knopf. Jeder dieser Methoden gibt True zurück, wenn der nächste auszuführende Zustand zu einem neuen Befehl gehört. 
+Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Methode aus, bis diese True zurückliefert. Diese wiederum führt solange die next\_state\_internal()-Methode aus, bis diese True zurückliefert. Diese liefert True, wenn der letzte Zustand eines Maschinen Zyklus ausgeführt wurde. Die next\_state()-Methode ruft nur einmal die next\_state\_internal()-Methode auf.
+
+\subsubsection{Dekodieren eines Befehls}
+\subsubsection{Programmaufbau}
+\subsubsection{Befehlsvarianten}
 
 \newpage
 
