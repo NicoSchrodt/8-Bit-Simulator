@@ -708,11 +708,10 @@ Um aus einem Byte ein Befehl analysieren zu können, wird dieser Wert mehrfach m
 \textbf{[TODO]} Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq mit dem Wert 0xCE assoziiert.  
 Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.
 \imgSpaceBefore
-
 \begin{figure}[h]
-\caption{Lesen und decodieren eines Bytes}
+\caption{Lesen und dekodieren eines Bytes}
 \centering
-\includegraphics[width=15cm]{Bilder/ReadInstruction}
+\includegraphics[width=10cm]{Bilder/ReadInstruction}
 \label{fig:ReadInstruction}
 \end{figure}
 
@@ -721,6 +720,7 @@ Dieses Vorgehen wird bei einigen Befehlen verwendet. In Kapitel \ref{chapter:opc
 
 
 \subsubsection{Programmaufbau}
+\label{chapter:MPS_aufbau}
 
 Der Simulator besteht hauptsächlich aus drei Klassen:
 
@@ -732,9 +732,8 @@ Der Simulator besteht hauptsächlich aus drei Klassen:
 
 Die Register-Klasse ist hauptsächlich als Datenspeicher gedacht und besitzt keine spezielle Methoden. In der Prozessor- und der ALU-Klasse werden Befehle ausgeführt. Es werden zwei Arten von Befehlen unterschieden. Befehle wie Sprungbefehle, die die ALU nicht benötigen und Befehle wie Additionen, die die ALU verwenden. 
 Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implementiert. Die restlichen entsprechend in der ALU. Jeder Befehl wird durch eine eigene Methode implementiert. Somit kann ein Befehl schnell gefunden und angepasst werden. In diesen Methoden läuft der komplette Befehl ab. Somit werden in diesen Methoden auch weitere Bytes eingelesen, die für die Ausführung des Befehls notwendig sind.
-Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht siehe Abbildung \ref{fig:ReadInstruction}. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.
+Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.
 \imgSpaceBefore
-
 \begin{figure}[h]
 \caption{Implementierung des Lesens eines Bytes}
 \centering
@@ -748,7 +747,7 @@ Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX Befehls.
 Dort ist zu sehen, dass es bei den 16-Bit Registern ein grundlegende Unterscheidung gibt. Es gibt einen Fall für den Stackpointer und einen für die anderen 16-Bit Register, die aus zwei 8-Bit Registern zusammengesetzt werden. Mittels des Übergebenen Parameter rp kann ermittelt werden ob es sich um den Stackpointer (rp  == 3 bedeutet Stackpointer) handelt, der angepasst werden soll. 
 Der Stackpointer kann einfach einmal ausgelesen, um 1 reduziert und dann wieder in sein Register gespeichert werden.
 Bei den zusammengesetzten 16-Bit Registern, werden zuerst beide 8-Bit Register ausgelesen und dann zusammengebaut. Dieses Ergebnis kann dann um 1 reduziert werden. Danach wird der 16-Bit Wert wieder aufgetrennt und in die 8-Bit Register gespeichert. 
-
+\imgSpaceBefore
 \begin{figure}[H]
 \caption{Implementierung des DCX-Befehls}
 \centering
@@ -758,7 +757,7 @@ Bei den zusammengesetzten 16-Bit Registern, werden zuerst beide 8-Bit Register a
 
 \noindent
 Die zusammengesetzten Register können alle gleich behandelt werden, da bei dem Programmkonzept daran gedacht wurde, dass dies öfter vorkommen kann. Deshalb wurden die Register so positioniert, dass auf die Register anhand ihrer Kodierung (siehe. \ref{fig:register_kodierung}) direkt zugegriffen werden kann. Ebenso liegt damit das High Byte eines 16-Bit Registers einen Platz vor dem Low Byte. Mit dieser Anordnung kann mittels einfacher mathematischer Berechnungen die entsprechenden Array-Stelle ermittelt werden. So kann aus einem rp-Wert (0-2) das entsprechende Array-Feld (High Byte) mittels einer Multiplikation mit 2 und der Addition eines Offsets berechnet werden. Um auf das Low Byte zu kommen, muss dann nur noch 1 addiert werden.
-
+\imgSpaceBefore
 \begin{figure}[H]
 \caption{Register Array des Intel8080}
 \centering
@@ -776,7 +775,6 @@ Der Intel 8080 kennt mehrere Befehle, die sowohl eine direkte als auch eine indi
 \\
 Ein Beispiel dafür ist die \glqq Subtract register/immediate from A with borrow (SBB/SBI)\grqq. Es gibt für beide Mnemonics eine Methode in der Intel8080-Klasse aber die Methode von SBB leitet später in der ALU-Klasse nur noch auf die SBI-Methode weiter.
 \imgSpaceBefore
-
 \begin{figure}[h]
 \caption{Zugrunde liegende Implementierung von SBB und SBI}
 \centering
@@ -790,8 +788,6 @@ Methode SBI in der ALU-Klasse auf. Für indirekte Befehle wie SBB wird zuerst in
 \\\\
 Ähnliches wird auch bei bei den Sprungbefehlen gemacht. Dort gibt es mehrere Varianten, die aber nur auf unterschiedliche Flags reagieren. Deshalb wurde auch dort eine zugrundeliegende Methode geschrieben, auf die alle anderen verweisen. So wird nur für die spezifische Varianten, das verwendete Flag weitergegeben.  Abbildung \ref{fig:JumpVariants} zeigt wie bei dem Jump on Carry Befehl vorgegangen wird. So ruft die jc-Methode, die jump\-on-Methode mit dem Carry-Flag auf. In der jump\_on-Methode werden immer die nächsten zwei Bytes gelesen, die die Adresse beinhaltet, auf die gesprungen werden soll. Nur sofern das übergebene Flag gesetzt ist wird der Sprung ausgeführt. Wenn nicht wird das Programm normal weitergeführt.
 \imgSpaceBefore
-
-
 \begin{figure}[H]
 \caption{Implementierung der Sprungbefehle}
 \centering
@@ -802,7 +798,7 @@ Methode SBI in der ALU-Klasse auf. Für indirekte Befehle wie SBB wird zuerst in
 
 \subsubsection{Binäre Addition uns Subtraktion}
 Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag verändern, musste eine manuelle Addition implementiert werden. Das Carry-Flag, das anzeigt, ob ein Überlauf beim siebten Bit stattgefunden hat, hätte noch ohne eine eigene Implementierung der Addition funktioniert. Dafür müsste nur vor dem Casten in einen 8-Bit Wert überprüft werden, ob der Wert größer als 255 ist. Da aber zusätzlich noch das Auxiliary-Carry-Flag beachtet werden musste, dass einen Überlauf von Bit 3 anzeigt, wurde die Addition selber implementiert. Diese Implementierung liefert das Carry-, Auxiliary-Carry-Flag und das Ergebnis der Addition. Somit können die Flags korrekt gesetzt werden sofern die Befehle diese Flags ändern. Sofern eines der beiden Flags verändert wird, wird darauf zurückgegriffen. Der INX-Befehl, der einen 16-Bit Wert um 1 erhöht, verändert aber keine Flags, weshalb dort eine normale Addition durchgeführt wird.
-
+\imgSpaceBefore
 \begin{figure}[H]
 \caption{Implementierung der binären Addition}
 \centering
@@ -844,7 +840,49 @@ Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Method
 Die next\_state\_internal()-Methode steuert wann ein neuer Befehl dekodiert und eine neue Klasse geladen werden muss. Wenn der nächste Zustand der erste eines neuen Befehls ist, wird der current\_instruction-Variable ein Nop-Befehl zugewiesen. Da bei allen Befehlen, die ersten drei Zustände die gleichen sind, ist es nicht wichtig welcher Befehl hier geladen wird. Erst im dritten Zustand wird der tatsächliche Befehl geladen. Von diesem Befehl wird der zuletzt ausgeführten Zustand auf drei gesetzt. Wenn der letzte Zustand eines Maschinen Zyklus ausgeführt wurde wird True zurückgegeben. Wenn ein Befehl frühzeitig abgebrochen werden soll, also z.B. bei einem bedingten Sprung, wird das ebenfalls hier gemacht.
 
 \subsubsection{Dekodieren eines Befehls}
+Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_register-Variable geschrieben. Ähnlich wie bei der ersten Version, wird beim Dekodieren dieses Byte mit Hexadezimalen Werten verglichen. Bei dieser Version wird beim dekodieren aber ein Unterschied gemacht bei Befehlen, die entweder ein Register oder eine Adresse als Parameter erhalten (siehe Abbildung \ref{fig:Decode_instr}). Dies ist deswegen wichtig, da sich die Maschinen Zyklen davon unterscheiden. Abbildung \ref{fig:ReadInstruction}  zeigt, dass in der ersten Version für alle ADD Befehle nur eine Methode aufgerufen wird. Damit der Prozessor die richtigen Klassen zur Ausführung verwendet, wird in der current\_instruction-Variable ein Objekt des richtigen Befehls gespeichert.
+\imgSpaceBefore
+\begin{figure}[H]
+\caption{Implementierung der Dekodierung}
+\centering
+\includegraphics[width=15cm]{bilder/DecodeInstruction}
+\label{fig:Decode_instr}
+\end{figure}
+
 \subsubsection{Programmaufbau}
+
+Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Dadurch, dass aber jeder Befehl, Maschinen Zyklus und Zustand eine eigene Klasse  hat gibt es nun wesentlich mehr Klassen. Insgesamt gibt es:
+\begin{itemize}
+\item 73 Befehls-Klassen
+\item 84 Maschinen Zyklen-Klassen
+\item 100 Zustands-Klassen
+\end{itemize}
+
+\noindent
+Zusätzlich dazu gibt es nochmal ungefähr 10 Klassen, von denen die oben genannten abgeleitet sind.
+
+\noindent
+Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX Befehl sieht nun folgendermaßen aus.
+\imgSpaceBefore
+\begin{figure}[H]
+\caption{DCX Befehl und Maschinen Zyklus}
+\centering
+\includegraphics[width=15cm]{bilder/dcx_inst}
+\includegraphics[width=15cm]{bilder/dcx_mc}
+\label{fig:Dcx_instr}
+\end{figure}
+
+\noindent
+Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass mit dem Simulator momentan nicht möglich einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben wie es bei einem richtigen Prozessor auch der Fall ist.
+\imgSpaceBefore
+\begin{figure}[H]
+\caption{DCX (rp\_decr) Zustand}
+\centering
+\includegraphics[width=15cm]{bilder/dcx_state}
+\label{fig:Dcx_instr}
+\end{figure}
+
+
 \subsubsection{Befehlsvarianten}
 
 \newpage
