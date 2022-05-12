@@ -592,7 +592,28 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die
 \end{figure}
 
 \noindent
-Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Um das Programm auszuführen werden drei Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\newpage
+Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise darstellt aber keine Interaktion mit diesem ermöglicht würde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{bilder/ProgramMemory}
+\caption{Programmspeicher}
+\label{fig:ProgSpeicher}
+\end{figure}
+
+\noindent
+Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitten von 128 Registern, wobei pro Zeile jeweils sechzehn Register, eins pro Spalte, zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung ('Next State/Machine Cycle/Instruction') in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface, verwendet werden.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=6cm]{bilder/Range}
+\caption{Range Einstellungen}
+\label{fig:Range}
+\end{figure}
+
+\noindent
+Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Speicher angezeigt werden soll. Wird einer der beiden Werte verändert ergänzt sich der andere automatisch. Der Abstand muss dabei immer genau 128 Register sein. Eingetragene Werte müssen außerdem immer ein Vielfaches von sechzehn sein, da dies der Anzahl an Registern einer Zeile entspricht. Um das Programm auszuführen werden fünf Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).
+\newpage
 
 \begin{figure}[h]
 \centering
@@ -602,7 +623,7 @@ Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächs
 \end{figure}
 
 \noindent
-Über 'Next' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.
+Über 'Next Instruction' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für 'Next Machine Cycle' als auch für 'Next State', wobei diese wiederum nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.
 
 \begin{figure}[h]
 \centering
@@ -624,7 +645,7 @@ Die gezeigten Einträge stehen für:
 
 \noindent
 Über die Knöpfe daneben in denen auch die Werte stehen lässt sich über klicken dieser ein Fenster öffnen, welches erlaubt den Wert zu ändern.
-Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.\newpage
+Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.
 
 \begin{figure}[h]
 \centering
@@ -645,7 +666,10 @@ Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Regis
 \end{figure}
 
 \noindent
-Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. Das letzte Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.
+Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. 
+
+
+Das letzte Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.
 
 \begin{figure}[h]
 \centering
