@@ -148,7 +148,7 @@ class Intel8080_MainWindow(QMainWindow):
         CycleStateTable = self.CycleState_table
         qz = self.getQTableWidgetSize(CycleStateTable)
         qz.setWidth(qz.width() + 38)
-        #qz.setHeight(alh + 2)
+        qz.setHeight(qz.height() - 24)
         CycleStateTable.setMaximumSize(qz)
         # CycleStateTable.setMinimumSize(qz)
         #CycleStateTable.resizeColumnsToContents()
