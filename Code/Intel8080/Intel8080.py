@@ -348,6 +348,7 @@ class Intel8080(AbstractProcessor):
             self.current_instruction = Rrc(self)
         elif (self.cpu_instruction_register & self.ddd_inv_mask) == 0xC7:
             self.current_instruction = Rst(self)
+            self.registers.set_register8_with_offset(char_to_reg("W"), 0)
         elif self.cpu_instruction_register == 0x22:
             self.current_instruction = Shld(self)
         elif self.cpu_instruction_register == 0xF9:
