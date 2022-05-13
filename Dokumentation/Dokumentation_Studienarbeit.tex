@@ -2,8 +2,8 @@
 
 
 
-%Autor: Nico Schrodt
-%Januar 2021 - März 2021
+%Autor: Nico Schrodt, Andreas Schmider
+%September 2021 - Mai 2022
 
 
 \documentclass[12pt]{article}
@@ -24,6 +24,11 @@
 \usepackage{float}
 
 \geometry{a4paper, top=25mm, left=35mm, right=25mm, bottom=25mm, headsep=13mm, footskip=12mm, head=14.5pt}
+
+\lstset{mathescape=true,
+        literate=
+               {->}{$\rightarrow{}$}{1},
+        }
 
 %encoding
 %--------------------------------------
@@ -893,17 +898,132 @@ Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX Befehl sieht nun folgenderm
 \end{figure}
 
 \noindent
-Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass mit dem Simulator momentan nicht möglich einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben wie es bei einem richtigen Prozessor auch der Fall ist.
+Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es mit dem Simulator momentan nicht möglich einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben, wie es bei einem richtigen Prozessor auch der Fall ist.
 \imgSpaceBefore
 \begin{figure}[H]
 \caption{DCX (rp\_decr) Zustand}
 \centering
 \includegraphics[width=15cm]{bilder/dcx_state}
-\label{fig:Dcx_instr}
+\label{fig:Dcx_state}
 \end{figure}
+
+\noindent
+Da der DCX Befehl nur aus einem Maschinen Zyklus, und mit dem leeren Zustand nur über einen Zustand verfügt, der den Befehl ausmacht werden im folgenden nochmal anderen Befehle gezeigt, bei denen diese Klassenstruktur mehr Sinn ergibt. Im folgenden Kapitel werden weitere Befehle angeschaut, die auch zeigen, wie in der neuen Version Befehle des gleichen Typs auf die selben Maschinen Zyklen und Zustände zurückgreifen.
 
 
 \subsubsection{Befehlsvarianten}
+Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein Fetch-Maschinen Zyklus erstellt, wovon jeder erste Maschinen Zyklus abgeleitet wurde. Der RST-Befehl hat, als einzige Ausnahme, einen anderen dritten Zustand. Normalerweise wird im dritten Zustand nur der aktuelle Befehl in das Befehls Register geschrieben. Beim RST-Befehl wird aber zusätzlich noch das W-Register auf Null gesetzt. Dies ist deswegen wichtig, da der Befehl an eine von acht Programmstellen springen soll. Diese liegen alle am Anfang des Programmspeichers und benötigen deswegen ein leeres W-Register. Für Sprünge werden das W- und Z-Register verwendet. In den Maschinen Zyklen 2-4 wird aber nur das Z-Register auf den entsprechenden Wert gesetzt.
+\\
+
+\noindent
+Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die unterschieden werden. Einen direkten Befehl, der ein weiteres Byte hinter dem Befehl im Programmspeicher liest, einen Befehl, der einen Register-Wert liest, im restlichen Kapitel als Register-Befehl bezeichnet, und einen Befehl, der zuerst die zwei folgenden Bytes aus dem Programmspeicher liest, daraus eine Adresse bildet und dann an diese Adresse springt und den dort liegenden Wert verwendet. Im restlichen Kapitel an Speicher-Befehl bezeichnet.
+
+
+\begin{table}[H]
+\centering
+\caption{Befehle mit diesen drei Befehls-Typen}
+\label{table:instr_types}
+\begin{tabular}{|l|c|c|c|c| } 
+ \hline
+ Beschreibung & Register-Befehl & Speicher-Befehl & Direkter Befehl \\
+ \hline 
+ Addition mit Acc & ADD r & ADD m & ADI \\ 
+ Addition mit Acc \& Cy & ADC r & ADC m & ACI \\ 
+ Subtraktion mit Acc & SUB r & SUB m & SUI \\ 
+ Subtraktion mit Acc \& Cy & SBB r & SBB m & SBI \\ 
+ Bitweise UND-Operation & ANA r & ANA m & ANI \\ 
+ Bitweise XOR-Operation & XRA r & XRA m & XRI \\ 
+ Bitweise ODER-Operation & ORA r & ORA m & ORI \\ 
+ Vergleich mit Acc & CMP r & CMP m & CPI \\ 
+ \hline
+\end{tabular}
+\end{table}
+
+\noindent
+Für die Addition ohne Carry gibt es diese drei Typen. ADD r verwendet ein Register. ADD m verwendet einen Wert, der irgendwo im Programmspeicher liegt und der ADI-Befehl verwendet das zweite Byte des Befehls als Summand. Alle drei Befehle müssen das Gleiche machen. Einen Wert mit dem Akkumulator addieren. Dazu nutzt jeder Befehl aber Werte von unterschiedlichen Stellen und müssen diese unterschiedlich laden. 
+Als letzter Maschinen Zyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinen Zyklus. 
+In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinen Zyklen, andere Werte in das TMP-Register gespeichert werden. 
+\\
+
+\noindent
+\textbf{Unterschiede des ersten Maschinen Zyklus}
+
+\noindent
+Der direkte Befehl und der Speicher-Befehl besitzen den gleichen ersten Zustand. Dort wird einfach nur der Inhalt des Akkumulators in das ACT-Register geschrieben.
+Der Register-Befehl kann im ersten Maschinen Zyklus sowohl den Wert des Akkumulators in das ACT-Register, als auch das im Befehl kodierte Register in das TMP-Register laden.
+\\
+
+\noindent
+\textbf{Unterschiede des zweiten Maschinen Zyklus}
+
+\noindent
+Der Register-Befehl, hat im ersten Zyklus schon beide Register so vorbereitet, dass er im zweiten Zyklus diese Werte bereits addieren kann. Für diesen Befehlstyp ist das schon der letzte Zyklus.
+Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekten Wert laden. Der direkte Befehl muss dafür erst noch den Programmzähler um eins erhöhen, damit das folgende Byte ausgelesen werden kann. Der Speicher-Befehl lädt den Wert, an der angegebenen Adresse, direkt in das TMP-Register.
+\\
+
+\noindent
+\textbf{Unterschiede des dritten Maschinen Zyklus}
+
+\noindent
+Der Register-Befehl führt keinen dritten Zyklus aus.
+Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinen Zyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat.
+
+\begin{table}[H]
+\centering
+\caption{Maschinen Zyklen der unterschiedlichen Typen}
+\label{table:mc_types}
+\begin{tabular}{|l|c|c|c|c| } 
+ \hline
+ Befehls-Typ & 1. Zyklus & 2. Zyklus & 3. Zyklus \\
+ \hline 
+ Register-Befehl
+ &
+ \begin{lstlisting}
+(SSS) $\rightarrow$ TMP
+ \end{lstlisting}
+ &
+ \begin{lstlisting}
+ADD$\_$MC
+ \end{lstlisting}
+ & \\
+ 
+ Speicher-Befehl & 
+ \begin{lstlisting}
+(ACC) $\rightarrow$ ACT 
+ \end{lstlisting}  
+  & 
+ \begin{lstlisting}
+Data   $\rightarrow$ TMP 
+ \end{lstlisting} 
+ & 
+ \begin{lstlisting}
+ADD_MC
+ \end{lstlisting} 
+ \\ 
+ 
+ Direkter Befehl & 
+ \begin{lstlisting}
+(ACC) $\rightarrow$ ACT 
+ \end{lstlisting} 
+ & 
+ \begin{lstlisting}
+Byte 2 $\rightarrow$ TMP
+ \end{lstlisting} 
+ &
+  \begin{lstlisting}
+ADD_MC
+ \end{lstlisting}
+ \\
+ 
+ \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Besonderheiten des Simulators}
+
+
+keine zwei takt zustände, kein halt, kein paralleles ausführen, Mc 6 nicht als Fetch des nächsten Befehls, nur positive werte, mvi pc + 1, ALU->ddd nicht verwendet, die meisten ersten Zustände machen nichts da sie Infos auf den lines ausgeben, daten bus nicht verwendet
 
 \newpage
 
