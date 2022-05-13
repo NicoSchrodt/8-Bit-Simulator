@@ -1130,7 +1130,7 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor freigegeben werden müssen.
 \end{itemize}
 
-\subsection{Laden und Anpassen der Oberfläche}
+\subsection{Laden und Anpassen der Oberfläche}\label{chapter:LadenDObfl}
 Von Nico\\
 \noindent
 Die Oberfläche für den Simulator wurde nicht Dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
@@ -1162,7 +1162,17 @@ In diesem werden jedem Element ein Name zugewiesen über den dann später darauf
 \end{figure}
 
 \noindent
-Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion 'pressed\_table\_cell' zugewiesen welche ausgeführt wird, sollte auf diese geglickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen die diese Zuweisungen übernimmt sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
+'init\_ui' ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe \ref{fig:InitUI}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{bilder/initUI}
+\caption{Generische Funktion zum Laden der 'ui'-Datei}
+\label{fig:InitUI}
+\end{figure}
+
+\noindent
+Aufgabe dieser ist es den korrekten Pfad für die 'ui'-Datei zu bestimmen und über den Funktionsaufruf 'loadUI' die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion 'pressed\_table\_cell' zugewiesen welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen die diese Zuweisungen übernimmt sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1221,7 +1231,16 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
+
+\begin{itemize}
+	\item reload\_registers\_table (PC, Instr, ACC, etc.)
+	\item reload\_register\_array\_table (b, c, d, e, etc.)
+	\item reload\_memory\_table (Programmspeicher)
+\end{itemize}
+
+\noindent
+Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen.
 
 \textbf{Spezifische Reload Methoden...}
 
