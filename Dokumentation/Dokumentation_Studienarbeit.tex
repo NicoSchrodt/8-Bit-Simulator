@@ -1132,6 +1132,29 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor freigegeben werden müssen.
 \end{itemize}
 
+\subsection{Laden und Anpassen der Oberfläche}
+Die Oberfläche für den Simulator wurde nicht Dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
+
+\begin{itemize}
+	\item MainMenu.ui (Hauptmenü)
+	\item Intel8080\_MainWindow.ui (Simulator)
+	\item ChangeValueWindow.ui (Werte Input)
+\end{itemize}
+
+\noindent
+Als Beispiel für eins dieser manuell erstellten Fenster ist in Abbildung \ref{fig:RawUI} das Simulator-Fenster zu sehen.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{bilder/RawUIFile}
+\caption{Rohes Simulator-Fenster}
+\label{fig:RawUI}
+\end{figure}
+
+\noindent
+In diesem werden jedem Element ein Name zugewiesen über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.) bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich eine Änderung schnell visuell zu überprüfen und andererseits spart man sich einiges an komplizierter Syntax für die genauere Positionierung eines Elements innerhalb eines Fensters was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe \ref{fig:I8080MW}) fällt auf das die Größe einiger Elemente angepasst wurde und das einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden.
+
+
 \subsection{GUI-Methoden}
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
@@ -1176,7 +1199,9 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
+
+\textbf{Spezifische Reload Methoden...}
 
 \newpage
 
