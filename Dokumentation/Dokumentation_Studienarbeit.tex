@@ -516,13 +516,13 @@ In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während
 In diesem Kapitel wird darauf eingegangen wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
 
 \subsection{Abstraktion der Architektur}
-Es ist vorgesehen, dass der Prozessor in verschiedene Unterklassen aufgeteilt wird. Dabei ist vorgesehen das dies in einer Art Stern-Struktur aufgebaut wird, das heißt die verschiedenen Bestandteile des Prozessors sollen alle mit einer zentralen Klasse interagieren, aber nicht untereinander.
+Es ist geplant, dass der Prozessor in verschiedene Unterklassen aufgeteilt wird. Dabei ist vorgesehen das dies in einer Art Stern-Struktur aufgebaut wird, das heißt die verschiedenen Bestandteile des Prozessors sollen alle mit einer zentralen Klasse interagieren, aber nicht untereinander.
 
 \subsubsection{Prozessor}
-Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zu unterscheiden zwischen zwei Arten von Anfragen, gültige und ungültige. Gemeint ist sind damit Anfragen in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen die unzulässig wären, wie den Programmzähler manuell zu setzen.
+Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zu unterscheiden zwischen zwei Arten von Anfragen, gültige und ungültige. Gemeint sind damit Anfragen die in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen die unzulässig wären, wie den Programmzähler manuell zu setzen.
 
 \subsubsection{ALU}
-Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten.
+Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten. Wie sich im weiteren Verlauf des Projekts entschieden wurde, soll das Ausführen der verschiedenen Operationen dabei eher emuliert als simuliert werden. Um eine entsprechende Genauigkeit zu gewährleisten werden deshalb nicht ganze Instruktionen sondern die einzelnen Maschinenzyklen und States ausgeführt.
 
 \subsubsection{Register}
 Die Register-Klasse soll ähnlich wie die ALU den Zugriff möglichst realitätsgetreu simulieren. Dabei sollen Methoden die den Zugriff regeln ähnlich aufgebaut werden wie es im echten Prozessor möglich wäre.
@@ -531,7 +531,7 @@ Die Register-Klasse soll ähnlich wie die ALU den Zugriff möglichst realitätsg
 Mit der Peripherie soll alles abgedeckt werden was nicht Teil der zentralen Bestandteile ist, also der Register oder der ALU. Dazu zählt zum Beispiel ein externer Datenbus oder Schnittstellen für bspw. Taktsignal o.ä.
 
 \subsection{Möglichkeiten der Simulation}
-Um einen Ablauf für die Simulation festzulegen muss erst bestimmt welche Parameter eingestellt, welche Optionen verändert und welche Operationen im Simulator durchgeführt werden können.
+Um einen Ablauf für die Simulation festzulegen muss erst bestimmt werden, welche Parameter eingestellt, welche Optionen verändert und welche Operationen im Simulator durchgeführt werden können. Geplant ist das die Simulation zu jedem Zeitpunkt unterbrechbar sein soll. Der kleinste Zeitabschnitt für den dies sinnvoll ist, wäre ein einzelner Zustand eines Maschinenzyklus. Es ist geplant, dass alle Register die in der Register-Klasse modelliert sind auch in der Benutzeroberfläche dargestellt und auch manipuliert werden können. Zu manipulierbaren Registern soll auch der Programmspeicher zählen. Dieser soll entweder manuell befüllbar sein oder über eine externe Datei. Für das externe befüllen muss der für den Simulator vorgegebene Assembler verwendet werden. Das manipulieren des Speichers soll auch während der Simulation möglich sein.
 
 \subsection{Ablauf der Simulation}
 Platzhalter
@@ -542,7 +542,7 @@ Das Simulieren des Prozessors ist die eine Seite dieses Projekts. Gleichermaßen
 \subsubsection{Hauptmenü}
 Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.\vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=6cm]{bilder/Hauptmenue}
 \caption{Hauptmenü}
@@ -560,7 +560,7 @@ Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jewei
 \subsubsection{Intel8080 Simulationsfenster}
 In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.\vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{bilder/Intel8080_MainWindow}
 \caption{Intel8080 Sumulationsfenster}
@@ -570,7 +570,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \noindent
 Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=5cm]{bilder/LoadFile}
 \caption{File Reiter}
@@ -580,7 +580,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \noindent
 Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Abgesehen davon kann über 'Exit' auch ins Hauptmenü zurückgekehrt werden. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\vspace{10pt}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{bilder/Program_table}
 \caption{Programm Tabelle}
