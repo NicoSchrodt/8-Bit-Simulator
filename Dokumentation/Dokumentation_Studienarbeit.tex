@@ -19,7 +19,7 @@
 \usepackage{tabularx}
 \usepackage{xurl} %Formats \url{}-entrys better
 \usepackage{color, colortbl}
-%\usepackage{pdfpages}
+\usepackage{pdfpages}
 \usepackage{amssymb}
 \usepackage{float}
 
@@ -49,6 +49,7 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 \graphicspath{ bilder/}
+
 
 \newcommand{\Autor}{Andreas Schmider, Nico Schrodt}
 
@@ -1068,15 +1069,12 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \noindent
 \begin{itemize}
 \item Es wird überall nur mit unsigned Werten gearbeitet. Zero-Flag zeigt Werte > 127 (negative Werte) an
-\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
-\
+\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \todo \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
+\item Der Halt Befehl führt zu keinem Halt-Modus. Es wird lediglich eine Variable gesetzt.
+\item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor frei gegeben werden müssen.
 \end{itemize}
 
 
-
-\textbf{
-kein halt, nur positive werte,  ALU->ddd nicht verwendet
-}
 
 \newpage
 
@@ -1097,11 +1095,14 @@ Grundlagen der Informatik: Herold, Lurz, Wohlrab und Hopf; 3. aktualisierte Aufl
 
 
 
-%\newpage
-%\thispagestyle{empty}
-%
-%\section*{Anhang}
-%\addcontentsline{toc}{section}{Anhang}
+\newpage
+\thispagestyle{empty}
+
+\section*{Anhang}
+\addcontentsline{toc}{section}{Anhang}
+\label{anhang:instr_state}
+\includepdf[pages={30-33}]{../Datenblaetter/Intel 8080.pdf}
+
 
 
 \end{document}
