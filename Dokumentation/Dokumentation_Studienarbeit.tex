@@ -501,13 +501,6 @@ Jeder Maschinenzyklus besteht nochmal aus drei bis fünf Zuständen. So kann ein
 In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während des SYNC-Taktes kodiert. Die folgende Abbildung zeigt, wie die Befehlstypen über die \textbf{Data Lines} kodiert werden. [Intel 8080 S17ff. 2-3]
 \imgSpaceBefore
 
-\begin{figure}[h]
-\caption{Kodierung der Befehlstypen beim SYNC Takt}
-\centering
-\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}
-\label{fig:Intel8080_DataLines}
-\end{figure}
-
 
 \newpage
 
@@ -942,7 +935,7 @@ Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die untersc
 \noindent
 Für die Addition ohne Carry gibt es diese drei Typen. ADD r verwendet ein Register. ADD m verwendet einen Wert, der irgendwo im Programmspeicher liegt und der ADI-Befehl verwendet das zweite Byte des Befehls als Summand. Alle drei Befehle müssen das Gleiche machen. Einen Wert mit dem Akkumulator addieren. Dazu nutzt jeder Befehl aber Werte von unterschiedlichen Stellen und müssen diese unterschiedlich laden. 
 Als letzter Maschinen Zyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinen Zyklus. 
-In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinen Zyklen, andere Werte in das TMP-Register gespeichert werden. 
+In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinen Zyklen, andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}). 
 \\
 
 \noindent
@@ -1021,9 +1014,31 @@ ADD_MC
 
 
 \subsubsection{Besonderheiten des Simulators}
+Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. In diesem Kapitel soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
+\\
 
+\noindent
+\textbf{Adress- und Datenbus}
 
+\noindent
+Der Intel 8080 besitzt einen 8-Bit Daten- und einen 16-Bit Adressbus. 
+In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, dass die Busse anhand von verschiedenen Taktgebern, beschrieben und gelesen werden. Dies könnte zwar auch simuliert werden, letztendlich haben aber wir uns aber dagegen entschieden, da dies keine nennenswerte Vorteile bietet und den Simulator in ein weitere Richtung wesentlich komplexer macht. Einer der wenigen Gründe warum es doch Sinn gemacht hätte Busse zu verwenden wäre, dass auf dem Adress- und Datenbus die Daten zu sehen wären, die darüber gesendet werden. Dadurch, dass aber nach jedem Zustand die Daten irgendwo gespeichert werden, können die Veränderungen direkt beobachtet werden. Zwar wäre es schön gewesen, wenn die Daten aus dem Programmspeicher über die Busse laufen würden, aber für einen Simulator ist das nicht zwangsweise notwendig. Normalerweise wird auch über diese Busse mit dem Programmspeicher kommuniziert. Dies wurde in diesem Simulator aber umgangen, indem der Prozessor direkten Zugriff auf den Speicher hat. Generell werden die Busse dazu verwendet, um mit externen Geräten zu kommunizieren. Da dieser Simulator aber nicht dafür gedacht ist, wurden diese komplett weggelassen. Deswegen wurden für den In- und Out-Befehl der letzte Zyklus nur mit leeren Zuständen gefüllt. So brauchen diese Befehle immer noch die vorgesehenen Anzahl an Zuständen, lesen und schreiben aber keine Daten.
+\\
+
+\noindent
+In jedem ersten Zustand aller Maschinen Zyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinen Zyklus ausgeführt wird. 
+Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state}) nur so viel steht wie \glqq PC OUT STATUS\grqq im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus codiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
+
+\begin{figure}[H]
+\caption{Kodierung der Befehlstypen beim SYNC Takt}
+\centering
+\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}
+\label{fig:status_word}
+\end{figure}
+
+\textbf{
 keine zwei takt zustände, kein halt, kein paralleles ausführen, Mc 6 nicht als Fetch des nächsten Befehls, nur positive werte, mvi pc + 1, ALU->ddd nicht verwendet, die meisten ersten Zustände machen nichts da sie Infos auf den lines ausgeben, daten bus nicht verwendet
+}
 
 \newpage
 
