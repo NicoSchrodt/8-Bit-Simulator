@@ -1240,9 +1240,18 @@ Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschi
 \end{itemize}
 
 \noindent
-Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen.
+Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemReloadFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
 
-\textbf{Spezifische Reload Methoden...}
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{bilder/reloadMemFunc}
+\caption{Memory Reload Function}
+\label{fig:MemReloadFunc}
+\end{figure}
+
+\noindent
+\textbf{FALSCHE FUNKTION, DIE HIER SCHREIBT ES IN DIE UI, UMSCHREIBEN}\\
+Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird über die Prozessorfunktion 'get\_memory\_byte' bezogen und in Hexadezimal-Darstellung umgewandelt. Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
 
 \newpage
 
