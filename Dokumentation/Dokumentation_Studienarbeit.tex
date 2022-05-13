@@ -68,7 +68,7 @@
 \newcommand{\Ort}{Karlsruhe}
 
 
-\newcommand{\imgSpaceBefore}{\\[0.2cm]}
+\newcommand{\imgSpaceBefore}{\vspace{10pt}}
 \newcommand{\todo}{\textbf{TODO}}
 
 
@@ -250,15 +250,19 @@ Von Andreas\\
 \item Multiple-instruction stream, single-data stream (MISD)
 \item Multiple-instruction stream, multiple-data stream (MIMD)
 \end{itemize}
+
 \noindent
 \textbf{SISD}\\
 Diese Beschreibung trifft auf die einfachen Einprozessorsysteme zu. Dabei kann immer nur eine Operation gleichzeitig ausgeführt werden und diese werden in nur einer möglichen Reihenfolge aus einem Daten-Strom abgearbeitet.\\
+
 \noindent
 \textbf{SIMD}\\
 Bei SIMD werden Pipelines eingesetzt, die es ermöglichen mehrere korrekte Abfolgen von Programmbefehlen auszuführen. So können unterschiedliche Programme in sich selber in der richtigen Reihenfolge aber mit anderen Programmen abwechselnd ausgeführt werden.\\
+
 \noindent
 \textbf{MISD}\\
 Diese Variante scheint auf Anhieb keinen effizienten Nutzen zu besitzen, da mehrere Prozessoren alle die gleichen Befehle ausführen, die aus einem Daten-Strom stammen. Dies kann aber dazu verwendet werden um die Korrektheit durch Redundanzen zu bestätigen. \\
+
 \noindent
 \textbf{MIMD}\\
 Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutzutage ist dies unter dem Begriff Mehrprozessorsysteme bekannt. So werden für jeden einzelnen Prozessor ein Daten-Strom erzeugt der unabhängig von den anderen Prozessoren arbeiten kann. Dabei ist es für die Prozessoren aber trotzdem möglich die Daten der anderen Prozessoren zu nutzen. Nur durch MIMD oder MISD, also die Ausführung mit mehreren unabhängigen Prozessoren, ist es möglich Programme tatsächlich parallel ablaufen zu lassen. Mit SISD oder SIMD sind nur quasi parallele Ausführungen möglich.\\
@@ -266,13 +270,16 @@ Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutz
 \subsection{Instruction Sets}
 Von Andreas\\
 Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
+
 \begin{itemize}
 \item Daten Transfer Gruppe
 \item Arithmetik Gruppe
 \item Logische Gruppe
 \item Verzweigungs Gruppe
 \item Stapel, Ein- Ausgänge und Maschinen Kontroll- Gruppe
-\end{itemize}\noindent
+\end{itemize}
+
+\noindent
 Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOVE Befehlen. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. [Intel 8080 S.46 (4-1)]
 \\
 
@@ -307,41 +314,47 @@ Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch
 
 \subsection{Single-Prozessor-Simulator}
 \label{SPS} 
-Von Andreas\\ \noindent
+Von Andreas\\ 
 
+\noindent
 Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Aufgrund der überschaubaren Komplexität besteht auch die Möglichkeit diesen in einem größeren Unmfang zu simulieren.
 
 \subsubsection{Register}
 \label{RegisterSection}
 
 Der Intel 8080 besitzt ein SRAM Array mit 16-bit Register. Darin enthalten sind der Programm Counter mit 16-bit und der Stack Pointer mit 16-bit. Dazu gibt es noch acht weitere 8-bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-bit Register als ein 16-bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. Bei manchen Befehlen wird der Stackpointer als 16-Bit Register verwendet.
-Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. \textbf{Über das Adress-Latch oder den Incrementer/Decrementer-Circuit ist es möglich 16-Bit aus den Registern weiterzuleiten. Von dort aus können die Werte dann in den Adress-Puffer geschrieben werden.} [Intel 8080 S16 (2-2)]
-
-\textbf{TODO} Register zuweisung b = 000 etc. einfügen
+Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. Über das Adress-Latch des Incrementer/Decrementer-Chipsatzes ist es möglich 16-Bit aus den Registern an den Adress-Puffer weiterzuleiten. [Intel 8080 S16 (2-2)]
 
 
-
+\vspace{10pt}
 \begin{figure}[h]
-\caption{Kodierung der Register}
 \centering
 \includegraphics[width=10cm]{Bilder/register_kodierung}
+\caption{Kodierung der Register}
 \label{fig:register_kodierung}
 \end{figure}
 
 \subsubsection{Befehle}
 
-Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Opcode oder Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
+Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
+
 \begin{itemize}
 \item Direct
 \item Register
 \item Register Indirect
 \item Immediate
-\end{itemize}\noindent
+\end{itemize}
+
+\noindent
 Bei "Direkt"' wird der Wert in dem Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei "Register"' wird auf ein oder zwei Register verwiesen und verhält sich wie bei Direkt. Bei "Register Indirect"' wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendete Wert. Bei [TODO]\glqq Immediate\grqq steht 
 im zweiten und/oder dritten Byte ein Wert mit dem gearbeitet wird (Lowbyte im zweiten Byte). [Intel 8080 S.47 (4-2)]
-\\ \noindent
+\\ 
+
+\noindent
 Bei Interrupts und Branch Befehlen gibt es nur den "Direct"' und "Register indirect"' Modus [Intel 8080 S.47 (4-2)]. 
-\\ \noindent
+\\ 
+
+\noindent
 Der Prozessor besitzt fünf Condition Flags. Das Zero flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry flag, welches ebenfalls einen Übertrag oder Abzug anzeigt aber zwischen dem vierten (Bit 3) und fünften Bit (Bit 4). [Intel 8080 S.47f (4-2)]
 \\
 
@@ -351,8 +364,6 @@ Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In 
 
 \begin{table}[h]
 \centering
-\caption{Op-Code Typen}
-\label{table:opcode}
 \begin{tabular}{|l|c|c|c| } 
  \hline
  Befehl & OP-Code \\
@@ -364,6 +375,8 @@ Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In 
  INX rp & \texttt{00RP 0011} \\
  \hline
 \end{tabular}
+\caption{Op-Code Typen}
+\label{table:opcode}
 \end{table}
 
 \subsubsection{Data Transfer Group}
@@ -504,10 +517,11 @@ Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Mas
 \item Interrupt
 \item Halt
 \item Halt Interrupt
-\end{itemize}\noindent
+\end{itemize}
+
+\noindent
 Jeder Maschinenzyklus besteht nochmal aus drei bis fünf Zuständen. So kann ein Befehl insgesamt zwischen vier und achtzehn Zuständen andauern.
-In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während des SYNC-Taktes kodiert. Die folgende Abbildung zeigt, wie die Befehlstypen über die \textbf{Data Lines} kodiert werden. [Intel 8080 S17ff. 2-3]
-\imgSpaceBefore
+In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während des SYNC-Taktes kodiert. Die folgende Abbildung zeigt, wie die Befehlstypen über die \textbf{Data Lines} kodiert werden. [Intel 8080 S17ff. 2-3] \todo
 
 
 \newpage
@@ -711,8 +725,8 @@ Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten 
 \newpage
 
 \section{Implementierung}
-Von Andreas
-\\
+Von Andreas\\
+
 \noindent
 In diesem Kapitel wird gezeigt, was programmiert wurde, bis sich entschlossen wurde nur einen Prozessor zu simulieren. Obwohl dieser Simulator eigentlich mehrere Prozessoren simulieren können sollte, konnte dieser nie mehr als den Intel 8080 simulieren. Bei der Vorbereitung einen neuen Prozessor zu simulieren, ist aufgefallen, dass die Prozessoren sich nur minimal Unterscheiden werden. Mit dieser Erkenntnis wurde dann der bisherige Simulator so umgebaut, dass ein Prozessor detaillierter simuliert wird. Dessen Implementierung wurde in Kapitel \ref{SPS_impl} beschrieben.
 
@@ -732,11 +746,12 @@ Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen B
 Um aus einem Byte ein Befehl analysieren zu können, wird dieser Wert mehrfach mit vielen Hexadezimalen Werten verglichen. Anhand der Dokumentation des Intel 8080 werden somit alle Befehle unterschieden. 
 \textbf{[TODO]} Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq mit dem Wert 0xCE assoziiert.  
 Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.
-\imgSpaceBefore
+
+\vspace{10pt}
 \begin{figure}[h]
-\caption{Lesen und dekodieren eines Bytes}
 \centering
 \includegraphics[width=10cm]{Bilder/ReadInstruction}
+\caption{Lesen und dekodieren eines Bytes}
 \label{fig:ReadInstruction}
 \end{figure}
 
@@ -759,11 +774,12 @@ Der Simulator besteht hauptsächlich aus drei Klassen:
 Die Register-Klasse ist hauptsächlich als Datenspeicher gedacht und besitzt keine spezielle Methoden. In der Prozessor- und der ALU-Klasse werden Befehle ausgeführt. Es werden zwei Arten von Befehlen unterschieden. Befehle wie Sprungbefehle, die die ALU nicht benötigen und Befehle wie Additionen, die die ALU verwenden. 
 Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implementiert. Die restlichen entsprechend in der ALU. Jeder Befehl wird durch eine eigene Methode implementiert. Somit kann ein Befehl schnell gefunden und angepasst werden. In diesen Methoden läuft der komplette Befehl ab. Somit werden in diesen Methoden auch weitere Bytes eingelesen, die für die Ausführung des Befehls notwendig sind.
 Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.
-\imgSpaceBefore
+
+\vspace{10pt}
 \begin{figure}[h]
-\caption{Implementierung des Lesens eines Bytes}
 \centering
 \includegraphics[width=15cm]{Bilder/GetOneByteData}
+\caption{Implementierung des Lesens eines Bytes}
 \label{fig:GetOneByteData}
 \end{figure}
 
@@ -773,21 +789,23 @@ Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX Befehls.
 Dort ist zu sehen, dass es bei den 16-Bit Registern ein grundlegende Unterscheidung gibt. Es gibt einen Fall für den Stackpointer und einen für die anderen 16-Bit Register, die aus zwei 8-Bit Registern zusammengesetzt werden. Mittels des Übergebenen Parameter rp kann ermittelt werden ob es sich um den Stackpointer (rp  == 3 bedeutet Stackpointer) handelt, der angepasst werden soll. 
 Der Stackpointer kann einfach einmal ausgelesen, um 1 reduziert und dann wieder in sein Register gespeichert werden.
 Bei den zusammengesetzten 16-Bit Registern, werden zuerst beide 8-Bit Register ausgelesen und dann zusammengebaut. Dieses Ergebnis kann dann um 1 reduziert werden. Danach wird der 16-Bit Wert wieder aufgetrennt und in die 8-Bit Register gespeichert. 
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Implementierung des DCX-Befehls}
 \centering
 \includegraphics[width=15cm]{Bilder/dcx_impl}
+\caption{Implementierung des DCX-Befehls}
 \label{fig:dcx_impl}
 \end{figure}
 
 \noindent
 Die zusammengesetzten Register können alle gleich behandelt werden, da bei dem Programmkonzept daran gedacht wurde, dass dies öfter vorkommen kann. Deshalb wurden die Register so positioniert, dass auf die Register anhand ihrer Kodierung (siehe. \ref{fig:register_kodierung}) direkt zugegriffen werden kann. Ebenso liegt damit das High Byte eines 16-Bit Registers einen Platz vor dem Low Byte. Mit dieser Anordnung kann mittels einfacher mathematischer Berechnungen die entsprechenden Array-Stelle ermittelt werden. So kann aus einem rp-Wert (0-2) das entsprechende Array-Feld (High Byte) mittels einer Multiplikation mit 2 und der Addition eines Offsets berechnet werden. Um auf das Low Byte zu kommen, muss dann nur noch 1 addiert werden.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Register Array des Intel8080}
 \centering
 \includegraphics[width=15cm]{Bilder/register_array}
+\caption{Register Array des Intel8080}
 \label{fig:reg_array}
 \end{figure}
 
@@ -800,11 +818,12 @@ Die zusammengesetzten Register können alle gleich behandelt werden, da bei dem 
 Der Intel 8080 kennt mehrere Befehle, die sowohl eine direkte als auch eine indirekte Variante besitzen. Der Unterschied ist nur, dass die Werte, mit denen gerechnet wird, von unterschiedliche Stellen geladen werden. Aus diesem Grund greifen beide Befehle im Hintergrund auf die gleichen Methoden zu. Somit ist sicher gestellt, dass falls etwas an der Implementierung geändert werden soll, das nur an einer Stelle gemacht werden muss.
 \\
 Ein Beispiel dafür ist die \glqq Subtract register/immediate from A with borrow (SBB/SBI)\grqq. Es gibt für beide Mnemonics eine Methode in der Intel8080-Klasse aber die Methode von SBB leitet später in der ALU-Klasse nur noch auf die SBI-Methode weiter.
+
 \imgSpaceBefore
 \begin{figure}[h]
-\caption{Zugrunde liegende Implementierung von SBB und SBI}
 \centering
 \includegraphics[width=15cm]{Bilder/DoubleUsedMethodSubtract}
+\caption{Zugrunde liegende Implementierung von SBB und SBI}
 \label{fig:DoubleUsedMethodSubtract}
 \end{figure}
 
@@ -813,22 +832,24 @@ Die direkten Befehle lesen das zweite Byte, das zu diesem Befehl gehört und ruf
 Methode SBI in der ALU-Klasse auf. Für indirekte Befehle wie SBB wird zuerst in der Intel8080-Klasse noch der Wert aus dem Speicher gelesen. Dies wird deshalb gemacht, da die ALU eigentlich keinen direkten Zugriff auf den Speicher hat. Mit dem gelesenem Wert wird dann in der ALU-Klasse die SBB-Methode aufgerufen. Diese leitet innerhalb der Klasse nur noch auf die SBI Methode weiter.
 \\\\
 Ähnliches wird auch bei bei den Sprungbefehlen gemacht. Dort gibt es mehrere Varianten, die aber nur auf unterschiedliche Flags reagieren. Deshalb wurde auch dort eine zugrundeliegende Methode geschrieben, auf die alle anderen verweisen. So wird nur für die spezifische Varianten, das verwendete Flag weitergegeben.  Abbildung \ref{fig:JumpVariants} zeigt wie bei dem Jump on Carry Befehl vorgegangen wird. So ruft die jc-Methode, die jump\-on-Methode mit dem Carry-Flag auf. In der jump\_on-Methode werden immer die nächsten zwei Bytes gelesen, die die Adresse beinhaltet, auf die gesprungen werden soll. Nur sofern das übergebene Flag gesetzt ist wird der Sprung ausgeführt. Wenn nicht wird das Programm normal weitergeführt.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Implementierung der Sprungbefehle}
 \centering
 \includegraphics[width=10cm]{Bilder/JumpVariants}
+\caption{Implementierung der Sprungbefehle}
 \label{fig:JumpVariants}
 \end{figure}
 
 
 \subsubsection{Binäre Addition und Subtraktion}
 Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag verändern, musste eine manuelle Addition implementiert werden. Das Carry-Flag, das anzeigt, ob ein Überlauf beim siebten Bit stattgefunden hat, hätte noch ohne eine eigene Implementierung der Addition funktioniert. Dafür müsste nur vor dem Casten in einen 8-Bit Wert überprüft werden, ob der Wert größer als 255 ist. Da aber zusätzlich noch das Auxiliary-Carry-Flag beachtet werden musste, dass einen Überlauf von Bit 3 anzeigt, wurde die Addition selber implementiert. Diese Implementierung liefert das Carry-, Auxiliary-Carry-Flag und das Ergebnis der Addition. Somit können die Flags korrekt gesetzt werden sofern die Befehle diese Flags ändern. Sofern eines der beiden Flags verändert wird, wird darauf zurückgegriffen. Der INX-Befehl, der einen 16-Bit Wert um 1 erhöht, verändert aber keine Flags, weshalb dort eine normale Addition durchgeführt wird.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Implementierung der binären Addition}
 \centering
 \includegraphics[width=10cm]{Bilder/binaere_addition}
+\caption{Implementierung der binären Addition}
 \label{fig:binaere_addition}
 \end{figure}
 
@@ -863,17 +884,19 @@ Die next\_state\_internal()-Methode steuert wann ein neuer Befehl dekodiert und 
 
 \subsubsection{Dekodieren eines Befehls}
 Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_register-Variable geschrieben. Ähnlich wie bei der ersten Version, wird beim Dekodieren dieses Byte mit Hexadezimalen Werten verglichen. Bei dieser Version wird beim dekodieren aber ein Unterschied gemacht bei Befehlen, die entweder ein Register oder eine Adresse als Parameter erhalten (siehe Abbildung \ref{fig:Decode_instr}). Dies ist deswegen wichtig, da sich die Maschinen Zyklen davon unterscheiden. Abbildung \ref{fig:ReadInstruction}  zeigt, dass in der ersten Version für alle ADD Befehle nur eine Methode aufgerufen wird. Damit der Prozessor die richtigen Klassen zur Ausführung verwendet, wird in der current\_instruction-Variable ein Objekt des richtigen Befehls gespeichert.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Implementierung der Dekodierung}
 \centering
 \includegraphics[width=15cm]{bilder/DecodeInstruction}
+\caption{Implementierung der Dekodierung}
 \label{fig:Decode_instr}
 \end{figure}
 
 \subsubsection{Programmaufbau}
 
 Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Dadurch, dass aber jeder Befehl, Maschinen Zyklus und Zustand eine eigene Klasse  hat gibt es nun wesentlich mehr Klassen. Insgesamt gibt es:
+
 \begin{itemize}
 \item 73 Befehls-Klassen
 \item 84 Maschinen Zyklen-Klassen
@@ -885,22 +908,24 @@ Zusätzlich dazu gibt es nochmal ungefähr 10 Klassen, von denen die oben genann
 
 \noindent
 Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX Befehl sieht nun folgendermaßen aus.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{DCX Befehl und Maschinen Zyklus}
 \centering
 \includegraphics[width=15cm]{bilder/dcx_inst}
 \includegraphics[width=15cm]{bilder/dcx_mc}
+\caption{DCX Befehl und Maschinen Zyklus}
 \label{fig:Dcx_instr}
 \end{figure}
 
 \noindent
 Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es mit dem Simulator momentan nicht möglich ist, einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben, wie es bei einem richtigen Prozessor auch der Fall ist.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{DCX (rp\_decr) Zustand}
 \centering
 \includegraphics[width=15cm]{bilder/dcx_state}
+\caption{DCX (rp\_decr) Zustand}
 \label{fig:Dcx_state}
 \end{figure}
 
@@ -910,11 +935,12 @@ Da der DCX Befehl nur aus einem Maschinen Zyklus, und mit dem leeren Zustand nur
 \subsubsection{Testing}
 Um sicher zu stellen, dass alle Befehle korrekt ausgeführt werden, wurden Tests erstellt. 
 Da es wichtig ist, dass alle Befehle korrekt ausgeführt werden und die Zustände selber relativ einfach sind, wurden Integrationstests geschrieben. Abbildung \ref{fig:test_aci} zeigt wie einer der Tests aufgebaut ist. 
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Test für den ACI-Befehl}
 \centering
 \includegraphics[width=8cm]{bilder/test_aci}
+\caption{Test für den ACI-Befehl}
 \label{fig:test_aci}
 \end{figure}
 
@@ -924,11 +950,12 @@ Zuerst wird ein Intel8080 Prozessor-Objekt (ohne GUI) erzeugt. Mit intel.init\_t
 
 \noindent
 Bei dem obigen Test wurde bisher nur geprüft ob der Ergebniswert der zu erwartende ist. Da manche Befehle aber abhängig von Flags sind und diese teilweise auch verändern, gibt es noch andere Tests die das überprüfen. Nicht jeder Befehl wird so ausgiebig getestet wie der ADC-Befehl (siehe \ref{fig:test_adc}). Da der ADC r, der ADC m und der ACI-Befehl aus dem ADC\_MC-Maschinen Zyklus bestehen wird nur einer dieser Befehle besonders stark getestet. Wenn irgendein anderen Zustand eines Befehls nicht korrekt wäre, würde sehr wahrscheinlich der einfache Test für einen, wenn nicht sogar mehrere, einen Fehler anzeigen. Somit wird mit mehreren weiteren Tests für den Maschinen Zyklus hauptsächlich die sich veränderten Flags getestet.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{einer von mehreren Tests für den ADC-Befehl}
 \centering
 \includegraphics[width=10cm]{bilder/test_adc}
+\caption{einer von mehreren Tests für den ADC-Befehl}
 \label{fig:test_adc}
 \end{figure}
 
@@ -942,11 +969,10 @@ Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein F
 
 \noindent
 Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die unterschieden werden. Einen direkten Befehl, der ein weiteres Byte hinter dem Befehl im Programmspeicher liest, einen Befehl, der einen Register-Wert liest, im restlichen Kapitel als Register-Befehl bezeichnet, und einen Befehl, der zuerst die zwei folgenden Bytes aus dem Programmspeicher liest, daraus eine Adresse bildet und dann an diese Adresse springt und den dort liegenden Wert verwendet. Im restlichen Kapitel an Speicher-Befehl bezeichnet.
+
 \imgSpaceBefore
 \begin{table}[H]
 \centering
-\caption{Befehle mit diesen drei Befehls-Typen}
-\label{table:instr_types}
 \begin{tabular}{|l|c|c|c|c| } 
  \hline
  Beschreibung & Register-Befehl & Speicher-Befehl & Direkter Befehl \\
@@ -961,6 +987,8 @@ Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die untersc
  Vergleich mit Acc & CMP r & CMP m & CPI \\ 
  \hline
 \end{tabular}
+\caption{Befehle mit diesen drei Befehls-Typen}
+\label{table:instr_types}
 \end{table}
 
 \noindent
@@ -991,11 +1019,10 @@ Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekte
 \noindent
 Der Register-Befehl führt keinen dritten Zyklus aus.
 Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinen Zyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat.
+
 \imgSpaceBefore
 \begin{table}[H]
 \centering
-\caption{Maschinen Zyklen der unterschiedlichen Typen}
-\label{table:mc_types}
 \begin{tabular}{|l|c|c|c|c| } 
  \hline
  Befehls-Typ & 1. Zyklus & 2. Zyklus & 3. Zyklus \\
@@ -1041,6 +1068,8 @@ ADD_MC
  
  \hline
 \end{tabular}
+\caption{Maschinen Zyklen der unterschiedlichen Typen}
+\label{table:mc_types}
 \end{table}
 
 
@@ -1059,11 +1088,12 @@ In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, das
 \noindent
 In jedem ersten Zustand aller Maschinen Zyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinen Zyklus ausgeführt wird. 
 Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state} \textbf{TODO}) nur so viel steht \todo wie \glqq PC OUT STATUS\grqq im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus codiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
+
 \imgSpaceBefore
 \begin{figure}[H]
-\caption{Kodierung der Befehlstypen beim SYNC Takt}
 \centering
 \includegraphics[width=15cm]{Bilder/Intel8080_DataLines}
+\caption{Kodierung der Befehlstypen beim SYNC Takt}
 \label{fig:status_word}
 \end{figure}
 
