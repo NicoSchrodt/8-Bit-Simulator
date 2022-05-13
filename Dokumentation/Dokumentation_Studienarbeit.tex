@@ -750,6 +750,7 @@ Der Simulator besteht hauptsächlich aus drei Klassen:
 \item Die Register (Intel8080\_Registers.py)
 \end{itemize} 
 
+\noindent
 Die Register-Klasse ist hauptsächlich als Datenspeicher gedacht und besitzt keine spezielle Methoden. In der Prozessor- und der ALU-Klasse werden Befehle ausgeführt. Es werden zwei Arten von Befehlen unterschieden. Befehle wie Sprungbefehle, die die ALU nicht benötigen und Befehle wie Additionen, die die ALU verwenden. 
 Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implementiert. Die restlichen entsprechend in der ALU. Jeder Befehl wird durch eine eigene Methode implementiert. Somit kann ein Befehl schnell gefunden und angepasst werden. In diesen Methoden läuft der komplette Befehl ab. Somit werden in diesen Methoden auch weitere Bytes eingelesen, die für die Ausführung des Befehls notwendig sind.
 Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.
@@ -816,7 +817,7 @@ Methode SBI in der ALU-Klasse auf. Für indirekte Befehle wie SBB wird zuerst in
 \end{figure}
 
 
-\subsubsection{Binäre Addition uns Subtraktion}
+\subsubsection{Binäre Addition und Subtraktion}
 Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag verändern, musste eine manuelle Addition implementiert werden. Das Carry-Flag, das anzeigt, ob ein Überlauf beim siebten Bit stattgefunden hat, hätte noch ohne eine eigene Implementierung der Addition funktioniert. Dafür müsste nur vor dem Casten in einen 8-Bit Wert überprüft werden, ob der Wert größer als 255 ist. Da aber zusätzlich noch das Auxiliary-Carry-Flag beachtet werden musste, dass einen Überlauf von Bit 3 anzeigt, wurde die Addition selber implementiert. Diese Implementierung liefert das Carry-, Auxiliary-Carry-Flag und das Ergebnis der Addition. Somit können die Flags korrekt gesetzt werden sofern die Befehle diese Flags ändern. Sofern eines der beiden Flags verändert wird, wird darauf zurückgegriffen. Der INX-Befehl, der einen 16-Bit Wert um 1 erhöht, verändert aber keine Flags, weshalb dort eine normale Addition durchgeführt wird.
 \imgSpaceBefore
 \begin{figure}[H]
@@ -826,16 +827,11 @@ Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag v
 \label{fig:binaere_addition}
 \end{figure}
 
-
-\subsubsection{GUI-Methoden}
-Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
-
-
 \subsection{Single-Prozessor-Simulator}
 \label{SPS_impl}
-Von Andreas
-\\
+Von Andreas\\
 
+\noindent
 In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinen Zyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinen Zyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors. 
 
 \subsubsection{Aufbau eines Befehls}
@@ -857,6 +853,7 @@ Wie bei der ersten Version dieses Simulator, wird ein .com-Datei benötigt um ei
 Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinen Zyklus oder Zustand auslöst. Bei dem \glqq Next State\grqq -Knopf wird genau ein Zustand ausgeführt. Bei dem \glqq Next Machine Cycle\grqq -Knopf wird der aktuelle Maschinen Zyklus bis zum Schluss ausgeführt. Der  \glqq Next Instruction\grqq -Knopf verhält sich wie der Maschinen Zyklus-Knopf. Der \glqq Go\grqq -Knopf führt zu solange den nächsten Zustand aus bis der Knopf wieder gedrückt wird. Die drei ersten Knöpfe sind auf eine Methode im Intel8080 gebunden, die den selben Namen tragen wie der Knopf. Jeder dieser Methoden gibt True zurück, wenn der nächste auszuführende Zustand zu einem neuen Befehl gehört. 
 Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Methode aus, bis diese True zurückliefert. Diese wiederum führt solange die next\_state\_internal()-Methode aus, bis diese True zurückliefert. Diese liefert True, wenn der letzte Zustand eines Maschinen Zyklus ausgeführt wurde. Die next\_state()-Methode ruft nur einmal die next\_state\_internal()-Methode auf.
 
+\noindent
 Die next\_state\_internal()-Methode steuert wann ein neuer Befehl dekodiert und eine neue Klasse geladen werden muss. Wenn der nächste Zustand der erste eines neuen Befehls ist, wird der current\_instruction-Variable ein Nop-Befehl zugewiesen. Da bei allen Befehlen, die ersten drei Zustände die gleichen sind, ist es nicht wichtig welcher Befehl hier geladen wird. Erst im dritten Zustand wird der tatsächliche Befehl geladen. Von diesem Befehl wird der zuletzt ausgeführten Zustand auf drei gesetzt. Wenn der letzte Zustand eines Maschinen Zyklus ausgeführt wurde wird True zurückgegeben. Wenn ein Befehl frühzeitig abgebrochen werden soll, also z.B. bei einem bedingten Sprung, wird das ebenfalls hier gemacht.
 
 \subsubsection{Dekodieren eines Befehls}
@@ -1074,7 +1071,26 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor frei gegeben werden müssen.
 \end{itemize}
 
+\subsection{GUI-Methoden}
+Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
+\subsubsection{Aktualisieren der Oberfläche}
+Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten State jeder Instruction. Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:
+\begin{itemize}
+	\item update\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
+	\item update\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
+	\item update\_memory\_table: Aktualisiert Programmspeicher
+	\item fill\_program\_table: Aktualisiert Programmtabelle
+\end{itemize}
+\noindent
+In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, dass alle relevanten Werte neu geladen werden unabhängig davon ob sie sich verändert haben oder nicht. Bei wenigen Werten z.B. für die Register stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes parsen und filtern des Programmspeichers sowie füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui' Funktion (siehe Abbildung \ref{fig:updateUI}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm]{bilder/updateUI}
+\caption{update\_ui Funktion}
+\label{fig:updateUI}
+\end{figure}
 
 \newpage
 
