@@ -1014,7 +1014,7 @@ ADD_MC
 
 
 \subsubsection{Besonderheiten des Simulators}
-Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. In diesem Kapitel soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
+Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. Im folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
 \\
 
 \noindent
@@ -1045,14 +1045,14 @@ wird der vierte Zustand ein leerer Zustand und der fünfte ist der eigentliche Z
 \\
 
 \noindent
-Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinen Zyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq noch im 2 Zustand und der Text \glqq Z\grqq im dritten Zustand steht. Zusätzlich sind die beiden Texte durch einen Pfeil verbunden. Leider wird nirgends erklärt, was dies genau bedeutet. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der Zustand davor aber kein leerer, da dort der Programmzähler um eins erhöht werden muss. Davon gibt es viele Anweisungen, bei der die Texte in zwei Zuständen stehen.
+Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinen Zyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq noch im 2 Zustand und der Text \glqq Z\grqq im dritten Zustand steht. Zusätzlich sind die beiden Texte durch einen Pfeil verbunden. Leider wird nirgends erklärt, was dies genau bedeutet. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der vorherige Zustand aber kein leerer Zustand, da dort der Programmzähler um eins erhöht werden muss. Davon gibt es viele Anweisungen, bei der die Texte in zwei Zuständen stehen.
 \\
 
 \noindent
 \textbf{Fehler in der Beschreibung}
 
 \noindent
-Bei den beiden MVI-Befehlen soll im zweiten Maschinen Zyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird. Dies steht aber nicht in der Zustandsbeschreibung dabei. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht.
+Bei den beiden MVI-Befehlen soll im zweiten Maschinen Zyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird. Dies steht aber nicht in der Zustandsbeschreibung dabei. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht. Ebenso wurde bei dem DCR r-Befehl, der einen Wert um eins reduziert soll, der Wert um eins erhöht. Dies wurde im Simulator angepasst.
 \\
 
 \noindent
@@ -1060,9 +1060,22 @@ Bei den beiden MVI-Befehlen soll im zweiten Maschinen Zyklus ein weiteres Byte g
 
 \noindent
 Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letztes ein WZ OUT STATUS Signal gesendet und danach wird der Programmzähler auf den um eins erhöhten Wert des zusammengesetzten W- und Z-Registers gesetzt. Diese zwei Zustände werden normalerweise anstatt des normalen Fetches des neuen Befehls ausgeführt. Dies ist in diesem Simulator aber nicht so einfach möglich. Deswegen haben alle Sprungbefehle einen zusätzlichen Maschinen Zyklus erhalten. Dort wird nur der Wert des 16-Bit WZ-Registers in den Programmzähler geschrieben. Während des Fetch des nächsten Befehls wird dann der Zähler um eins erhöht. Somit führt das Programm an der richtigen Stelle weitere Befehle aus.
+\\
+
+\noindent
+\textbf{Kleine Eigenheiten oder Unterschiede zum Prozessor}
+
+\noindent
+\begin{itemize}
+\item Es wird überall nur mit unsigned Werten gearbeitet. Zero-Flag zeigt Werte > 127 (negative Werte) an
+\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
+\
+\end{itemize}
+
+
 
 \textbf{
-kein halt, kein paralleles ausführen, Mc 6 nicht als Fetch des nächsten Befehls, nur positive werte,  ALU->ddd nicht verwendet
+kein halt, nur positive werte,  ALU->ddd nicht verwendet
 }
 
 \newpage

@@ -193,7 +193,7 @@ class Intel8080(AbstractProcessor):
     def next_state_internal(self):
         if self.current_instruction_state == 1:
             self.current_instruction = Nop(self)
-            print("-------------------new Instruction-------------------")
+            print("-------------------new Instruction-------------------")  # TODO Interrupt und HALT MODE
 
         if self.current_instruction_state == 4:
             self.decode_instruction()
@@ -488,7 +488,7 @@ class Intel8080(AbstractProcessor):
         # Concrete Implementation of nextInstruction
 
     def instruction_is_completed(self):
-        return True  # TODO
+        return True
 
     # Any device may supply an RST instruction (and indeed may supply anyone-byte 8080 instruction).
     # 9800301D_8080_8085_Assembly_Language_Programming_Manual_May81.pdf
@@ -1000,7 +1000,6 @@ class Intel8080(AbstractProcessor):
         self.halt = True
 
     def in_put(self):
-        # TODO Daten müssen noch irgendwo her kommen
         data = self.get_byte_from_data_bus()
         self.registers.set_register8_with_offset(char_to_reg("a"), data)
 
@@ -1147,7 +1146,6 @@ class Intel8080(AbstractProcessor):
         self.ALU.ori(value)
 
     def out_put(self):
-        # TODO Daten müssen noch wohin
         data = np.uint8(self.registers.get_register_with_offset(char_to_reg("a")))
         self.write_byte_on_data_bus(data)
 
