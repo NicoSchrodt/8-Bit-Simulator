@@ -1152,7 +1152,27 @@ Als Beispiel für eins dieser manuell erstellten Fenster ist in Abbildung \ref{f
 \end{figure}
 
 \noindent
-In diesem werden jedem Element ein Name zugewiesen über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.) bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich eine Änderung schnell visuell zu überprüfen und andererseits spart man sich einiges an komplizierter Syntax für die genauere Positionierung eines Elements innerhalb eines Fensters was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe \ref{fig:I8080MW}) fällt auf das die Größe einiger Elemente angepasst wurde und das einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden.
+In diesem werden jedem Element ein Name zugewiesen über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.) bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich eine Änderung schnell visuell zu überprüfen und andererseits spart man sich einiges an komplizierter Syntax für die genauere Positionierung eines Elements innerhalb eines Fensters was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe \ref{fig:I8080MW}) fällt auf das die Größe einiger Elemente angepasst wurde und das einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden. Diese Anpassungen finden während der Initialisierung der 'Intel8080\_MainWindow'-Klasse statt (siehe \ref{fig:InitFuncs}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{bilder/initFuncs}
+\caption{Init-Functioncalls in Instanzfunktion für Intel8080 Fenster}
+\label{fig:InitFuncs}
+\end{figure}
+
+\noindent
+Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion 'pressed\_table\_cell' zugewiesen welche ausgeführt wird, sollte auf diese geglickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen die diese Zuweisungen übernimmt sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{bilder/initProgMem}
+\caption{Initialisierung Programmspeicher}
+\label{fig:InitProgMem}
+\end{figure}
+
+\noindent
+Effektiv wird die in der 'ui'-Datei definierte Anzahl Zeilen und Spalten der Programmtabelle abgefragt. Dann wird über jedes Element iteriert und ein Knopf erstellt mit Standardtext und einer Zuweisung.
 
 
 \subsection{GUI-Methoden}
