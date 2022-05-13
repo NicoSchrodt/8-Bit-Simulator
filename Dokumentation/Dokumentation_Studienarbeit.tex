@@ -202,16 +202,18 @@ Platzhalter
 \newpage
 
 \subsection{Theoretische Grundlagen}
-Als Vorbereitung für die Implementierung der verschiedenen Prozessoren werden einige allgemeingültige Architekturprinzipien eines Prozessors analysiert. 
+Von Nico\\
+\noindent
+Als Vorbereitung für die Implementierung der verschiedenen Prozessoren werden einige allgemeingültige Architekturprinzipien eines Prozessors erläutert. 
 
 \subsubsection{Architektur eines Prozessors}
-Der fundamentale Aufbau eines Prozessors lässt sich in folgende Bausteine einteilen:\\
+Der fundamentale Aufbau eines Prozessors lässt sich in folgende Bausteine einteilen:\\ \\
 \textbf{Rechenwerk}\\
-Das Rechenwerk ist die zentrale Einheit mit der eingehende Befehle verarbeitet werden. Es erhält Werte aus dem Speicher und führt damit in der ALU Operationen durch. Zum Rechenwerk dazugehörig sind auch Hilfsregister die beispielsweise als naher Zwischenspeicher fungieren.\\
+Das Rechenwerk ist die zentrale Einheit mit der eingehende Befehle verarbeitet werden. Es erhält Werte aus dem Speicher und führt damit in der ALU Operationen durch. Zum Rechenwerk dazugehörig sind auch Hilfsregister die beispielsweise als naher Zwischenspeicher fungieren.\\ \\
 \textbf{Steuerwerk}\\
-Das Steuerwerk ist für die korrekte Abarbeitung von Befehlen zuständig. Es besteht aus dem Befehlsdekoder, dem Befehlszähler und einem Statusregister.\\
+Das Steuerwerk ist für die korrekte Abarbeitung von Befehlen zuständig. Es besteht aus dem Befehlsdekoder, dem Befehlszähler und einem Statusregister.\\ \\
 \textbf{Programmspeicher}\\
-Der Programmspeicher eines Prozessors enthält die einzelnen Befehle, welche vom Befehlsdekoder dekodiert werden. Dabei wird der Befehl verwendet der an der vom Befehlszähler spezifizierten Stelle im Speicher steht.\\
+Der Programmspeicher eines Prozessors enthält die einzelnen Befehle, welche vom Befehlsdekoder dekodiert werden. Dabei wird der Befehl verwendet der an der vom Befehlszähler spezifizierten Stelle im Speicher steht.\\ \\
 \textbf{Ein-/Ausgabewerk}\\
 Das Ein-/Ausgabewerk ist für die Kommunikation des Prozessors mit anderen Systemkomponenten verantwortlich.\\
 \subsubsection{Befehlsformate}
@@ -219,7 +221,7 @@ Für einen Prozessor wird zwischen vier verschiedenen Befehlsformaten unterschie
 \textbf{Null-Adress-Anweisungen}\\
 Vom Akkumulator (Stack) wird der Wert der zwei obersten Adressfeldern entnommen und die Operation wird auf diese ausgeführt. Der Speicherort des Ergebnisses ist ebenfalls vorbestimmt. Daher werden keine Adressen benötigt zum ausführen von Operationen.\\ \\
 \textbf{Ein-Adress-Anweisungen}\\
-Wie bei einer Null-Adress-Anweisung wird ein Wert aus dem Akkumulator entnommen. Ein zweiter Wert wird aus dem Speicher der übergebenen Adresse entnommen. Der Speicherort des Ergebnisses ist nach wie vor fest.\\
+Wie bei einer Null-Adress-Anweisung wird ein Wert aus dem Akkumulator entnommen. Ein zweiter Wert wird aus dem Speicher der übergebenen Adresse entnommen. Der Speicherort des Ergebnisses ist nach wie vor fest.\\ \\
 \textbf{Zwei-Adress-Anweisungen}\\
 Für Zwei-Adress-Anweisungen ist es möglich eine Bezugsadresse für die Operanden anzugeben sowie eine Zieladresse, in der das Ergebnis der Operation gespeichert wird.\\ \\
 \textbf{Drei-Adress-Anweisungen}\\
@@ -297,17 +299,11 @@ Der Single-Prozessor-Simulator sollte etwas genauer darstellen wie ein Prozessor
 \subsection{Multi-Prozessor-Simulator}
 Mit diesem Simulator soll es möglich sein mehrere unterschiedliche Prozessoren simulieren zu können. Vor der Implementierung des Simulators müssen einer oder mehrere geeignete Prozessoren ausgewählt werden. In den nachfolgenden Kapiteln werden einige potenzielle Kandidaten näher analysiert und beschrieben.
 
-
-
 \subsubsection{Z80}
 Fällt vermutlich weg
 
-\subsubsection{Beispielprozessor 3 ...}
-s.o.\\
-Kommentar: Ein weiterer Prozessor sollte zumindest in Ansätzen analysiert werden.
-
 \subsubsection{Intel 8080}
-Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch detaillierter implementiert wird, wird dieser auch dort in Kapitel \ref{SPS}.
+Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch detaillierter implementiert wird, wird dieser auch dort in Kapitel \ref{SPS} beschrieben.
 
 
 \newpage
@@ -527,6 +523,8 @@ In dem ersten Zustand jedes Maschinenzykluses wird immer der Befehlstyp während
 \newpage
 
 \section{Umsetzung}
+Von Nico\\
+\noindent
 In diesem Kapitel wird darauf eingegangen wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
 
 \subsection{Abstraktion der Architektur}
@@ -922,7 +920,7 @@ Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es m
 \imgSpaceBefore
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{bilder/dcx_state}
+\includegraphics[width=14cm]{bilder/dcx_state}
 \caption{DCX (rp\_decr) Zustand}
 \label{fig:Dcx_state}
 \end{figure}
@@ -1133,6 +1131,8 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \end{itemize}
 
 \subsection{Laden und Anpassen der Oberfläche}
+Von Nico\\
+\noindent
 Die Oberfläche für den Simulator wurde nicht Dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
 
 \begin{itemize}
@@ -1172,10 +1172,12 @@ Die Funktionen für die Initialisierung der verschiedenen Register sowie des Pro
 \end{figure}
 
 \noindent
-Effektiv wird die in der 'ui'-Datei definierte Anzahl Zeilen und Spalten der Programmtabelle abgefragt. Dann wird über jedes Element iteriert und ein Knopf erstellt mit Standardtext und einer Zuweisung.
+Effektiv wird die in der 'ui'-Datei definierte Anzahl Zeilen und Spalten der Programmtabelle abgefragt. Dann wird über jedes Element iteriert und ein Knopf erstellt mit Standardtext und einer Zuweisung. Die zugewiesene Funktion wird in Kapitel \ref{chapter:GUI-Methods} noch näher erklärt.
 
 
-\subsection{GUI-Methoden}
+\subsection{GUI-Methoden}\label{chapter:GUI-Methods}
+Von Nico\\
+\noindent
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
 \subsubsection{Aktualisieren der Oberfläche}
@@ -1226,6 +1228,8 @@ Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschi
 \newpage
 
 \section{Fazit und Ausblick}
+Von Nico \\
+\noindent
 Als letzter Schritt wurde für das Programm noch eine Exe Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
 
 \begin{figure}[h]
