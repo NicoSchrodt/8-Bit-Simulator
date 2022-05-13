@@ -326,7 +326,7 @@ Der Intel 8080 besitzt ein SRAM Array mit 16-bit Register. Darin enthalten sind 
 Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. Über das Adress-Latch des Incrementer/Decrementer-Chipsatzes ist es möglich 16-Bit aus den Registern an den Adress-Puffer weiterzuleiten. [Intel 8080 S16 (2-2)]
 
 
-\vspace{10pt}
+\imgSpaceBefore
 \begin{figure}[h]
 \centering
 \includegraphics[width=10cm]{Bilder/register_kodierung}
@@ -554,7 +554,7 @@ Platzhalter
 \label{chp:AufbauGUI}
 Das Simulieren des Prozessors ist die eine Seite dieses Projekts. Gleichermaßen wichtig für einen funktionierenden Simulator ist aber auch die Benutzeroberfläche mit der dieser bedient wird. In diesem Abschnitts werden die einzelnen Aspekte dieser analysiert.
 \subsubsection{Hauptmenü}
-Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.\vspace{10pt}
+Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -572,7 +572,7 @@ Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jewei
 \end{itemize}
 
 \subsubsection{Intel8080 Simulationsfenster}
-In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.\vspace{10pt}
+In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -582,7 +582,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\vspace{10pt}
+Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -592,7 +592,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Abgesehen davon kann über 'Exit' auch ins Hauptmenü zurückgekehrt werden. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\vspace{10pt}
+Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Abgesehen davon kann über 'Exit' auch ins Hauptmenü zurückgekehrt werden. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -602,7 +602,7 @@ Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgew
 \end{figure}
 
 \noindent
-Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die Position des Bytebefehls im Speicher, die Bezeichnung des Befehls, der Bytecode selbst als auch zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).\vspace{10pt}
+Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die Position des Bytebefehls im Speicher, die Bezeichnung des Befehls, der Bytecode selbst als auch zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -612,9 +612,9 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die
 \end{figure}
 
 \noindent
-Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise darstellt aber keine Interaktion mit diesem ermöglicht würde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\vspace{10pt}
+Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise darstellt aber keine Interaktion mit diesem ermöglicht würde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\imgSpaceBefore
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=12cm]{bilder/ProgramMemory}
 \caption{Programmspeicher}
@@ -622,7 +622,7 @@ Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächs
 \end{figure}
 
 \noindent
-Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitten von 128 Registern, wobei pro Zeile jeweils sechzehn Register, eins pro Spalte, zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung ('Next State/Machine Cycle/Instruction') in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface, verwendet werden.\vspace{10pt}
+Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitten von 128 Registern, wobei pro Zeile jeweils sechzehn Register, eins pro Spalte, zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung ('Next State/Machine Cycle/Instruction') in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface, verwendet werden.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -632,9 +632,9 @@ Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitte
 \end{figure}
 
 \noindent
-Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Speicher angezeigt werden soll. Wird einer der beiden Werte verändert ergänzt sich der andere automatisch. Der Abstand muss dabei immer genau 128 Register sein. Eingetragene Werte müssen außerdem immer ein Vielfaches von sechzehn sein, da dies der Anzahl an Registern einer Zeile entspricht. Um das Programm auszuführen werden fünf Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\vspace{10pt}
+Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Speicher angezeigt werden soll. Wird einer der beiden Werte verändert ergänzt sich der andere automatisch. Der Abstand muss dabei immer genau 128 Register sein. Eingetragene Werte müssen außerdem immer ein Vielfaches von sechzehn sein, da dies der Anzahl an Registern einer Zeile entspricht. Um das Programm auszuführen werden fünf Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\imgSpaceBefore
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=6cm]{bilder/Bedienen}
 \caption{Bedien-Knöpfe}
@@ -642,7 +642,7 @@ Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Spe
 \end{figure}
 
 \noindent
-Über 'Next Instruction' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für 'Next Machine Cycle' als auch für 'Next State', wobei diese wiederum nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.\vspace{10pt}
+Über 'Next Instruction' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für 'Next Machine Cycle' als auch für 'Next State', wobei diese wiederum nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -652,7 +652,7 @@ Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Spe
 \end{figure}
 
 \noindent
-Die gezeigten Einträge stehen für:\vspace{10pt}
+Die gezeigten Einträge stehen für:\imgSpaceBefore
 
 \begin{itemize}
 	\item PC: Program Counter Register
@@ -664,7 +664,7 @@ Die gezeigten Einträge stehen für:\vspace{10pt}
 
 \noindent
 Über die Knöpfe daneben in denen die entsprechenden Werte stehen lässt sich über klicken dieser ein Fenster öffnen, welches erlaubt den Wert zu ändern.
-Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.\vspace{10pt}
+Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -685,7 +685,7 @@ Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Regis
 \end{figure}
 
 \noindent
-Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. Über die in Abbildung \ref{fig:Interrupt} dargestellte Funktion ist es möglich ein Interrupt mit einem gültigen Interrupt-Bytevektor auszulösen.\vspace{10pt}
+Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. Über die in Abbildung \ref{fig:Interrupt} dargestellte Funktion ist es möglich ein Interrupt mit einem gültigen Interrupt-Bytevektor auszulösen.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -698,7 +698,7 @@ Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils 
 Dabei wird geprüft ob die Operation gültig ist, wenn nicht wird eine Fehlermeldung ausgegeben. Ist sie gültig wird sie beim nächstmöglichen Zustand berücksichtigt und ausgeführt.
 \newpage
 \noindent
-Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet werden die in jedem State vorgenommen werden (siehe Abbildung \ref{fig:Logger}).\vspace{10pt}
+Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet werden die in jedem State vorgenommen werden (siehe Abbildung \ref{fig:Logger}).\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -708,7 +708,7 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 \end{figure}
 
 \noindent
-Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\vspace{10pt}
+Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -745,9 +745,8 @@ Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen B
 \noindent
 Um aus einem Byte ein Befehl analysieren zu können, wird dieser Wert mehrfach mit vielen Hexadezimalen Werten verglichen. Anhand der Dokumentation des Intel 8080 werden somit alle Befehle unterschieden. 
 \textbf{[TODO]} Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq mit dem Wert 0xCE assoziiert.  
-Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.
+Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.\imgSpaceBefore
 
-\vspace{10pt}
 \begin{figure}[h]
 \centering
 \includegraphics[width=10cm]{Bilder/ReadInstruction}
@@ -773,9 +772,8 @@ Der Simulator besteht hauptsächlich aus drei Klassen:
 \noindent
 Die Register-Klasse ist hauptsächlich als Datenspeicher gedacht und besitzt keine spezielle Methoden. In der Prozessor- und der ALU-Klasse werden Befehle ausgeführt. Es werden zwei Arten von Befehlen unterschieden. Befehle wie Sprungbefehle, die die ALU nicht benötigen und Befehle wie Additionen, die die ALU verwenden. 
 Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implementiert. Die restlichen entsprechend in der ALU. Jeder Befehl wird durch eine eigene Methode implementiert. Somit kann ein Befehl schnell gefunden und angepasst werden. In diesen Methoden läuft der komplette Befehl ab. Somit werden in diesen Methoden auch weitere Bytes eingelesen, die für die Ausführung des Befehls notwendig sind.
-Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.
+Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.\imgSpaceBefore
 
-\vspace{10pt}
 \begin{figure}[h]
 \centering
 \includegraphics[width=15cm]{Bilder/GetOneByteData}
@@ -1138,7 +1136,8 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
 \subsubsection{Aktualisieren der Oberfläche}
-Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten State jeder Instruction. Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:
+Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten State jeder Instruction. Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:\imgSpaceBefore
+
 \begin{itemize}
 	\item update\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
 	\item update\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
@@ -1146,7 +1145,7 @@ Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert de
 	\item fill\_program\_table: Aktualisiert Programmtabelle
 \end{itemize}
 \noindent
-In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, dass alle relevanten Werte neu geladen werden unabhängig davon ob sie sich verändert haben oder nicht. Bei wenigen Werten z.B. für die Register stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes parsen und filtern des Programmspeichers sowie füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui' Funktion (siehe Abbildung \ref{fig:updateUI}).
+In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, dass alle relevanten Werte neu geladen werden unabhängig davon ob sie sich verändert haben oder nicht. Bei wenigen Werten z.B. für die Register stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes parsen und filtern des Programmspeichers sowie füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui' Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1155,10 +1154,34 @@ In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, 
 \label{fig:updateUI}
 \end{figure}
 
+\noindent
+Die 'update\_ui'-Funktion wird innerhalb der Klasse für die Simulatoroberfläche an mehreren Stellen verwendet:\imgSpaceBefore
+
+\begin{itemize}
+	\item Zu Beginn bei Initialisierung der Oberfläche
+	\item Bei Laden eines neuen Programms über die Benutzeroberfläche
+	\item Bei Zurücksetzen des Simulators über den Reset-Knopf
+	\item Bei automatischen Ausführen des Programms über den Go-Knopf (Aktualisieren nach jeder Instruction)
+	\item Nach Ausführen einer Instruction, eines Machinenzyklus oder eines Zustandes über die jeweiligen Knöpfe
+\end{itemize}
+
+\noindent
+Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der angezeigten Aspekte des Simulators übersehen wird. Schlimmstenfalls könnte es auch dazu führen, dass wenn eine Anzeige nicht aktualisiert wird, dieser fehlerhafte Wert nach Manipulieren eines Anderen fälschlicherweise zurückgeschrieben wird in die internen Register des Simulators. Dieses Prinzip sieht man in Abbildung \ref{fig:perf}.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm]{bilder/Perform}
+\caption{Programmschritte Instruction/Cycle/State}
+\label{fig:perf}
+\end{figure}
+
+\noindent
+Die Implementierungen der drei Knöpfe zum ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
+
 \newpage
 
 \section{Fazit und Ausblick}
-Als letzter Schritt wurde für das Programm noch eine Exe Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).
+Als letzter Schritt wurde für das Programm noch eine Exe Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
