@@ -305,6 +305,19 @@ class Intel8080_MainWindow(QMainWindow):
             self.processor.next_state()
             self.update_ui()
 
+    def sendInterrupt(self):
+        if self.actionCheck():
+            try:
+                value = int(self.Interrupt_line.text())
+            except:
+                self.Logger.addEntry("Invalid Interrupt Sent")
+            else:
+                if (0 <= value) and (value <= 255):
+                    self.processor.interrupted = True
+                    self.processor.interrupt_instruction = value
+                else:
+                    self.Logger.addEntry("Invalid Interrupt Byte")
+
     def actionCheck(self):
         return not self.autorun
 
