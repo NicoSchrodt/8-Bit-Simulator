@@ -68,6 +68,7 @@
 
 
 \newcommand{\imgSpaceBefore}{\\[0.2cm]}
+\newcommand{\todo}{\textbf{TODO}}
 
 %\newcommand{\Abgabedatum}{16.02.2021}
 
@@ -891,7 +892,7 @@ Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX Befehl sieht nun folgenderm
 \end{figure}
 
 \noindent
-Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es mit dem Simulator momentan nicht möglich einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben, wie es bei einem richtigen Prozessor auch der Fall ist.
+Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es mit dem Simulator momentan nicht möglich ist, einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben, wie es bei einem richtigen Prozessor auch der Fall ist.
 \imgSpaceBefore
 \begin{figure}[H]
 \caption{DCX (rp\_decr) Zustand}
@@ -910,8 +911,7 @@ Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein F
 
 \noindent
 Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die unterschieden werden. Einen direkten Befehl, der ein weiteres Byte hinter dem Befehl im Programmspeicher liest, einen Befehl, der einen Register-Wert liest, im restlichen Kapitel als Register-Befehl bezeichnet, und einen Befehl, der zuerst die zwei folgenden Bytes aus dem Programmspeicher liest, daraus eine Adresse bildet und dann an diese Adresse springt und den dort liegenden Wert verwendet. Im restlichen Kapitel an Speicher-Befehl bezeichnet.
-
-
+\imgSpaceBefore
 \begin{table}[H]
 \centering
 \caption{Befehle mit diesen drei Befehls-Typen}
@@ -960,7 +960,7 @@ Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekte
 \noindent
 Der Register-Befehl führt keinen dritten Zyklus aus.
 Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinen Zyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat.
-
+\imgSpaceBefore
 \begin{table}[H]
 \centering
 \caption{Maschinen Zyklen der unterschiedlichen Typen}
@@ -1027,8 +1027,8 @@ In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, das
 
 \noindent
 In jedem ersten Zustand aller Maschinen Zyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinen Zyklus ausgeführt wird. 
-Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state}) nur so viel steht wie \glqq PC OUT STATUS\grqq im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus codiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
-
+Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state} \textbf{TODO}) nur so viel steht \todo wie \glqq PC OUT STATUS\grqq im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus codiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
+\imgSpaceBefore
 \begin{figure}[H]
 \caption{Kodierung der Befehlstypen beim SYNC Takt}
 \centering
@@ -1036,8 +1036,33 @@ Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Z
 \label{fig:status_word}
 \end{figure}
 
+\noindent
+\textbf{Zustände die zwei Takte dauern}
+
+\noindent
+Manche Zustände des Intel 8080 dauern zwei Takte an. Zu sehen ist das in Anhang \ref{anhang:instr_state}. Die Judge Condition, bei z.B. den bedingten Sprüngen, benötigt den vierten und fünften Zustand. Dies ist in diesem Simulator bisher nicht möglich. Deshalb 
+wird der vierte Zustand ein leerer Zustand und der fünfte ist der eigentliche Zustand. 
+\\
+
+\noindent
+Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinen Zyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq noch im 2 Zustand und der Text \glqq Z\grqq im dritten Zustand steht. Zusätzlich sind die beiden Texte durch einen Pfeil verbunden. Leider wird nirgends erklärt, was dies genau bedeutet. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der Zustand davor aber kein leerer, da dort der Programmzähler um eins erhöht werden muss. Davon gibt es viele Anweisungen, bei der die Texte in zwei Zuständen stehen.
+\\
+
+\noindent
+\textbf{Fehler in der Beschreibung}
+
+\noindent
+Bei den beiden MVI-Befehlen soll im zweiten Maschinen Zyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird. Dies steht aber nicht in der Zustandsbeschreibung dabei. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht.
+\\
+
+\noindent
+\textbf{Letzter Maschinen Zyklus bei Sprungbefehlen}
+
+\noindent
+Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letztes ein WZ OUT STATUS Signal gesendet und danach wird der Programmzähler auf den um eins erhöhten Wert des zusammengesetzten W- und Z-Registers gesetzt. Diese zwei Zustände werden normalerweise anstatt des normalen Fetches des neuen Befehls ausgeführt. Dies ist in diesem Simulator aber nicht so einfach möglich. Deswegen haben alle Sprungbefehle einen zusätzlichen Maschinen Zyklus erhalten. Dort wird nur der Wert des 16-Bit WZ-Registers in den Programmzähler geschrieben. Während des Fetch des nächsten Befehls wird dann der Zähler um eins erhöht. Somit führt das Programm an der richtigen Stelle weitere Befehle aus.
+
 \textbf{
-keine zwei takt zustände, kein halt, kein paralleles ausführen, Mc 6 nicht als Fetch des nächsten Befehls, nur positive werte, mvi pc + 1, ALU->ddd nicht verwendet, die meisten ersten Zustände machen nichts da sie Infos auf den lines ausgeben, daten bus nicht verwendet
+kein halt, kein paralleles ausführen, Mc 6 nicht als Fetch des nächsten Befehls, nur positive werte,  ALU->ddd nicht verwendet
 }
 
 \newpage
