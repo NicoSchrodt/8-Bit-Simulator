@@ -121,6 +121,9 @@ class Intel8080_MainWindow(QMainWindow):
         self.Logger.addEntry("Welcome :)")
         # self.processor.run()
 
+        # Logger
+        self.ClearLog_button.pressed.connect(self.clearLog)
+
         # Thread Initialization
         self.monitor = None
         self.thread = None
@@ -231,6 +234,7 @@ class Intel8080_MainWindow(QMainWindow):
             self.reset_intel8080()
             self.processor.load_program(filepath[0])
             self.fill_program_table()
+            self.Logger.clearLog()
         self.update_ui()
 
     def adjust_to(self, value):
@@ -326,6 +330,9 @@ class Intel8080_MainWindow(QMainWindow):
         self.dialog = ChangeValueWindow(self, btn)
         self.dialog.show()
 
+    def clearLog(self):
+        self.Logger.clearLog()
+
     def breakpoint_check(self, row, column):
         if column == 0:
             if self.Program_table.item(row, column) is None:
@@ -342,7 +349,9 @@ class Intel8080_MainWindow(QMainWindow):
             i = 0
             nop_counter = 0
             while i < pow(2, 16):
-                if nop_counter < 1:
+                if (self.processor.program[i] == 0) and nop_counter < 1:
+                    self.instruction_positions.append(i)
+                elif self.processor.program[i] != 0:
                     self.instruction_positions.append(i)
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
@@ -384,15 +393,18 @@ class Intel8080_MainWindow(QMainWindow):
             index = -1
             current_pc = self.processor.get_pc()
             while index == -1:
+                print("Current PC: " + str(current_pc))
                 if current_pc in self.instruction_positions:
                     index = self.instruction_positions.index(current_pc)
                 else:
                     current_pc -= 1
+            print("Index: " + str(index))
+            print(self.instruction_positions[index])
             if index != 0:
-                self.Program_table.item(self.instruction_positions.index(index) - 1, 0).setBackground(QColor(255, 255, 255))
-                self.Program_table.item(self.instruction_positions.index(index) - 1, 1).setBackground(QColor(255, 255, 255))
-            self.Program_table.item(self.instruction_positions.index(index), 0).setBackground(QColor(152, 245, 255))
-            self.Program_table.item(self.instruction_positions.index(index), 1).setBackground(QColor(152, 245, 255))
+                self.Program_table.item(index - 1, 0).setBackground(QColor(255, 255, 255))
+                self.Program_table.item(index - 1, 1).setBackground(QColor(255, 255, 255))
+            self.Program_table.item(index, 0).setBackground(QColor(152, 245, 255))
+            self.Program_table.item(index, 1).setBackground(QColor(152, 245, 255))
         except Exception as e:
             print("Exception" + str(e))
         return
