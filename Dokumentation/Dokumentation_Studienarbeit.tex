@@ -540,7 +540,7 @@ Platzhalter
 \label{chp:AufbauGUI}
 Das Simulieren des Prozessors ist die eine Seite dieses Projekts. Gleichermaßen wichtig für einen funktionierenden Simulator ist aber auch die Benutzeroberfläche mit der dieser bedient wird. In diesem Abschnitts werden die einzelnen Aspekte dieser analysiert.
 \subsubsection{Hauptmenü}
-Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.
+Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster geöffnet.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -558,7 +558,7 @@ Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jewei
 \end{itemize}
 
 \subsubsection{Intel8080 Simulationsfenster}
-In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.
+In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -568,17 +568,17 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).
+Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\vspace{10pt}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=6cm]{bilder/LoadFile}
+\includegraphics[width=5cm]{bilder/LoadFile}
 \caption{File Reiter}
 \label{fig:LoadFile}
 \end{figure}
 
 \noindent
-Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Abgesehen davon kann über 'Exit' auch ins Hauptmenü zurückgekehrt werden. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).
+Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Abgesehen davon kann über 'Exit' auch ins Hauptmenü zurückgekehrt werden. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -588,7 +588,7 @@ Dadurch öffnet sich ein Dateien-Explorer über den die gewünschte Datei ausgew
 \end{figure}
 
 \noindent
-Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die Position des Bytebefehls im Speicher, die Bezeichnung des Befehls, der Bytecode selbst als auch zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).
+Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die Position des Bytebefehls im Speicher, die Bezeichnung des Befehls, der Bytecode selbst als auch zusätzliche Parameter falls der jeweilige Befehl welche besitzt. Außerdem wird die Zeile die als nächstes ausgeführt wird farbig markiert. Abgesehen von der Anzeige des Programms und des als nächstes ausgeführten Befehls ist es auch möglich Breakpoints zu setzen (siehe \ref{fig:Break}).\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -598,7 +598,7 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt wird einerseits die
 \end{figure}
 
 \noindent
-Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise darstellt aber keine Interaktion mit diesem ermöglicht würde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.
+Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächster Abschnitt). Wird ein Breakpoint erreicht, so stoppt das Programm bevor der Befehl ausgeführt wird und das Programm muss entweder manuell oder erneut automatisch ausgeführt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei initialisieren des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen unnötigen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise darstellt aber keine Interaktion mit diesem ermöglicht würde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -608,7 +608,7 @@ Diese sind relevant wenn das Programm automatisch ausgeführt wird (siehe nächs
 \end{figure}
 
 \noindent
-Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitten von 128 Registern, wobei pro Zeile jeweils sechzehn Register, eins pro Spalte, zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung ('Next State/Machine Cycle/Instruction') in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface, verwendet werden.
+Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitten von 128 Registern, wobei pro Zeile jeweils sechzehn Register, eins pro Spalte, zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung ('Next State/Machine Cycle/Instruction') in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface, verwendet werden.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -618,8 +618,7 @@ Dieses ermöglicht es den Speicher separat vom Programm auszulesen in Abschnitte
 \end{figure}
 
 \noindent
-Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Speicher angezeigt werden soll. Wird einer der beiden Werte verändert ergänzt sich der andere automatisch. Der Abstand muss dabei immer genau 128 Register sein. Eingetragene Werte müssen außerdem immer ein Vielfaches von sechzehn sein, da dies der Anzahl an Registern einer Zeile entspricht. Um das Programm auszuführen werden fünf Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).
-\newpage
+Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Speicher angezeigt werden soll. Wird einer der beiden Werte verändert ergänzt sich der andere automatisch. Der Abstand muss dabei immer genau 128 Register sein. Eingetragene Werte müssen außerdem immer ein Vielfaches von sechzehn sein, da dies der Anzahl an Registern einer Zeile entspricht. Um das Programm auszuführen werden fünf Knöpfe verwendet (siehe Abbildung \ref{fig:Bedienen}).\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -629,7 +628,7 @@ Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Spe
 \end{figure}
 
 \noindent
-Über 'Next Instruction' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für 'Next Machine Cycle' als auch für 'Next State', wobei diese wiederum nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.
+Über 'Next Instruction' wird der nächste Befehl, also der in der Programm Tabelle farbig markierte, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für 'Next Machine Cycle' als auch für 'Next State', wobei diese wiederum nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über Go wird automatisch das Programm ausgeführt. Bei erneutem drücken wird das Programm pausiert. Reset setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen sind diese mit deren entsprechender Bedeutung gekennzeichnet sowie deren Wert daneben.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -639,7 +638,7 @@ Hierbei kann entweder eingestellt werden bis zu oder ab welchem Register der Spe
 \end{figure}
 
 \noindent
-Die gezeigten Einträge stehen für:
+Die gezeigten Einträge stehen für:\vspace{10pt}
 
 \begin{itemize}
 	\item PC: Program Counter Register
@@ -651,7 +650,7 @@ Die gezeigten Einträge stehen für:
 
 \noindent
 Über die Knöpfe daneben in denen die entsprechenden Werte stehen lässt sich über klicken dieser ein Fenster öffnen, welches erlaubt den Wert zu ändern.
-Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.
+Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Register zuständig.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -672,7 +671,7 @@ Das in Abbildung \ref{fig:GenReg} gezeigte Fenster ist für die restlichen Regis
 \end{figure}
 
 \noindent
-Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. Über die in Abbildung \ref{fig:Interrupt} dargestellte Funktion ist es möglich ein Interrupt mit einem gültigen Interrupt-Bytevektor auszulösen.
+Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils eine Speicherkapazität von acht Bit haben. Über die in Abbildung \ref{fig:Interrupt} dargestellte Funktion ist es möglich ein Interrupt mit einem gültigen Interrupt-Bytevektor auszulösen.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -685,7 +684,7 @@ Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils 
 Dabei wird geprüft ob die Operation gültig ist, wenn nicht wird eine Fehlermeldung ausgegeben. Ist sie gültig wird sie beim nächstmöglichen Zustand berücksichtigt und ausgeführt.
 \newpage
 \noindent
-Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet werden die in jedem State vorgenommen werden (siehe Abbildung \ref{fig:Logger}).
+Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet werden die in jedem State vorgenommen werden (siehe Abbildung \ref{fig:Logger}).\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -695,7 +694,7 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 \end{figure}
 
 \noindent
-Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.
+Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\vspace{10pt}
 
 \begin{figure}[h]
 \centering
@@ -1129,7 +1128,7 @@ In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, 
 \newpage
 
 \section{Fazit und Ausblick}
-Platzhalter
+Als letzter Schritt wurde für
 
 \newpage
 
