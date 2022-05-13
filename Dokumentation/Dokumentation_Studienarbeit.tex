@@ -71,6 +71,12 @@
 \newcommand{\imgSpaceBefore}{\\[0.2cm]}
 \newcommand{\todo}{\textbf{TODO}}
 
+
+\newcounter{applabelno}
+\newcommand{\applabel}[1]{\refstepcounter{applabelno}\label{#1}}
+\renewcommand{\theapplabelno}{\Alph{applabelno}}
+
+
 %\newcommand{\Abgabedatum}{16.02.2021}
 
 
@@ -1066,9 +1072,9 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \noindent
 \begin{itemize}
 \item Es wird überall nur mit unsigned Werten gearbeitet. Zero-Flag zeigt Werte > 127 (negative Werte) an
-\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \todo \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
+\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
 \item Der Halt Befehl führt zu keinem Halt-Modus. Es wird lediglich eine Variable gesetzt.
-\item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor frei gegeben werden müssen.
+\item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor freigegeben werden müssen.
 \end{itemize}
 
 \subsection{GUI-Methoden}
@@ -1109,14 +1115,13 @@ Grundlagen der Informatik: Herold, Lurz, Wohlrab und Hopf; 3. aktualisierte Aufl
 \bibitem{Adressformate}Instruction formats: \url{https://www.geeksforgeeks.org/computer-organization-instruction-formats-zero-one-two-three-address-instruction/}, zuletzt abgerufen: 25.12.2021
 \end{thebibliography}
 
-
-
 \newpage
 \thispagestyle{empty}
 
 \section*{Anhang}
 \addcontentsline{toc}{section}{Anhang}
-\label{anhang:instr_state}
+
+\applabel{anhang:instr_state}
 \includepdf[pages={30-33}]{../Datenblaetter/Intel 8080.pdf}
 
 
