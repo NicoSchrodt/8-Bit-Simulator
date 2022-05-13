@@ -908,6 +908,34 @@ Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es m
 \noindent
 Da der DCX Befehl nur aus einem Maschinen Zyklus, und mit dem leeren Zustand nur über einen Zustand verfügt, der den Befehl ausmacht werden im folgenden nochmal anderen Befehle gezeigt, bei denen diese Klassenstruktur mehr Sinn ergibt. Im folgenden Kapitel werden weitere Befehle angeschaut, die auch zeigen, wie in der neuen Version Befehle des gleichen Typs auf die selben Maschinen Zyklen und Zustände zurückgreifen.
 
+\subsubsection{Testing}
+Um sicher zu stellen, dass alle Befehle korrekt ausgeführt werden, wurden Tests erstellt. 
+Da es wichtig ist, dass alle Befehle korrekt ausgeführt werden und die Zustände selber relativ einfach sind, wurden Integrationstests geschrieben. Abbildung \ref{fig:test_aci} zeigt wie einer der Tests aufgebaut ist. 
+\imgSpaceBefore
+\begin{figure}[H]
+\caption{Test für den ACI-Befehl}
+\centering
+\includegraphics[width=8cm]{bilder/test_aci}
+\label{fig:test_aci}
+\end{figure}
+
+\noindent
+Zuerst wird ein Intel8080 Prozessor-Objekt (ohne GUI) erzeugt. Mit intel.init\_test() wird die Zeichenkette zuerst assembliert und dann in den Programmspeicher geschrieben. In diesem Fall wird zu Vorbereitung der Wert 7 in den Akkumulator geschrieben. Mit intel.run\_complete\_programm() führt der Simulator so viele Befehle aus wie mit dem Zahlenwert übergeben. Dies ist dann wichtig wenn zum Beispiel mit Labels gearbeitet wird und diese nicht auf die Adresse 0 verweisen sollen. Nach der Ausführung des Befehls wird überprüft ob der wert im Akkumulator der korrekte ist. Sofern irgendwo ein Fehler auftaucht wird natürlich der Test auch als gescheitert angesehen.
+\\
+
+\noindent
+Bei dem obigen Test wurde bisher nur geprüft ob der Ergebniswert der zu erwartende ist. Da manche Befehle aber abhängig von Flags sind und diese teilweise auch verändern, gibt es noch andere Tests die das überprüfen. Nicht jeder Befehl wird so ausgiebig getestet wie der ADC-Befehl (siehe \ref{fig:test_adc}). Da der ADC r, der ADC m und der ACI-Befehl aus dem ADC\_MC-Maschinen Zyklus bestehen wird nur einer dieser Befehle besonders stark getestet. Wenn irgendein anderen Zustand eines Befehls nicht korrekt wäre, würde sehr wahrscheinlich der einfache Test für einen, wenn nicht sogar mehrere, einen Fehler anzeigen. Somit wird mit mehreren weiteren Tests für den Maschinen Zyklus hauptsächlich die sich veränderten Flags getestet.
+\imgSpaceBefore
+\begin{figure}[H]
+\caption{einer von mehreren Tests für den ADC-Befehl}
+\centering
+\includegraphics[width=10cm]{bilder/test_adc}
+\label{fig:test_adc}
+\end{figure}
+
+\noindent
+In diesem Test wird geschaut ob sich die Flags korrekt verhalten, wenn ein Überlauf stattfindet. Ebenso wird hier auch noch mal getestet, ob das Carry-Flag mit in die Berechnung einfließt. Deswegen wird vor dem Befehl das Carry-Flag gesetzt. Da dieser ADC r Befehl auf ein Register zugreift, muss dieses auch vor dem Test noch befüllt werden. Nach der Ausführung des Programms werden alle Flags ausgewertet. Sofern nur eines davon nicht den korrekten Wert enthält, wird der Test als nicht bestanden markiert.
+
 
 \subsubsection{Befehlsvarianten}
 Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein Fetch-Maschinen Zyklus erstellt, wovon jeder erste Maschinen Zyklus abgeleitet wurde. Der RST-Befehl hat, als einzige Ausnahme, einen anderen dritten Zustand. Normalerweise wird im dritten Zustand nur der aktuelle Befehl in das Befehls Register geschrieben. Beim RST-Befehl wird aber zusätzlich noch das W-Register auf Null gesetzt. Dies ist deswegen wichtig, da der Befehl an eine von acht Programmstellen springen soll. Diese liegen alle am Anfang des Programmspeichers und benötigen deswegen ein leeres W-Register. Für Sprünge werden das W- und Z-Register verwendet. In den Maschinen Zyklen 2-4 wird aber nur das Z-Register auf den entsprechenden Wert gesetzt.
