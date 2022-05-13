@@ -116,6 +116,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
         self.init_register_array_table()
+        self.init_program_memory_table()
         self.Logger = StateLogger(self.MessageLog_plaintext)
         self.processor = Intel8080(parent_window=None, logger=self.Logger)
         self.Logger.addEntry("Welcome :)")
@@ -155,15 +156,6 @@ class Intel8080_MainWindow(QMainWindow):
         CycleStateTable.setMaximumSize(qz)
         # CycleStateTable.setMinimumSize(qz)
         #CycleStateTable.resizeColumnsToContents()
-
-        # Program Memory Table
-        for row in range(self.ProgramMemory_table.rowCount()):
-            for column in range(self.ProgramMemory_table.columnCount()):
-                btn = QPushButton(self.ProgramMemory_table)
-                btn.setText('{:x}'.format(0))
-                self.ProgramMemory_table.setCellWidget(row, column, btn)
-                btn.pressed.connect(self.pressed_table_cell)
-        # self.ProgramMemory_table.resizeColumnsToContents()
 
         # Program Memory Range
         self.From_sb.valueChanged.connect(self.adjust_to)
@@ -226,6 +218,14 @@ class Intel8080_MainWindow(QMainWindow):
                 btn = QPushButton(Register_array_table)
                 btn.setText('{:x}'.format(0))
                 Register_array_table.setCellWidget(row, column, btn)
+                btn.pressed.connect(self.pressed_table_cell)
+
+    def init_program_memory_table(self):
+        for row in range(self.ProgramMemory_table.rowCount()):
+            for column in range(self.ProgramMemory_table.columnCount()):
+                btn = QPushButton(self.ProgramMemory_table)
+                btn.setText('{:x}'.format(0))
+                self.ProgramMemory_table.setCellWidget(row, column, btn)
                 btn.pressed.connect(self.pressed_table_cell)
 
     def load_program(self):
@@ -393,13 +393,10 @@ class Intel8080_MainWindow(QMainWindow):
             index = -1
             current_pc = self.processor.get_pc()
             while index == -1:
-                print("Current PC: " + str(current_pc))
                 if current_pc in self.instruction_positions:
                     index = self.instruction_positions.index(current_pc)
                 else:
                     current_pc -= 1
-            print("Index: " + str(index))
-            print(self.instruction_positions[index])
             if index != 0:
                 self.Program_table.item(index - 1, 0).setBackground(QColor(255, 255, 255))
                 self.Program_table.item(index - 1, 1).setBackground(QColor(255, 255, 255))
