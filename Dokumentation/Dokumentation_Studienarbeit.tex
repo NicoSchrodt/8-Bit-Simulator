@@ -191,10 +191,10 @@ Ort, Datum\hfill Unterschrift\hspace{4cm}
 \automark{section}  % Inhalt von [\rightmark]{\leftmark} 
 
 \section{Einführung}
-Dieses Kapitel befasst sich vorwiegend mit relevanten Grundlagen der Arbeit. Unter anderem wird das Ziel spezifiziert, elementare Aspekte der Arbeitsweise eines Prozessors werden erläutert und die verschiedenen Werkzeuge mit denen das Ziel realisiert wird werden aufgeführt.
+Dieses Kapitel befasst sich vorwiegend mit relevanten Grundlagen der Arbeit. Unter anderem wird das Ziel spezifiziert, elementare Aspekte der Arbeitsweise eines Prozessors werden erläutert und die verschiedenen Werkzeuge, mit denen das Ziel realisiert wird, werden aufgeführt.
 
 \subsection{Ziel der Arbeit}
-In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem mehrere unterschiedliche 8-Bit Prozessoren simuliert werden können. Dazu sollen die Grundlegenden Eigenschaften in kurzen Lernprogrammen erläutert werden. Ebenfalls soll es eine interaktive Einweisung geben wie der Simulator verwendet werden kann.
+In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem mehrere unterschiedliche 8-Bit Prozessoren simuliert werden können. Dazu sollen die grundlegenden Eigenschaften in kurzen Lernprogrammen erläutert werden. Ebenfalls soll es eine interaktive Einweisung geben wie der Simulator verwendet werden kann.
 
 \subsection{Zeitplan}
 \todo
@@ -210,17 +210,17 @@ Als Vorbereitung für die Implementierung der verschiedenen Prozessoren werden e
 \subsubsection{Architektur eines Prozessors}
 Der fundamentale Aufbau eines Prozessors lässt sich in folgende Bausteine einteilen:\\ \\
 \textbf{Rechenwerk}\\
-Das Rechenwerk ist die zentrale Einheit mit der eingehende Befehle verarbeitet werden. Es erhält Werte aus dem Speicher und führt damit in der ALU Operationen durch. Zum Rechenwerk dazugehörig sind auch Hilfsregister die beispielsweise als naher Zwischenspeicher fungieren.\\ \\
+Das Rechenwerk ist die zentrale Einheit, mit der eingehende Befehle verarbeitet werden. Es erhält Werte aus dem Speicher und führt damit in der Arithmetisch-logische Einheit (ALU) Operationen durch. Zum Rechenwerk dazugehörig sind auch Hilfsregister, die beispielsweise als naher Zwischenspeicher fungieren.\\ \\
 \textbf{Steuerwerk}\\
 Das Steuerwerk ist für die korrekte Abarbeitung von Befehlen zuständig. Es besteht aus dem Befehlsdekoder, dem Befehlszähler und einem Statusregister.\\ \\
 \textbf{Programmspeicher}\\
-Der Programmspeicher eines Prozessors enthält die einzelnen Befehle, welche vom Befehlsdekoder dekodiert werden. Dabei wird der Befehl verwendet der an der vom Befehlszähler spezifizierten Stelle im Speicher steht.\\ \\
+Der Programmspeicher eines Prozessors enthält die einzelnen Befehle, welche vom Befehlsdekoder dekodiert werden. Dabei wird der Befehl verwendet, der an der vom Befehlszähler spezifizierten Stelle im Speicher steht.\\ \\
 \textbf{Ein-/Ausgabewerk}\\
 Das Ein-/Ausgabewerk ist für die Kommunikation des Prozessors mit anderen Systemkomponenten verantwortlich.\\
 \subsubsection{Befehlsformate}
 Für einen Prozessor wird zwischen vier verschiedenen Befehlsformaten unterschieden. Diese beziehen sich auf die Anzahl der Adressen, welche der ALU bei Beginn einer Operation zur Verfügung gestellt werden.\\ \\
 \textbf{Null-Adress-Anweisungen}\\
-Vom Akkumulator (Stack) wird der Wert der zwei obersten Adressfeldern entnommen und die Operation wird auf diese ausgeführt. Der Speicherort des Ergebnisses ist ebenfalls vorbestimmt. Daher werden keine Adressen benötigt zum ausführen von Operationen.\\ \\
+Vom Akkumulator (Stack) wird der Wert der zwei obersten Adressfeldern entnommen und die Operation wird auf diese ausgeführt. Der Speicherort des Ergebnisses ist ebenfalls vorbestimmt. Daher werden zum Ausführen von Operationen keine Adressen benötigt.\\ \\
 \textbf{Ein-Adress-Anweisungen}\\
 Wie bei einer Null-Adress-Anweisung wird ein Wert aus dem Akkumulator entnommen. Ein zweiter Wert wird aus dem Speicher der übergebenen Adresse entnommen. Der Speicherort des Ergebnisses ist nach wie vor fest.\\ \\
 \textbf{Zwei-Adress-Anweisungen}\\
@@ -232,24 +232,24 @@ Drei-Adress-Anweisungen sind essentiell komplexere Zwei-Adress-Anweisungen. Eine
 Von Andreas\\
 
 \noindent
-Ein Prozessor unterstützt immer nur eine gewisse Menge an Befehlen, diese werden Instruction Set genannt. Heutzutage gibt es zwei grundlegende Prozessorarchitekturen, Complex Instruction Set Computer (CISC) und Reduced Instruction Set Computer (RISC). Früher konnten Prozessoren genau einer dieser Gruppen zugeordnet werden, allerdings ist das bei den heutigen Prozessoren nicht mehr möglich, da sowohl RISC als auch CISC Befehle dem Prozessor zur Verfügung gestellt werden um die Vorteile von beiden zu haben.
+Ein Prozessor unterstützt immer nur eine gewisse Menge an Befehlen, dies wird Instruction Set genannt. Heutzutage gibt es zwei grundlegende Prozessorarchitekturen: Complex Instruction Set Computer (CISC) und Reduced Instruction Set Computer (RISC). Früher konnten Prozessoren genau einer dieser Gruppen zugeordnet werden, allerdings ist das bei den heutigen Prozessoren nicht mehr möglich, da sowohl RISC- als auch CISC-Befehle dem Prozessor zur Verfügung gestellt werden, um die Vorteile von beiden zu nutzen.
 \\\\
-Bei CISC-Prozessoren wird versucht soviel wie möglich in einem Befehl ausführen zu können. So gibt es viele verschieden Befehle, die auch unterschiedlich viel Zeit benötigen. Dadurch wird es aber auch möglich, komplexere Befehle direkt in der Hardware zu berechnen. Bei diesen Befehlen gibt es auch einige Adressierungsarten mehr als bei RISC-Prozessoren. Für vorbestimmte Aufgaben gibt es auch eigene Register, die nur dafür verwendet werden und davon auch nur wenige. Der Nachteil bei CISC-Prozessoren ist, dass die eigenen Befehle erst noch durch ein Mikroprogramm interpretiert werden müssen und dieses die komplexen Befehle in mehrere kleine Befehle aufteilen muss, welche erst dann vom Prozessor bearbeitet werden können. Dies kostet etwas mehr Zeit und verlangsamt die Ausführung. Die Mikroprogramme, die dafür verwendet werden, werden in einem kleinem Read-only Memory (ROM) gespeichert.
+Bei CISC-Prozessoren wird versucht, soviel Arbeit wie möglich in einem Befehl ausführen zu können. So gibt es viele verschieden Befehle, die auch unterschiedlich viel Zeit benötigen. Dadurch wird es aber auch möglich, komplexere Befehle direkt in der Hardware zu berechnen. Bei diesen Befehlen gibt es auch einige Adressierungsarten mehr als bei RISC-Prozessoren. Für vorbestimmte Aufgaben gibt es auch eigene Register, die nur dafür verwendet werden, und davon auch nur wenige. Ein Nachteil der CISC-Prozessoren ist, dass die eigenen Befehle erst noch durch ein Mikroprogramm interpretiert werden müssen und dieses die komplexen Befehle in mehrere kleine Befehle aufteilen muss, welche erst dann vom Prozessor bearbeitet werden können. Dies kostet etwas mehr Zeit und verlangsamt die Ausführung. Die Mikroprogramme, die dafür verwendet werden, werden in einem kleinen Read-only Memory (ROM) gespeichert.
 \\\\
-Bei RISC-Prozessoren wird versucht mit nur wenigen, kleinen Befehlen auszukommen. Diese sind wiederum sehr schnell, da sie meist fest verdrahtet sind, müssen aber mit anderen kombiniert werden um die Komplexität eines einzigen CISC-Befehls zu erreichen.  Im Gegensatz zu CISC-Prozessoren besitzen RISC-Prozessoren viele Register die frei verwendbar sind und nicht für speziellen Operationen bestimmt sind. Ebenso können die meisten Befehle in nur einem einzigen Arbeitsschritt ausgeführt werden.  \cite{Herold}
+Bei RISC-Prozessoren wird versucht mit nur wenigen, kleinen Befehlen auszukommen. Diese sind wiederum sehr schnell, da sie meist fest verdrahtet sind, müssen aber mit anderen kombiniert werden um die Komplexität eines einzigen CISC-Befehls zu erreichen.  Im Gegensatz zu CISC-Prozessoren besitzen RISC-Prozessoren viele Register, die frei verwendbar sind und nicht für spezielle Operationen bestimmt sind. Ebenso können die meisten Befehle in nur einem einzigen Arbeitsschritt ausgeführt werden.  \cite{Herold}
 \\\\
-Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind diese optimal für Übersetzer oder Interpreter geeignet. Bei der Entwicklung können dann einzelne komplexe Befehle verwendet werden anstatt von vielen kleinen. Jedoch können RISC-Prozessoren schneller Befehle ausführen, da:
+Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind diese optimal für Übersetzer oder Interpreter geeignet. Bei der Entwicklung können einzelne komplexe Befehle anstatt vieler kleiner verwendet werden. Jedoch können RISC-Prozessoren schneller Befehle ausführen, da:
 
 \begin{itemize}
-\item es nur wenige Befehle gibt und diese schnell decodiert werden können
-\item die Befehle mithilfe von Pipelines effizienter abgearbeitet werden können
-\item kein Mikroprogramm die einzelnen Befehle erst noch interpretieren muss
+\item es nur wenige Befehle gibt und diese schnell decodiert werden können.
+\item die Befehle mithilfe von Pipelines effizienter abgearbeitet werden können.
+\item kein Mikroprogramm die einzelnen Befehle erst noch interpretieren muss.
 \end{itemize}
 
 
 \subsubsection{Parallelität nach Flynn}
 Von Andreas\\
-Von Michael Flynn wurden 1966 die folgenden vier Arten von Parallelisierung eingeführt. \cite{Flynn}
+Von Michael Flynn wurden 1966 die folgenden vier Arten von Parallelisierung eingeführt: \cite{Flynn}
 
 \begin{itemize}
 \item Single-instruction stream, single-data stream (SISD)
@@ -260,30 +260,30 @@ Von Michael Flynn wurden 1966 die folgenden vier Arten von Parallelisierung eing
 
 \noindent
 \textbf{SISD}\\
-Diese Beschreibung trifft auf die einfachen Einprozessorsysteme zu. Dabei kann immer nur eine Operation gleichzeitig ausgeführt werden und diese werden in nur einer möglichen Reihenfolge aus einem Daten-Strom abgearbeitet.\\
+Diese Beschreibung trifft auf die einfachen Einprozessorsysteme zu. Dabei kann immer nur eine Operation gleichzeitig ausgeführt werden und diese werden in nur einer möglichen Reihenfolge aus einem Datenstrom abgearbeitet.\\
 
 \noindent
 \textbf{SIMD}\\
-Bei SIMD werden Pipelines eingesetzt, die es ermöglichen mehrere korrekte Abfolgen von Programmbefehlen auszuführen. So können unterschiedliche Programme in sich selber in der richtigen Reihenfolge aber mit anderen Programmen abwechselnd ausgeführt werden.\\
+Bei SIMD werden Pipelines eingesetzt, die es ermöglichen, mehrere korrekte Abfolgen von Programmbefehlen auszuführen. So können unterschiedliche Programme in sich selbst in der richtigen Reihenfolge, aber mit anderen Programmen abwechselnd ausgeführt werden.\\
 
 \noindent
 \textbf{MISD}\\
-Diese Variante scheint auf Anhieb keinen effizienten Nutzen zu besitzen, da mehrere Prozessoren alle die gleichen Befehle ausführen, die aus einem Daten-Strom stammen. Dies kann aber dazu verwendet werden um die Korrektheit durch Redundanzen zu bestätigen. \\
+Diese Variante scheint auf Anhieb keinen effizienten Nutzen zu besitzen, da mehrere Prozessoren alle die gleichen Befehle ausführen, die aus einem Daten-Strom stammen. Dies kann aber dazu verwendet werden, die Korrektheit durch Redundanzen zu bestätigen. \\
 
 \noindent
 \textbf{MIMD}\\
-Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutzutage ist dies unter dem Begriff Mehrprozessorsysteme bekannt. So werden für jeden einzelnen Prozessor ein Daten-Strom erzeugt der unabhängig von den anderen Prozessoren arbeiten kann. Dabei ist es für die Prozessoren aber trotzdem möglich die Daten der anderen Prozessoren zu nutzen. Nur durch MIMD oder MISD, also die Ausführung mit mehreren unabhängigen Prozessoren, ist es möglich Programme tatsächlich parallel ablaufen zu lassen. Mit SISD oder SIMD sind nur quasi parallele Ausführungen möglich.\\
+Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutzutage ist dies unter dem Begriff Mehrprozessorsysteme bekannt. So werden für jeden einzelnen Prozessor ein Datenstrom erzeugt, der unabhängig von den anderen Prozessoren arbeiten kann. Dabei ist es für die Prozessoren aber trotzdem möglich, die Daten der anderen Prozessoren zu nutzen. Nur durch MIMD oder MISD, also die Ausführung mit mehreren unabhängigen Prozessoren, ist es möglich, Programme tatsächlich parallel ablaufen zu lassen. Mit SISD oder SIMD sind nur quasi-parallele Ausführungen möglich.\\
 
 \newpage
 
 \section{Projektplanung und Verlauf}
 Von Andreas\\
 \noindent
-Bei Projektbeginn wurde kein konkretes Ziel vorgegeben. Es wurde nur verlangt, dass ein Simulator für 8-Bit Prozessoren entwickelt werden soll. Deshalb wurde zu Beginn die Entscheidung getroffen, dass eine kleine Lernsoftware entwickelt werden soll. Der Simulator sollte ursprünglich fähig sein, mehrere unterschiedliche Prozessoren simulieren zu können. Damit sollten die Unterschiede von den einzelnen Prozessoren dargestellt und dem Anwender vermittelt werden. Jedoch hat sich bei der Untersuchung von mehreren Prozessoren herausgestellt, dass es nur geringe Unterschiede zwischen den Prozessoren gibt. Zwar hat jeder Prozessor seine Eigenheiten aber diese sind für den Anwender kaum spürbar. Der größte Unterschied sind die verschiedenen Befehlssätze. Die meisten Prozessoren verwenden für die gleichen Befehle, unterschiedliche Mnemonics und Bitkombinationen. Sobald aber die Befehle decodiert wurden, läuft im Prozessor meistens sehr Ähnliches oder sogar das Gleiche ab. Dabei kann es vorkommen, dass ein Prozessor noch eine zusätzliches Register z.B. als Zwischenspeicher verwendet, welches die anderen nicht besitzen. Aber wie die Daten im Prozessor hin und her geschoben werden und die Befehle, die die ALU ausführt, sind alle sehr ähnlich, wenn nicht sogar identisch. Deshalb wurde sich später dafür entschieden, dass nicht mehrere sondern nur ein Prozessor simuliert werden soll.
+Bei Projektbeginn wurde kein konkretes Ziel vorgegeben. Es wurde nur verlangt, dass ein Simulator für 8-Bit Prozessoren entwickelt werden soll. Deshalb wurde zu Beginn die Entscheidung getroffen, dass eine kleine Lernsoftware entwickelt werden soll. Der Simulator sollte ursprünglich fähig sein, mehrere unterschiedliche Prozessoren simulieren zu können. Damit sollten die Unterschiede verschiedener Prozessoren dargestellt und dem Anwender vermittelt werden. Jedoch hat sich bei der Untersuchung von mehreren Prozessoren herausgestellt, dass es nur geringe Unterschiede zwischen den Prozessoren gibt. Zwar hat jeder Prozessor seine Eigenheiten, die aber für den Anwender kaum bemerkbar sind. Der größte Unterschied sind die verschiedenen Befehlssätze. Die meisten Prozessoren verwenden für die gleichen Befehle unterschiedliche Mnemonics und Bitkombinationen. Sobald aber die Befehle decodiert wurden, läuft im Prozessor meistens sehr Ähnliches oder sogar Gleiches ab. Dabei kann es vorkommen, dass ein Prozessor noch ein zusätzliches Register z.B. als Zwischenspeicher verwendet, welches die anderen nicht besitzen. Aber wie die Daten im Prozessor hin- und her geschoben werden und die Befehle, die die ALU ausführt, unterscheidet sich zwischen den Prozessoren kaum oder ist sogar identisch. Deshalb wurde sich später dafür entschieden, dass nicht mehrere, sondern nur ein Prozessor simuliert werden soll.
 \\\\
-Bei dem Multi-Prozessor-Simulator war geplant, dass nur die Befehle direkt ausführbar sein sollen. Sodass eine assemblierte Quellcode-Datei eingelesen und ausgeführt werden kann. Diese Implementierung hat nur sicher gestellt, dass die zwangsweise notwendigen Eigenschaften simuliert werden. Dazu zählt, dass die Inhalte von Registern, die vom Anwender verwendet werden können, nach den Befehlen die korrekten Werte enthalten. Zusätzlich dazu wurden auch die Flags simuliert, da diese für den korrekten Programmablauf notwendig sind. 
+Bei dem Multi-Prozessor-Simulator war geplant, dass nur die Befehle direkt ausführbar sein sollen. Sodass eine assemblierte Quellcode-Datei eingelesen und ausgeführt werden kann. Diese Implementierung hat sichergestellt, dass die zwangsweise notwendigen Eigenschaften simuliert werden. Dazu zählt, dass die Inhalte von Registern, die vom Anwender verwendet werden können, nach der Ausführung der Befehlen die korrekten Werte enthalten. Zusätzlich dazu wurden auch die Flags simuliert, da diese für den korrekten Programmablauf notwendig sind. 
 \\\\
-Der Single-Prozessor-Simulator sollte etwas genauer darstellen wie ein Prozessor arbeitet. Dafür wurde der Intel 8080 als Prozessor ausgewählt. Ein Intel 8080 Befehl besteht aus mindestens einem und maximal fünf bzw. in diesem Simulator sechs Maschinenzyklen. Jeder dieser Maschinenzyklen wiederum aus drei bis fünf Zuständen. Ein kompletter Befehl besteht, bei dem Intel 8080, insgesamt aus mindestens 4 und maximal 18 Zuständen. Mit dieser Implementierung kann jeder einzelne Zustand nachvollzogen werden. Dadurch werden auch die W- und Z-Register verwendet, auf die der Anwender normalerweise keinen Zugriff hat und deshalb beim Multi-Prozessor-Simulator nicht beachtet wurden.
+Der Single-Prozessor-Simulator sollte etwas genauer darstellen, wie ein Prozessor arbeitet. Dafür wurde der Intel 8080 als Prozessor ausgewählt. Ein Intel 8080-Befehl besteht aus mindestens einem und maximal fünf bzw. in diesem Simulator sechs Maschinenzyklen. Jeder dieser Maschinenzyklen wiederum aus drei bis fünf Zuständen. Ein kompletter Befehl besteht, bei dem Intel 8080, insgesamt aus mindestens 4 und maximal 18 Zuständen. Mit dieser Implementierung kann jeder einzelne Zustand nachvollzogen werden. Dadurch werden auch die W- und Z-Register verwendet, auf die der Anwender normalerweise keinen Zugriff hat und deshalb beim Multi-Prozessor-Simulator nicht beachtet wurden.
 \\
 
 \noindent
@@ -293,7 +293,7 @@ Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat s
 \newpage
 
 \subsection{Multi-Prozessor-Simulator}
-Mit diesem Simulator soll es möglich sein mehrere unterschiedliche Prozessoren simulieren zu können. Vor der Implementierung des Simulators müssen einer oder mehrere geeignete Prozessoren ausgewählt werden. In den nachfolgenden Kapiteln werden einige potenzielle Kandidaten näher analysiert und beschrieben.
+Mit diesem Simulator soll es möglich sein, mehrere unterschiedliche Prozessoren simulieren zu können. Vor der Implementierung des Simulators müssen ein oder mehrere geeignete Prozessoren ausgewählt werden. In den nachfolgenden Kapiteln werden einige potenzielle Kandidaten näher analysiert und beschrieben.
 
 \subsubsection{Z80}
 \todo
@@ -310,26 +310,26 @@ Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch
 Von Andreas\\ 
 
 \noindent
-Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren.
+Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und ist repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren.
 
 \subsubsection{Register}
 \label{RegisterSection}
 
-Der Intel 8080 besitzt ein SRAM Array mit 16-Bit Registern. Darin enthalten sind der Programm Counter mit 16-Bit und der Stack Pointer mit 16-Bit. Dazu gibt es noch acht weitere 8-Bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-Bit Register als ein 16-Bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. Bei manchen Befehlen wird der Stackpointer als 16-Bit Register verwendet.
-Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. Über das Adress-Latch des Inkrementer/Dekrementer-Chipsatzes ist es möglich 16-Bit aus den Registern an den Adress-Puffer weiterzuleiten. \cite{IntMan16}
+Der Intel 8080 besitzt ein SRAM-Array mit 16-Bit-Registern. Darin enthalten sind der Programmzähler mit 16 Bit und der Stack Pointer mit 16-Bit. Dazu gibt es noch acht weitere 8-Bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-Bit Register als ein 16-Bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. Bei manchen Befehlen wird der Stackpointer als 16-Bit Register verwendet.
+Über einen Multiplexer ist es möglich, 8 Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. Über das Adress-Latch des Inkrementer/Dekrementer-Chipsatzes ist es möglich 16 Bit aus den Registern an den Adress-Puffer weiterzuleiten. \cite{IntMan16}
 
 
 \imgSpaceBefore
 \begin{figure}[h]
 \centering
 \includegraphics[width=10cm]{Bilder/register_kodierung}
-\caption{Kodierung der Register}
+\caption{Kodierung der Register \cite{IntMan30}}
 \label{fig:register_kodierung}
 \end{figure}
 
 \subsubsection{Befehle}
 
-Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes bestehen, auszuführen. Dabei gibt das erste Byte immer den Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
+Der Intel 8080 ist in der Lage, aus einem, zwei oder drei Bytes bestehen Befehle auszuführen. Dabei gibt das erste Byte immer den Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
 
 \begin{itemize}
 \item Direct
@@ -339,18 +339,18 @@ Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes best
 \end{itemize}
 
 \noindent
-Bei \glqq Direkt\grqq\ wird der Wert in dem Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei \glqq Register\grqq\ wird auf ein oder zwei Register verwiesen und verhält sich wie bei Direkt. Bei \glqq Register Indirect\grqq\ wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendete Wert. Bei \glqq Immediate\grqq\ steht
-im zweiten und/oder dritten Byte ein Wert mit dem gearbeitet wird (Lowbyte im zweiten Byte).
-Bei Interrupts und Verzweigungs-Befehlen gibt es nur den \glqq Direct\grqq\ und \glqq Register indirect\grqq\ Modus. \cite{IntMan45}
+Bei \glqq Direct\grqq\ wird der Wert im Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei \glqq Register\grqq\ wird auf ein oder zwei Register verwiesen und verhält sich wie bei \glqq Direct\grqq. Bei \glqq Register Indirect\grqq\ wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendende Wert. Bei \glqq Immediate\grqq\ steht
+im zweiten und/oder dritten Byte ein Wert, mit dem gearbeitet wird (Low-Byte im zweiten Byte).
+Bei Interrupts und Verzweigungs-Befehlen gibt es nur die \glqq Direct\grqq - und \glqq Register indirect\grqq -Modi. \cite{IntMan45}
 \\ 
 
 \noindent
-Der Prozessor besitzt fünf Condition-Flags. Das Zero-Flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign-Flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts-Flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry-Flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry-Flag, welches ebenfalls einen Übertrag oder Abzug anzeigt, aber zwischen Bit 3 und Bit Bit 4. \cite{IntMan45}
+Der Prozessor besitzt fünf Condition-Flags. Das Zero-Flag gibt an ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign-Flag gibt an, ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Wenn das letzte Ergebnis gerade war, ist das Paritäts-Flag gesetzt. Das Carry-Flag zeigt an ob es einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder einem Vergleich gab. Das Auxiliary Carry-Flag zeigt ebenfalls einen Übertrag oder Abzug an, aber zwischen Bit 3 und Bit Bit 4. \cite{IntMan45}
 \\
 
 \subsubsection{OP-Code Codierung}
 \label{chapter:opcode}
-Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In manchen Befehlen werden einzelne Bits verwendet um Register oder Registerpaare zu codieren und andere bei denen jedes Bit verwendet wird. In Tabelle \ref{table:opcode} sind die verschiedenen Möglichkeiten aufgelistet. Bei dem Befehl ACI ist es wichtig, dass das Byte genau 0xC7 ist. Bei ADC und INR wird ein 8-Bit Register in den Befehl codiert. Hierbei wird unterschieden, ob Daten in das Register geschrieben (DDD für Destination) oder daraus gelesen (SSS für Source) werden. Bei Mov r1, r2 wird sowohl aus einem Register gelesen als auch in ein anderes geschrieben, weshalb nur noch zwei Bit für den eigentlichen MOV-Befehl übrig bleiben. Bei dem INX-Befehl wird ein 16-Bit Register verwendet. Wie auf Seite \pageref{RegisterSection} beschrieben, können auch zwei 8-Bit-Register zu einem 16-Bit-Register zusammen geschlossen werden und damit verwendet werden. Insgesamt gibt es davon drei Kombinationen. Dementsprechend werden in diesen Befehlen diese Register mit zwei Bit kodiert. Damit gibt es noch eine weitere Bitkombination, mit der ein weiteres Register verwendet werden kann. Mit der vierten noch übrig gebliebenen Kombination wird der Stackpointer als 16-Bit-Register verwendet werden. 
+Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In manchen Befehlen werden einzelne Bits verwendet, um Register oder Registerpaare zu codieren, während in anderen jedes Bit verwendet wird. In Tabelle \ref{table:opcode} sind die verschiedenen Möglichkeiten aufgelistet. Bei dem Befehl ACI ist es wichtig, dass das Byte genau 0xC7 ist. Bei ADC und INR wird ein 8-Bit Register in den Befehl codiert. Hierbei wird unterschieden, ob Daten in das Register geschrieben (DDD für Destination) oder daraus gelesen (SSS für Source) werden. Bei Mov r1, r2 wird sowohl aus einem Register gelesen als auch in ein anderes geschrieben, weshalb nur noch zwei Bit für den eigentlichen MOV-Befehl übrig bleiben. Bei dem INX-Befehl wird ein 16-Bit Register verwendet. Wie auf Seite \pageref{RegisterSection} beschrieben, können auch zwei 8-Bit-Register zu einem 16-Bit-Register zusammen geschlossen und damit verwendet werden. Insgesamt gibt es davon drei Kombinationen. Dementsprechend werden in diesen Befehlen diese Register mit zwei Bit kodiert. Damit gibt es noch eine weitere Bitkombination, mit der ein weiteres Register verwendet werden kann. Mit der vierten noch übrig gebliebenen Kombination wird der Stackpointer als 16-Bit-Register verwendet werden. 
 
 \begin{table}[h]
 \centering
@@ -365,16 +365,16 @@ Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In 
  INX rp & \texttt{00RP 0011} \\
  \hline
 \end{tabular}
-\caption{Op-Code Typen \cite{IntMan30}}
+\caption{OP-Code-Typen \cite{IntMan30}}
 \label{table:opcode}
 \end{table}
 
 \subsubsection{Befehlsgruppen}
-Jeder Befehl kann genau einer der folgenden fünf Gruppen zugeordnet werden. Jede Gruppe verhält sich anders mit den Status-Flags. So gibt es eine Gruppe, bei der die meisten Befehle alle Flags ändern, aber auch Gruppen, wobei die meisten Befehle, kein einziges Flag verändern. 
+Jeder Befehl kann genau einer der folgenden fünf Gruppen zugeordnet werden. Jede Gruppe verhält sich anders mit den Status-Flags. So gibt es eine Gruppe, bei der die meisten Befehle alle Flags ändern, aber auch Gruppen, wobei die meisten Befehle kein einziges Flag verändern. 
 \\
 
 \noindent
-\textbf{Data Transfer Group}\\
+\textbf{Daten-Transfer-Gruppe}\\
 Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser Befehle werden die Condition Flags gesetzt oder zurückgesetzt. Alle Befehle, die dieser Gruppe angehören, schreiben ausschließlich Daten in Register oder in den Programmspeicher. Es werden keine Rechenoperationen oder Sprünge ausgeführt. Zu dieser Gruppe gehören die folgenden Befehle:
 
 \begin{multicols}{2}
@@ -397,7 +397,7 @@ Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser 
 
 \vspace{10pt}
 \noindent
-\textbf{Arithmetic Group}\\
+\textbf{Arithmetikgruppe}\\
 Dieser Gruppe gehören 20 Befehle an. Die meisten dieser Befehle beeinflussen alle Statusflags. Ausnahmen bilden dabei der INR- und DCR-Befehl, der INX- und DCX-Befehl und der DAD-Befehl. Der INR- und DCR-Befehl beeinflussen alle Flags außer das Carry-Flag. Der DAD-Befehl verändert ausschließlich das Carry-Flag. Keine Flags werden bei dem INX- und DCX-Befehl beeinflusst. Zu dieser Gruppe gehören die Befehle, die arithmetische Operation ausführen, also z.B. Additionen oder Subtraktionen.
 
 
@@ -428,7 +428,7 @@ Dieser Gruppe gehören 20 Befehle an. Die meisten dieser Befehle beeinflussen al
 
 \vspace{10pt}
 \noindent
-\textbf{Logical Group}\\
+\textbf{Logische Gruppe}\\
 Aus dieser Gruppe sind 19 Befehle bekannt. Diese Gruppe enthält Befehle, die logische Operationen wie UND und ODER ausführen. Bis auf die Rotations-, die Komplement- und den Set-Carry-Befehl werden immer alle Flags beeinflusst.
 
 \begin{multicols}{2}
@@ -457,8 +457,8 @@ Aus dieser Gruppe sind 19 Befehle bekannt. Diese Gruppe enthält Befehle, die lo
 
 \vspace{10pt}
 \noindent
-\textbf{Branch Group}\\
-Zu dieser Gruppe werden die Befehle dazu gezählt, die den standardmäßigen Programmablauf verändern. Dazu zählen die Sprung-, Call-, Return-Befehle. Zusätzlich dazu noch der Restart und  und Move H and L to PC-Befehl. Keiner diese Befehle verändert ein Flag. Der Intel 8080 kennt eigentlich nur einen Conditional-Befehl pro Sprung/Call etc. Für den Assembler können aber eigene Mnemonics für die unterschiedlichen Flags verwendet werde. 
+\textbf{Verzweigungsgruppe}\\
+Zu dieser Gruppe werden die Befehle dazu gezählt, die den standardmäßigen Programmablauf verändern. Keiner dieser Befehle verändert ein Flag. Der Intel 8080 kennt eigentlich nur einen Conditional-Befehl pro Sprung/Call etc. Für den Assembler können aber eigene Mnemonics für die unterschiedlichen Flags verwendet werde. 
 
 \begin{itemize}
 \item Jump
@@ -473,9 +473,9 @@ Zu dieser Gruppe werden die Befehle dazu gezählt, die den standardmäßigen Pro
 
 \vspace{10pt}
 \noindent
-\textbf{Stack, I/O and Machine Control Group}\\
-Die Befehle, die dieser Gruppe angehören, verändern entweder den Stack, interne Status-Flags oder sind für Ein- und Ausgaben zuständig. Zusätzlich dazu wird auch der NOP-Befehl (No Operation) dazu gezählt, obwohl er keines der Kriterien erfüllt. Letztendlich kann der NOP-Befehl keiner Gruppe genau zugewiesen werden, da dieser eben nichts macht.
-In dieser Gruppe verändert nur der POP rp-Befehl die Flags.
+\textbf{Stapel-, Ein/Ausgangs-, und Maschinenkontrollgruppe}\\
+Die Befehle, die dieser Gruppe angehören, verändern entweder den Stack, interne Status-Flags oder sind für Ein- und Ausgaben zuständig. Zusätzlich dazu wird auch der NOP-Befehl (No Operation) dazu gezählt, obwohl er keines der Kriterien erfüllt. Letztendlich kann der NOP-Befehl keiner Gruppe genau zugewiesen werden, da dieser keine Funktion besitzt.
+In dieser Gruppe verändert nur der POP-Befehl die Flags.
 
 \begin{multicols}{2}
 \begin{itemize}
@@ -516,7 +516,7 @@ Der erste Maschinenzyklus ist immer ein Fetchzyklus. Bei diesem wird immer ein n
 
 
 \subsubsection{Interrupts}
-Der Intel 8080 ist in der Lage Interrupts auszuführen, die den normalen Programmfluss unterbrechen. Dies ist aber nur zwischen Befehlen möglich. Wenn ein Interrupt eintritt während ein Befehl noch ausgeführt wird, wird dieser zuerst bis zum Schluss noch ausgeführt. Besonders bei den Interrupts ist, dass jeder Interrupt ein Byte mitliefert, das angibt, was der Interrupt ausführen soll. Dabei ist jeder Befehl erlaubt, der nur ein Byte benötigt. Somit kann auch nur ein Befehl ausgeführt werden. Damit aber auch größere Interrupt Service Routines möglich sind gibt es den RST-Befehl. Dieser Befehl schreibt, den aktuellen Programmzähler auf den Stack und springt an eine von acht Stellen im Programmspeicher. Welche Stelle genau wird im RST-Befehl dekodiert. Diese acht Sprungpunkte liegen alle genau acht Byte auseinander. Falls dies aber für den Interrupt nicht ausreicht, kann von dort an eine andere Stelle im Programmspeicher gesprungen werden. Da der Intel 8080 eine von Neumann Architektur verwendet und der Stack irgendwo im normalen Programmspeicher (64kB) liegt, gibt es so gut wie keine Größenlimitierung dafür. Bei manchen anderen Prozessoren kann der Stack z.B. maximal Acht Einträge besitzen. Da der Intel 8080 dieses Problem nicht hat, wurde es für diesen möglich gemacht, dass Interrupts durch andere Interrupts unterbrochen werden können. Durch den RST-Befehl wird der momentane Programmzähler immer auf den Stack geschrieben. Somit kann immer der neueste Interrupt ausgeführt werden und kann dann zum zuvor ausgelösten Interrupt zurückspringen.
+Der Intel 8080 ist in der Lage Interrupts auszuführen, die den normalen Programmfluss unterbrechen. Dies ist aber nur zwischen Befehlen möglich. Wenn ein Interrupt eintritt, während ein Befehl noch ausgeführt wird, wird dieser zuerst bis zum Schluss noch ausgeführt. Eine Besonderheit der Interrupts ist, dass jeder Interrupt ein Byte mitliefert, das angibt, was der Interrupt ausführen soll. Dabei ist jeder Befehl erlaubt, der nur ein Byte benötigt. Somit kann auch nur ein Befehl ausgeführt werden. Damit aber auch größere Interrupt Service Routines möglich sind gibt es den RST-Befehl. Dieser Befehl schreibt, den aktuellen Programmzähler auf den Stack und springt an eine von acht Stellen im Programmspeicher. Welche Stelle genau wird im RST-Befehl dekodiert. Diese acht Sprungpunkte liegen alle genau acht Byte auseinander. Falls dies aber für den Interrupt nicht ausreicht, kann von dort an eine andere Stelle im Programmspeicher gesprungen werden. Da der Intel 8080 eine von-Neumann-Architektur verwendet und der Stack an einer beliebigen Stelle im Programmspeicher (64kB) liegen kann, gibt es so gut wie keine Größenlimitierung dafür. Bei manchen anderen Prozessoren kann der Stack z.B. maximal acht Einträge besitzen. Für den Intel 8080 wurde es ermöglicht, dass Interrupts durch andere Interrupts unterbrochen werden können. Durch den RST-Befehl wird der momentane Programmzähler immer auf den Stack geschrieben. Somit kann immer der neueste Interrupt ausgeführt werden und kann dann zum zuvor ausgelösten Interrupt zurückspringen.
 
 
 \newpage
@@ -524,25 +524,25 @@ Der Intel 8080 ist in der Lage Interrupts auszuführen, die den normalen Program
 \section{Umsetzung}
 Von Nico\\
 \noindent
-In diesem Kapitel wird darauf eingegangen wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
+In diesem Kapitel wird darauf eingegangen, wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
 
 \subsection{Abstraktion der Architektur}
-Es ist geplant, dass der Prozessor in verschiedene Unterklassen aufgeteilt wird. Dabei ist vorgesehen das dies in einer Art Stern-Struktur aufgebaut wird, das heißt die verschiedenen Bestandteile des Prozessors sollen alle mit einer zentralen Klasse interagieren, aber nicht untereinander.
+Der Prozessor wird in verschiedene Unterklassen aufgeteilt. Dabei ist vorgesehen, dass dies in einer Art Sternstruktur aufgebaut wird, das heißt die verschiedenen Bestandteile des Prozessors sollen alle mit einer zentralen Klasse interagieren, aber nicht untereinander.
 
 \subsubsection{Prozessor}
-Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zu unterscheiden zwischen zwei Arten von Anfragen, gültige und ungültige. Gemeint sind damit Anfragen die in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen die unzulässig wären, wie den Programmzähler manuell zu setzen.
+Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zwischen zwei Arten von Anfragen zu unterscheiden, gültigen und ungültigen. Gemeint sind damit Anfragen die in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen, die unzulässig wären, wie den Programmzähler manuell zu setzen.
 
 \subsubsection{ALU}
-Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten. Wie sich im weiteren Verlauf des Projekts entschieden wurde, soll das Ausführen der verschiedenen Operationen dabei eher emuliert als simuliert werden. Um eine entsprechende Genauigkeit zu gewährleisten werden deshalb nicht ganze Instruktionen sondern die einzelnen Maschinenzyklen und Zuständen ausgeführt.
+Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren, um ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen manuell in der Prozessor-Klasse abzuarbeiten. Im Verlauf des Projektes wrude die Entscheidung getroffen, das Ausführen der verschiedenen Operationen eher zu emulieren als zu simulieren. Um eine entsprechende Genauigkeit zu gewährleisten, werden deshalb nicht ganze Instruktionen, sondern die einzelnen Maschinenzyklen und Zustände ausgeführt.
 
 \subsubsection{Register}
-Die Register-Klasse soll ähnlich wie die ALU den Zugriff möglichst realitätsgetreu simulieren. Dabei sollen Methoden die den Zugriff regeln ähnlich aufgebaut werden wie es im echten Prozessor möglich wäre.
+Die Register-Klasse soll ähnlich wie die ALU den Zugriff auf Register möglichst realitätsgetreu simulieren. Dabei sollen Methoden, die den Zugriff regeln, ähnlich aufgebaut werden wie es im echten Prozessor möglich wäre.
 
 \subsubsection{Peripherie}
-Mit der Peripherie soll alles abgedeckt werden was nicht Teil der zentralen Bestandteile ist, also der Register oder der ALU. Dazu zählt zum Beispiel ein externer Datenbus oder Schnittstellen für bspw. Taktsignal o.ä.
+Mit der Peripherie soll alles abgedeckt werden, was nicht Teil der zentralen Bestandteile ist, also der Register oder der ALU. Dazu zählt zum Beispiel ein externer Datenbus oder Schnittstellen für Taktsignal o.Ä.
 
 \subsection{Möglichkeiten der Simulation}
-Um einen Ablauf für die Simulation festzulegen muss erst bestimmt werden, welche Parameter eingestellt, welche Optionen verändert und welche Operationen im Simulator durchgeführt werden können. Geplant ist das die Simulation zu jedem Zeitpunkt unterbrechbar sein soll. Der kleinste Zeitabschnitt für den dies sinnvoll ist, wäre ein einzelner Zustand eines Maschinenzyklus. Es ist geplant, dass alle Register die in der Register-Klasse modelliert sind auch in der Benutzeroberfläche dargestellt und auch manipuliert werden können. Zu manipulierbaren Registern soll auch der Programmspeicher zählen. Dieser soll entweder manuell befüllbar sein oder über eine externe Datei. Für das externe befüllen muss der für den Simulator vorgegebene Assembler verwendet werden. Das manipulieren des Speichers soll auch während der Simulation möglich sein.
+Um einen Ablauf für die Simulation festzulegen, muss zuerst bestimmt werden, welche Parameter eingestellt, welche Optionen verändert, und welche Operationen im Simulator durchgeführt werden können. Geplant ist, dass die Simulation zu jedem Zeitpunkt unterbrechbar sein soll. Der kleinste Zeitabschnitt, für den dies sinnvoll ist, wäre ein einzelner Zustand eines Maschinenzyklus. Es ist geplant, dass alle in der Register-Klasse modellierten Register auch in der Benutzeroberfläche dargestellt und manipuliert werden können. Zu manipulierbaren Registern soll auch der Programmspeicher zählen. Dieser soll entweder manuell oder über eine externe Datei befüllbar sein. Für das externe Befüllen muss der für den Simulator vorgegebene Assembler verwendet werden. Die Manipulation des Speichers soll auch während der Simulation möglich sein.
 
 \subsection{Ablauf der Simulation}
 \todo
