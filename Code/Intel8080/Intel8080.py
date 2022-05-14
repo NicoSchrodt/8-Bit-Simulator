@@ -194,7 +194,7 @@ class Intel8080(AbstractProcessor):
     def next_state_internal(self):
         if self.current_instruction_state == 1:
             self.current_instruction = Nop(self)
-            print("-------------------new Instruction-------------------")  # TODO HALT MODE
+            print("-------------------new Instruction-------------------")
             self.StateLogger.addEntry("----new Instruction----")
             if self.interrupted:
                 if self.interrupt_enabled:
