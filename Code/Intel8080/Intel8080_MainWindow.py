@@ -19,7 +19,7 @@ class runThread(QObject):
     @QtCore.pyqtSlot()
     def monitor(self):
         while not self.ExitFlag:
-            sleep(0.1)  # Prevents freezing, may need fine-tuning
+            sleep(0.2)  # Prevents freezing, may need fine-tuning
             self.Source.emit()
 
 
@@ -311,6 +311,9 @@ class Intel8080_MainWindow(QMainWindow):
             print("Performed Instruction, Automatic")
             self.processor.next_instruction()
             self.update_ui()
+            if self.processor.get_pc() in self.instruction_positions:
+                if self.Program_table.item(self.instruction_positions.index(self.processor.get_pc()), 0).text() == "B":
+                    self.autorun = False
 
     def perform_instruction(self):
         if self.actionCheck():
@@ -363,6 +366,10 @@ class Intel8080_MainWindow(QMainWindow):
 
     def fill_program_table(self):
         self.instruction_positions = []
+        breakpoint_list = []
+        for i in range(self.Program_table.rowCount()):
+            if self.Program_table.item(i, 0).text() == "B":
+                breakpoint_list.append(i)
         self.Program_table.setRowCount(0)  # Clear Table
         try:
             i = 0
@@ -393,6 +400,9 @@ class Intel8080_MainWindow(QMainWindow):
                                 self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
                                 break
                 i += operands + 1
+            for i in range(len(breakpoint_list)):
+                if self.Program_table.rowCount() >= breakpoint_list[i]:
+                    self.Program_table.setItem(breakpoint_list[i], 0, QTableWidgetItem("B"))
         except Exception as e:
             print("ERROR: " + str(e))
 
@@ -434,7 +444,7 @@ class Intel8080_MainWindow(QMainWindow):
         Registers_table.cellWidget(1, 0).setText(str(Processor.get_sp()))  # SP
         Registers_table.cellWidget(2, 0).setText(str(Processor.get_acc()))  # ACC
         Registers_table.cellWidget(3, 0).setText(str(Processor.get_act()))  # Temp-ACC
-        Registers_table.cellWidget(4, 0).setText(str(Processor.get_instruction_reg()))  # INST
+        Registers_table.cellWidget(4, 0).setText(str(hex(Processor.get_instruction_reg())))  # INST
 
     def update_registers_table(self):  # This function makes the registers match the ui
         Processor = self.processor
