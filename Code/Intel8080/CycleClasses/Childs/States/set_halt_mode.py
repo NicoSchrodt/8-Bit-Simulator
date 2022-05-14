@@ -7,5 +7,5 @@ class set_halt_mode(State):
 
     def run(self):
         print("set_halt_mode")
-        self.processor.halt = True
+        self.processor.halted = True
         self.processor.StateLogger.addEntry("set_halt_mode")

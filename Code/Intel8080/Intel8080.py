@@ -94,10 +94,10 @@ class Intel8080(AbstractProcessor):
 
         self.program = [0] * pow(2, 16)
         self.program_length = 0
-        self.interrupt_enabled = False
+        self.interrupt_enabled = True
         self.interrupted = False
         self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
-        self.halt = False
+        self.halted = False
 
         self.cpu_instruction_register = np.uint8(0x00)
         self.current_instruction = Nop(self)
@@ -200,9 +200,14 @@ class Intel8080(AbstractProcessor):
                 if self.interrupt_enabled:
                     self.current_instruction = Interrupt(self)
                     self.interrupted = False
-                    self.StateLogger.addEntry("Interrupt acknowledged")
+                    self.halted = False
+                    self.StateLogger.addEntry("----Interrupt acknowledged----")
                 else:
-                    self.StateLogger.addEntry("Interrupt is disabled")
+                    self.StateLogger.addEntry("----Interrupt is disabled----")
+
+        if self.halted:
+            self.StateLogger.addEntry("----Halt Mode----")
+            return True
 
         if self.current_instruction_state == 4:
             self.decode_instruction()
@@ -543,7 +548,7 @@ class Intel8080(AbstractProcessor):
         self.interrupt_enabled = False
         self.interrupted = False
         self.interrupt_instruction = 0xC7  # RST 0H = 0xC7
-        self.halt = False
+        self.halted = False
 
         self.cpu_instruction_register = np.uint8(0x00)
         self.current_instruction = Nop(self)
@@ -666,7 +671,7 @@ class Intel8080(AbstractProcessor):
         return self.interrupt_enabled
 
     def is_halted(self):
-        return self.halt
+        return self.halted
 
     def push_sp(self, value, offset):
         sp = self.ALU.get_sp()
@@ -1006,7 +1011,7 @@ class Intel8080(AbstractProcessor):
         self.interrupt_enabled = True
 
     def hlt(self):
-        self.halt = True
+        self.halted = True
 
     def in_put(self):
         data = self.get_byte_from_data_bus()
