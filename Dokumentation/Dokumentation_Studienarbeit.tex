@@ -317,7 +317,7 @@ Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch
 Von Andreas\\ 
 
 \noindent
-Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. 
+Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren.
 
 \subsubsection{Register}
 \label{RegisterSection}
@@ -787,7 +787,7 @@ Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Metho
 
 \noindent
 Der Befehl DCX reduziert das angegebene 16-Bit Register um 1. 
-Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX-Befehls. 
+Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX-Befehls.
 Dort ist zu sehen, dass es bei den 16-Bit Registern ein grundlegende Unterscheidung gibt. Es gibt einen Fall für den Stackpointer und einen für die anderen 16-Bit Register, die aus zwei 8-Bit Registern zusammengesetzt werden. Mittels des Übergebenen Parameter rp kann ermittelt werden ob es sich um den Stackpointer (rp  == 3 bedeutet Stackpointer) handelt, der angepasst werden soll. 
 Der Stackpointer kann einfach einmal ausgelesen, um 1 reduziert, und dann wieder in sein Register gespeichert werden.
 Bei den zusammengesetzten 16-Bit Registern, werden zuerst beide 8-Bit Register ausgelesen und dann zusammengebaut. Dieses Ergebnis kann dann um 1 reduziert werden. Danach wird der 16-Bit Wert wieder aufgetrennt und in die 8-Bit Register gespeichert. 
@@ -859,7 +859,7 @@ Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag v
 \label{SPS_impl}
 
 \noindent
-In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinenzyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinenzyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors. 
+In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinenzyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinenzyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors.
 
 \subsubsection{Aufbau eines Befehls}
 
@@ -877,7 +877,7 @@ Ein Zustand besitzt nur eine Referenz zum Prozessor und eine run()-Methode, die 
 \subsubsection{Programmablauf}
 
 Wie bei der ersten Version dieses Simulator, wird ein .com-Datei benötigt um ein Programm ausführen zu lassen. Über die GUI kann eine solche Datei eingelesen werden. Damit wird wieder der Programmspeicher befüllt.
-Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinenzyklus oder Zustand auslöst. Bei dem \glqq Next State\grqq\ -Knopf wird genau ein Zustand ausgeführt. Bei dem \glqq Next Machine Cycle\grqq\ -Knopf wird der aktuelle Maschinenzyklus bis zum Schluss ausgeführt. Der  \glqq Next Instruction\grqq\ -Knopf verhält sich wie der Maschinenzyklus-Knopf. Der \glqq Go\grqq\ -Knopf führt zu solange den nächsten Zustand aus bis der Knopf wieder gedrückt wird. Die drei ersten Knöpfe sind auf eine Methode in der Intel8080-Klasse gebunden, die den selben Namen tragen wie der Knopf. Jeder dieser Methoden gibt True zurück, wenn der nächste auszuführende Zustand zu einem neuen Befehl gehört. 
+Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinenzyklus oder Zustand auslöst. Bei dem \glqq Next State\grqq\ -Knopf wird genau ein Zustand ausgeführt. Bei dem \glqq Next Machine Cycle\grqq\ -Knopf wird der aktuelle Maschinenzyklus bis zum Schluss ausgeführt. Der  \glqq Next Instruction\grqq\ -Knopf verhält sich wie der Maschinenzyklus-Knopf. Der \glqq Go\grqq\ -Knopf führt zu solange den nächsten Zustand aus bis der Knopf wieder gedrückt wird. Die drei ersten Knöpfe sind auf eine Methode in der Intel8080-Klasse gebunden, die den selben Namen tragen wie der Knopf. Jeder dieser Methoden gibt True zurück, wenn der nächste auszuführende Zustand zu einem neuen Befehl gehört.
 Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Methode aus, bis diese True zurückliefert. Diese wiederum führt solange die next\_state\_internal()-Methode aus, bis diese True zurückliefert. Diese liefert True, wenn der letzte Zustand eines Maschinenzyklus ausgeführt wurde. Die next\_state()-Methode ruft nur einmal die next\_state\_internal()-Methode auf.
 
 \noindent
@@ -994,8 +994,8 @@ Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die untersc
 
 \noindent
 Für die Addition ohne Carry gibt es diese drei Typen. ADD r verwendet ein Register. ADD m verwendet einen Wert, der irgendwo im Programmspeicher liegt und der ADI-Befehl verwendet das zweite Byte des Befehls als Summand. Alle drei Befehle müssen das Gleiche machen. Einen Wert mit dem Akkumulator addieren. Dazu nutzt jeder Befehl aber Werte von unterschiedlichen Stellen und müssen diese unterschiedlich laden. 
-Als letzter Maschinenzyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinenzyklus. 
-In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinenzyklen, andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}). 
+Als letzter Maschinenzyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinenzyklus.
+In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinenzyklen, andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}).
 \\
 
 \noindent
@@ -1074,7 +1074,7 @@ ADD_MC
 \end{table}
 
 \subsubsection{Interrupts}
-Damit Interrupts ausgeführt werden können wurde ein Interrupt-Befehl implementiert. Dieser führt nicht wirklich den Interrupt aus. Dieser ist nur dazu da, dass im zweiten Zustand nicht der Programmzähler um eins erhöht wird. In dem Handbuch zum Intel 8080 \cite{IntMan16} ist davon die Rede, dass der Interrupt-Maschinenzyklus nur ein normaler Fetchzyklus ist, bei dem eben der Programmzähler nicht erhöht. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der Erste, um den Maschinenzyklus auf dem Datenbus zu beschreiben, der zweite um den Programmzähler zu erhöhen und den dritten, um den nächsten Befehl einzulesen und in das Instruction-Register zu schreiben. Somit wäre ein Fetchzyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten Zustand, einen leeren Zustand. Dieser ist deswegen wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden. 
+Damit Interrupts ausgeführt werden können wurde ein Interrupt-Befehl implementiert. Dieser führt nicht wirklich den Interrupt aus. Dieser ist nur dazu da, dass im zweiten Zustand nicht der Programmzähler um eins erhöht wird. In dem Handbuch zum Intel 8080 \cite{IntMan16} ist davon die Rede, dass der Interrupt-Maschinenzyklus nur ein normaler Fetchzyklus ist, bei dem eben der Programmzähler nicht erhöht. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der Erste, um den Maschinenzyklus auf dem Datenbus zu beschreiben, der zweite um den Programmzähler zu erhöhen und den dritten, um den nächsten Befehl einzulesen und in das Instruction-Register zu schreiben. Somit wäre ein Fetchzyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten Zustand, einen leeren Zustand. Dieser ist deswegen wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden.
 
 \subsubsection{Besonderheiten des Simulators}
 Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. Im folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
@@ -1089,7 +1089,7 @@ In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, das
 \\
 
 \noindent
-In jedem ersten Zustand aller Maschinenzyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinenzyklus ausgeführt wird. 
+In jedem ersten Zustand aller Maschinenzyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinenzyklus ausgeführt wird.
 Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state} \textbf{TODO}) nur so viel steht \todo wie \glqq PC OUT STATUS\grqq\ im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus codiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
 
 \imgSpaceBefore
@@ -1237,6 +1237,52 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die 'update\_ui'-Funktion alle Elemente aktualisiert arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{bilder/reloadRegs}
+\caption{Special Register Refresh}
+\label{fig:reloadRegs}
+\end{figure}
+
+\noindent
+Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simulators seinen Zustand ändert (beispielsweise ein einzelnes Register im Speicher), liest die Funktion einfach über die im Simulator definierte Schnittstellen alle für das Element relevanten Werte aus und trägt sie im korrekten Format in die Tabelle ein. Dieses Verhalten gilt auch in ähnlicher Weise für die 'reload\_register\_array\_table'- und die 'reload\_program\_memory\_table'-Funktion. Etwas anders funktioniert die Funktion, welche den Programmspeicher parst ('fill\_program\_table') um das Programm übersichtlich mit der entsprechenden Bedeutung des Bytebefehls darzustellen (siehe Abbildung \ref{fig:FillProgReg}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{bilder/FillProgTable}
+\caption{Program Table Function}
+\label{fig:FillProgReg}
+\end{figure}
+
+\noindent
+Zuerst werden alle Einträge der Tabelle gelöscht woraufhin über alle Register im Programmspeicher iteriert wird. Da in jedem Eintrag der Tabelle ein Befehl, sowie dessen Operanden stehen sollen, wird über eine Liste (instruction\_positions) der Index jedes Befehls gespeichert. Dadurch soll sichergestellt werden, dass Operanden in die selbe Zeile geschrieben werden wie der Befehl zu dem sie gehören. Das bestimmen des Befehls sowie der Anzahl Operanden pro Befehl geschieht über ein Dictionary. Die Abfrage funktioniert so funktioniert so, dass die Masken für jeden Befehl mit dem Bytecode im Programmspeicher verundet werden und geschaut wird ob sich der resultierende Eintrag im Dictionary findet (siehe Abbildung \ref{fig:Dict}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{bilder/CmdDictExample}
+\caption{Dictionary Ausschnitt}
+\label{fig:Dict}
+\end{figure}
+
+\noindent
+Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnung des Befehls und, falls angewendet, die Maske zum bestimmen des Befehls. Um keine zufälligen Treffer zu erzielen (beispielsweise verunden mit falscher Maske führt zu anderem Befehl) wird nach einer Übereinstimmung im Dictionary die 'mask\_validation'-Funktion verwendet (siehe Abbildung \ref{fig:MaskValid}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{bilder/mask_valid}
+\caption{Mask Validation Function}
+\label{fig:MaskValid}
+\end{figure}
+
+\noindent
+Hierbei wird zuerst überprüft ob der vermeintliche Befehl eine Maske verwendet und dann ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als dieser interpretiert werden, wurde sich dazu entschieden diese Einträge zusammenzufassen insofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable 'i' addiert um die Einträge der Operanden zu überspringen.
+
+%Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
+
+\subsubsection{Manipulieren der Simulation}
+Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
 Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
 
 \begin{itemize}
@@ -1257,7 +1303,7 @@ Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{cha
 
 \noindent
 \textbf{FALSCHE FUNKTION, DIE HIER SCHREIBT ES IN DIE UI, UMSCHREIBEN}\\
-Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird über die Prozessorfunktion 'get\_memory\_byte' bezogen und in Hexadezimal-Darstellung umgewandelt. Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
+Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird über die Prozessorfunktion 'get\_memory\_byte' bezogen und in Hexadezimal-Darstellung umgewandelt. Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert.
 
 \newpage
 
