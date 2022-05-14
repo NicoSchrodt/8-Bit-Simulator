@@ -352,7 +352,7 @@ Bei Interrupts und Branch Befehlen gibt es nur den \glqq Direct\grqq\ und \glqq 
 \\ 
 
 \noindent
-Der Prozessor besitzt fünf Condition Flags. Das Zero flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry flag, welches ebenfalls einen Übertrag oder Abzug anzeigt aber zwischen dem vierten (Bit 3) und fünften Bit (Bit 4). \cite{IntMan45}
+Der Prozessor besitzt fünf Condition Flags. Das Zero-Flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign-Flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts-Flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry-Flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry-Flag, welches ebenfalls einen Übertrag oder Abzug anzeigt, aber zwischen Bit 3 und Bit Bit 4. \cite{IntMan45}
 \\
 
 \subsubsection{OP-Code Codierung}
@@ -376,8 +376,13 @@ Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In 
 \label{table:opcode}
 \end{table}
 
-\subsubsection{Data Transfer Group}
-Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser Befehle werden die Condition Flags gesetzt oder zurückgesetzt.
+\subsubsection{Befehlsgruppen}
+Jeder Befehl kann genau einer der folgenden fünf Gruppen zugeordnet werden. Jede Gruppe verhält sich anders mit den Status-Flags. So gibt es eine Gruppe, bei der die meisten Befehle alle Flags ändern, aber auch Gruppen, wobei die meisten Befehle, kein einziges Flag verändern. 
+\\
+
+\noindent
+\textbf{Data Transfer Group}\\
+Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser Befehle werden die Condition Flags gesetzt oder zurückgesetzt. Alle Befehle, die dieser Gruppe angehören, schreiben ausschließlich Daten in Register oder in den Programmspeicher. Es werden keine Rechenoperationen oder Sprünge ausgeführt. Zu dieser Gruppe gehören die folgenden Befehle:
 
 \begin{multicols}{2}
 \begin{itemize}
@@ -397,14 +402,11 @@ Für den Prozessor sind 13 Befehle aus dieser Gruppe bekannt. Bei keinem dieser 
 \end{itemize}
 \end{multicols}
 
+\vspace{10pt}
+\noindent
+\textbf{Arithmetic Group}\\
+Dieser Gruppe gehören 20 Befehle an. Die meisten dieser Befehle beeinflussen alle Statusflags. Ausnahmen bilden dabei der INR- und DCR-Befehl, der INX- und DCX-Befehl und der DAD-Befehl. Der INR- und DCR-Befehl beeinflussen alle Flags außer das Carry-Flag. Der DAD-Befehl verändert ausschließlich das Carry-Flag. Keine Flags werden bei dem INX- und DCX-Befehl beeinflusst. Zu dieser Gruppe gehören die Befehle, die arithmetische Operation ausführen, also z.B. Additionen oder Subtraktionen.
 
-\subsubsection{Arithmetic Group}
-20 Befehle
-Unless indicated otherwise, all instructions in this
-group affect the Zero, Sign, Parity, Carry, and Auxiliary
-Carry flags accord ing to the standard rules.
-All subtraction operations are performed via two's
-complement arithmetic and set the carry flag to one to indicate a borrow and clear it to indicate no borrow
 
 \begin{multicols}{2}
 \begin{itemize}
@@ -431,11 +433,10 @@ complement arithmetic and set the carry flag to one to indicate a borrow and cle
 \end{itemize}
 \end{multicols}
 
-\subsubsection{Logical Group}
-19 Befehle
-Unless indicated otherwise, all instructions in this
-group affect the Zero, Sign, Parity, Auxiliary Carry, and
-Carry flags according to the standard rules
+\vspace{10pt}
+\noindent
+\textbf{Logical Group}\\
+19 Befehle sind aus dieser Gruppe bekannt. Diese Gruppe enthält Befehle, die logische Operationen wie UND und ODER ausführen. Bis auf die Rotations-, die Komplement- und den Set-Carry-Befehl werden immer alle Flags beeinflusst.
 
 \begin{multicols}{2}
 \begin{itemize}
@@ -461,10 +462,10 @@ Carry flags according to the standard rules
 \end{itemize}
 \end{multicols}
 
-
-\subsubsection{Branch Group}
-8 Befehle
-Flags are not affected
+\vspace{10pt}
+\noindent
+\textbf{Branch Group}\\
+Zu dieser Gruppe werden die Befehle dazu gezählt, die den standardmäßigen Programmablauf verändern. Dazu zählen die Sprung-, Call-, Return-Befehle. Zusätzlich dazu noch der Restart und  und Move H and L to PC-Befehl. Keiner diese Befehle verändert ein Flag. Der Intel 8080 kennt eigentlich nur einen Conditional-Befehl pro Sprung/Call etc. Für den Assembler können aber eigene Mnemonics für die unterschiedlichen Flags verwendet werde. 
 
 \begin{itemize}
 \item Jump
@@ -477,10 +478,11 @@ Flags are not affected
 \item Jump H and L indirect - move H and L to PC
 \end{itemize}
 
-\subsubsection{Stack, I/O and Machine Control Group}
-12  Befehle
-Unless otherwise specified, condition flags are not
-affected by any instructions in this group
+\vspace{10pt}
+\noindent
+\textbf{Stack, I/O and Machine Control Group}\\
+Die Befehle, die dieser Gruppe angehören, verändern entweder den Stack, interne Status-Flags oder sind für Ein- und Ausgaben zuständig. Zusätzlich dazu wird auch der NOP-Befehl (No Operation) dazu gezählt, obwohl er keines der Kriterien erfüllt. Letztendlich kann der NOP-Befehl keiner Gruppe genau zugewiesen werden, da dieser eben nichts macht.
+In dieser Gruppe verändert nur der POP rp-Befehl die Flags
 
 \begin{multicols}{2}
 \begin{itemize}
@@ -893,9 +895,9 @@ Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_re
 Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Dadurch, dass aber jeder Befehl, Maschinen Zyklus und Zustand eine eigene Klasse  hat gibt es nun wesentlich mehr Klassen. Insgesamt gibt es:
 
 \begin{itemize}
-\item 73 Befehls-Klassen
-\item 84 Maschinen Zyklen-Klassen
-\item 100 Zustands-Klassen
+\item 74 Befehls-Klassen
+\item 85 Maschinen Zyklen-Klassen
+\item 101 Zustands-Klassen
 \end{itemize}
 
 \noindent
