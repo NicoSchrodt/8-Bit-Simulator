@@ -25,17 +25,17 @@ class runThread(QObject):
 
 command_dict = {
     0xCE: [1, "ACI"],  # ACI
-    0x88: [0, "ADC"],  # ADC BIT 0-2 REG --> 0xF8
-    0x80: [0, "ADD"],  # ADD BIT 0-2 REG --> 0xF8
+    0x88: [0, "ADC", 0xF8],  # ADC BIT 0-2 REG --> 0xF8
+    0x80: [0, "ADD", 0xF8],  # ADD BIT 0-2 REG --> 0xF8
     0xC6: [1, "ADI"],  # ADI
-    0xA0: [0, "ANA"],  # ANA BIT 0-2 REG --> 0xF8
+    0xA0: [0, "ANA", 0xF8],  # ANA BIT 0-2 REG --> 0xF8
     0xE6: [1, "ANI"],  # ANI
     0xCD: [2, "CALL"],  # CALL
     0xDC: [2, "CALL CC"],  # CALL CC
     0xFC: [2, "CALL CM"],  # CALL CM
     0x2F: [0, "CMA"],  # CMA
     0x3F: [0, "CMC"],  # CMC
-    0xB8: [0, "CMP"],  # CMP BIT 0-2 REG --> 0xF8
+    0xB8: [0, "CMP", 0xF8],  # CMP BIT 0-2 REG --> 0xF8
     0xD4: [2, "CALL CNC"],  # CALL CNC
     0xC4: [2, "CALL CNZ"],  # CALL CNZ
     0xF4: [2, "CALL CP"],  # CALL CP
@@ -44,15 +44,15 @@ command_dict = {
     0xE4: [2, "CALL CPO"],  # CALL CPO
     0xCC: [2, "CALL CZ"],  # CALL CZ
     0x27: [0, "DAA"],  # DAA
-    0x09: [0, "DAD"],  # DAD BIT 4-5 OP --> 0xCF
-    0x05: [0, "DCR"],  # DCR BIT 3-5 REG --> 0xC7
-    0x0B: [0, "DCX"],  # DCX BIT 4-5 OP --> 0xCF
+    0x09: [0, "DAD", 0xCF],  # DAD BIT 4-5 OP --> 0xCF
+    0x05: [0, "DCR", 0xC7],  # DCR BIT 3-5 REG --> 0xC7
+    0x0B: [0, "DCX", 0xCF],  # DCX BIT 4-5 OP --> 0xCF
     0xF3: [0, "DI"],  # DI
     0xFB: [0, "EI"],  # EI
     0x76: [0, "HLT"],  # HLT
     0xDB: [1, "IN"],  # IN
-    0x04: [0, "INR"],  # INR BIT 3-5 REG --> 0xC7
-    0x03: [0, "INX"],  # INX BIT 4-5 OP --> 0xCF
+    0x04: [0, "INR", 0xC7],  # INR BIT 3-5 REG --> 0xC7
+    0x03: [0, "INX", 0xCF],  # INX BIT 4-5 OP --> 0xCF
     0xDA: [2, "JC"],  # JC
     0xFA: [2, "JM"],  # JM
     0xC3: [2, "JMP"],  # JMP
@@ -66,16 +66,16 @@ command_dict = {
     0x0A: [0, "LDAX B"],  # LDAX_B
     0x1A: [0, " LDAX D"],  # LDAX_D
     0x2A: [2, "LHLD"],  # LHLD
-    0x01: [2, "LXI"],  # LXI BIT 4-5 REG --> 0xCF
-    0x40: [0, "MOV"],  # MOV BIT 0-2, 3-5 OP --> 0xC0
-    0x06: [1, "MVI"],  # MVI BIT 3-5 DATA --> 0xC7
+    0x01: [2, "LXI", 0xCF],  # LXI BIT 4-5 REG --> 0xCF
+    0x40: [0, "MOV", 0xC0],  # MOV BIT 0-2, 3-5 OP --> 0xC0
+    0x06: [1, "MVI", 0xC7],  # MVI BIT 3-5 DATA --> 0xC7
     0x00: [0, "NOP"],  # NOP
-    0xB0: [0, "ORA"],  # ORA BIT 0-2 REG --> 0xF8
+    0xB0: [0, "ORA", 0xF8],  # ORA BIT 0-2 REG --> 0xF8
     0xF6: [1, "ORI"],  # ORI
     0xD3: [1, "OUT"],  # OUT
     0xE9: [0, "PCHL"],  # PCHL
-    0xC1: [0, "POP"],  # POP BIT 4-5 OP --> 0xCF
-    0xC5: [0, "PUSH"],  # PUSH BIT 4-5 OP --> 0xCF
+    0xC1: [0, "POP", 0xCF],  # POP BIT 4-5 OP --> 0xCF
+    0xC5: [0, "PUSH", 0xCF],  # PUSH BIT 4-5 OP --> 0xCF
     0x17: [0, "RAL"],  # RAL
     0x1F: [0, "RAR"],  # RAR
     0xD8: [0, "RC"],  # RC
@@ -88,9 +88,9 @@ command_dict = {
     0xE8: [0, "RPE"],  # RPE
     0x70: [0, "RPO"],  # RPO
     0x0F: [0, "RRC"],  # RRC
-    0xC7: [0, "RST"],  # RST BIT 3-5 OP --> 0xC7
+    0xC7: [0, "RST", 0xC7],  # RST BIT 3-5 OP --> 0xC7
     0xC8: [0, "RZ"],  # RZ
-    0x98: [0, "SBB"],  # SBB BIT 0-2 REG --> 0xF8
+    0x98: [0, "SBB", 0xF8],  # SBB BIT 0-2 REG --> 0xF8
     0xDE: [1, "SBI"],  # SBI
     0x22: [2, "SHLD"],  # SHLD
     0xF9: [0, "SPHL"],  # SPHL
@@ -98,10 +98,10 @@ command_dict = {
     0x02: [0, "STAX B"],  # STAX_B
     0x12: [0, "STAX D"],  # STAX_D
     0x37: [0, "STC"],  # STC
-    0x90: [0, "SUB"],  # SUB BIT 1-3 REG --> 0xF8
+    0x90: [0, "SUB", 0xF8],  # SUB BIT 1-3 REG --> 0xF8
     0xD6: [1, "SUI"],  # SUI
     0xEB: [0, "XCHG"],  # XCHG
-    0xA8: [0, "XRA"],  # XRA BIT 0-2 REG --> 0xF8
+    0xA8: [0, "XRA", 0xF8],  # XRA BIT 0-2 REG --> 0xF8
     0xEE: [1, "XRI"],  # XRI
     0xE3: [0, "XTHL"],  # XTHL
 }
@@ -109,9 +109,23 @@ command_dict = {
 command_masks = [0xFF, 0xF8, 0xCF, 0xC7, 0xC0]
 
 
+def mask_validation(dict_entry, mask_index):
+    if len(dict_entry) > 2:  # Does the command have a mask?
+        if dict_entry[2] == command_masks[mask_index]:  # Is the used masked the correct mask?
+            return True
+        else:
+            return False
+    else:
+        if mask_index == 0:  # If not, is the choosen mask the standard mask?
+            return True
+        else:
+            return False
+
+
 class Intel8080_MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(Intel8080_MainWindow, self).__init__(None)
+        self.dialog = None
         self.mainW = parent
         self.init_ui("ui\\Intel8080_MainWindow.ui")
         self.init_register_table()
@@ -361,22 +375,23 @@ class Intel8080_MainWindow(QMainWindow):
                 for j in range(len(command_masks)):
                     masked_command = self.processor.program[i] & command_masks[j]
                     if masked_command in command_dict:
-                        if masked_command == 0x00:
-                            nop_counter += 1
-                        else:
-                            nop_counter = 0
-                        if not (nop_counter > 1):
-                            operands = command_dict[masked_command][0]
-                            row = self.Program_table.rowCount()
-                            self.Program_table.insertRow(row)
-                            self.Program_table.setItem(row, 0, QTableWidgetItem(""))
-                            itemtext = str(i)
-                            itemtext = itemtext + " " + command_dict[masked_command][1]
-                            itemtext = itemtext + " " + hex(self.processor.program[i])
-                            for k in range(i, i + operands):
-                                itemtext = itemtext + " " + hex(self.processor.program[k + 1])
-                            self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
-                            break
+                        if mask_validation(command_dict[masked_command], j):  # Checks whether mask used is even valid for resulting command
+                            if masked_command == 0x00:
+                                nop_counter += 1
+                            else:
+                                nop_counter = 0
+                            if not (nop_counter > 1):
+                                operands = command_dict[masked_command][0]
+                                row = self.Program_table.rowCount()
+                                self.Program_table.insertRow(row)
+                                self.Program_table.setItem(row, 0, QTableWidgetItem(""))
+                                itemtext = str(i)
+                                itemtext = itemtext + " " + command_dict[masked_command][1]
+                                itemtext = itemtext + " " + hex(self.processor.program[i])
+                                for k in range(i, i + operands):
+                                    itemtext = itemtext + " " + hex(self.processor.program[k + 1])
+                                self.Program_table.setItem(row, 1, QTableWidgetItem(itemtext))
+                                break
                 i += operands + 1
         except Exception as e:
             print("ERROR: " + str(e))
@@ -456,22 +471,21 @@ class Intel8080_MainWindow(QMainWindow):
         Processor.set_reg_array_direct('l', int(Register_array_table.cellWidget(3, 1).text(), 16))
 
     def reload_memory_table(self):  # make ui match the program memory
-        Startvalue = self.From_sb.value()
+        StartValue = self.From_sb.value()
         for i in range(8):
             for j in range(16):
-                address = Startvalue + i * 16 + j  # one rows = 16 bits, one column 1 bit
+                address = StartValue + i * 16 + j  # one rows = 16 bits, one column 1 bit
                 value = str(hex(self.processor.get_memory_byte(address))).replace('0x', '')
                 self.ProgramMemory_table.cellWidget(i, j).setText(str(value))
         values = []
-        for i in range(Startvalue, Startvalue + 144, 16):
+        for i in range(StartValue, StartValue + 144, 16):
             values.append(hex(i))
         self.ProgramMemory_table.setVerticalHeaderLabels(values)
 
     def update_memory_table(self):  # make program memory match the ui
-        Startvalue = self.From_sb.value()
+        StartValue = self.From_sb.value()
         for i in range(8):
             for j in range(16):
-                address = Startvalue + i * 16 + j  # one row = 16 bits, one column 1 bit
+                address = StartValue + i * 16 + j  # one row = 16 bits, one column 1 bit
                 value = int(self.ProgramMemory_table.cellWidget(i, j).text(), 16)
                 self.processor.set_memory_byte(address, value)
-        # TODO: Make sure to fix programTable as well after changing the program memory
