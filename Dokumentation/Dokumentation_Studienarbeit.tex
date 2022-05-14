@@ -1234,7 +1234,47 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die 'update\_ui'-Funktion alle Elemente aktualisiert arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{bilder/reloadRegs}
+\caption{Special Register Refresh}
+\label{fig:reloadRegs}
+\end{figure}
+
+\noindent
+Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simulators seinen Zustand ändert (beispielsweise ein einzelnes Register im Speicher), liest die Funktion einfach über die im Simulator definierte Schnittstellen alle für das Element relevanten Werte aus und trägt sie im korrekten Format in die Tabelle ein. Dieses Verhalten gilt auch in ähnlicher Weise für die 'reload\_register\_array\_table'- und die 'reload\_program\_memory\_table'-Funktion. Etwas anders funktioniert die Funktion, welche den Programmspeicher parst ('fill\_program\_table') um das Programm übersichtlich mit der entsprechenden Bedeutung des Bytebefehls darzustellen (siehe Abbildung \ref{fig:FillProgReg}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{bilder/FillProgTable}
+\caption{Program Table Function}
+\label{fig:FillProgReg}
+\end{figure}
+
+\noindent
+Zuerst werden alle Einträge der Tabelle gelöscht woraufhin über alle Register im Programmspeicher iteriert wird. Da in jedem Eintrag der Tabelle ein Befehl, sowie dessen Operanden stehen sollen, wird über eine Liste (instruction\_positions) der Index jedes Befehls gespeichert. Dadurch soll sichergestellt werden, dass Operanden in die selbe Zeile geschrieben werden wie der Befehl zu dem sie gehören. Das bestimmen des Befehls sowie der Anzahl Operanden pro Befehl geschieht über ein Dictionary. Die Abfrage funktioniert so funktioniert so, dass die Masken für jeden Befehl mit dem Bytecode im Programmspeicher verundet werden und geschaut wird ob sich der resultierende Eintrag im Dictionary findet (siehe Abbildung \ref{fig:Dict}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{bilder/CmdDictExample}
+\caption{Dictionary Ausschnitt}
+\label{fig:Dict}
+\end{figure}
+
+\noindent
+Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnung des Befehls und, falls angewendet, die Maske zum bestimmen des Befehls. Um keine zufälligen Treffer zu erzielen (beispielsweise verunden mit falscher Maske führt zu anderem Befehl) wird nach einer Übereinstimmung im Dictionary die 'mask\_validation'-Funktion verwendet (siehe Abbildung \ref{fig:MaskValid}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm]{bilder/mask_valid}
+\caption{Mask Validation Function}
+\label{fig:MaskValid}
+\end{figure}
+
+\noindent
+Hierbei wird zuerst überprüft ob der vermeintliche Befehl eine Maske verwendet und dann ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als dieser interpretiert werden, wurde sich dazu entschieden diese Einträge zusammenzufassen insofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable 'i' addiert um die Einträge der Operanden zu überspringen.
 
 %Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
 
