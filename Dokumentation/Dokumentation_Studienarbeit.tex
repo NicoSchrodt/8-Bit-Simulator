@@ -1195,10 +1195,12 @@ Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss
 Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten State jeder Instruction. Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:\imgSpaceBefore
 
 \begin{itemize}
-	\item update\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
-	\item update\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
-	\item update\_memory\_table: Aktualisiert Programmspeicher
+	\item reload\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
+	\item reload\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
+	\item reload\_memory\_table: Aktualisiert Programmspeicher
 	\item fill\_program\_table: Aktualisiert Programmtabelle
+	\item color\_program\_table: Färbt die derzeit ausgeführte Zeile der Programmtabelle
+	\item color\_cycle\_state: Färbt aktuellen Maschinenzyklus und Zustand in CycleState-Tabelle
 \end{itemize}
 \noindent
 In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, dass alle relevanten Werte neu geladen werden unabhängig davon ob sie sich verändert haben oder nicht. Bei wenigen Werten z.B. für die Register stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes parsen und filtern des Programmspeichers sowie füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui' Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
@@ -1232,27 +1234,54 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
+
+%Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
+
+\subsubsection{Manipulieren der Simulation}
+Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
 
 \begin{itemize}
-	\item reload\_registers\_table (PC, Instr, ACC, etc.)
-	\item reload\_register\_array\_table (b, c, d, e, etc.)
-	\item reload\_memory\_table (Programmspeicher)
+	\item update\_registers\_table (PC, Instr, ACC, etc.)
+	\item update\_register\_array\_table (b, c, d, e, etc.)
+	\item update\_memory\_table (Programmspeicher)
 \end{itemize}
 
 \noindent
-Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemReloadFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
+Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemUpdateFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{bilder/reloadMemFunc}
-\caption{Memory Reload Function}
-\label{fig:MemReloadFunc}
+\includegraphics[width=15cm]{bilder/UpdateProgMem}
+\caption{Memory Update Function}
+\label{fig:MemUpdateFunc}
 \end{figure}
 
 \noindent
-\textbf{FALSCHE FUNKTION, DIE HIER SCHREIBT ES IN DIE UI, UMSCHREIBEN}\\
-Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird über die Prozessorfunktion 'get\_memory\_byte' bezogen und in Hexadezimal-Darstellung umgewandelt. Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
+Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion 'set\_memory\_byte' werden die Werte dann einzeln zurückgeschrieben. Die drei 'update'-Funktionen werden im Gegensatz zu den 'reload'-Funktionen nur aufgerufen wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist ist bereits angesprochene Funktion die mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{bilder/PTC}
+\caption{Knopfdruck Funktion}
+\label{fig:PTC}
+\end{figure}
+
+\noindent
+Dabei wird der Knopf welcher die Funktion aufruft als Referenz an das neu erzeugte ChangeValueWindow übergeben. Dieser wird benötigt um zu bestimmen welches Element eine Werteänderung vornimmt. In Abbildung \ref{fig:CheckInput} ist die Funktion des ChangeValueWindow zu sehen welche die Eingabevalidierung vornimmt und die für das Element entsprechende 'update'-Funktion aufruft.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{bilder/CheckInput}
+\caption{InputValidation Function}
+\label{fig:CheckInput}
+\end{figure}
+
+\noindent
+Als erstes wird der Wert ausgelesen und der Index des Knopfes innerhalb der Tabelle bestimmt. Danach wird geprüft aus welchem Element der aufrufende Knopf stammt.
+
+\subsubsection{Sonstige Interaktionen}
+Range für Programtabelle, Interrupt senden, Log löschen
 
 \newpage
 
