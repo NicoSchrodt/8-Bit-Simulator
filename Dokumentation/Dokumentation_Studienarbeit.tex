@@ -60,7 +60,7 @@
 \newcommand{\DHBWLogoDeckblatt}{\includegraphics[width=4.5cm]{Logos/dhbw-logo}}
 \newcommand{\IntelDataLines}{\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}}
 
-\newcommand{\Titel}{Konzeptionierung eines Simulators für 8-bit Prozessoren}
+\newcommand{\Titel}{Konzeptionierung eines Simulators für 8-Bit Prozessoren}
 \newcommand{\ArtArbeit}{Studienarbeit}
 \newcommand{\Abschluss}{Bachelor of Science}
 \newcommand{\Studiengang}{Studiengang Informationstechnik}
@@ -248,7 +248,7 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
 
 \subsubsection{Parallelität nach Flynn}
 Von Andreas\\
-1966 wurden von Micheal Flynn die folgenden vier Arten von Parallelisierung eingeführt. \cite{Flynn}
+1966 wurden von Michael Flynn die folgenden vier Arten von Parallelisierung eingeführt. \cite{Flynn}
 
 \begin{itemize}
 \item Single-instruction stream, single-data stream (SISD)
@@ -278,15 +278,15 @@ Von Andreas\\
 Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
 
 \begin{itemize}
-\item Daten Transfer Gruppe
-\item Arithmetik Gruppe
+\item Daten Transfer-Gruppe
+\item Arithmetik-Gruppe
 \item Logische Gruppe
-\item Verzweigungs Gruppe
+\item Verzweigungsgruppe
 \item Stapel, Ein- Ausgänge und Maschinen Kontroll- Gruppe
 \end{itemize}
 
 \noindent
-Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOVE Befehlen. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. \cite{IntMan45}
+Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher. Ein einfaches Beispiel dafür sind Move-Befehle. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. \cite{IntMan45}
 \\
 
 \newpage
@@ -296,7 +296,7 @@ Bei Projektbeginn wurde kein konkretes Ziel vorgegeben. Es wurde nur verlangt, d
 \\\\
 Bei dem Multi-Prozessor-Simulator war geplant, dass nur die Befehle direkt ausführbar sein sollen. Sodass eine assemblierte Quellcode-Datei eingelesen und ausgeführt werden kann. Diese Implementierung hat nur sicher gestellt, dass die zwangsweise notwendigen Eigenschaften simuliert werden. Dazu zählt, dass die Inhalte von Registern, die vom Anwender verwendet werden können, nach den Befehlen die korrekten Werte enthalten. Zusätzlich dazu wurden auch die Flags simuliert, da diese für den korrekten Programmablauf notwendig sind. 
 \\\\
-Der Single-Prozessor-Simulator sollte etwas genauer darstellen wie ein Prozessor arbeitet. Dafür wurde der Intel 8080 als Prozessor ausgewählt. Ein Intel 8080 Befehl besteht aus mindestens einem und maximal fünf bzw. in diesem Simulator sechs Maschinen Zyklen. Jeder dieser Maschinen Zyklen besteht wiederum aus mindestens drei und maximal fünf Zuständen. Mit dieser Implementierung kann jeder einzelne Zustand nachvollzogen werden. Dadurch werden auch die W- und Z-Register verwendet, auf die der Anwender normalerweise keinen Zugriff hat und deshalb beim Multi-Prozessor-Simulator nicht beachtet wurden.
+Der Single-Prozessor-Simulator sollte etwas genauer darstellen wie ein Prozessor arbeitet. Dafür wurde der Intel 8080 als Prozessor ausgewählt. Ein Intel 8080 Befehl besteht aus mindestens einem und maximal fünf bzw. in diesem Simulator sechs Maschinenzyklen. Jeder dieser Maschinenzyklen besteht wiederum aus mindestens drei und maximal fünf Zuständen. Mit dieser Implementierung kann jeder einzelne Zustand nachvollzogen werden. Dadurch werden auch die W- und Z-Register verwendet, auf die der Anwender normalerweise keinen Zugriff hat und deshalb beim Multi-Prozessor-Simulator nicht beachtet wurden.
 
 \newpage
 
@@ -317,13 +317,13 @@ Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch
 Von Andreas\\ 
 
 \noindent
-Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Aufgrund der überschaubaren Komplexität besteht auch die Möglichkeit diesen in einem größeren Unmfang zu simulieren.
+Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und wäre auch repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. 
 
 \subsubsection{Register}
 \label{RegisterSection}
 
 Der Intel 8080 besitzt ein SRAM Array mit 16-bit Register. Darin enthalten sind der Programm Counter mit 16-bit und der Stack Pointer mit 16-bit. Dazu gibt es noch acht weitere 8-bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-bit Register als ein 16-bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. Bei manchen Befehlen wird der Stackpointer als 16-Bit Register verwendet.
-Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. Über das Adress-Latch des Incrementer/Decrementer-Chipsatzes ist es möglich 16-Bit aus den Registern an den Adress-Puffer weiterzuleiten. \cite{IntMan16}
+Über einen Multiplexer ist es möglich acht Bit auf den internen Adressbus zu schreiben oder von dort zu lesen. Über das Adress-Latch des Inkrementer/Dekrementer-Chipsatzes ist es möglich 16-Bit aus den Registern an den Adress-Puffer weiterzuleiten. \cite{IntMan16}
 
 
 \imgSpaceBefore
@@ -348,11 +348,11 @@ Der Intel 8080 ist in der Lage Befehle, die aus einem, zwei oder drei Bytes best
 \noindent
 Bei \glqq Direkt\grqq\ wird der Wert in dem Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei \glqq Register\grqq\ wird auf ein oder zwei Register verwiesen und verhält sich wie bei Direkt. Bei \glqq Register Indirect\grqq\ wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendete Wert. Bei \todo \glqq Immediate\grqq\ steht 
 im zweiten und/oder dritten Byte ein Wert mit dem gearbeitet wird (Lowbyte im zweiten Byte).
-Bei Interrupts und Branch Befehlen gibt es nur den \glqq Direct\grqq\ und \glqq Register indirect\grqq\ Modus. \cite{IntMan45}
+Bei Interrupts und Verzweigungs-Befehlen gibt es nur den \glqq Direct\grqq\ und \glqq Register indirect\grqq\ Modus. \cite{IntMan45}
 \\ 
 
 \noindent
-Der Prozessor besitzt fünf Condition Flags. Das Zero-Flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign-Flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts-Flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry-Flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry-Flag, welches ebenfalls einen Übertrag oder Abzug anzeigt, aber zwischen Bit 3 und Bit Bit 4. \cite{IntMan45}
+Der Prozessor besitzt fünf Condition-Flags. Das Zero-Flag, das angibt ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign-Flag, welches angibt ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Das Paritäts-Flag, welches gesetzt ist, wenn das letzte Ergebnis einen Modulo 2 Wert von 0 hat, also der Wert gerade ist. Das Carry-Flag, das einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder Vergleich anzeigt und noch das Auxiliary Carry-Flag, welches ebenfalls einen Übertrag oder Abzug anzeigt, aber zwischen Bit 3 und Bit Bit 4. \cite{IntMan45}
 \\
 
 \subsubsection{OP-Code Codierung}
@@ -502,7 +502,7 @@ In dieser Gruppe verändert nur der POP rp-Befehl die Flags
 \end{multicols}
 
 
-\subsubsection{Maschinenzyklen und Typen}
+\subsubsection{Maschinenzyklen und deren Typen}
 Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Maschinenzyklen zum kompletten Ausführen des Befehls. Dabei kann jeder Befehl aus mehreren Typen bestehen, wobei der erste immer ein Fetch-Befehlstyp ist. Die existierenden Befehlstypen sind:
 
 \begin{itemize}
@@ -521,6 +521,9 @@ Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Mas
 \noindent
 Jeder Maschinenzyklus besteht nochmal aus drei bis fünf Zuständen. Die Befehle des Intels 8080 bestehen insgesamt aus mindestens 4 und maximal 18 Zuständen. In dem ersten Zustand jedes Maschinenzyklus wird immer der Befehlstyp während des SYNC-Taktes kodiert. \cite{IntMan16} 
 
+\subsubsection{Interrupts}
+Der Intel 8080 ist in der Lage Interrupts auszuführen, die den normalen Programmfluss unterbrechen. Dies ist aber nur zwischen Befehlen möglich. Wenn ein Interrupt eintritt während ein Befehl noch ausgeführt wird, wird dieser zuerst bis zum Schluss noch ausgeführt. Besonders bei den Interrupts ist, dass jeder Interrupt ein Byte mitliefert, das angibt, was der Interrupt ausführen soll. Dabei ist jeder Befehl erlaubt, der nur ein Byte benötigt. Somit kann auch nur ein Befehl ausgeführt werden. Damit aber auch größere Interrupt Service Routines möglich sind gibt es den RST-Befehl. Dieser Befehl schreibt, den aktuellen Programmzähler auf den Stack und springt an eine von acht Stellen im Programmspeicher. Welche Stelle genau wird im RST-Befehl dekodiert. Diese acht Sprungpunkte liegen alle genau acht Byte auseinander. Falls dies aber für den Interrupt nicht ausreicht, kann von dort an eine andere Stelle im Programmspeicher gesprungen werden. Da der Intel 8080 eine von Neumann Architektur verwendet und der Stack irgendwo im normalen Programmspeicher (64kB) liegt, gibt es so gut wie keine Größenlimitierung dafür. Bei manchen anderen Prozessoren kann der Stack z.B. maximal Acht Einträge besitzen. Da der Intel 8080 dieses Problem nicht hat, wurde es für diesen möglich gemacht, dass Interrupts durch andere Interrupts unterbrochen werden können. Durch den RST-Befehl wird der momentane Programmzähler immer auf den Stack geschrieben. Somit kann immer der neueste Interrupt ausgeführt werden und kann dann zum zuvor ausgelösten Interrupt zurückspringen.
+
 
 \newpage
 
@@ -536,7 +539,7 @@ Es ist geplant, dass der Prozessor in verschiedene Unterklassen aufgeteilt wird.
 Die Prozessor-Klasse soll die zentrale Einheit des Simulators sein. Über diese sollen sowohl Anfragen über Informationen vorgenommen werden, zum Beispiel um diese in der Benutzeroberfläche anzuzeigen, als auch Instruktionen an den Prozessor als ganzes gesendet werden. Dabei ist zu unterscheiden zwischen zwei Arten von Anfragen, gültige und ungültige. Gemeint sind damit Anfragen die in einem echten Prozessor zulässig wären, beispielsweise einen externen Bus zu befüllen oder die nächste Anweisung auszuführen, und Anfragen die unzulässig wären, wie den Programmzähler manuell zu setzen.
 
 \subsubsection{ALU}
-Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten. Wie sich im weiteren Verlauf des Projekts entschieden wurde, soll das Ausführen der verschiedenen Operationen dabei eher emuliert als simuliert werden. Um eine entsprechende Genauigkeit zu gewährleisten werden deshalb nicht ganze Instruktionen sondern die einzelnen Maschinenzyklen und States ausgeführt.
+Die ALU soll die Bearbeitung logischer Operationen im Prozessor simulieren. Sinn ist dabei ein möglichst genaues Bild jedes Zustandes des Prozessors darzustellen, statt beispielsweise solche Operationen einfach manuell in der Prozessor-Klasse abzuarbeiten. Wie sich im weiteren Verlauf des Projekts entschieden wurde, soll das Ausführen der verschiedenen Operationen dabei eher emuliert als simuliert werden. Um eine entsprechende Genauigkeit zu gewährleisten werden deshalb nicht ganze Instruktionen sondern die einzelnen Maschinenzyklen und Zuständen ausgeführt.
 
 \subsubsection{Register}
 Die Register-Klasse soll ähnlich wie die ALU den Zugriff möglichst realitätsgetreu simulieren. Dabei sollen Methoden die den Zugriff regeln ähnlich aufgebaut werden wie es im echten Prozessor möglich wäre.
@@ -566,23 +569,23 @@ Bei Programmstart wird das in Abbildung \ref{fig:Hauptmenue} gezeigte Fenster ge
 \noindent
 Die Aufgabe dieses Fensters ist simpel. Es gibt 3 verschiedene Knöpfe die jeweils eine Funktion erfüllen.
 \begin{itemize}
-	\item Intel8080: Öffnet das Simulationsfenster des Intel8080 Prozessors
-	\item Tutorial: Öffnet ein Fenster welches eine kurze Einweisung gibt in die Handhabung des Simulators für den Intel8080
+	\item Intel8080: Öffnet das Simulationsfenster des Intel 8080 Prozessors
+	\item Tutorial: Öffnet ein Fenster welches eine kurze Einweisung gibt in die Handhabung des Simulators für den Intel 8080
 	\item Exit: Schließt das Fenster und alle laufenden Hintergrundprozesse, für den Fall das ein Simulatorprozess in der selben Session verwendet wurde.
 \end{itemize}
 
-\subsubsection{Intel8080 Simulationsfenster}
-In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel8080 zu sehen.\imgSpaceBefore
+\subsubsection{Intel 8080 Simulationsfenster}
+In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel 8080 zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{bilder/Intel8080_MainWindow}
-\caption{Intel8080 Sumulationsfenster}
+\caption{Intel 8080 Sumulationsfenster}
 \label{fig:I8080MW}
 \end{figure}
 
 \noindent
-Über das Simulationsfenster für den Intel8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
+Über das Simulationsfenster für den Intel 8080 können Programme die aus Bytebefehlen bestehen, welche ein Intel 8080 Prozessor ausführen kann, simuliert werden. Dafür muss sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -745,7 +748,7 @@ Je nach Befehl werden noch weitere Bytes eingelesen, die für den eigentlichen B
 \noindent
 Um aus einem Byte ein Befehl analysieren zu können, wird dieser Wert mehrfach mit vielen Hexadezimalen Werten verglichen. Anhand der Dokumentation des Intel 8080 werden somit alle Befehle unterschieden. 
 \textbf{[TODO]} Wie in  Abbildung \ref{fig:ReadInstruction} zu sehen ist, wird der Befehl \glqq Add Immediate to A with carry (ACI)\grqq\ mit dem Wert 0xCE assoziiert.  
-Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq\ nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verundet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.\imgSpaceBefore
+Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auch andere Befehle, wobei nicht alle Bits des Bytes den Befehl beschreiben. In Abbildung \ref{fig:ReadInstruction} ist zu sehen, dass der Befehl \glqq Add Memory to A with carry (ADC)\grqq\ nicht so einfach verglichen wird. Bei diesem Befehl werden in den letzten drei Bits des Befehlsbytes das 8-Bit-Register kodiert, welches verwendet werden soll. Deshalb wird die Instruction Variable zuerst mit dem Wert 0xF8 bitweise verUNDet, damit die letzten drei Bit ignoriert werden. Somit werden alle Bitkombinationen erkannt, bei denen die ersten fünf Bits mit dem Wert 0x88 übereinstimmen. Wenn dann bekannt ist, dass es sich um einen ADC-Befehl handelt, wird das Register ermittelt, das verwendet werden soll. Dies geschieht über die get\_reg8d\_from\_inst(instruction)-Methode. Für die unterschiedlichen Fälle, der Register-Kodierung, gibt es jeweils eine eigene Methode. Diese liefert einen Wert zwischen Null und Acht. Entsprechend der Abbildung \ref{fig:register_kodierung}.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -772,8 +775,9 @@ Der Simulator besteht hauptsächlich aus drei Klassen:
 \noindent
 Die Register-Klasse ist hauptsächlich als Datenspeicher gedacht und besitzt keine spezielle Methoden. In der Prozessor- und der ALU-Klasse werden Befehle ausgeführt. Es werden zwei Arten von Befehlen unterschieden. Befehle wie Sprungbefehle, die die ALU nicht benötigen und Befehle wie Additionen, die die ALU verwenden. 
 Die Befehle, die die ALU nicht verwenden wurden in in der Intel8080.py implementiert. Die restlichen entsprechend in der ALU. Jeder Befehl wird durch eine eigene Methode implementiert. Somit kann ein Befehl schnell gefunden und angepasst werden. In diesen Methoden läuft der komplette Befehl ab. Somit werden in diesen Methoden auch weitere Bytes eingelesen, die für die Ausführung des Befehls notwendig sind.
-Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.\imgSpaceBefore
+Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Methode verwendet wird) wird der Programmzähler automatisch um eins erhöht. Damit ist es nicht möglich das gleiche Byte mehrfach hintereinander zu lesen. Um das gleiche Byte nochmal lesen zu können, müsste der Programmzähler manuell angepasst werden.
 
+\imgSpaceBefore
 \begin{figure}[h]
 \centering
 \includegraphics[width=15cm]{Bilder/GetOneByteData}
@@ -783,9 +787,9 @@ Bei jedem Lesevorgang aus dem Programmspeicher (nur wenn die entsprechende Metho
 
 \noindent
 Der Befehl DCX reduziert das angegebene 16-Bit Register um 1. 
-Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX Befehls. 
+Abbildung \ref{fig:dcx_impl} zeigt die Implementierung des DCX-Befehls. 
 Dort ist zu sehen, dass es bei den 16-Bit Registern ein grundlegende Unterscheidung gibt. Es gibt einen Fall für den Stackpointer und einen für die anderen 16-Bit Register, die aus zwei 8-Bit Registern zusammengesetzt werden. Mittels des Übergebenen Parameter rp kann ermittelt werden ob es sich um den Stackpointer (rp  == 3 bedeutet Stackpointer) handelt, der angepasst werden soll. 
-Der Stackpointer kann einfach einmal ausgelesen, um 1 reduziert und dann wieder in sein Register gespeichert werden.
+Der Stackpointer kann einfach einmal ausgelesen, um 1 reduziert, und dann wieder in sein Register gespeichert werden.
 Bei den zusammengesetzten 16-Bit Registern, werden zuerst beide 8-Bit Register ausgelesen und dann zusammengebaut. Dieses Ergebnis kann dann um 1 reduziert werden. Danach wird der 16-Bit Wert wieder aufgetrennt und in die 8-Bit Register gespeichert. 
 
 \imgSpaceBefore
@@ -803,7 +807,7 @@ Die zusammengesetzten Register können alle gleich behandelt werden, da bei dem 
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{Bilder/register_array}
-\caption{Register Array des Intel8080}
+\caption{Register Array des Intel 8080}
 \label{fig:reg_array}
 \end{figure}
 
@@ -855,32 +859,32 @@ Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag v
 \label{SPS_impl}
 
 \noindent
-In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinen Zyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinen Zyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors. 
+In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinenzyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinenzyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors. 
 
 \subsubsection{Aufbau eines Befehls}
 
-Jeder Befehl besteht aus einem Array von Maschinen Zyklen. Zusätzlich enthält jeder Befehl auch einen Zähler, wie viele Maschinen Zyklen, der Befehl schon ausgeführt hat. Ein Befehl hat auch nur eine wichtige Methode. Die next\_state()-Methode sorgt dafür, dass der aktuelle Maschinen Zyklus seine next\_state()-Methode ausführt. Wenn die Maschinen Zyklus next\_state()-Methode True zurückliefert, bedeutet das, dass der letzte Zustand des Maschinen Zyklus ausgeführt wurde. Wenn dies der Fall ist, wird der Maschinen Zyklus Zähler um eins erhöht und es wird ebenfalls ein True zurückgeliefert. Dieses Signal des Maschinen Zyklus wird bis in die äußerste Schicht weitergeleitet, damit dort spezielle Ereignisse ausgeführt werden können z.B. die GUI aktualisieren. Beim nächsten Aufruf von next\_state() wird somit der erste Zustand des nächsten Maschinen Zyklus ausgeführt.
+Jeder Befehl besteht aus einem Array von Maschinenzyklen. Zusätzlich enthält jeder Befehl auch einen Zähler, wie viele Maschinenzyklen, der Befehl schon ausgeführt hat. Ein Befehl hat auch nur eine wichtige Methode. Die next\_state()-Methode sorgt dafür, dass der aktuelle Maschinenzyklus seine next\_state()-Methode ausführt. Wenn die Maschinenzyklus next\_state()-Methode True zurückliefert, bedeutet das, dass der letzte Zustand des Maschinenzyklus ausgeführt wurde. Wenn dies der Fall ist, wird der Maschinenzyklus Zähler um eins erhöht und es wird ebenfalls ein True zurückgeliefert. Dieses Signal des Maschinenzyklus wird bis in die äußerste Schicht weitergeleitet, damit dort spezielle Ereignisse ausgeführt werden können z.B. die GUI aktualisieren. Beim nächsten Aufruf von next\_state() wird somit der erste Zustand des nächsten Maschinenzyklus ausgeführt.
 \\
 
 \noindent
-Jeder Maschinen Zyklus besteht aus einem Array von Zuständen, einem Zähler, der die bisher ausgeführten Zustände zählt und eine Referenz auf den Prozessor. Diese Referenz ist notwendig, damit die Zustände, die in den Maschinen Zyklen ausgeführt werden, den Prozessor verändern und dessen Methoden verwenden können. Die next\_state()-Methode führt immer die run()-Methode der Zustände aus und erhöht seinen Zähler um eins. Wenn der eben ausgeführte Zustand der letzte im Maschinen Zyklus war, wird der Zähler zurückgesetzt und ein True zurückgegeben.
+Jeder Maschinenzyklus besteht aus einem Array von Zuständen, einem Zähler, der die bisher ausgeführten Zustände zählt und eine Referenz auf den Prozessor. Diese Referenz ist notwendig, damit die Zustände, die in den Maschinenzyklen ausgeführt werden, den Prozessor verändern und dessen Methoden verwenden können. Die next\_state()-Methode führt immer die run()-Methode der Zustände aus und erhöht seinen Zähler um eins. Wenn der eben ausgeführte Zustand der letzte im Maschinenzyklus war, wird der Zähler zurückgesetzt und ein True zurückgegeben.
 \\
 
 \noindent
-Ein Zustand besitzt nur eine Referenz zum Prozessor und eine run()-Methode, die den Zustand ausführt. Da ein Zustand zu allen möglichen Stellen in einem Maschinen Zyklus verwendet werden kann, besitzt der Zustand selber keine weiteren Informationen.
+Ein Zustand besitzt nur eine Referenz zum Prozessor und eine run()-Methode, die den Zustand ausführt. Da ein Zustand zu allen möglichen Stellen in einem Maschinenzyklus verwendet werden kann, besitzt der Zustand selber keine weiteren Informationen.
 
 
 \subsubsection{Programmablauf}
 
 Wie bei der ersten Version dieses Simulator, wird ein .com-Datei benötigt um ein Programm ausführen zu lassen. Über die GUI kann eine solche Datei eingelesen werden. Damit wird wieder der Programmspeicher befüllt.
-Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinen Zyklus oder Zustand auslöst. Bei dem \glqq Next State\grqq\ -Knopf wird genau ein Zustand ausgeführt. Bei dem \glqq Next Machine Cycle\grqq\ -Knopf wird der aktuelle Maschinen Zyklus bis zum Schluss ausgeführt. Der  \glqq Next Instruction\grqq\ -Knopf verhält sich wie der Maschinen Zyklus-Knopf. Der \glqq Go\grqq\ -Knopf führt zu solange den nächsten Zustand aus bis der Knopf wieder gedrückt wird. Die drei ersten Knöpfe sind auf eine Methode im Intel8080 gebunden, die den selben Namen tragen wie der Knopf. Jeder dieser Methoden gibt True zurück, wenn der nächste auszuführende Zustand zu einem neuen Befehl gehört. 
-Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Methode aus, bis diese True zurückliefert. Diese wiederum führt solange die next\_state\_internal()-Methode aus, bis diese True zurückliefert. Diese liefert True, wenn der letzte Zustand eines Maschinen Zyklus ausgeführt wurde. Die next\_state()-Methode ruft nur einmal die next\_state\_internal()-Methode auf.
+Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinenzyklus oder Zustand auslöst. Bei dem \glqq Next State\grqq\ -Knopf wird genau ein Zustand ausgeführt. Bei dem \glqq Next Machine Cycle\grqq\ -Knopf wird der aktuelle Maschinenzyklus bis zum Schluss ausgeführt. Der  \glqq Next Instruction\grqq\ -Knopf verhält sich wie der Maschinenzyklus-Knopf. Der \glqq Go\grqq\ -Knopf führt zu solange den nächsten Zustand aus bis der Knopf wieder gedrückt wird. Die drei ersten Knöpfe sind auf eine Methode in der Intel8080-Klasse gebunden, die den selben Namen tragen wie der Knopf. Jeder dieser Methoden gibt True zurück, wenn der nächste auszuführende Zustand zu einem neuen Befehl gehört. 
+Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Methode aus, bis diese True zurückliefert. Diese wiederum führt solange die next\_state\_internal()-Methode aus, bis diese True zurückliefert. Diese liefert True, wenn der letzte Zustand eines Maschinenzyklus ausgeführt wurde. Die next\_state()-Methode ruft nur einmal die next\_state\_internal()-Methode auf.
 
 \noindent
-Die next\_state\_internal()-Methode steuert wann ein neuer Befehl dekodiert und eine neue Klasse geladen werden muss. Wenn der nächste Zustand der erste eines neuen Befehls ist, wird der current\_instruction-Variable ein Nop-Befehl zugewiesen. Da bei allen Befehlen, die ersten drei Zustände die gleichen sind, ist es nicht wichtig welcher Befehl hier geladen wird. Erst im dritten Zustand wird der tatsächliche Befehl geladen. Von diesem Befehl wird der zuletzt ausgeführten Zustand auf drei gesetzt. Wenn der letzte Zustand eines Maschinen Zyklus ausgeführt wurde wird True zurückgegeben. Wenn ein Befehl frühzeitig abgebrochen werden soll, also z.B. bei einem bedingten Sprung, wird das ebenfalls hier gemacht.
+Die next\_state\_internal()-Methode steuert wann ein neuer Befehl dekodiert und eine neue Klasse geladen werden muss. Wenn der nächste Zustand der erste eines neuen Befehls ist, wird der current\_instruction-Variable ein Nop-Befehl zugewiesen. Da bei allen Befehlen, die ersten drei Zustände die gleichen sind, ist es nicht wichtig welcher Befehl hier geladen wird. Erst im dritten Zustand wird der tatsächliche Befehl geladen. Von diesem Befehl wird der zuletzt ausgeführten Zustand auf drei gesetzt. Wenn der letzte Zustand eines Maschinenzyklus ausgeführt wurde wird True zurückgegeben. Wenn ein Befehl frühzeitig abgebrochen werden soll, also z.B. bei einem bedingten Sprung, wird das ebenfalls hier gemacht.
 
 \subsubsection{Dekodieren eines Befehls}
-Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_register-Variable geschrieben. Ähnlich wie bei der ersten Version, wird beim Dekodieren dieses Byte mit Hexadezimalen Werten verglichen. Bei dieser Version wird beim dekodieren aber ein Unterschied gemacht bei Befehlen, die entweder ein Register oder eine Adresse als Parameter erhalten (siehe Abbildung \ref{fig:Decode_instr}). Dies ist deswegen wichtig, da sich die Maschinen Zyklen davon unterscheiden. Abbildung \ref{fig:ReadInstruction}  zeigt, dass in der ersten Version für alle ADD Befehle nur eine Methode aufgerufen wird. Damit der Prozessor die richtigen Klassen zur Ausführung verwendet, wird in der current\_instruction-Variable ein Objekt des richtigen Befehls gespeichert.
+Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_register-Variable geschrieben. Ähnlich wie bei der ersten Version, wird beim Dekodieren dieses Byte mit Hexadezimalen Werten verglichen. Bei dieser Version wird beim dekodieren aber ein Unterschied gemacht bei Befehlen, die entweder ein Register oder eine Adresse als Parameter erhalten (siehe Abbildung \ref{fig:Decode_instr}). Dies ist deswegen wichtig, da sich die Maschinenzyklen davon unterscheiden. Abbildung \ref{fig:ReadInstruction}  zeigt, dass in der ersten Version für alle ADD Befehle nur eine Methode aufgerufen wird. Damit der Prozessor die richtigen Klassen zur Ausführung verwendet, wird in der current\_instruction-Variable ein Objekt des richtigen Befehls gespeichert.
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -892,11 +896,11 @@ Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_re
 
 \subsubsection{Programmaufbau}
 
-Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Dadurch, dass aber jeder Befehl, Maschinen Zyklus und Zustand eine eigene Klasse  hat gibt es nun wesentlich mehr Klassen. Insgesamt gibt es:
+Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Dadurch, dass aber jeder Befehl, Maschinenzyklus und Zustand eine eigene Klasse  hat gibt es nun wesentlich mehr Klassen. Insgesamt gibt es:
 
 \begin{itemize}
 \item 74 Befehls-Klassen
-\item 85 Maschinen Zyklen-Klassen
+\item 85 Maschinenzyklen-Klassen
 \item 101 Zustands-Klassen
 \end{itemize}
 
@@ -911,7 +915,7 @@ Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX Befehl sieht nun folgenderm
 \centering
 \includegraphics[width=15cm]{bilder/dcx_inst}
 \includegraphics[width=15cm]{bilder/dcx_mc}
-\caption{DCX Befehl und Maschinen Zyklus}
+\caption{DCX-Befehl und Maschinenzyklus}
 \label{fig:Dcx_instr}
 \end{figure}
 
@@ -927,7 +931,7 @@ Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es m
 \end{figure}
 
 \noindent
-Da der DCX Befehl nur aus einem Maschinen Zyklus, und mit dem leeren Zustand nur über einen Zustand verfügt, der den Befehl ausmacht werden im folgenden nochmal anderen Befehle gezeigt, bei denen diese Klassenstruktur mehr Sinn ergibt. Im folgenden Kapitel werden weitere Befehle angeschaut, die auch zeigen, wie in der neuen Version Befehle des gleichen Typs auf die selben Maschinen Zyklen und Zustände zurückgreifen.
+Da der DCX-Befehl nur aus einem Maschinenzyklus, und mit dem leeren Zustand nur über einen Zustand verfügt, der den Befehl ausmacht werden im folgenden nochmal anderen Befehle gezeigt, bei denen diese Klassenstruktur mehr Sinn ergibt. Im folgenden Kapitel werden weitere Befehle angeschaut, die auch zeigen, wie in der neuen Version Befehle des gleichen Typs auf die selben Maschinenzyklen und Zustände zurückgreifen.
 
 \subsubsection{Testing}
 Um sicher zu stellen, dass alle Befehle korrekt ausgeführt werden, wurden Tests erstellt. 
@@ -946,7 +950,7 @@ Zuerst wird ein Intel8080 Prozessor-Objekt (ohne GUI) erzeugt. Mit intel.init\_t
 \\
 
 \noindent
-Bei dem obigen Test wurde bisher nur geprüft ob der Ergebniswert der zu erwartende ist. Da manche Befehle aber abhängig von Flags sind und diese teilweise auch verändern, gibt es noch andere Tests die das überprüfen. Nicht jeder Befehl wird so ausgiebig getestet wie der ADC-Befehl (siehe \ref{fig:test_adc}). Da der ADC r, der ADC m und der ACI-Befehl aus dem ADC\_MC-Maschinen Zyklus bestehen wird nur einer dieser Befehle besonders stark getestet. Wenn irgendein anderen Zustand eines Befehls nicht korrekt wäre, würde sehr wahrscheinlich der einfache Test für einen, wenn nicht sogar mehrere, einen Fehler anzeigen. Somit wird mit mehreren weiteren Tests für den Maschinen Zyklus hauptsächlich die sich veränderten Flags getestet.
+Bei dem obigen Test wurde bisher nur geprüft ob der Ergebniswert der zu erwartende ist. Da manche Befehle aber abhängig von Flags sind und diese teilweise auch verändern, gibt es noch andere Tests die das überprüfen. Nicht jeder Befehl wird so ausgiebig getestet wie der ADC-Befehl (siehe \ref{fig:test_adc}). Da der ADC r, der ADC m und der ACI-Befehl aus dem ADC\_MC-Maschinenzyklus bestehen wird nur einer dieser Befehle besonders stark getestet. Wenn irgendein anderen Zustand eines Befehls nicht korrekt wäre, würde sehr wahrscheinlich der einfache Test für einen, wenn nicht sogar mehrere, einen Fehler anzeigen. Somit wird mit mehreren weiteren Tests für den Maschinenzyklus hauptsächlich die sich veränderten Flags getestet.
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -961,7 +965,7 @@ In diesem Test wird geschaut ob sich die Flags korrekt verhalten, wenn ein Über
 
 
 \subsubsection{Befehlsvarianten}
-Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein Fetch-Maschinen Zyklus erstellt, wovon jeder erste Maschinen Zyklus abgeleitet wurde. Der RST-Befehl hat, als einzige Ausnahme, einen anderen dritten Zustand. Normalerweise wird im dritten Zustand nur der aktuelle Befehl in das Befehls Register geschrieben. Beim RST-Befehl wird aber zusätzlich noch das W-Register auf Null gesetzt. Dies ist deswegen wichtig, da der Befehl an eine von acht Programmstellen springen soll. Diese liegen alle am Anfang des Programmspeichers und benötigen deswegen ein leeres W-Register. Für Sprünge werden das W- und Z-Register verwendet. In den Maschinen Zyklen 2-4 wird aber nur das Z-Register auf den entsprechenden Wert gesetzt.
+Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein Fetch-Maschinenzyklus erstellt, wovon jeder erste Maschinenzyklus abgeleitet wurde. Der RST-Befehl hat, als einzige Ausnahme, einen anderen dritten Zustand. Normalerweise wird im dritten Zustand nur der aktuelle Befehl in das Befehls Register geschrieben. Beim RST-Befehl wird aber zusätzlich noch das W-Register auf Null gesetzt. Dies ist deswegen wichtig, da der Befehl an eine von acht Programmstellen springen soll. Diese liegen alle am Anfang des Programmspeichers und benötigen deswegen ein leeres W-Register. Für Sprünge werden das W- und Z-Register verwendet. In den Maschinenzyklen 2-4 wird aber nur das Z-Register auf den entsprechenden Wert gesetzt.
 \\
 
 \noindent
@@ -990,20 +994,20 @@ Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die untersc
 
 \noindent
 Für die Addition ohne Carry gibt es diese drei Typen. ADD r verwendet ein Register. ADD m verwendet einen Wert, der irgendwo im Programmspeicher liegt und der ADI-Befehl verwendet das zweite Byte des Befehls als Summand. Alle drei Befehle müssen das Gleiche machen. Einen Wert mit dem Akkumulator addieren. Dazu nutzt jeder Befehl aber Werte von unterschiedlichen Stellen und müssen diese unterschiedlich laden. 
-Als letzter Maschinen Zyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinen Zyklus. 
-In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinen Zyklen, andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}). 
+Als letzter Maschinenzyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinenzyklus. 
+In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinenzyklen, andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}). 
 \\
 
 \noindent
-\textbf{Unterschiede des ersten Maschinen Zyklus}
+\textbf{Unterschiede des ersten Maschinenzyklus}
 
 \noindent
 Der direkte Befehl und der Speicher-Befehl besitzen den gleichen ersten Zustand. Dort wird einfach nur der Inhalt des Akkumulators in das ACT-Register geschrieben.
-Der Register-Befehl kann im ersten Maschinen Zyklus sowohl den Wert des Akkumulators in das ACT-Register, als auch das im Befehl kodierte Register in das TMP-Register laden.
+Der Register-Befehl kann im ersten Maschinenzyklus sowohl den Wert des Akkumulators in das ACT-Register, als auch das im Befehl kodierte Register in das TMP-Register laden.
 \\
 
 \noindent
-\textbf{Unterschiede des zweiten Maschinen Zyklus}
+\textbf{Unterschiede des zweiten Maschinenzyklus}
 
 \noindent
 Der Register-Befehl, hat im ersten Zyklus schon beide Register so vorbereitet, dass er im zweiten Zyklus diese Werte bereits addieren kann. Für diesen Befehlstyp ist das schon der letzte Zyklus.
@@ -1011,11 +1015,11 @@ Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekte
 \\
 
 \noindent
-\textbf{Unterschiede des dritten Maschinen Zyklus}
+\textbf{Unterschiede des dritten Maschinenzyklus}
 
 \noindent
 Der Register-Befehl führt keinen dritten Zyklus aus.
-Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinen Zyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat.
+Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinenzyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat.
 
 \imgSpaceBefore
 \begin{table}[H]
@@ -1065,12 +1069,13 @@ ADD_MC
  
  \hline
 \end{tabular}
-\caption{Maschinen Zyklen der unterschiedlichen Typen}
+\caption{Maschinenzyklen der unterschiedlichen Typen}
 \label{table:mc_types}
 \end{table}
 
+\subsubsection{Interrupts}
+Damit Interrupts ausgeführt werden können wurde ein Interrupt-Befehl implementiert. Dieser führt nicht wirklich den Interrupt aus. Dieser ist nur dazu da, dass im zweiten Zustand nicht der Programmzähler um eins erhöht wird. In dem Handbuch zum Intel 8080 \cite{IntMan16} ist davon die Rede, dass der Interrupt-Maschinenzyklus nur ein normaler Fetchzyklus ist, bei dem eben der Programmzähler nicht erhöht. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der Erste, um den Maschinenzyklus auf dem Datenbus zu beschreiben, der zweite um den Programmzähler zu erhöhen und den dritten, um den nächsten Befehl einzulesen und in das Instruction-Register zu schreiben. Somit wäre ein Fetchzyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten Zustand, einen leeren Zustand. Dieser ist deswegen wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden. 
 
-\newpage
 \subsubsection{Besonderheiten des Simulators}
 Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. Im folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
 \\
@@ -1084,7 +1089,7 @@ In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, das
 \\
 
 \noindent
-In jedem ersten Zustand aller Maschinen Zyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinen Zyklus ausgeführt wird. 
+In jedem ersten Zustand aller Maschinenzyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinenzyklus ausgeführt wird. 
 Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state} \textbf{TODO}) nur so viel steht \todo wie \glqq PC OUT STATUS\grqq\ im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus codiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
 
 \imgSpaceBefore
@@ -1104,21 +1109,21 @@ wird der vierte Zustand ein leerer Zustand und der fünfte ist der eigentliche Z
 \\
 
 \noindent
-Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinen Zyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq\ noch im 2 Zustand und der Text \glqq Z\grqq\ im dritten Zustand steht. Zusätzlich sind die beiden Texte durch einen Pfeil verbunden. Leider wird nirgends erklärt, was dies genau bedeutet. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der vorherige Zustand aber kein leerer Zustand, da dort der Programmzähler um eins erhöht werden muss. Davon gibt es viele Anweisungen, bei der die Texte in zwei Zuständen stehen.
+Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinenzyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq\ noch im 2 Zustand und der Text \glqq Z\grqq\ im dritten Zustand steht. Zusätzlich sind die beiden Texte durch einen Pfeil verbunden. Leider wird nirgends erklärt, was dies genau bedeutet. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der vorherige Zustand aber kein leerer Zustand, da dort der Programmzähler um eins erhöht werden muss. Davon gibt es viele Anweisungen, bei der die Texte in zwei Zuständen stehen.
 \\
 
 \noindent
 \textbf{Fehler in der Beschreibung}
 
 \noindent
-Bei den beiden MVI-Befehlen soll im zweiten Maschinen Zyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird. Dies steht aber nicht in der Zustandsbeschreibung dabei. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht. Ebenso wurde bei dem DCR r-Befehl, der einen Wert um eins reduziert soll, der Wert um eins erhöht. Dies wurde im Simulator angepasst.
+Bei den beiden MVI-Befehlen soll im zweiten Maschinenzyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird. Dies steht aber nicht in der Zustandsbeschreibung dabei. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht. Ebenso wurde bei dem DCR r-Befehl, der einen Wert um eins reduziert soll, der Wert um eins erhöht. Dies wurde im Simulator angepasst.
 \\
 
 \noindent
-\textbf{Letzter Maschinen Zyklus bei Sprungbefehlen}
+\textbf{Letzter Maschinenzyklus bei Sprungbefehlen}
 
 \noindent
-Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letztes ein WZ OUT STATUS Signal gesendet und danach wird der Programmzähler auf den um eins erhöhten Wert des zusammengesetzten W- und Z-Registers gesetzt. Diese zwei Zustände werden normalerweise anstatt des normalen Fetches des neuen Befehls ausgeführt. Dies ist in diesem Simulator aber nicht so einfach möglich. Deswegen haben alle Sprungbefehle einen zusätzlichen Maschinen Zyklus erhalten. Dort wird nur der Wert des 16-Bit WZ-Registers in den Programmzähler geschrieben. Während des Fetch des nächsten Befehls wird dann der Zähler um eins erhöht. Somit führt das Programm an der richtigen Stelle weitere Befehle aus.
+Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letztes ein WZ OUT STATUS Signal gesendet und danach wird der Programmzähler auf den um eins erhöhten Wert des zusammengesetzten W- und Z-Registers gesetzt. Diese zwei Zustände werden normalerweise anstatt des normalen Fetches des neuen Befehls ausgeführt. Dies ist in diesem Simulator aber nicht so einfach möglich. Deswegen haben alle Sprungbefehle einen zusätzlichen Maschinenzyklus erhalten. Dort wird nur der Wert des 16-Bit WZ-Registers in den Programmzähler geschrieben. Während des Fetch des nächsten Befehls wird dann der Zähler um eins erhöht. Somit führt das Programm an der richtigen Stelle weitere Befehle aus.
 \\
 
 \noindent
@@ -1158,7 +1163,7 @@ In diesem werden jedem Element ein Name zugewiesen über den dann später darauf
 \begin{figure}[H]
 \centering
 \includegraphics[width=8cm]{bilder/initFuncs}
-\caption{Init-Functioncalls in Instanzfunktion für Intel8080 Fenster}
+\caption{Init-Functioncalls in Instanzfunktion für Intel 8080 Fenster}
 \label{fig:InitFuncs}
 \end{figure}
 
@@ -1195,12 +1200,10 @@ Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss
 Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten State jeder Instruction. Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:\imgSpaceBefore
 
 \begin{itemize}
-	\item reload\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
-	\item reload\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
-	\item reload\_memory\_table: Aktualisiert Programmspeicher
+	\item update\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
+	\item update\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
+	\item update\_memory\_table: Aktualisiert Programmspeicher
 	\item fill\_program\_table: Aktualisiert Programmtabelle
-	\item color\_program\_table: Färbt die derzeit ausgeführte Zeile der Programmtabelle
-	\item color\_cycle\_state: Färbt aktuellen Maschinenzyklus und Zustand in CycleState-Tabelle
 \end{itemize}
 \noindent
 In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, dass alle relevanten Werte neu geladen werden unabhängig davon ob sie sich verändert haben oder nicht. Bei wenigen Werten z.B. für die Register stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes parsen und filtern des Programmspeichers sowie füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui' Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
@@ -1234,54 +1237,27 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden.
-
-%Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
-
-\subsubsection{Manipulieren der Simulation}
-Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
 
 \begin{itemize}
-	\item update\_registers\_table (PC, Instr, ACC, etc.)
-	\item update\_register\_array\_table (b, c, d, e, etc.)
-	\item update\_memory\_table (Programmspeicher)
+	\item reload\_registers\_table (PC, Instr, ACC, etc.)
+	\item reload\_register\_array\_table (b, c, d, e, etc.)
+	\item reload\_memory\_table (Programmspeicher)
 \end{itemize}
 
 \noindent
-Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemUpdateFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
+Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemReloadFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{bilder/UpdateProgMem}
-\caption{Memory Update Function}
-\label{fig:MemUpdateFunc}
+\includegraphics[width=15cm]{bilder/reloadMemFunc}
+\caption{Memory Reload Function}
+\label{fig:MemReloadFunc}
 \end{figure}
 
 \noindent
-Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion 'set\_memory\_byte' werden die Werte dann einzeln zurückgeschrieben. Die drei 'update'-Funktionen werden im Gegensatz zu den 'reload'-Funktionen nur aufgerufen wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist ist bereits angesprochene Funktion die mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=12cm]{bilder/PTC}
-\caption{Knopfdruck Funktion}
-\label{fig:PTC}
-\end{figure}
-
-\noindent
-Dabei wird der Knopf welcher die Funktion aufruft als Referenz an das neu erzeugte ChangeValueWindow übergeben. Dieser wird benötigt um zu bestimmen welches Element eine Werteänderung vornimmt. In Abbildung \ref{fig:CheckInput} ist die Funktion des ChangeValueWindow zu sehen welche die Eingabevalidierung vornimmt und die für das Element entsprechende 'update'-Funktion aufruft.\imgSpaceBefore
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=12cm]{bilder/CheckInput}
-\caption{InputValidation Function}
-\label{fig:CheckInput}
-\end{figure}
-
-\noindent
-Als erstes wird der Wert ausgelesen und der Index des Knopfes innerhalb der Tabelle bestimmt. Danach wird geprüft aus welchem Element der aufrufende Knopf stammt.
-
-\subsubsection{Sonstige Interaktionen}
-Range für Programtabelle, Interrupt senden, Log löschen
+\textbf{FALSCHE FUNKTION, DIE HIER SCHREIBT ES IN DIE UI, UMSCHREIBEN}\\
+Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird über die Prozessorfunktion 'get\_memory\_byte' bezogen und in Hexadezimal-Darstellung umgewandelt. Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
 
 \newpage
 
