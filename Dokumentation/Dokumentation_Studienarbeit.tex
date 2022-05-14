@@ -228,8 +228,8 @@ Für Zwei-Adress-Anweisungen ist es möglich eine Bezugsadresse für die Operand
 Drei-Adress-Anweisungen sind essentiell komplexere Zwei-Adress-Anweisungen. Eine der drei verfügbaren Adressen wird ebenfalls für die Zieladresse der Operation verwendet. Für das Beziehen der Operanden steht eine weitere Adresse zur Verfügung.\\
 
 \subsubsection{CISC und RISC}
-Von Andreas
-komplettes Kapitel aus Buch \\
+Von Andreas\\
+
 Ein Prozessor unterstützt immer nur eine gewisse Menge an Befehlen, diese werden Instruction Set genannt. Heutzutage gibt es zwei grundlegende Prozessorarchitekturen, Complex Instruction Set Computer (CISC) und Reduced Instruction Set Computer (RISC). Früher konnten Prozessoren genau einer dieser Gruppen zugeordnet werden, allerdings ist das bei den heutigen Prozessoren nicht mehr möglich, da sowohl RISC als auch CISC Befehle dem Prozessor zur Verfügung gestellt werden um die Vorteile von beiden zu haben.\\\\
 Bei CISC-Prozessoren wird versucht soviel wie möglich in einem Befehl ausführen zu können. So gibt es viele verschieden Befehle, die auch unterschiedlich viel Zeit benötigen. Dadurch wird es aber auch möglich, komplexere Befehle direkt in der Hardware zu berechnen. Bei diesen Befehlen gibt es auch einige Adressierungsarten mehr als bei RISC-Prozessoren. Für vorbestimmte Aufgaben gibt es auch eigene Register, die nur dafür verwendet werden und davon auch nur wenige. Der Nachteil bei CISC-Prozessoren ist, dass die eigenen Befehle erst noch durch ein Mikroprogramm interpretiert werden müssen und dieses die komplexen Befehle in mehrere kleine Befehle aufteilen muss, welche erst dann vom Prozessor bearbeitet werden können. Dies kostet etwas mehr Zeit und verlangsamt die Ausführung. Die Mikroprogramme, die dafür verwendet werden, werden in einem kleinem Read-only Memory (ROM) gespeichert.\\\\
 Bei RISC-Prozessoren wird versucht mit nur wenigen, kleinen Befehlen auszukommen. Diese sind wiederum sehr schnell, da sie meist fest verdrahtet sind, müssen aber mit anderen kombiniert werden um die Komplexität eines einzigen CISC-Befehls zu erreichen.  Im Gegensatz zu CISC-Prozessoren besitzen RISC-Prozessoren viele Register die frei verwendbar sind und nicht für speziellen Operationen bestimmt sind. Ebenso können die meisten Befehle in nur einem einzigen Arbeitsschritt ausgeführt werden.\\\\
@@ -241,10 +241,11 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
 \item kein Mikroprogramm die einzelnen Befehle erst noch interpretieren muss
 \end{itemize}
  
+ \cite{Herold}
 
 \subsubsection{Parallelität nach Flynn}
 Von Andreas\\
-1966 wurden von Micheal Flynn die folgenden vier Arten von Parallelisierung eingeführt [Flynn 949]:
+1966 wurden von Micheal Flynn die folgenden vier Arten von Parallelisierung eingeführt \cite{Flynn}
 
 \begin{itemize}
 \item Single-instruction stream, single-data stream (SISD)
@@ -282,7 +283,7 @@ Die meisten Prozessoren besitzen Befehle aus den folgenden fünf Gruppen:
 \end{itemize}
 
 \noindent
-Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOVE Befehlen. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. [Intel 8080 S.46 (4-1)]
+Die Befehle der Daten Transfer Gruppe bewegen Daten zwischen Registern und/oder Speicher wie zum Beispiel mit den MOVE Befehlen. In der Arithmetik Gruppe werden, wie der Name schon sagt, Befehle mit arithmetische Operationen wie Addition verwendet. In der Logischen Gruppen werden Operation wie das logische Oder verwendet. In der Zweig Gruppe gibt es die Befehle, welche den Standardmäßigen Programmfluss ändern und das Programm nicht zwangsläufig in der nächsten Zeile fortgesetzt wird wie bei bedingten Sprüngen. In der letzten Gruppe liegen die Befehle, die Eingänge und Ausgänge beachten oder den Stack bearbeiten. \cite{IntMan45}]
 \\
 
 \newpage
@@ -851,7 +852,6 @@ Da die Additions- und Subtraktions-Befehle das Carry- und Auxiliary-Carry-Flag v
 
 \subsection{Single-Prozessor-Simulator}
 \label{SPS_impl}
-Von Andreas\\
 
 \noindent
 In diesem Kapitel wird gezeigt, was die neue Version des Simulator kann. Dieser unterscheidet sich in sofern von dem Multi-Prozessor-Simulator, dass jeder Befehl aus mehreren Maschinen Zyklen und diese wiederum aus mehreren Zuständen bestehen. So ist es möglich, komplette Befehle aber auch einzelne Maschinen Zyklen oder sogar Zustände auszuführen. Damit kann wesentlich besser nachvollzogen werden, wie ein Prozessor tatsächlich funktioniert. In der Multi-Prozessor-Variante konnten zwar Programme ausgeführt werden, aber wie die Befehle ausgeführt worden sind, war weit weg von der Funktionsweise eines echten Prozessors. 
@@ -983,7 +983,7 @@ Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die untersc
  Vergleich mit Acc & CMP r & CMP m & CPI \\ 
  \hline
 \end{tabular}
-\caption{Befehle mit diesen drei Befehls-Typen}
+\caption{Befehle mit drei Befehls-Typen}
 \label{table:instr_types}
 \end{table}
 
@@ -1069,6 +1069,7 @@ ADD_MC
 \end{table}
 
 
+\newpage
 \subsubsection{Besonderheiten des Simulators}
 Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. Im folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
 \\
@@ -1126,7 +1127,6 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \begin{itemize}
 \item Es wird überall nur mit unsigned Werten gearbeitet. Zero-Flag zeigt Werte > 127 (negative Werte) an
 \item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
-\item Der Halt Befehl führt zu keinem Halt-Modus. Es wird lediglich eine Variable gesetzt.
 \item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor freigegeben werden müssen.
 \end{itemize}
 
@@ -1294,7 +1294,11 @@ Platzhalter
 \begin{thebibliography}{9}
 \bibitem{Beispiel}
 Google: \url{https://www.google.com}
-\bibitem{Grundlagen der Informatik}
+\bibitem{Flynn}
+Some Computer Organizations and Their Effectiveness (S.948-960, vol. C-21): M. J. Flynn, 1972, in IEEE Transactions on Computers
+\bibitem{IntMan45}
+Intel 8080 Microcomputer Systems User's Manual (S.46 (4-1)): Intel Corporation, 1975 \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
+\bibitem{Herold}
 Grundlagen der Informatik: Herold, Lurz, Wohlrab und Hopf; 3. aktualisierte Auflage (2017), Pearson
 \bibitem{Adressformate}Instruction formats: \url{https://www.geeksforgeeks.org/computer-organization-instruction-formats-zero-one-two-three-address-instruction/}, zuletzt abgerufen: 25.12.2021
 \end{thebibliography}
@@ -1302,6 +1306,8 @@ Grundlagen der Informatik: Herold, Lurz, Wohlrab und Hopf; 3. aktualisierte Aufl
 \newpage
 \thispagestyle{empty}
 
+
+\appendix
 \section*{Anhang}
 \addcontentsline{toc}{section}{Anhang}
 
