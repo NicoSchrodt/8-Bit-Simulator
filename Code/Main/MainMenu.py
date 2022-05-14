@@ -1,11 +1,11 @@
 import os.path
-import sys
 
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
 
 from Code.Intel8080.Intel8080_MainWindow import Intel8080_MainWindow
+from Code.Tutorial.TutorialWindow import TutorialWindow
 
 
 class MainMenu(QMainWindow):
@@ -38,4 +38,6 @@ class MainMenu(QMainWindow):
         self.intel8080_window.show()
 
     def load_Tutorial(self):
-        pass
+        self.hide()
+        self.tutorial_window = TutorialWindow(self)
+        self.tutorial_window.show()
