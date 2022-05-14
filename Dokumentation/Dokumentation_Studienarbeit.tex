@@ -1285,7 +1285,6 @@ Hierbei wird zuerst überprüft ob der vermeintliche Befehl eine Maske verwendet
 
 \subsubsection{Manipulieren der Simulation}
 Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
 
 \begin{itemize}
 	\item update\_registers\_table (PC, Instr, ACC, etc.)
@@ -1298,9 +1297,9 @@ Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{cha
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{bilder/reloadMemFunc}
-\caption{Memory Reload Function}
-\label{fig:MemReloadFunc}
+\includegraphics[width=15cm]{bilder/UpdateProgMem}
+\caption{Memory Update Function}
+\label{fig:MemUpdateFunc}
 \end{figure}
 
 \noindent
