@@ -696,7 +696,7 @@ Damit gemeint sind die generischen Register ohne feste Funktion, welche jeweils 
 Dabei wird geprüft ob die Operation gültig ist, wenn nicht wird eine Fehlermeldung ausgegeben. Ist sie gültig wird sie beim nächstmöglichen Zustand berücksichtigt und ausgeführt.
 \newpage
 \noindent
-Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet werden die in jedem State vorgenommen werden (siehe Abbildung \ref{fig:Logger}).\imgSpaceBefore
+Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzelnen Operationen aufgelistet sind die in jedem Zustand vorgenommen werden (siehe Abbildung \ref{fig:Logger}).\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -706,7 +706,7 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 \end{figure}
 
 \noindent
-Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\imgSpaceBefore
+Über den darunterliegenden 'Clear Log'-Knopf lässt sich der Inhalt des Logs löschen. Bei Laden eines neuen Programms wird der Log ebenfalls geöscht. Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -1288,7 +1288,7 @@ Das zurückschreiben von der GUI in den Simulator geschieht über drei verschied
 \end{itemize}
 
 \noindent
-Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemReloadFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
+Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemUpdateFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1321,7 +1321,17 @@ Dabei wird der Knopf welcher die Funktion aufruft als Referenz an das neu erzeug
 Als erstes wird der Wert ausgelesen und der Index des Knopfes innerhalb der Tabelle bestimmt. Danach wird geprüft aus welchem Element der aufrufende Knopf stammt.
 
 \subsubsection{Sonstige Interaktionen}
-Range für Programtabelle, Interrupt senden, Log löschen
+Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern würde und eher unnötig ist, wurde die Anzeige der Programmspeichertabelle auf 128 aufeinanderfolgende Register limitiert. Um auswählen zu können welche Register angezeigt werden, sind zwei Eingabefenster vorgesehen. Entweder um anzugeben bis zu oder ab welchem Register. Das Ändern des einen Wertes passt dabei den anderen automatisch an.\imgSpaceBefore
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm]{bilder/Range_to}
+\caption{Range Funktion}
+\label{fig:Range}
+\end{figure}
+
+\noindent
+Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:Range} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
 
 \newpage
 
