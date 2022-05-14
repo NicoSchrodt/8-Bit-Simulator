@@ -1,5 +1,6 @@
 import os.path
 
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
@@ -12,6 +13,7 @@ class MainMenu(QMainWindow):
     def __init__(self, parent=None):
         super(MainMenu, self).__init__(parent)
         self.init_ui("ui\\MainMenu.ui")
+        self.setWindowIcon(QIcon("../ui/Logo.png"))
 
         self.setWindowFlags(Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.MSWindowsFixedSizeDialogHint)
 

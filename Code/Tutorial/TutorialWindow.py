@@ -1,6 +1,6 @@
 import os.path
 
-from PyQt6.QtGui import QCloseEvent, QPixmap
+from PyQt6.QtGui import QCloseEvent, QPixmap, QIcon
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
@@ -16,6 +16,7 @@ class TutorialWindow(QMainWindow):
         super(TutorialWindow, self).__init__(None)
         self.mainW = parent
         self.init_ui("ui\\Tutorial.ui")
+        self.setWindowIcon(QIcon("../ui/Logo.png"))
 
         self.setWindowFlags(Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.MSWindowsFixedSizeDialogHint)
 

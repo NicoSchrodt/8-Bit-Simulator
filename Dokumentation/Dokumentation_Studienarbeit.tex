@@ -544,10 +544,6 @@ Mit der Peripherie soll alles abgedeckt werden, was nicht Teil der zentralen Bes
 \subsection{Möglichkeiten der Simulation}
 Um einen Ablauf für die Simulation festzulegen, muss zuerst bestimmt werden, welche Parameter eingestellt, welche Optionen verändert, und welche Operationen im Simulator durchgeführt werden können. Geplant ist, dass die Simulation zu jedem Zeitpunkt unterbrechbar sein soll. Der kleinste Zeitabschnitt, für den dies sinnvoll ist, wäre ein einzelner Zustand eines Maschinenzyklus. Es ist geplant, dass alle in der Register-Klasse modellierten Register auch in der Benutzeroberfläche dargestellt und manipuliert werden können. Zu manipulierbaren Registern soll auch der Programmspeicher zählen. Dieser soll entweder manuell oder über eine externe Datei befüllbar sein. Für das externe Befüllen muss der für den Simulator vorgegebene Assembler verwendet werden. Die Manipulation des Speichers soll auch während der Simulation möglich sein.
 
-\subsection{Ablauf der Simulation}
-\todo
-Platzhalter
-
 \subsection{Aufbau der GUI}
 \label{chp:AufbauGUI}
 Das Simulieren des Prozessors ist die ein Aspekt des Projekts. Gleichermaßen wichtig für einen funktionierenden Simulator ist aber auch die Benutzeroberfläche, mit der dieser bedient wird. In diesem Abschnitt werden die einzelnen Aspekte dieser analysiert.
@@ -718,7 +714,20 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 \noindent
 Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten über das Bussystem zuständig ist. Die Darstellung wurde hier bitweise gewählt, das heißt, statt die ganzen 2 Byte des Registers zu bearbeiten, werden die einzeln Bits angesteuert.
 
+\newpage
+
 \subsection{Tutorial}
+Das Tutorial für die Handhabung des Simulators ist über das Hauptmenü erreichbar. Es besteht aus fünf verschiedenen Bildern, welche jeweils die einzelnen Elemente des Simulators zeigen und deren Funktion näher beschreiben (siehe Abbildung \ref{fig:Tutorial}).\imgSpaceBefore
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=15cm]{bilder/Tutorial}
+\caption{Adresspuffer}
+\label{fig:Tutorial}
+\end{figure}
+
+\noindent
+Um zum nächsten bzw. vorherigen Bild zu wechseln werden die zwei unteren Knöpfe verwendet. Der Text wurde wie der Rest der Simulatoroberfläche in Englisch verfasst.
 
 \newpage
 
@@ -1191,7 +1200,7 @@ Von Nico\\
 Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
 \subsubsection{Aktualisieren der Oberfläche}
-Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten State jeder Instruction. Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:\imgSpaceBefore
+Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten Zustand jedes Befehls . Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:\imgSpaceBefore
 
 \begin{itemize}
 	\item reload\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
@@ -1297,7 +1306,7 @@ Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{cha
 \end{figure}
 
 \noindent
-Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion 'set\_memory\_byte' werden die Werte dann einzeln zurückgeschrieben. Die drei 'update'-Funktionen werden im Gegensatz zu den 'reload'-Funktionen nur aufgerufen wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist ist bereits angesprochene Funktion die mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
+Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion 'set\_memory\_byte' werden die Werte dann einzeln zurückgeschrieben. Die drei 'update'-Funktionen werden im Gegensatz zu den 'reload'-Funktionen nur aufgerufen wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist die bereits angesprochene Funktion welche mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1320,7 +1329,7 @@ Dabei wird der Knopf welcher die Funktion aufruft als Referenz an das neu erzeug
 Als erstes wird der Wert ausgelesen und der Index des Knopfes innerhalb der Tabelle bestimmt. Danach wird geprüft aus welchem Element der aufrufende Knopf stammt.
 
 \subsubsection{Sonstige Interaktionen}
-Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern würde und eher unnötig ist, wurde die Anzeige der Programmspeichertabelle auf 128 aufeinanderfolgende Register limitiert. Um auswählen zu können welche Register angezeigt werden, sind zwei Eingabefenster vorgesehen. Entweder um anzugeben bis zu oder ab welchem Register. Das Ändern des einen Wertes passt dabei den anderen automatisch an.\imgSpaceBefore
+Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern würde und eher unnötig ist, wurde die Anzeige der Programmspeichertabelle auf 128 aufeinanderfolgende Register limitiert. Um auswählen zu können welche Register angezeigt werden, sind zwei Eingabefenster vorgesehen. Entweder um anzugeben bis zu oder ab welchem Register der Speicher angezeigt werden soll. Das Ändern des einen Wertes passt dabei den anderen automatisch an.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1330,7 +1339,7 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 \end{figure}
 
 \noindent
-Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:Range} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
+Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:Range} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
 
 \newpage
 
@@ -1361,12 +1370,10 @@ Als letzter Schritt wurde für das Programm noch eine Exe Datei erstellt. Um zwi
 Während dies recht umständlich ist, bietet es zumindest den Vorteil, dass keine Python-Umgebung sowie die benötigten Pakete auf dem Rechner installiert werden müssen. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket benötigt.
 
 \subsection{Zusammenfassung}
-\todo
-Platzhalter
+Das Ergebnis dieser Studienarbeit ist ein Simulator für den Intel 8080 welcher mit einer zugehörigen Benutzeroberfläche bedient werden kann. Die relevanten Aspekte des Prozessors werden dem Nutzer dabei angezeigt, wie beispielsweise Registerinhalte, das ausgeführte Programm oder einzelne Operationen für jeden Zustand. Es ist dem Nutzer möglich eigene Programme über die Benutzeroberfläche in den Simulator einzufügen oder diese zuvor über den verwendeten Assembler zu erstellen und dann direkt einzulesen. Die eingefügten Programme können Schrittweise ausgeführt werden, wobei es möglich ist ganze Befehle, Maschinenzyklen oder sogar einzelne Zustände auszuführen. Die Bedeutung einzelner Zustände wird in einem Befehlslog eingetragen um nachvollziehen zu können was in jedem Zustand passiert. Programme können automatisch ausgeführt werden und über Haltepunkte auch automatisch an einer beliebigen Stelle angehalten werden. Es ist zu jedem Zeitpunkt möglich die internen Aspekte des Simulators zu verändern über eine einfach zu bedienende Oberfläche. Das zurücksetzen der Oberfläche funktioniert auch problemlos. Der gesamte Befehlssatz des Intel 8080 wurde so genau wie möglich implementiert und sollte identische Ergebnisse liefern wie nativ ausgeführte Operationen.
 
 \subsection{Ausblick}
-\todo
-Platzhalter
+Die Benutzeroberfläche ist derzeit vollständig in Englisch geschrieben. Es wäre also eine Überlegung Wert eine Einstellung einzufügen für andere Sprachen. Der Befehlslog ist aktuell noch recht kryptisch. Während es wenn man die Bedeutung der Zustände und Abkürzung kennt zwar genügend Aufschluss gibt, ist diese Variante noch verbesserungswürdig. Das Erstellen eigener Programme ist nur über die Programmspeichertabelle möglich, bisher wurde kein eigener Editor entwickelt. Externes Erstellen muss über den mitgelieferten Assembler vorgenommen werden, wobei dafür keine eigene Bedienungsanleitung verfasst wurde. Eine interne Lösung auch mit Hilfestellung für die einzelnen Bytebefehle und deren Bedeutung wäre erstrebenswert. Das Tutorial vermittelt die notwendigen Grundlagen um den Simulator zu bedienen, aber eine interaktive Lösung mit Beispielen hätte vermutlich einen höheren Lernerfolg.
 
 \newpage
 
