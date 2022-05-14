@@ -30,6 +30,7 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Hlt import Hlt
 from Code.Intel8080.CycleClasses.Childs.Instructions.In_inst import In_inst
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_m import Inr_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inr_r import Inr_r
+from Code.Intel8080.CycleClasses.Childs.Instructions.Interrupt import Interrupt
 from Code.Intel8080.CycleClasses.Childs.Instructions.Inx import Inx
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp import Jmp
 from Code.Intel8080.CycleClasses.Childs.Instructions.Jmp_cond import Jmp_cond
@@ -193,7 +194,15 @@ class Intel8080(AbstractProcessor):
     def next_state_internal(self):
         if self.current_instruction_state == 1:
             self.current_instruction = Nop(self)
-            print("-------------------new Instruction-------------------")  # TODO Interrupt und HALT MODE
+            print("-------------------new Instruction-------------------")  # TODO HALT MODE
+            self.StateLogger.addEntry("----new Instruction----")
+            if self.interrupted:
+                if self.interrupt_enabled:
+                    self.current_instruction = Interrupt(self)
+                    self.interrupted = False
+                    self.StateLogger.addEntry("Interrupt acknowledged")
+                else:
+                    self.StateLogger.addEntry("Interrupt is disabled")
 
         if self.current_instruction_state == 4:
             self.decode_instruction()

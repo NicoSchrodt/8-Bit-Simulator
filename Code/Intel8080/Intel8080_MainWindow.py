@@ -168,6 +168,10 @@ class Intel8080_MainWindow(QMainWindow):
         Program_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         Program_table.cellClicked.connect(self.breakpoint_check)
 
+        # Interrupt Knopf
+        interrupt_btn = self.Interrupt_button
+        interrupt_btn.pressed.connect(self.sendInterrupt)
+
         self.instruction_positions = []
         self.previous_pc = 0
 
@@ -312,13 +316,14 @@ class Intel8080_MainWindow(QMainWindow):
     def sendInterrupt(self):
         if self.actionCheck():
             try:
-                value = int(self.Interrupt_line.text())
+                value = int(self.Interrupt_line.text(), 0)
             except:
                 self.Logger.addEntry("Invalid Interrupt Sent")
             else:
                 if (0 <= value) and (value <= 255):
                     self.processor.interrupted = True
                     self.processor.interrupt_instruction = value
+                    self.Logger.addEntry("Interrupt Sent")
                 else:
                     self.Logger.addEntry("Invalid Interrupt Byte")
 
