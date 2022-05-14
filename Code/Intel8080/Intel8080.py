@@ -1345,10 +1345,10 @@ class Intel8080(AbstractProcessor):
         return self.ALU.get_act()
 
     def set_instruction_reg(self, value):
-        self.registers.set_instruction_reg(value)
+        self.cpu_instruction_register = np.uint8(value)
 
     def get_instruction_reg(self):
-        return self.registers.get_instruction_reg()
+        return self.cpu_instruction_register
 
     def set_latch_bit(self, bit, value):
         self.registers.manual_latch(bit, value)

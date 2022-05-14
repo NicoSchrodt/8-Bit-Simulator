@@ -19,7 +19,7 @@ class runThread(QObject):
     @QtCore.pyqtSlot()
     def monitor(self):
         while not self.ExitFlag:
-            sleep(0.1)  # Prevents freezing, may need fine-tuning
+            sleep(0.2)  # Prevents freezing, may need fine-tuning
             self.Source.emit()
 
 
@@ -444,7 +444,7 @@ class Intel8080_MainWindow(QMainWindow):
         Registers_table.cellWidget(1, 0).setText(str(Processor.get_sp()))  # SP
         Registers_table.cellWidget(2, 0).setText(str(Processor.get_acc()))  # ACC
         Registers_table.cellWidget(3, 0).setText(str(Processor.get_act()))  # Temp-ACC
-        Registers_table.cellWidget(4, 0).setText(str(Processor.get_instruction_reg()))  # INST
+        Registers_table.cellWidget(4, 0).setText(str(hex(Processor.get_instruction_reg())))  # INST
 
     def update_registers_table(self):  # This function makes the registers match the ui
         Processor = self.processor
