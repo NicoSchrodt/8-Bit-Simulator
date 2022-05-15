@@ -1287,8 +1287,6 @@ def get_number(input):
 
 
 def convert_to_binary(program, output_program="Intel8080\\Output\\program"):
-    global label
-    print(label)
     parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
     infile = parent_path.joinpath(output_program + '.asm')
@@ -1342,23 +1340,9 @@ def write_symbol_table(table, filename):
 
 
 if __name__ == '__main__':
-    convert_to_binary("""
-  lxi h, plist
-  call genad
-  plist: dw parm1
-  dw 0FFFFH
-  parm1: db 6
-  genad: xra a
-  loop: mov c, a
-  mov e, m
-  inx h
-  mov a, m
-  cpi 0FFH
-  jz back
-  mov d, a
-  ldax d
-  add c
-  inx h
-  jmp loop
-  back: mov a, c
-  ret""", "Output\\program")
+    convert_to_binary("""Loop:
+      mvi b, 20
+      mvi c, 30
+      mov a, b
+      add c
+      jmp Loop""", "Output\\program")
