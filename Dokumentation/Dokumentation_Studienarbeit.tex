@@ -225,6 +225,24 @@ Für Zwei-Adress-Anweisungen ist es möglich eine Bezugsadresse für die Operand
 \textbf{Drei-Adress-Anweisungen}\\
 Drei-Adress-Anweisungen sind essentiell komplexere Zwei-Adress-Anweisungen. Eine der drei verfügbaren Adressen wird ebenfalls für die Zieladresse der Operation verwendet. Für das Beziehen der Operanden steht eine weitere Adresse zur Verfügung.\\
 
+\subsubsection{Harvard- und von-Neumann-Architektur}
+Prozessoren können auf viele unterschiedliche Arten kategorisiert werden. In diesem Kapitel geht es um die Harvard- und von-Neumann-Architektur. 
+Für beide Architekturen werden die im vorherigen Kapitel beschriebenen Bauteile benötigt. 
+Je nachdem welche Anzahl an einzelnen Bauteilen vorhanden und wie diese verbunden sind, können Prozessoren unterschieden werden. 
+Bei der von-Neumann-Architektur gibt es nur einen Daten-, Steuer- und Adressbus. Somit muss zuerst ein Befehl vom Speicher in das Steuerwerk geladen werden. 
+Erst danach wird mit Steuersignalen den einzelnen Komponenten mitgeteilt was als nächstes gemacht werden muss. Häufig müssen daraufhin Daten geladen oder geschrieben werden. 
+Damit der Speicher aber weiß woher die Daten gelesen werden müssen, muss zuerst die Adresse über den Bus geschickt werden. 
+Bei der von-Neumann-Architektur läuft die ganze Kommunikation über einen Bus.
+\\
+Die Harvard-Architektur besitzt mehrere, getrennte Busse, da es auch zwei getrennte Speicher gibt.
+Einen Programmspeicher und einen Datenspeicher. 
+Bei der von-Neumann-Architektur gibt es nur einen Speicher. 
+Dort liegen sowohl Programmcode als auch Daten zusammen. 
+Bei der Harvard-Architektur kann deshalb parallelisiert werden, da sich die Befehle und die Daten nicht gegenseitig blockieren. Aus dem Programmspeicher wird der nächste Befehl schon geladen, während für den vorherigen Befehl z.B. erst noch die Daten in die ALU geladen werden. 
+Somit ist es möglich, dass gleichzeitig ein Byte aus dem Programmspeicher als auch aus dem Datenspeicher verwendet werden. 
+Dies macht die Ausführung von Programmen wesentlich schneller als bei von-Neumann-Systemen.
+Der Nachteil davon ist allerdings, dass Bauteile öfters verwendet werden, was dazu führt, dass diese Prozessoren teurer sind. 
+
 \subsubsection{CISC und RISC}
 Von Andreas\\
 
