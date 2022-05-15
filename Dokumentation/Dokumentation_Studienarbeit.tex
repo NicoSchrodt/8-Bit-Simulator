@@ -574,7 +574,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung '.com'). Über 'Exit' kann der Benutzer ins Hauptmenü zurückkehren. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\imgSpaceBefore
+Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung \glqq .com\grqq). Über \glqq Exit\grqq\ kann der Benutzer ins Hauptmenü zurückkehren. Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -594,7 +594,7 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt werden sowohl die P
 \end{figure}
 
 \noindent
-Diese werden für die automatische Ausführung des Programmes (siehe nächster Abschnitt) relevant. Wird ein Breakpoint erreicht, so stoppt das Programm, vor Ausführung des Befehls. Das Programm muss manuell fortgesetzt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode '0x00' identifiziert. Bei Initialisierung des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen funktionslosen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise, darstellt aber keine Interaktion mit diesem ermöglicht, wurde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\imgSpaceBefore
+Diese werden für die automatische Ausführung des Programmes (siehe nächster Abschnitt) relevant. Wird ein Breakpoint erreicht, so stoppt das Programm, vor Ausführung des Befehls. Das Programm muss manuell fortgesetzt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode \glqq 0x00\grqq\ identifiziert. Bei Initialisierung des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen funktionslosen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise, darstellt aber keine Interaktion mit diesem ermöglicht, wurde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -604,7 +604,7 @@ Diese werden für die automatische Ausführung des Programmes (siehe nächster A
 \end{figure}
 
 \noindent
-Dieses ermöglicht es, den Speicher, in Abschnitten von 128 Registern, auszulesen, wobei pro Zeile 16 Register zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich, diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung ('Next State/Machine Cycle/Instruction') in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface verwendet werden.\imgSpaceBefore
+Dieses ermöglicht es, den Speicher, in Abschnitten von 128 Registern, auszulesen, wobei pro Zeile 16 Register zu sehen sind. Hierbei ist es im Gegensatz zur oben beschriebenen Tabelle möglich, diese zu bearbeiten. Dies geschieht durch klicken der entsprechenden Zelle, wodurch sich ein Dialog öffnet. Änderungen werden bei der nächsten Zustandsänderung (\glqq Next State/Machine Cycle/Instruction\grqq) in die Programmtabelle übernommen. Um auszuwählen, welche Register aus dem Programmspeicher angezeigt werden, kann das in Abbildung \ref{fig:Range} gezeigte Interface verwendet werden.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -624,7 +624,7 @@ Hiermit kann der Start- oder Endwert des angezeigten Registerblocks eingestellt 
 \end{figure}
 
 \noindent
-Über 'Next Instruction' wird der nächste Befehl, der in der Programmtabelle farbig hervorgehoben ist, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für 'Next Machine Cycle' und für 'Next State', wobei diese jeweils nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über 'Go' wird automatisch das Programm ausgeführt. Bei erneutem Drücken wird das Programm pausiert. 'Reset' setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich, einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen ist, werden diese mit ihren entsprechenden Bedeutungen und Werten angezeigt.\imgSpaceBefore
+Über \glqq Next Instruction\grqq\ wird der nächste Befehl, der in der Programmtabelle farbig hervorgehoben ist, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für \glqq Next Machine Cycle\grqq\ und für \glqq Next State\grqq, wobei diese jeweils nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über \glqq Go\grqq\ wird automatisch das Programm ausgeführt. Bei erneutem Drücken wird das Programm pausiert. \glqq Reset\grqq\ setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich, einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen ist, werden diese mit ihren entsprechenden Bedeutungen und Werten angezeigt.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -690,7 +690,7 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 \end{figure}
 
 \noindent
-Über den darunterliegenden 'Clear Log'-Knopf lässt sich der Inhalt des Logs löschen. Bei Laden eines neuen Programms wird der Log ebenfalls geöscht. Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\imgSpaceBefore
+Über den darunterliegenden \glqq Clear Log\grqq-Knopf lässt sich der Inhalt des Logs löschen. Bei Laden eines neuen Programms wird der Log ebenfalls geöscht. Ein nicht mehr in der finalen Version der GUI vorhandenes Register, welches dem Nutzer angezeigt wird und welches bearbeitet werden kann ist in Abbildung \ref{fig:AddBuff} zu sehen.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -1137,7 +1137,7 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt, wird zuletzt ein WZ O
 Von Nico\\
 
 \noindent
-Die Oberfläche für den Simulator wurde nicht dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
+Die Oberfläche für den Simulator wurde nicht dynamisch erzeugt. Das heißt es existiert eine statische \glqq ui\grqq- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
 
 \begin{itemize}
 	\item MainMenu.ui (Hauptmenü)
@@ -1156,7 +1156,7 @@ Als Beispiel für eins dieser manuell erstellten Fenster ist in Abbildung \ref{f
 \end{figure}
 
 \noindent
-In diesem wird jedem Element ein Name zugewiesen, über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.), bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können, bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich, eine Änderung schnell visuell zu überprüfen, und andererseits wird an komplizierter Syntax für Fenster gespart, was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe Abbildung \ref{fig:I8080MW}) fällt auf, dass die Größe einiger Elemente angepasst wurde und einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden. Diese Anpassungen finden während der Initialisierung der 'Intel8080\_MainWindow'-Klasse statt (siehe Abbildung \ref{fig:InitFuncs}).\imgSpaceBefore
+In diesem wird jedem Element ein Name zugewiesen, über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.), bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können, bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich, eine Änderung schnell visuell zu überprüfen, und andererseits wird an komplizierter Syntax für Fenster gespart, was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe Abbildung \ref{fig:I8080MW}) fällt auf, dass die Größe einiger Elemente angepasst wurde und einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden. Diese Anpassungen finden während der Initialisierung der \glqq Intel8080\_MainWindow\grqq-Klasse statt (siehe Abbildung \ref{fig:InitFuncs}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1170,14 +1170,14 @@ In diesem wird jedem Element ein Name zugewiesen, über den dann später darauf 
 \begin{figure}[H]
 \centering
 \includegraphics[width=8cm]{bilder/initUI}
-\caption{Generische Funktion zum Laden der 'ui'-Datei}
+\caption{Generische Funktion zum Laden der \glqq ui\grqq-Datei}
 \label{fig:InitUI}
 \end{figure}
 
 
 \noindent
-'init\_ui' ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe Abbildung  \ref{fig:InitUI}).
-Aufgabe dieser ist es, den korrekten Pfad für die 'ui'-Datei zu bestimmen und über den Funktionsaufruf 'loadUI' die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion 'pressed\_table\_cell' zugewiesen, welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen, die diese Zuweisungen übernimmt, sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
+\glqq init\_ui\grqq\ ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe Abbildung  \ref{fig:InitUI}).
+Aufgabe dieser ist es, den korrekten Pfad für die \glqq ui\grqq-Datei zu bestimmen und über den Funktionsaufruf \glqq loadUI\grqq\ die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion \glqq pressed\_table\_cell\grqq\ zugewiesen, welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen, die diese Zuweisungen übernimmt, sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1187,7 +1187,7 @@ Aufgabe dieser ist es, den korrekten Pfad für die 'ui'-Datei zu bestimmen und �
 \end{figure}
 
 \noindent
-Effektiv wird die in der 'ui'-Datei definierte Anzahl Zeilen und Spalten der Programmtabelle abgefragt. Dann wird über jedes Element iteriert und ein Knopf erstellt mit Standardtext und einer Zuweisung. Die zugewiesene Funktion wird in Kapitel \ref{chapter:GUI-Methods} noch näher erklärt.
+Effektiv wird die in der \glqq ui\grqq-Datei definierte Anzahl Zeilen und Spalten der Programmtabelle abgefragt. Dann wird über jedes Element iteriert und ein Knopf erstellt mit Standardtext und einer Zuweisung. Die zugewiesene Funktion wird in Kapitel \ref{chapter:GUI-Methods} noch näher erklärt.
 
 
 \subsection{GUI-Methoden}\label{chapter:GUI-Methods}
@@ -1208,7 +1208,7 @@ Nach der Ausführung jedes Zustandes besteht die Möglichkeit, dass sich ein in 
 	\item color\_cycle\_state: Färbt aktuellen Maschinenzyklus und Zustand in CycleState-Tabelle
 \end{itemize}
 \noindent
-In der aktuellen Implementierung sind alle Funktionen jeweils so umgesetzt, dass alle relevanten Werte neu geladen werden, unabhängig davon, ob sie sich verändert haben oder nicht. Bei wenigen Werten, z.B. für die Register, stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes Parsen und Filtern des Programmspeichers sowie Füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde, mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui'-Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
+In der aktuellen Implementierung sind alle Funktionen jeweils so umgesetzt, dass alle relevanten Werte neu geladen werden, unabhängig davon, ob sie sich verändert haben oder nicht. Bei wenigen Werten, z.B. für die Register, stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes Parsen und Filtern des Programmspeichers sowie Füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde, mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die \glqq update\_ui\grqq-Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1218,7 +1218,7 @@ In der aktuellen Implementierung sind alle Funktionen jeweils so umgesetzt, dass
 \end{figure}
 
 \noindent
-Die 'update\_ui'-Funktion wird innerhalb der Klasse für die Simulatoroberfläche an mehreren Stellen verwendet:\imgSpaceBefore
+Die \glqq update\_ui\grqq-Funktion wird innerhalb der Klasse für die Simulatoroberfläche an mehreren Stellen verwendet:\imgSpaceBefore
 
 \begin{itemize}
 	\item Zu Beginn bei Initialisierung der Oberfläche
@@ -1239,7 +1239,7 @@ Wie bereits erwähnt, ist der Sinn dieser Maßnahme, dass keine Veränderung der
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator, diese abzuarbeiten, woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die 'update\_ui'-Funktion alle Elemente aktualisiert, arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator, diese abzuarbeiten, woraufhin über \glqq update\_ui\grqq\ die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die \glqq update\_ui\grqq-Funktion alle Elemente aktualisiert, arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1249,7 +1249,7 @@ Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschi
 \end{figure}
 
 \noindent
-Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simulators seinen Zustand ändert (beispielsweise ein einzelnes Register im Speicher), liest die Funktion einfach über die im Simulator definierte Schnittstellen alle für das Element relevanten Werte aus und trägt sie im korrekten Format in die Tabelle ein. Dieses Verhalten gilt auch in ähnlicher Weise für die 'reload\_register\_array\_table'- und die 'reload\_program\_memory\_table'-Funktion. Etwas anders funktioniert die Funktion, welche den Programmspeicher parst ('fill\_program\_table'), um das Programm übersichtlich mit der entsprechenden Bedeutung des Bytebefehls darzustellen (siehe Abbildung \ref{fig:FillProgReg}).\imgSpaceBefore
+Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simulators seinen Zustand ändert (beispielsweise ein einzelnes Register im Speicher), liest die Funktion einfach über die im Simulator definierte Schnittstellen alle für das Element relevanten Werte aus und trägt sie im korrekten Format in die Tabelle ein. Dieses Verhalten gilt auch in ähnlicher Weise für die \glqq reload\_register\_array\_table\grqq- und die \glqq reload\_program\_memory\_table\grqq-Funktion. Etwas anders funktioniert die Funktion, welche den Programmspeicher parst (\glqq fill\_program\_table\grqq), um das Programm übersichtlich mit der entsprechenden Bedeutung des Bytebefehls darzustellen (siehe Abbildung \ref{fig:FillProgReg}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1269,7 +1269,7 @@ Zuerst werden alle Einträge der Tabelle gelöscht, woraufhin über alle Registe
 \end{figure}
 
 \noindent
-Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnung des Befehls und, falls angewendet, die Maske zur Bestimmung des Befehls. Um keine zufälligen Treffer zu erzielen (beispielsweise verunden mit falscher Maske führt zu anderem Befehl) wird nach einer Übereinstimmung im Dictionary die 'mask\_validation'-Funktion verwendet (siehe Abbildung \ref{fig:MaskValid}).\imgSpaceBefore
+Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnung des Befehls und, falls angewendet, die Maske zur Bestimmung des Befehls. Um keine zufälligen Treffer zu erzielen (beispielsweise verunden mit falscher Maske führt zu anderem Befehl) wird nach einer Übereinstimmung im Dictionary die \glqq mask\_validation\grqq-Funktion verwendet (siehe Abbildung \ref{fig:MaskValid}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1279,9 +1279,8 @@ Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnu
 \end{figure}
 
 \noindent
-Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet, wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable 'i' addiert, um die Einträge der Operanden zu überspringen.
+Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet, wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq\ addiert, um die Einträge der Operanden zu überspringen.
 
-%Die führende '0x' wird entfernt und der Wert wird in die Knöpfe geschrieben. Da der dargestellte Bereich des Programmspeichers variabel ist müssen außerdem noch die vertikalen Header angepasst werden. Dafür wird der Startwert herangezogen und es wird in Schritten von 16 durch iteriert. 
 
 \subsubsection{Manipulieren der Simulation}
 Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
@@ -1303,7 +1302,7 @@ Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe Kapitel 
 \end{figure}
 
 \noindent
-Zuerst wird bestimmt, welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register), können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion 'set\_memory\_byte' werden die Werte dann einzeln zurückgeschrieben. Die drei 'update'-Funktionen werden im Gegensatz zu den 'reload'-Funktionen nur aufgerufen, wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist die bereits angesprochene Funktion, welche mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
+Zuerst wird bestimmt, welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register), können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion \glqq set\_memory\_byte\grqq\ werden die Werte dann einzeln zurückgeschrieben. Die drei \glqq update\grqq-Funktionen werden im Gegensatz zu den \glqq reload\grqq-Funktionen nur aufgerufen, wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist die bereits angesprochene Funktion, welche mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1313,7 +1312,7 @@ Zuerst wird bestimmt, welcher Speicherbereich derzeit angezeigt wird. Da die Pro
 \end{figure}
 
 \noindent
-Dabei wird der Knopf, welcher die Funktion aufruft als Referenz an das neu erzeugte ChangeValueWindow übergeben. Dieser wird benötigt, um zu bestimmen welches Element eine Werteänderung vornimmt. In Abbildung \ref{fig:CheckInput} ist die Funktion des ChangeValueWindow zu sehen, welche die Eingabevalidierung vornimmt und die für das Element entsprechende 'update'-Funktion aufruft.\imgSpaceBefore
+Dabei wird der Knopf, welcher die Funktion aufruft als Referenz an das neu erzeugte ChangeValueWindow übergeben. Dieser wird benötigt, um zu bestimmen welches Element eine Werteänderung vornimmt. In Abbildung \ref{fig:CheckInput} ist die Funktion des ChangeValueWindow zu sehen, welche die Eingabevalidierung vornimmt und die für das Element entsprechende \glqq update\grqq-Funktion aufruft.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
