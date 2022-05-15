@@ -564,7 +564,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Über das Simulationsfenster für den Intel 8080 können Programme, die aus Bytebefehlen bestehen, welche ein Intel 8080 Prozessor ausführen kann, simuliert werden. Dafür sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Reiter 'File' in der Menüleiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
+Über das Simulationsfenster für den Intel 8080 können Programme, die aus Bytebefehlen bestehen, welche ein Intel 8080 Prozessor ausführen kann, simuliert werden. Dafür sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Menüpunkt \glqq File\grqq\ in der oberen Leiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1339,11 +1339,7 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 Dafür wird ein Signal, welches ausgelöst wird, sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden oder der Zustand des Simulators verändert werden.
 
 \newpage
-
-\section{Fazit und Ausblick}
-Von Nico \\
-
-\noindent
+\subsubsection{Exe-Erstellung}
 Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
 
 \begin{figure}[h]
@@ -1367,6 +1363,10 @@ Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zw
 \noindent
 Während dies recht umständlich ist, bietet es zumindest den Vorteil, dass keine Python-Umgebung sowie die benötigten Pakete auf dem Rechner installiert werden müssen. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket benötigt.
 
+\section{Fazit und Ausblick}
+Von Nico \\
+
+\noindent
 \subsection{Zusammenfassung}
 Das Ergebnis dieser Studienarbeit ist ein Simulator für den Intel 8080 welcher mit einer zugehörigen Benutzeroberfläche bedient werden kann. Die relevanten Aspekte des Prozessors werden dem Nutzer dabei angezeigt, wie beispielsweise Registerinhalte, das ausgeführte Programm oder einzelne Operationen für jeden Zustand. Es ist dem Nutzer möglich eigene Programme über die Benutzeroberfläche in den Simulator einzufügen oder diese zuvor über den verwendeten Assembler zu erstellen und dann direkt einzulesen. Die eingefügten Programme können Schrittweise ausgeführt werden, wobei es möglich ist ganze Befehle, Maschinenzyklen oder sogar einzelne Zustände auszuführen. Die Bedeutung einzelner Zustände wird in einem Befehlslog eingetragen um nachvollziehen zu können was in jedem Zustand passiert. Programme können automatisch ausgeführt werden und über Haltepunkte auch automatisch an einer beliebigen Stelle angehalten werden. Es ist zu jedem Zeitpunkt möglich die internen Aspekte des Simulators zu verändern über eine einfach zu bedienende Oberfläche. Das zurücksetzen der Oberfläche funktioniert auch problemlos. Der gesamte Befehlssatz des Intel 8080 wurde so genau wie möglich implementiert und sollte identische Ergebnisse liefern wie nativ ausgeführte Operationen.
 
