@@ -204,6 +204,7 @@ Platzhalter
 
 \subsection{Theoretische Grundlagen}
 Von Nico\\
+
 \noindent
 Als Vorbereitung für die Implementierung der verschiedenen Prozessoren werden einige allgemeingültige Architekturprinzipien eines Prozessors erläutert. 
 
@@ -249,6 +250,7 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
 
 \subsubsection{Parallelität nach Flynn}
 Von Andreas\\
+
 Von Michael Flynn wurden 1966 die folgenden vier Arten von Parallelisierung eingeführt: \cite{Flynn}
 
 \begin{itemize}
@@ -278,6 +280,7 @@ Diese Architektur verwendet mehrere Prozessoren und mehrere Daten-Ströme. Heutz
 
 \section{Projektplanung und Verlauf}
 Von Andreas\\
+
 \noindent
 Bei Projektbeginn wurde kein konkretes Ziel vorgegeben. Es wurde nur verlangt, dass ein Simulator für 8-Bit Prozessoren entwickelt werden soll. Deshalb wurde zu Beginn die Entscheidung getroffen, dass eine kleine Lernsoftware entwickelt werden soll. Der Simulator sollte ursprünglich fähig sein, mehrere unterschiedliche Prozessoren simulieren zu können. Damit sollten die Unterschiede verschiedener Prozessoren dargestellt und dem Anwender vermittelt werden. Jedoch hat sich bei der Untersuchung von mehreren Prozessoren herausgestellt, dass es nur geringe Unterschiede zwischen den Prozessoren gibt. Zwar hat jeder Prozessor seine Eigenheiten, die aber für den Anwender kaum bemerkbar sind. Der größte Unterschied sind die verschiedenen Befehlssätze. Die meisten Prozessoren verwenden für die gleichen Befehle unterschiedliche Mnemonics und Bitkombinationen. Sobald aber die Befehle dekodiert wurden, läuft im Prozessor meistens sehr Ähnliches oder sogar Gleiches ab. Dabei kann es vorkommen, dass ein Prozessor noch ein zusätzliches Register z.B. als Zwischenspeicher verwendet, welches die anderen nicht besitzen. Aber wie die Daten im Prozessor hin- und her geschoben werden und die Befehle, die die ALU ausführt, unterscheidet sich zwischen den Prozessoren kaum oder ist sogar identisch. Deshalb wurde sich später dafür entschieden, dass nicht mehrere, sondern nur ein Prozessor simuliert werden soll.
 \\\\
@@ -287,7 +290,7 @@ Der Single-Prozessor-Simulator sollte etwas genauer darstellen, wie ein Prozesso
 \\
 
 \noindent
-Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat sich um das Frontend, also die Graphische Oberfläche, und Andreas Schmider um das Backend, also die Funktionsweise des Prozessors gekümmert. Diese zwei Bereiche können gut voneinander getrennt werden. Somit musste sich nur auf wenige Schnittstellen geeinigt werden.
+Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat sich um das Frontend, also die graphische Oberfläche, und Andreas Schmider um das Backend, also die Funktionsweise des Prozessors gekümmert. Diese zwei Bereiche können gut voneinander getrennt werden. Somit musste sich nur auf wenige Schnittstellen geeinigt werden.
 
 
 \newpage
@@ -523,6 +526,7 @@ Der Intel 8080 ist in der Lage Interrupts auszuführen, die den normalen Program
 
 \section{Umsetzung}
 Von Nico\\
+
 \noindent
 In diesem Kapitel wird darauf eingegangen, wie die in Kapitel 2 erarbeitete Analyse der ausgewählten Prozessoren implementiert wird.
 
@@ -542,7 +546,7 @@ Die Register-Klasse soll ähnlich wie die ALU den Zugriff auf Register möglichs
 Mit der Peripherie soll alles abgedeckt werden, was nicht Teil der zentralen Bestandteile ist, also der Register oder der ALU. Dazu zählt zum Beispiel ein externer Datenbus oder Schnittstellen für Taktsignal o.Ä.
 
 \subsection{Möglichkeiten der Simulation}
-Um einen Ablauf für die Simulation festzulegen, muss zuerst bestimmt werden, welche Parameter eingestellt, welche Optionen verändert, und welche Operationen im Simulator durchgeführt werden können. Geplant ist, dass die Simulation zu jedem Zeitpunkt unterbrechbar sein soll. Der kleinste Zeitabschnitt, für den dies sinnvoll ist, wäre ein einzelner Zustand eines Maschinenzyklus. Es ist geplant, dass alle in der Register-Klasse modellierten Register auch in der Benutzeroberfläche dargestellt und manipuliert werden können. Zu manipulierbaren Registern soll auch der Programmspeicher zählen. Dieser soll entweder manuell oder über eine externe Datei befüllbar sein. Für das externe Befüllen muss der für den Simulator vorgegebene Assembler verwendet werden. Die Manipulation des Speichers soll auch während der Simulation möglich sein.
+Um einen Ablauf für die Simulation festzulegen, muss zuerst bestimmt werden, welche Parameter eingestellt, welche Optionen verändert, und welche Operationen im Simulator durchgeführt werden können. Geplant ist, dass die Simulation zu jedem Zeitpunkt unterbrechbar sein soll. Der kleinste Zeitabschnitt, für den dies sinnvoll ist, wäre ein einzelner Zustand eines Maschinenzyklus. Es ist geplant, dass alle in der Register-Klasse modellierten Register auch in der Benutzeroberfläche dargestellt und manipuliert werden können. Zu manipulierbaren Registern soll auch der Programmspeicher zählen. Dieser soll entweder manuell oder über eine externe Datei befüllbar sein. Für das externe Befüllen muss der für den Simulator vorgegebene Assembler \cite{Assembler} verwendet werden. Die Manipulation des Speichers soll auch während der Simulation möglich sein.
 
 \subsection{Aufbau der GUI}
 \label{chp:AufbauGUI}
@@ -722,7 +726,7 @@ Das Tutorial für die Handhabung des Simulators ist über das Hauptmenü erreich
 \begin{figure}[h]
 \centering
 \includegraphics[width=15cm]{bilder/Tutorial}
-\caption{Adresspuffer}
+\caption{Tutorial-Fenster}
 \label{fig:Tutorial}
 \end{figure}
 
@@ -1151,6 +1155,7 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt, wird zuletzt ein WZ O
 
 \subsection{Laden und Anpassen der Oberfläche}\label{chapter:LadenDObfl}
 Von Nico\\
+
 \noindent
 Die Oberfläche für den Simulator wurde nicht dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
 
@@ -1207,6 +1212,7 @@ Effektiv wird die in der 'ui'-Datei definierte Anzahl Zeilen und Spalten der Pro
 
 \subsection{GUI-Methoden}\label{chapter:GUI-Methods}
 Von Nico\\
+
 \noindent
 Die GUI dient als Schnittstelle zwischen Benutzter und Prozessorsimulation. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in Kapitel \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
@@ -1356,6 +1362,7 @@ Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit
 
 \section{Fazit und Ausblick}
 Von Nico \\
+
 \noindent
 Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
 
@@ -1414,6 +1421,9 @@ Intel 8080 Microcomputer Systems User's Manual (S.30 ff. (2-16)): Intel Corporat
 
 \bibitem{IntMan20}
 Intel 8080 Microcomputer Systems User's Manual (S.20 (2-6)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
+
+\bibitem{Assembler}
+Intel 8080 Assembler: Paolo Amoroso, 2021, \url{https://github.com/pamoroso/suite8080/tree/56c2e077dd3d178859d614932b9a1f33fa238e21}, zuletzt abgerufen: 15.05.2022
 
 \end{thebibliography}
 
