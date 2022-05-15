@@ -35,6 +35,8 @@ IMMEDIATE16 = 16
 # Default output file name
 OUTFILE = 'program'
 
+error = ''
+
 
 def assemble(lines):
     """Assemble source lines."""
@@ -392,9 +394,11 @@ def process_instruction():
 
 def report_error(message):
     """Display an error message and exit returning an error code."""
+    global error
 
     # List indexes start at 0 but humans count lines starting at 1.
     print(f'asm80> line {lineno + 1}: {message}', file=sys.stderr)
+    error = f'asm80> line {lineno + 1}: {message}'
     sys.exit(1)
 
 
@@ -1337,7 +1341,8 @@ def write_symbol_table(table, filename):
 
 if __name__ == '__main__':
     convert_to_binary("""Loop:
-  mvi b, 20
-  mvi c, 30
-  mov a, b
-  add c""", "Output\\program")
+      mvi b, 20
+      mvi c, 30
+      mov a, b
+      add c
+      jmp Loop""", "Output\\program")

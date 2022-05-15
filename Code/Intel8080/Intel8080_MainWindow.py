@@ -9,6 +9,7 @@ from PyQt6.QtGui import QCloseEvent, QIcon, QColor
 
 from Code.Intel8080.Intel8080 import Intel8080
 from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
+from Code.Intel8080.ProgramEditor import ProgramEditor
 from Code.Intel8080.StateLogger import StateLogger
 
 
@@ -149,6 +150,9 @@ class Intel8080_MainWindow(QMainWindow):
         loadFile = self.actionLoad_Program
         loadFile.triggered.connect(self.load_program)
 
+        # Menubar Settings
+        self.actionProgram_Editor.triggered.connect(self.load_program_editor)
+
         # Next Instruction/MachineCycle/State
         self.next_button.pressed.connect(self.perform_instruction)
         self.next_mc_button.pressed.connect(self.perform_mc)
@@ -254,6 +258,10 @@ class Intel8080_MainWindow(QMainWindow):
             self.fill_program_table()
             self.Logger.clearLog()
         self.update_ui()
+
+    def load_program_editor(self):
+        self.prog_editor = ProgramEditor()
+        self.prog_editor.show()
 
     def adjust_to(self, value):
         if self.lock is False:
