@@ -1,19 +1,28 @@
 import os.path
+import sys
 
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
 
-from Code.Intel8080.Intel8080_MainWindow import Intel8080_MainWindow
-from Code.Tutorial.TutorialWindow import TutorialWindow
+from Intel8080_MainWindow import Intel8080_MainWindow
+from TutorialWindow import TutorialWindow
+
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
 class MainMenu(QMainWindow):
     def __init__(self, parent=None):
         super(MainMenu, self).__init__(parent)
-        self.init_ui("ui\\MainMenu.ui")
-        self.setWindowIcon(QIcon("../ui/Logo.png"))
+        self.init_ui(resource_path("MainMenu.ui"))
+        self.setWindowIcon(QIcon(resource_path("Logo.png")))
 
         self.setWindowFlags(Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.MSWindowsFixedSizeDialogHint)
 
@@ -29,9 +38,8 @@ class MainMenu(QMainWindow):
         exit_button = self.button_Exit
         exit_button.clicked.connect(self.close)
 
-    def init_ui(self, ui_name):
-        base_path = os.path.abspath("..")
-        full_path = os.path.join(base_path, ui_name)
+    def init_ui(self, full_path):
+        print(full_path)
         loadUi(full_path, self)
 
     def load_Intel8080(self):

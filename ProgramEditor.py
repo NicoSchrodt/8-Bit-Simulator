@@ -1,10 +1,19 @@
 import os
+import sys
 
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from PyQt6.uic import loadUi
 
 from Code.Intel8080.Intel8080_Assembler import i8080asm
+
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
 def reset_ASM():
@@ -41,15 +50,13 @@ def reset_ASM():
 class ProgramEditor(QMainWindow):
     def __init__(self, parent=None):
         super(ProgramEditor, self).__init__(None)
-        self.init_ui("ui\\ProgramEditor.ui")
+        self.init_ui(resource_path("ProgramEditor.ui"))
 
         self.outputFile_button.pressed.connect(self.output_file)
 
-        self.setWindowIcon(QIcon("../ui/Logo.png"))
+        self.setWindowIcon(QIcon(resource_path("Logo.png")))
 
-    def init_ui(self, ui_name):
-        base_path = os.path.abspath("..")
-        full_path = os.path.join(base_path, ui_name)
+    def init_ui(self, full_path):
         loadUi(full_path, self)
 
     def output_file(self):

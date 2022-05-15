@@ -1289,9 +1289,13 @@ def get_number(input):
 def convert_to_binary(program, output_program="Intel8080\\Output\\program"):
     parent_path = Path(os.path.abspath(os.path.curdir)).parent
 
-    infile = parent_path.joinpath(output_program + '.asm')
-    outfile = parent_path.joinpath(output_program + '.com')
-    symfile = parent_path.joinpath(output_program + '.sym')
+    #infile = parent_path.joinpath(output_program + '.asm')
+    #outfile = parent_path.joinpath(output_program + '.com')
+    #symfile = parent_path.joinpath(output_program + '.sym')
+
+    infile = os.path.abspath(output_program + '.asm')
+    outfile = os.path.abspath(output_program + '.com')
+    symfile = os.path.abspath(output_program + '.sym')
 
     try:
         open(infile, 'x')

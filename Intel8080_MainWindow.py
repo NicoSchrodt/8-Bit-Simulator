@@ -1,4 +1,5 @@
 import os
+import sys
 
 from time import sleep
 from PyQt6 import QtCore
@@ -7,11 +8,18 @@ from PyQt6.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QHeaderV
 from PyQt6.uic import loadUi
 from PyQt6.QtGui import QCloseEvent, QIcon, QColor
 
-from Code.Intel8080.Intel8080 import Intel8080
-from Code.Intel8080.ChangeValueWindow import ChangeValueWindow
-from Code.Intel8080.ProgramEditor import ProgramEditor
-from Code.Intel8080.StateLogger import StateLogger
+from Intel8080 import Intel8080
+from ChangeValueWindow import ChangeValueWindow
+from ProgramEditor import ProgramEditor
+from StateLogger import StateLogger
 
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 class runThread(QObject):
     Source = QtCore.pyqtSignal()
@@ -128,7 +136,7 @@ class Intel8080_MainWindow(QMainWindow):
         super(Intel8080_MainWindow, self).__init__(None)
         self.dialog = None
         self.mainW = parent
-        self.init_ui("ui\\Intel8080_MainWindow.ui")
+        self.init_ui(resource_path("Intel8080_MainWindow.ui"))
         self.init_register_table()
         self.init_register_array_table()
         self.init_program_memory_table()
@@ -194,7 +202,7 @@ class Intel8080_MainWindow(QMainWindow):
         self.previous_pc = 0
 
         self.setWindowTitle("Intel8080 Simulator")
-        self.setWindowIcon(QIcon("../ui/Logo.png"))
+        self.setWindowIcon(QIcon(resource_path("Logo.png")))
 
         self.update_ui()
 
@@ -207,9 +215,7 @@ class Intel8080_MainWindow(QMainWindow):
             h += object.rowHeight(i)
         return QtCore.QSize(w, h)
 
-    def init_ui(self, ui_name):
-        base_path = os.path.abspath("..")
-        full_path = os.path.join(base_path, ui_name)
+    def init_ui(self, full_path):
         loadUi(full_path, self)
 
     def init_thread(self):

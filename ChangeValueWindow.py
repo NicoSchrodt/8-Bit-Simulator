@@ -1,9 +1,18 @@
 import os
+import sys
 
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
+
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
 class ChangeValueWindow(QMainWindow):
@@ -13,7 +22,7 @@ class ChangeValueWindow(QMainWindow):
         self.Intel8080_MainWindow = Intel8080_MainWindow
         self.btn = btn
 
-        self.init_ui("ui\\ChangeValueWindow.ui")
+        self.init_ui(resource_path("ChangeValueWindow.ui"))
 
         # Button definition
         button_ok = self.button_ok
@@ -24,7 +33,7 @@ class ChangeValueWindow(QMainWindow):
 
         self.setWindowFlags(Qt.WindowType.Dialog)
 
-        self.setWindowIcon(QIcon("../ui/Logo.png"))
+        self.setWindowIcon(QIcon(resource_path("Logo.png")))
         try:
             index = self.btn.parent().parent().indexAt(self.btn.pos())
             if self.btn.parent().parent() == self.Intel8080_MainWindow.Registers_table:
@@ -34,9 +43,7 @@ class ChangeValueWindow(QMainWindow):
         except:
             pass
 
-    def init_ui(self, ui_name):
-        base_path = os.path.abspath("..")
-        full_path = os.path.join(base_path, ui_name)
+    def init_ui(self, full_path):
         loadUi(full_path, self)
 
     def check_input(self):

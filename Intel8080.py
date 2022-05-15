@@ -75,8 +75,8 @@ from Code.Intel8080.CycleClasses.Childs.Instructions.Xra_m import Xra_m
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xra_r import Xra_r
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xri import Xri
 from Code.Intel8080.CycleClasses.Childs.Instructions.Xthl import Xthl
-from Code.Intel8080.StateLogger import DummyLogger
-from Code.Main.AbstractProcessor import AbstractProcessor
+from StateLogger import DummyLogger
+from AbstractProcessor import AbstractProcessor
 from Code.Intel8080.Intel8080_Components.Intel8080_ALU import Intel8080_ALU, char_to_reg, build_16bit_from_8bit
 from Code.Intel8080.Intel8080_Components.Intel8080_Registers import Intel8080_Registers, reg_offset
 from Code.Intel8080.Intel8080_Components.Intel8080_Peripherals import Intel8080_Peripherals
