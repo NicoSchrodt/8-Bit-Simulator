@@ -736,19 +736,12 @@ Von Andreas\\
 
 \noindent
 Es wurde ein Simulator eines 8-Bit-Prozessors geschrieben.
-Der 8-Bit-Prozessor wurde mit einer Software mit graphische Oberfläche realisiert, mit der der Benutzter die Funktionen des Intel 8080 nachstellen kann.
-\todo Was der prozessor genau macht 
-
-Zu beginn des Projektes wurde methoden für MPS geschrieben bis klar wurde, dass sich die prozessoren nur minimal unterscheiden werden
-
-
-% Bereich in 4.1 schieben. Im folgenden werden trotzdem noch die implementierung
-In diesem Kapitel wird gezeigt, was programmiert wurde, bis sich entschlossen wurde nur einen Prozessor zu simulieren. Obwohl dieser Simulator eigentlich mehrere Prozessoren simulieren können sollte, konnte dieser nie mehr als den Intel 8080 simulieren. Bei der Vorbereitung einen neuen Prozessor zu simulieren, ist aufgefallen, dass die Prozessoren sich nur minimal Unterscheiden werden. Mit dieser Erkenntnis wurde dann der bisherige Simulator so umgebaut, dass ein Prozessor detaillierter simuliert wird. Dessen Implementierung wurde in Kapitel \ref{SPS_impl} beschrieben.
+Der 8-Bit-Prozessor wurde mit einer Software mit graphischer Oberfläche realisiert. Diese zeigt dem Benutzer den aktuellen Zustand des Prozessors (Intel 8080) an. Der Simulator unterstützt alle Befehle des realen Prozessors und kann Interrupts ausführen. Lediglich der Single-Prozessor-Simulator ist in der Lage auch einen Interrupt durch die GUI zu generieren.
 
 
 \subsection{Multi-Prozessor-Simulator}
-Mit diesem Simulator soll es möglich sein, zuvor assemblierten Code auszuführen. Damit dies möglich ist muss der Assembler Code erst erstellt werden. Dafür wird ein Assembler verwendet, der aus dem Source Code (.asm) eine .com-Datei erstellt. Aus dieser können Befehle byteweise ausgelesen werden. Manche Befehle verwenden aber auch mehr als ein Byte. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Lables/Sprungmarken abspeichert.
-\todo muss besprochen werden, da dies nicht möglich ist
+Mit diesem Simulator soll es möglich sein, zuvor assemblierten Code auszuführen. Dafür wird ein Assembler \cite{Assembler} verwendet, der aus dem Source Code (.asm) eine .com-Datei erstellt. Aus dieser kann das komplette Programm ausgelesen werden. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Labels/Sprungmarken abspeichert. Dieser Assembler wurde mit in den Simulator integriert. Diese Version des Simulators verfügt über keine GUI, deshalb muss dem Prozessor der Assemblercode in der Source-Datei (Intel8080.py) übergeben werden. Der Prozessor leitet den Code zum Assembler weiter und liest das Ergebnis in seinen Programmspeicher ein. 
+Zuallererst wurde der Intel 8080 implementiert. Dieser wurde voll-funktionsfähig implementiert, bevor damit begonnen wurde, andere Prozessoren zu implementieren. Im Zuge der Recherche ergab sich, dass sich die Prozessoren nur minimal unterscheiden, deshalb wurde sich dafür entschieden einen Prozessor genauer zu simulieren. Die Beschreibung dieses Simulators kann auf Seite \pageref{SPS_impl} gefunden werden
 
 
 \subsubsection{Programmablauf}
