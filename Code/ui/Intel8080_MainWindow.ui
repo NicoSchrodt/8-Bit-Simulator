@@ -656,6 +656,7 @@
     <property name="title">
      <string>Settings</string>
     </property>
+    <addaction name="actionProgram_Editor"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -669,6 +670,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionProgram_Editor">
+   <property name="text">
+    <string>Program Editor</string>
    </property>
   </action>
  </widget>
