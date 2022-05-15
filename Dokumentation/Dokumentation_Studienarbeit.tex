@@ -243,6 +243,7 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
 \item kein Mikroprogramm die einzelnen Befehle erst noch interpretieren muss.
 \end{itemize}
 
+\vspace{15pt}
 
 \subsubsection{Parallelität nach Flynn}
 Von Andreas\\
@@ -291,27 +292,14 @@ Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat s
 
 \newpage
 
-\subsection{Multi-Prozessor-Simulator}
-Mit diesem Simulator soll es möglich sein, mehrere unterschiedliche Prozessoren simulieren zu können. Vor der Implementierung des Simulators müssen ein oder mehrere geeignete Prozessoren ausgewählt werden. In den nachfolgenden Kapiteln werden einige potenzielle Kandidaten näher analysiert und beschrieben.
-
-\subsubsection{Z80}
-\todo
-Fällt vermutlich weg
-
-\subsubsection{Intel 8080}
-Da der Intel 8080 in dem Single-Prozessor-Simulator verwendet wird und dort auch detaillierter implementiert wird, wird dieser auch dort in Kapitel \ref{SPS} beschrieben.
-
-
-\newpage
-
-\subsection{Single-Prozessor-Simulator}
+\section{Eigenschaften des Intel 8080}
 \label{SPS} 
 Von Andreas\\ 
 
 \noindent
-Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und ist repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren.
+Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 bietet ein breites Spektrum an Befehlen und ist repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Im folgenden werden die Befehle und Register genauer erklärt.
 
-\subsubsection{Register}
+\subsection{Register}
 \label{RegisterSection}
 
 Der Intel 8080 besitzt ein SRAM-Array mit 16-Bit-Registern. Darin enthalten sind der Programmzähler mit 16 Bit und der Stack Pointer mit 16-Bit. Dazu gibt es noch acht weitere 8-Bit Register. Diese können entweder alleine oder zusammen mit einem anderen 8-Bit Register als ein 16-Bit Register verwendet werden. Dabei gibt es aber nur die fest vorgegebenen Kombinationen. Das B- und C-Register, das D- und E-Register, das H- und L- Register und die temporären W- und Z- Register. Die W- und Z-Register können nicht vom Programmierer verwendet werden und dienen nur zur internen Ausführung von Befehlen. Bei manchen Befehlen wird der Stackpointer als 16-Bit Register verwendet.
@@ -326,7 +314,7 @@ Der Intel 8080 besitzt ein SRAM-Array mit 16-Bit-Registern. Darin enthalten sind
 \label{fig:register_kodierung}
 \end{figure}
 
-\subsubsection{Befehle}
+\subsection{Befehle}
 
 Der Intel 8080 ist in der Lage, aus einem, zwei oder drei Bytes bestehen Befehle auszuführen. Dabei gibt das erste Byte immer den Operation Code an. In Byte zwei und drei werden nur Daten oder Adressen gespeichert. Dabei werden die zwei Byte großen Adressen so gespeichert, dass das niederwertige Byte vor dem höherwertigem gespeichert wird. Die Adressen können dabei über vier verschiedene Modi verwendet werden.
 
@@ -347,7 +335,7 @@ Bei Interrupts und Verzweigungs-Befehlen gibt es nur die \glqq Direct\grqq - und
 Der Prozessor besitzt fünf Condition-Flags. Das Zero-Flag gibt an ob das Ergebnis eines Befehls den Wert 0 hatte. Das Sign-Flag gibt an, ob Bit 8, das Most Signifikant-Bit, des letzten Ergebnisses den Wert 1 hat. Wenn das letzte Ergebnis gerade war, ist das Paritäts-Flag gesetzt. Das Carry-Flag zeigt an ob es einen Übertrag bei einer Addition oder einen Abzug bei einer Subtraktion oder einem Vergleich gab. Das Auxiliary Carry-Flag zeigt ebenfalls einen Übertrag oder Abzug an, aber zwischen Bit 3 und Bit Bit 4. \cite{IntMan45}
 \\
 
-\subsubsection{OP-Code Kodierung}
+\subsection{OP-Code Kodierung}
 \label{chapter:opcode}
 Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In manchen Befehlen werden einzelne Bits verwendet, um Register oder Registerpaare zu kodieren, während in anderen jedes Bit verwendet wird. In Tabelle \ref{table:opcode} sind die verschiedenen Möglichkeiten aufgelistet. Bei dem Befehl ACI ist es wichtig, dass das Byte genau 0xC7 ist. Bei ADC und INR wird ein 8-Bit Register in den Befehl kodiert. Hierbei wird unterschieden, ob Daten in das Register geschrieben (DDD für Destination) oder daraus gelesen (SSS für Source) werden. Bei Mov r1, r2 wird sowohl aus einem Register gelesen als auch in ein anderes geschrieben, weshalb nur noch zwei Bit für den eigentlichen MOV-Befehl übrig bleiben. Bei dem INX-Befehl wird ein 16-Bit Register verwendet. Wie auf Seite \pageref{RegisterSection} beschrieben, können auch zwei 8-Bit-Register zu einem 16-Bit-Register zusammen geschlossen und damit verwendet werden. Insgesamt gibt es davon drei Kombinationen. Dementsprechend werden in diesen Befehlen diese Register mit zwei Bit kodiert. Damit gibt es noch eine weitere Bitkombination, mit der ein weiteres Register verwendet werden kann. Mit der vierten noch übrig gebliebenen Kombination wird der Stackpointer als 16-Bit-Register verwendet.
 
@@ -368,7 +356,7 @@ Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In 
 \label{table:opcode}
 \end{table}
 
-\subsubsection{Befehlsgruppen}
+\subsection{Befehlsgruppen}
 Jeder Befehl kann genau einer der folgenden fünf Gruppen zugeordnet werden. Jede Gruppe verhält sich anders mit den Status-Flags. So gibt es eine Gruppe, bei der die meisten Befehle alle Flags ändern, aber auch Gruppen, wobei die meisten Befehle kein einziges Flag verändern.
 \\
 
@@ -494,7 +482,7 @@ In dieser Gruppe verändert nur der POP-Befehl die Flags.
 \end{multicols}
 
 
-\subsubsection{Typen der Maschinenzyklen}
+\subsection{Typen der Maschinenzyklen}
 Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Maschinenzyklen zum kompletten Ausführen des Befehls. Dabei kann jeder Maschinenzyklus genau einem Typ zugeordnet werden. Die existierenden Befehlstypen sind:
 
 \begin{itemize}
@@ -514,7 +502,7 @@ Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Mas
 Der erste Maschinenzyklus ist immer ein Fetch-Zyklus. Bei diesem wird immer ein neuer Befehl eingelesen und dekodiert. Für alle anderen Maschinenzyklenphasen kann nicht mehr genau gesagt werden zu welchem Typ diese gehören. Deshalb wird in dem ersten Zustand jedes Maschinenzyklus immer der Befehlstyp während des SYNC-Taktes auf den Datenbus kodiert. \cite{IntMan18}
 
 
-\subsubsection{Interrupts}
+\subsection{Interrupts}
 Der Intel 8080 ist in der Lage Interrupts auszuführen, die den normalen Programmfluss unterbrechen. Dies ist aber nur zwischen Befehlen möglich. Wenn ein Interrupt eintritt, während ein Befehl noch ausgeführt wird, wird dieser zuerst bis zum Schluss noch ausgeführt. Eine Besonderheit der Interrupts ist, dass jeder Interrupt ein Byte mitliefert, das angibt, was der Interrupt ausführen soll. Dabei ist jeder Befehl erlaubt, der nur ein Byte benötigt. Somit kann auch nur ein Befehl ausgeführt werden. Damit aber auch größere Interrupt Service Routines möglich sind gibt es den RST-Befehl. Dieser Befehl schreibt, den aktuellen Programmzähler auf den Stack und springt an eine von acht Stellen im Programmspeicher. Welche Stelle genau wird im RST-Befehl dekodiert. Diese acht Sprungpunkte liegen alle genau acht Byte auseinander. Falls dies aber für den Interrupt nicht ausreicht, kann von dort an eine andere Stelle im Programmspeicher gesprungen werden. Da der Intel 8080 eine von-Neumann-Architektur verwendet und der Stack an einer beliebigen Stelle im Programmspeicher (64kB) liegen kann, gibt es so gut wie keine Größenlimitierung dafür. Bei manchen anderen Prozessoren kann der Stack z.B. maximal acht Einträge besitzen. Für den Intel 8080 wurde es ermöglicht, dass Interrupts durch andere Interrupts unterbrochen werden können. Durch den RST-Befehl wird der momentane Programmzähler immer auf den Stack geschrieben. Somit kann immer der neueste Interrupt ausgeführt werden und kann dann zum zuvor ausgelösten Interrupt zurückspringen.
 
 
