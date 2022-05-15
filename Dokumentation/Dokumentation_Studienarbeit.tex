@@ -512,7 +512,7 @@ Jeder Befehl oder Befehlszyklus benötigt mindestens einen und maximal fünf Mas
 \end{itemize}
 
 \noindent
-Der erste Maschinenzyklus ist immer ein Fetchzyklus. Bei diesem wird immer ein neuer Befehl eingelesen und dekodiert. Für alle anderen Maschinenzyklenphasen kann nicht mehr genau gesagt werden zu welchem Typ diese gehören. Deshalb wird in dem ersten Zustand jedes Maschinenzyklus immer der Befehlstyp während des SYNC-Taktes auf den Datenbus kodiert. \cite{IntMan18}
+Der erste Maschinenzyklus ist immer ein Fetch-Zyklus. Bei diesem wird immer ein neuer Befehl eingelesen und dekodiert. Für alle anderen Maschinenzyklenphasen kann nicht mehr genau gesagt werden zu welchem Typ diese gehören. Deshalb wird in dem ersten Zustand jedes Maschinenzyklus immer der Befehlstyp während des SYNC-Taktes auf den Datenbus kodiert. \cite{IntMan18}
 
 
 \subsubsection{Interrupts}
@@ -884,10 +884,10 @@ Die GUI besitzt vier Knöpfe, die das ausführen eines Befehls/Maschinenzyklus o
 Die next\_instruction()-Methode führt solange die next\_machine\_cycle()-Methode aus, bis diese True zurückliefert. Diese wiederum führt solange die next\_state\_internal()-Methode aus, bis diese True zurückliefert. Diese liefert True, wenn der letzte Zustand eines Maschinenzyklus ausgeführt wurde. Die next\_state()-Methode ruft nur einmal die next\_state\_internal()-Methode auf.
 
 \noindent
-Die next\_state\_internal()-Methode steuert wann ein neuer Befehl dekodiert und eine neue Klasse geladen werden muss. Wenn der nächste Zustand der erste eines neuen Befehls ist, wird der current\_instruction-Variable ein Nop-Befehl zugewiesen. Da bei allen Befehlen, die ersten drei Zustände die gleichen sind, ist es nicht wichtig welcher Befehl hier geladen wird. Erst im dritten Zustand wird der tatsächliche Befehl geladen. Von diesem Befehl wird der zuletzt ausgeführten Zustand auf drei gesetzt. Wenn der letzte Zustand eines Maschinenzyklus ausgeführt wurde wird True zurückgegeben. Wenn ein Befehl frühzeitig abgebrochen werden soll, also z.B. bei einem bedingten Sprung, wird das ebenfalls hier gemacht.
+Die next\_state\_internal()-Methode, steuert wann ein neuer Befehl dekodiert und eine neue Klasse geladen werden muss. Wenn der nächste Zustand der erste eines neuen Befehls ist, wird der current\_instruction-Variable ein NOP-Befehl zugewiesen. Da bei allen Befehlen die ersten drei Zustände die gleichen sind, ist es unbedeutend, welcher Befehl hier geladen wird. Erst im dritten Zustand wird der tatsächliche Befehl geladen. Von diesem Befehl wird der zuletzt ausgeführte Zustand auf drei gesetzt. Wenn der letzte Zustand eines Maschinenzyklus ausgeführt wurde, wird True zurückgegeben. Wenn ein Befehl frühzeitig abgebrochen werden soll, z.B. bei einem bedingten Sprung, wird das ebenfalls hier gesteuert.
 
 \subsubsection{Dekodieren eines Befehls}
-Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_register-Variable geschrieben. Ähnlich wie bei der ersten Version, wird beim Dekodieren dieses Byte mit Hexadezimalen Werten verglichen. Bei dieser Version wird beim dekodieren aber ein Unterschied gemacht bei Befehlen, die entweder ein Register oder eine Adresse als Parameter erhalten (siehe Abbildung \ref{fig:Decode_instr}). Dies ist deswegen wichtig, da sich die Maschinenzyklen davon unterscheiden. Abbildung \ref{fig:ReadInstruction}  zeigt, dass in der ersten Version für alle ADD Befehle nur eine Methode aufgerufen wird. Damit der Prozessor die richtigen Klassen zur Ausführung verwendet, wird in der current\_instruction-Variable ein Objekt des richtigen Befehls gespeichert.
+Bei jedem Fetch-Zyklus wird das aktuelle Befehlsbyte in die cpu\_instruction\_register-Variable geschrieben. Ähnlich wie bei der Multi-Prozessor-Version, wird beim Dekodieren dieses Byte mit Hexadezimalen Werten verglichen. Bei dieser Version wird beim Dekodieren aber unterschieden zwischen Befehlen, die entweder ein Register oder eine Adresse als Parameter erhalten (siehe Abbildung \ref{fig:Decode_instr}). Dies ist deshalb wichtig, da sich die Maschinenzyklen davon unterscheiden. Abbildung \ref{fig:ReadInstruction}  zeigt, dass in der ersten Version für alle ADD-Befehle nur eine Methode aufgerufen wird. Damit der Prozessor die richtigen Klassen zur Ausführung verwendet, wird in der current\_instruction-Variable ein Objekt des richtigen Befehls gespeichert.
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -899,7 +899,7 @@ Bei jedem Fetch Zyklus wird das aktuelle Befehlsbyte in die cpu\_insturction\_re
 
 \subsubsection{Programmaufbau}
 
-Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Dadurch, dass aber jeder Befehl, Maschinenzyklus und Zustand eine eigene Klasse  hat gibt es nun wesentlich mehr Klassen. Insgesamt gibt es:
+Der Simulator besteht, wie der Multi-Prozessor-Simulator, immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Durch die Verwendung eigener Klassen für Befehle, Maschinenzyklen und Zustände, gibt es nun wesentlich mehr Klassen. Insgesamt werden:
 
 \begin{itemize}
 \item 74 Befehls-Klassen
@@ -908,22 +908,24 @@ Der Simulator besteht immer noch hauptsächlich aus dem Prozessor, der ALU und d
 \end{itemize}
 
 \noindent
-Zusätzlich dazu gibt es nochmal ungefähr 10 Klassen, von denen die oben genannten abgeleitet sind.
+verwendet. Zusätzlich dazu gibt es noch ungefähr 13 Klassen, von denen die oben genannten abgeleitet sind.
 
 \noindent
-Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX Befehl sieht nun folgendermaßen aus.
+Der in Kapitel \ref{chapter:MPS_aufbau} gezeigte DCX-Befehl sieht nun folgendermaßen aus.
 
 \imgSpaceBefore
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{bilder/dcx_inst}
-\includegraphics[width=15cm]{bilder/dcx_mc}
-\caption{DCX-Befehl und Maschinenzyklus}
+\includegraphics[width=10cm]{bilder/dcx_inst}
+\caption{DCX-Befehl}
+\vspace{15pt}
+\includegraphics[width=10cm]{bilder/dcx_mc}
+\caption{DCX-Maschinenzyklus}
 \label{fig:Dcx_instr}
 \end{figure}
 
 \noindent
-Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es mit dem Simulator momentan nicht möglich ist, einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben, wie es bei einem richtigen Prozessor auch der Fall ist.
+Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es mit dem Simulator momentan nicht möglich ist, einen Zustand zu erstellen, der zwei Takte dauert. Deshalb wird mit dem ersten Takt ein leerer Zustand ausgeführt und im zweiten dann erst der eigentliche Zustand. Somit werden die Daten zur gleichen Zeit in die Register/Speicher geschrieben, wie es bei einem realen Prozessor auch der Fall ist.
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -934,11 +936,11 @@ Bei vielen Befehlen werden leere Zustände verwendet. Das kommt daher, dass es m
 \end{figure}
 
 \noindent
-Da der DCX-Befehl nur aus einem Maschinenzyklus, und mit dem leeren Zustand nur über einen Zustand verfügt, der den Befehl ausmacht werden im folgenden nochmal anderen Befehle gezeigt, bei denen diese Klassenstruktur mehr Sinn ergibt. Im folgenden Kapitel werden weitere Befehle angeschaut, die auch zeigen, wie in der neuen Version Befehle des gleichen Typs auf die selben Maschinenzyklen und Zustände zurückgreifen.
+Da der DCX-Befehl nur aus einem Maschinenzyklus besteht und mit dem leeren Zustand nur über einen Zustand verfügt, der den Befehl ausmacht, werden im Folgenden anderen Befehle gezeigt, die diese Klassenstruktur besser veranschaulichen. Diese Beispiel sollen auch verdeutlichen , wie Befehle des gleichen Typs auf die selben Maschinenzyklen und Zustände zurückgreifen.
 
 \subsubsection{Testing}
-Um sicher zu stellen, dass alle Befehle korrekt ausgeführt werden, wurden Tests erstellt. 
-Da es wichtig ist, dass alle Befehle korrekt ausgeführt werden und die Zustände selber relativ einfach sind, wurden Integrationstests geschrieben. Abbildung \ref{fig:test_aci} zeigt wie einer der Tests aufgebaut ist. 
+Um sicherzustellen, dass alle Befehle korrekt ausgeführt werden, wurden Tests erstellt. 
+Speziell wurden Integrationstests geschrieben, um zu kontrollieren, dass dies der Fall ist und die Zustände sehr simpel aufgebaut sind. Abbildung \ref{fig:test_aci} zeigt wie einer der Tests aufgebaut ist. 
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -949,11 +951,11 @@ Da es wichtig ist, dass alle Befehle korrekt ausgeführt werden und die Zuständ
 \end{figure}
 
 \noindent
-Zuerst wird ein Intel8080 Prozessor-Objekt (ohne GUI) erzeugt. Mit intel.init\_test() wird die Zeichenkette zuerst assembliert und dann in den Programmspeicher geschrieben. In diesem Fall wird zu Vorbereitung der Wert 7 in den Akkumulator geschrieben. Mit intel.run\_complete\_programm() führt der Simulator so viele Befehle aus wie mit dem Zahlenwert übergeben. Dies ist dann wichtig wenn zum Beispiel mit Labels gearbeitet wird und diese nicht auf die Adresse 0 verweisen sollen. Nach der Ausführung des Befehls wird überprüft ob der wert im Akkumulator der korrekte ist. Sofern irgendwo ein Fehler auftaucht wird natürlich der Test auch als gescheitert angesehen.
+Zuerst wird ein Intel8080-Prozessor-Objekt (ohne GUI) erzeugt. Mit intel.init\_test() wird die Zeichenkette zuerst assembliert und dann in den Programmspeicher geschrieben. In diesem Fall wird zu Vorbereitung der Wert 7 in den Akkumulator geschrieben. Mit intel.run\_complete\_programm() führt der Simulator so viele Befehle aus wie durch den Zahlenwert übergeben. Dies ist notwendig, wenn z.B. mit Labels gearbeitet wird und diese nicht auf die Adresse 0 verweisen sollen. Nach der Ausführung des Befehls wird überprüft, ob der Wert im Akkumulator der korrekte ist. Sofern irgendwo ein Fehler auftaucht, gilt der Test als gescheitert.
 \\
 
 \noindent
-Bei dem obigen Test wurde bisher nur geprüft ob der Ergebniswert der zu erwartende ist. Da manche Befehle aber abhängig von Flags sind und diese teilweise auch verändern, gibt es noch andere Tests die das überprüfen. Nicht jeder Befehl wird so ausgiebig getestet wie der ADC-Befehl (siehe \ref{fig:test_adc}). Da der ADC r, der ADC m und der ACI-Befehl aus dem ADC\_MC-Maschinenzyklus bestehen wird nur einer dieser Befehle besonders stark getestet. Wenn irgendein anderen Zustand eines Befehls nicht korrekt wäre, würde sehr wahrscheinlich der einfache Test für einen, wenn nicht sogar mehrere, einen Fehler anzeigen. Somit wird mit mehreren weiteren Tests für den Maschinenzyklus hauptsächlich die sich veränderten Flags getestet.
+Mit dem obigen Test wurde geprüft ob der Ergebniswert der zu erwartende ist. Da manche Befehle  von Flags abhängig sind und diese teilweise auch verändern, gibt es noch andere Tests, um dies zu kontrollieren. Nicht jeder Befehl wird so ausgiebig getestet wie der ADC-Befehl (siehe \ref{fig:test_adc}). Da der ADC r, der ADC m und der ACI-Befehl aus dem ADC\_MC-Maschinenzyklus bestehen, wird nur einer dieser Befehle besonders stark getestet. Wenn ein anderer Zustand eines Befehls nicht korrekt wäre, würde sehr wahrscheinlich der einfache Test für einen, wenn nicht sogar mehrere, einen Fehler anzeigen. Somit wird mit mehreren weiteren Tests für den Maschinenzyklus hauptsächlich die sich verändernden Flags getestet.
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -964,20 +966,20 @@ Bei dem obigen Test wurde bisher nur geprüft ob der Ergebniswert der zu erwarte
 \end{figure}
 
 \noindent
-In diesem Test wird geschaut ob sich die Flags korrekt verhalten, wenn ein Überlauf stattfindet. Ebenso wird hier auch noch mal getestet, ob das Carry-Flag mit in die Berechnung einfließt. Deswegen wird vor dem Befehl das Carry-Flag gesetzt. Da dieser ADC r Befehl auf ein Register zugreift, muss dieses auch vor dem Test noch befüllt werden. Nach der Ausführung des Programms werden alle Flags ausgewertet. Sofern nur eines davon nicht den korrekten Wert enthält, wird der Test als nicht bestanden markiert.
+In diesem Test (Abbildung \ref{fig:test_adc}) wird überprüft, ob sich die Flags korrekt verhalten, wenn ein Überlauf stattfindet. Ebenso wird hier auch noch mal getestet, ob das Carry-Flag mit in die Berechnung einfließt. Deswegen wird vor dem Befehl das Carry-Flag gesetzt. Da dieser ADC r Befehl auf ein Register zugreift, muss dieses auch vor dem Test noch befüllt werden. Nach der Ausführung des Programms werden alle Flags ausgewertet. Sofern nur eines davon nicht den korrekten Wert enthält, wird der Test als nicht bestanden markiert.
 
 
 \subsubsection{Befehlsvarianten}
-Alle Befehle haben die gleichen ersten drei Zustände. Deswegen wurde auch ein Fetch-Maschinenzyklus erstellt, wovon jeder erste Maschinenzyklus abgeleitet wurde. Der RST-Befehl hat, als einzige Ausnahme, einen anderen dritten Zustand. Normalerweise wird im dritten Zustand nur der aktuelle Befehl in das Befehls Register geschrieben. Beim RST-Befehl wird aber zusätzlich noch das W-Register auf Null gesetzt. Dies ist deswegen wichtig, da der Befehl an eine von acht Programmstellen springen soll. Diese liegen alle am Anfang des Programmspeichers und benötigen deswegen ein leeres W-Register. Für Sprünge werden das W- und Z-Register verwendet. In den Maschinenzyklen 2-4 wird aber nur das Z-Register auf den entsprechenden Wert gesetzt.
+Alle Befehle haben die gleichen ersten drei Zustände. Aus diesem Grund wurde ein Fetch-Maschinenzyklus erstellt, von dem jeder erste Maschinenzyklus abgeleitet wurde. Der RST-Befehl hat, als einzige Ausnahme, einen anderen dritten Zustand. Normalerweise wird im dritten Zustand nur der aktuelle Befehl in das Befehls Register geschrieben. Beim RST-Befehl wird aber zusätzlich noch das W-Register auf Null gesetzt. Dies ist deswegen wichtig, da der Befehl an eine von acht Programmstellen springen soll. Diese liegen alle am Anfang des Programmspeichers und benötigen deswegen ein leeres W-Register. Für Sprünge werden das W- und Z-Register verwendet. In den Maschinenzyklen 2-4 wird aber nur das Z-Register auf den entsprechenden Wert gesetzt.
 \\
 
 \noindent
-Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die unterschieden werden. Einen direkten Befehl, der ein weiteres Byte hinter dem Befehl im Programmspeicher liest, einen Befehl, der einen Register-Wert liest, im restlichen Kapitel als Register-Befehl bezeichnet, und einen Befehl, der zuerst die zwei folgenden Bytes aus dem Programmspeicher liest, daraus eine Adresse bildet und dann an diese Adresse springt und den dort liegenden Wert verwendet. Im restlichen Kapitel an Speicher-Befehl bezeichnet.
+Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die unterschieden werden. Einen direkten Befehl, der ein weiteres Byte hinter dem Befehl im Programmspeicher liest, einen Befehl, der einen Register-Wert liest, im folgenden als Register-Befehl bezeichnet, und einen Befehl, der zuerst die zwei folgenden Bytes aus dem Programmspeicher liest, daraus eine Adresse bildet und dann an diese Adresse springt und den dort liegenden Wert verwendet, im restlichen Kapitel an Speicher-Befehl bezeichnet.
 
 \imgSpaceBefore
 \begin{table}[H]
 \centering
-\begin{tabular}{|l|c|c|c|c| } 
+\begin{tabular}{|l c c c|c| } 
  \hline
  Beschreibung & Register-Befehl & Speicher-Befehl & Direkter Befehl \\
  \hline 
@@ -996,16 +998,16 @@ Bei einigen Befehlen gibt es grundsätzlich drei verschiedene Typen, die untersc
 \end{table}
 
 \noindent
-Für die Addition ohne Carry gibt es diese drei Typen. ADD r verwendet ein Register. ADD m verwendet einen Wert, der irgendwo im Programmspeicher liegt und der ADI-Befehl verwendet das zweite Byte des Befehls als Summand. Alle drei Befehle müssen das Gleiche machen. Einen Wert mit dem Akkumulator addieren. Dazu nutzt jeder Befehl aber Werte von unterschiedlichen Stellen und müssen diese unterschiedlich laden. 
-Als letzter Maschinenzyklus addieren alle diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird am Ende immer in den Akkumulator geschrieben. Deswegen hat jeder dieser Befehle als letztes den Add\_MC Maschinenzyklus.
-In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Der Unterschied der Befehle ist nur, dass in den vorherigen Maschinenzyklen, andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}).
+Für die Addition ohne Carry gibt es diese drei Typen. ADD r verwendet ein Register. ADD m verwendet einen Wert, der irgendwo im Programmspeicher liegt und der ADI-Befehl verwendet das zweite Byte des Befehls als Summand. Alle drei Befehle besitzen die Aufgabe, einen Wert mit dem Akkumulator zu addieren. Dazu nutzt aber jeder Befehl Werte von unterschiedlichen Stellen und muss diese unterschiedlich laden. 
+Als letzter Maschinenzyklus addieren diese drei Befehle das ACT- und TMP-Register ohne Carry. Das Ergebnis wird dann in den Akkumulator geschrieben. Deshalb besitzt jeder dieser Befehle als Letztes den Add\_MC Maschinenzyklus.
+In das ACT-Register wird immer der ursprüngliche Wert des Akkumulators geladen. Die Befehle unterscheiden sich allein darin, dass in den vorherigen Maschinenzyklen andere Werte in das TMP-Register gespeichert werden (siehe Tabelle \ref{table:mc_types}).
 \\
 
 \noindent
 \textbf{Unterschiede des ersten Maschinenzyklus}
 
 \noindent
-Der direkte Befehl und der Speicher-Befehl besitzen den gleichen ersten Zustand. Dort wird einfach nur der Inhalt des Akkumulators in das ACT-Register geschrieben.
+Der direkte Befehl und der Speicher-Befehl besitzen den gleichen ersten Zustand, sie schreiben schlicht den Inhalt des Akkumulators in das ACT-Register.
 Der Register-Befehl kann im ersten Maschinenzyklus sowohl den Wert des Akkumulators in das ACT-Register, als auch das im Befehl kodierte Register in das TMP-Register laden.
 \\
 
@@ -1013,8 +1015,8 @@ Der Register-Befehl kann im ersten Maschinenzyklus sowohl den Wert des Akkumulat
 \textbf{Unterschiede des zweiten Maschinenzyklus}
 
 \noindent
-Der Register-Befehl, hat im ersten Zyklus schon beide Register so vorbereitet, dass er im zweiten Zyklus diese Werte bereits addieren kann. Für diesen Befehlstyp ist das schon der letzte Zyklus.
-Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekten Wert laden. Der direkte Befehl muss dafür erst noch den Programmzähler um eins erhöhen, damit das folgende Byte ausgelesen werden kann. Der Speicher-Befehl lädt den Wert, an der angegebenen Adresse, direkt in das TMP-Register.
+Der Register-Befehl hat im ersten Zyklus schon beide Register so vorbereitet, dass er im zweiten Zyklus diese Werte bereits addieren kann. Für diesen Befehlstyp ist das schon der letzte Zyklus.
+Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekten Wert laden. Der direkte Befehl muss dafür zuerst den Programmzähler um eins erhöhen, damit das folgende Byte ausgelesen werden kann. Der Speicher-Befehl lädt den Wert an der angegebenen Adresse, direkt in das TMP-Register.
 \\
 
 \noindent
@@ -1022,14 +1024,14 @@ Die beiden anderen Befehle müssen zuerst noch das TMP-Register mit dem korrekte
 
 \noindent
 Der Register-Befehl führt keinen dritten Zyklus aus.
-Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinenzyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat.
+Der direkte Befehl und der Speicher-Befehl führen jetzt den gleichen Maschinenzyklus aus, der der Register-Befehl schon im zweiten Zyklus ausgeführt hat. Eine Zusammenfassung der Zyklen für die drei Befehlstypen ist in Tabelle \ref{table:mc_types} gegeben.
 
 \imgSpaceBefore
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|c|c|c|c| } 
  \hline
- Befehls-Typ & 1. Zyklus & 2. Zyklus & 3. Zyklus \\
+ Befehlstyp & 1. Zyklus & 2. Zyklus & 3. Zyklus \\
  \hline 
  Register-Befehl
  &
@@ -1077,7 +1079,7 @@ ADD_MC
 \end{table}
 
 \subsubsection{Interrupts}
-Damit Interrupts ausgeführt werden können wurde ein Interrupt-Befehl implementiert. Dieser führt nicht wirklich den Interrupt aus. Dieser ist nur dazu da, dass im zweiten Zustand nicht der Programmzähler um eins erhöht wird. In dem Handbuch zum Intel 8080 \cite{IntMan16} ist davon die Rede, dass der Interrupt-Maschinenzyklus nur ein normaler Fetchzyklus ist, bei dem eben der Programmzähler nicht erhöht. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der Erste, um den Maschinenzyklus auf dem Datenbus zu beschreiben, der zweite um den Programmzähler zu erhöhen und den dritten, um den nächsten Befehl einzulesen und in das Instruction-Register zu schreiben. Somit wäre ein Fetchzyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten Zustand, einen leeren Zustand. Dieser ist deswegen wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden.
+Ein Interrupt-Befehl wurde implementiert, um die Ausführung von Interrupts zu ermöglichen. Dieser führt nicht wirklich den Interrupt aus. Dieser dient nur dem Zweck, dass der Programmzähler hier im zweiten Zustand nicht um eins erhöht wird. Im Handbuch des Intel 8080 \cite{IntMan16} wird der Interruptzyklus als Fetch-Zyklus beschrieben, bei dem der Programmzähler nicht erhöht wird. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der Erste, um den Maschinenzyklus auf dem Datenbus zu beschreiben, der zweite um den Programmzähler zu erhöhen und den dritten, um den nächsten Befehl einzulesen und in das Instruction-Register zu schreiben. Somit wäre ein Fetch-Zyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten Zustand, einen leeren Zustand. Dieser ist deswegen wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden.
 
 \subsubsection{Besonderheiten des Simulators}
 Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. Im folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
@@ -1093,7 +1095,7 @@ In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, das
 
 \noindent
 In jedem ersten Zustand aller Maschinenzyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinenzyklus ausgeführt wird.
-Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state}) nur so viel steht wie \glqq PC OUT STATUS\grqq\ im ersten Zustand des Fetch Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus kodiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
+Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state}) nur so viel steht wie \glqq PC OUT STATUS\grqq\ im ersten Zustand des Fetch-Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus kodiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
 
 \imgSpaceBefore
 \begin{figure}[H]
