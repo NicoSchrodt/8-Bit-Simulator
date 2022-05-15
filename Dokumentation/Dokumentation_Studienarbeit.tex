@@ -60,7 +60,7 @@
 \newcommand{\DHBWLogoDeckblatt}{\includegraphics[width=4.5cm]{Logos/dhbw-logo}}
 \newcommand{\IntelDataLines}{\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}}
 
-\newcommand{\Titel}{Konzeptionierung eines Simulators für 8-Bit Prozessoren}
+\newcommand{\Titel}{Konzeptionierung eines Simulators für einen 8-Bit Prozessor}
 \newcommand{\ArtArbeit}{Studienarbeit}
 \newcommand{\Abschluss}{Bachelor of Science}
 \newcommand{\Studiengang}{Studiengang Informationstechnik}
@@ -339,7 +339,7 @@ Der Intel 8080 ist in der Lage, aus einem, zwei oder drei Bytes bestehen Befehle
 \end{itemize}
 
 \noindent
-Bei \glqq Direct\grqq\ wird der Wert im Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei \glqq Register\grqq\ wird auf ein oder zwei Register verwiesen und verhält sich wie bei \glqq Direct\grqq. Bei \glqq Register Indirect\grqq\ wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendende Wert. Bei \glqq Immediate\grqq\ steht
+Bei \glqq Direct\grqq\ wird der Wert im Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei \glqq Register\grqq\ wird auf ein oder zwei Register verwiesen und der Register-Typ verhält sich wie bei \glqq Direct\grqq. Bei \glqq Register Indirect\grqq\ wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendende Wert. Bei \glqq Immediate\grqq\ steht
 im zweiten und/oder dritten Byte ein Wert, mit dem gearbeitet wird (Low-Byte im zweiten Byte).
 Bei Interrupts und Verzweigungs-Befehlen gibt es nur die \glqq Direct\grqq - und \glqq Register indirect\grqq -Modi. \cite{IntMan45}
 \\ 
@@ -350,7 +350,7 @@ Der Prozessor besitzt fünf Condition-Flags. Das Zero-Flag gibt an ob das Ergebn
 
 \subsubsection{OP-Code Kodierung}
 \label{chapter:opcode}
-Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In manchen Befehlen werden einzelne Bits verwendet, um Register oder Registerpaare zu kodieren, während in anderen jedes Bit verwendet wird. In Tabelle \ref{table:opcode} sind die verschiedenen Möglichkeiten aufgelistet. Bei dem Befehl ACI ist es wichtig, dass das Byte genau 0xC7 ist. Bei ADC und INR wird ein 8-Bit Register in den Befehl kodiert. Hierbei wird unterschieden, ob Daten in das Register geschrieben (DDD für Destination) oder daraus gelesen (SSS für Source) werden. Bei Mov r1, r2 wird sowohl aus einem Register gelesen als auch in ein anderes geschrieben, weshalb nur noch zwei Bit für den eigentlichen MOV-Befehl übrig bleiben. Bei dem INX-Befehl wird ein 16-Bit Register verwendet. Wie auf Seite \pageref{RegisterSection} beschrieben, können auch zwei 8-Bit-Register zu einem 16-Bit-Register zusammen geschlossen und damit verwendet werden. Insgesamt gibt es davon drei Kombinationen. Dementsprechend werden in diesen Befehlen diese Register mit zwei Bit kodiert. Damit gibt es noch eine weitere Bitkombination, mit der ein weiteres Register verwendet werden kann. Mit der vierten noch übrig gebliebenen Kombination wird der Stackpointer als 16-Bit-Register verwendet werden.
+Jedem Befehl ist ein Byte (OP-Code) zugewiesen. Dabei gibt es mehrere Typen. In manchen Befehlen werden einzelne Bits verwendet, um Register oder Registerpaare zu kodieren, während in anderen jedes Bit verwendet wird. In Tabelle \ref{table:opcode} sind die verschiedenen Möglichkeiten aufgelistet. Bei dem Befehl ACI ist es wichtig, dass das Byte genau 0xC7 ist. Bei ADC und INR wird ein 8-Bit Register in den Befehl kodiert. Hierbei wird unterschieden, ob Daten in das Register geschrieben (DDD für Destination) oder daraus gelesen (SSS für Source) werden. Bei Mov r1, r2 wird sowohl aus einem Register gelesen als auch in ein anderes geschrieben, weshalb nur noch zwei Bit für den eigentlichen MOV-Befehl übrig bleiben. Bei dem INX-Befehl wird ein 16-Bit Register verwendet. Wie auf Seite \pageref{RegisterSection} beschrieben, können auch zwei 8-Bit-Register zu einem 16-Bit-Register zusammen geschlossen und damit verwendet werden. Insgesamt gibt es davon drei Kombinationen. Dementsprechend werden in diesen Befehlen diese Register mit zwei Bit kodiert. Damit gibt es noch eine weitere Bitkombination, mit der ein weiteres Register verwendet werden kann. Mit der vierten noch übrig gebliebenen Kombination wird der Stackpointer als 16-Bit-Register verwendet.
 
 \begin{table}[h]
 \centering
@@ -735,11 +735,19 @@ Um zum nächsten bzw. vorherigen Bild zu wechseln werden die zwei unteren Knöpf
 Von Andreas\\
 
 \noindent
+Es wurde ein Simulator eines 8-Bit-Prozessors geschrieben.
+Der 8-Bit-Prozessor wurde mit einer Software mit graphische Oberfläche realisiert, mit der der Benutzter die Funktionen des Intel 8080 nachstellen kann.
+\todo Was der prozessor genau macht 
+
+Zu beginn des Projektes wurde methoden für MPS geschrieben bis klar wurde, dass sich die prozessoren nur minimal unterscheiden werden
+
+
+% Bereich in 4.1 schieben. Im folgenden werden trotzdem noch die implementierung
 In diesem Kapitel wird gezeigt, was programmiert wurde, bis sich entschlossen wurde nur einen Prozessor zu simulieren. Obwohl dieser Simulator eigentlich mehrere Prozessoren simulieren können sollte, konnte dieser nie mehr als den Intel 8080 simulieren. Bei der Vorbereitung einen neuen Prozessor zu simulieren, ist aufgefallen, dass die Prozessoren sich nur minimal Unterscheiden werden. Mit dieser Erkenntnis wurde dann der bisherige Simulator so umgebaut, dass ein Prozessor detaillierter simuliert wird. Dessen Implementierung wurde in Kapitel \ref{SPS_impl} beschrieben.
 
 
 \subsection{Multi-Prozessor-Simulator}
-Mit diesem Simulator soll es möglich sein, zuvor assemblierten Code auszuführen. Damit dies möglich ist muss der Assembler Code erst erstellt werden. Dies wird mit einem einfachen Assembler aus dem Internet gemacht. Dieser erstellt aus dem Source Code (.asm) eine .com-Datei, woraus die Befehle byteweise ausgelesen werden können. Manche Befehle verwenden aber auch mehr als ein Byte. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Lables/Sprungmarken abspeichert.
+Mit diesem Simulator soll es möglich sein, zuvor assemblierten Code auszuführen. Damit dies möglich ist muss der Assembler Code erst erstellt werden. Dafür wird ein Assembler verwendet, der aus dem Source Code (.asm) eine .com-Datei erstellt. Aus dieser können Befehle byteweise ausgelesen werden. Manche Befehle verwenden aber auch mehr als ein Byte. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Lables/Sprungmarken abspeichert.
 \todo muss besprochen werden, da dies nicht möglich ist
 
 
@@ -866,7 +874,7 @@ In diesem Kapitel werden die Funktionen der aktuellen Version des Simulators bes
 
 \subsubsection{Aufbau eines Befehls}
 
-Jeder Befehl besteht aus einem Array von Maschinenzyklen. Zusätzlich enthält jeder Befehl auch einen Zähler, wie viele Maschinenzyklen der Befehl schon ausgeführt hat. Ein Befehl hat auch nur eine Methode, die zur Ausführung des Befehls notwendig ist. Die next\_state()-Methode, des Befehls, sorgt dafür, dass der aktuelle Maschinenzyklus seine next\_state()-Methode ausführt. Wenn die Maschinenzyklus next\_state()-Methode True zurückliefert, bedeutet das, dass der letzte Zustand des Maschinenzyklus ausgeführt wurde. Wenn dies der Fall ist, wird der Maschinenzyklus Zähler um eins erhöht und es wird ebenfalls ein True zurückgeliefert. Dieses Signal des Maschinenzyklus wird bis in die äußerste Schicht, die GUI, weitergeleitet, damit dort spezielle Ereignisse ausgeführt werden können. Beim nächsten Aufruf von next\_state() wird somit der erste Zustand des nächsten Maschinenzyklus ausgeführt.
+Jeder Befehl besteht aus einem Array von Maschinenzyklen. Zusätzlich enthält jeder Befehl auch einen Zähler, wie viele Maschinenzyklen der Befehl schon ausgeführt hat. Ein Befehl hat auch nur eine Methode, die zur Ausführung des Befehls notwendig ist. Die next\_state()-Methode des Befehls sorgt dafür, dass der aktuelle Maschinenzyklus seine next\_state()-Methode ausführt. Wenn die Maschinenzyklus next\_state()-Methode True zurückliefert, bedeutet das, dass der letzte Zustand des Maschinenzyklus ausgeführt wurde. Wenn dies der Fall ist, wird der Maschinenzyklus Zähler um eins erhöht und es wird ebenfalls ein True zurückgeliefert. Dieses Signal des Maschinenzyklus wird bis in die äußerste Schicht, die GUI, weitergeleitet, damit dort spezielle Ereignisse ausgeführt werden können. Beim nächsten Aufruf von next\_state() wird somit der erste Zustand des nächsten Maschinenzyklus ausgeführt.
 \\
 
 \noindent
@@ -899,11 +907,11 @@ Bei jedem Fetch-Zyklus wird das aktuelle Befehlsbyte in die cpu\_instruction\_re
 
 \subsubsection{Programmaufbau}
 
-Der Simulator besteht, wie der Multi-Prozessor-Simulator, immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Durch die Verwendung eigener Klassen für Befehle, Maschinenzyklen und Zustände, gibt es nun wesentlich mehr Klassen. Insgesamt werden:
+Der Simulator besteht, wie der Multi-Prozessor-Simulator, immer noch hauptsächlich aus dem Prozessor, der ALU und den Registern. Durch die Verwendung eigener Klassen für Befehle, Maschinenzyklen und Zustände, gibt es nun wesentlich mehr Klassen. Insgesamt werden
 
 \begin{itemize}
-\item 74 Befehls-Klassen
-\item 85 Maschinenzyklen-Klassen
+\item 74 Befehls-Klassen,
+\item 85 Maschinenzyklen-Klassen, und
 \item 101 Zustands-Klassen
 \end{itemize}
 
@@ -1079,23 +1087,23 @@ ADD_MC
 \end{table}
 
 \subsubsection{Interrupts}
-Ein Interrupt-Befehl wurde implementiert, um die Ausführung von Interrupts zu ermöglichen. Dieser führt nicht wirklich den Interrupt aus. Dieser dient nur dem Zweck, dass der Programmzähler hier im zweiten Zustand nicht um eins erhöht wird. Im Handbuch des Intel 8080 \cite{IntMan16} wird der Interruptzyklus als Fetch-Zyklus beschrieben, bei dem der Programmzähler nicht erhöht wird. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der Erste, um den Maschinenzyklus auf dem Datenbus zu beschreiben, der zweite um den Programmzähler zu erhöhen und den dritten, um den nächsten Befehl einzulesen und in das Instruction-Register zu schreiben. Somit wäre ein Fetch-Zyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten Zustand, einen leeren Zustand. Dieser ist deswegen wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden.
+Ein Interrupt-Befehl wurde implementiert, um die Ausführung von Interrupts zu ermöglichen. Dieser führt nicht wirklich den Interrupt aus. Dieser dient nur dem Zweck, dass der Programmzähler hier im zweiten Zustand nicht um eins erhöht wird. Im Handbuch des Intel 8080 \cite{IntMan16} wird der Interruptzyklus als Fetch-Zyklus beschrieben, bei dem der Programmzähler nicht erhöht wird. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der erste beschreibt den Maschinenzyklus auf dem Datenbus, der zweite erhöht den Programmzähler und der dritte liest den nächsten Befehl ein und schreibt in das Instruction-Register. Somit wäre ein Fetch-Zyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten, leeren Zustand. Dieser ist wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden.
 
 \subsubsection{Besonderheiten des Simulators}
-Bei der Entwicklung dieses Simulators wurde vieles, was ein echter Prozessor macht, nicht implementiert. Im folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
+Bei der Entwicklung dieses Simulators wurden einige Eigenheiten eines realen Prozessors nicht repliziert. Im Folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
 \\
 
 \noindent
 \textbf{Adress- und Datenbus}
 
 \noindent
-Der Intel 8080 besitzt einen 8-Bit Daten- und einen 16-Bit Adressbus. 
-In diesem Simulator wurde kein einziger Bus implementiert. Grund dafür ist, dass die Busse anhand von verschiedenen Taktgebern, beschrieben und gelesen werden. Dies könnte zwar auch simuliert werden, letztendlich haben aber wir uns aber dagegen entschieden, da dies keine nennenswerte Vorteile bietet und den Simulator in ein weitere Richtung wesentlich komplexer macht. Einer der wenigen Gründe warum es doch Sinn gemacht hätte Busse zu verwenden wäre, dass auf dem Adress- und Datenbus die Daten zu sehen wären, die darüber gesendet werden. Dadurch, dass aber nach jedem Zustand die Daten irgendwo gespeichert werden, können die Veränderungen direkt beobachtet werden. Zwar wäre es schön gewesen, wenn die Daten aus dem Programmspeicher über die Busse laufen würden, aber für einen Simulator ist das nicht zwangsweise notwendig. Normalerweise wird auch über diese Busse mit dem Programmspeicher kommuniziert. Dies wurde in diesem Simulator aber umgangen, indem der Prozessor direkten Zugriff auf den Speicher hat. Generell werden die Busse dazu verwendet, um mit externen Geräten zu kommunizieren. Da dieser Simulator aber nicht dafür gedacht ist, wurden diese komplett weggelassen. Deswegen wurden für den In- und Out-Befehl der letzte Zyklus nur mit leeren Zuständen gefüllt. So brauchen diese Befehle immer noch die vorgesehenen Anzahl an Zuständen, lesen und schreiben aber keine Daten.
+Der Intel 8080 besitzt einen 8-Bit-Daten- und einen 16-Bit-Adressbus. 
+In diesem Simulator wurde kein Bus implementiert. Grund dafür ist, dass die Busse anhand von verschiedenen Taktgebern beschrieben und gelesen werden. Dies könnte zwar auch simuliert werden, letztendlich wurde beschlossen, diese Funktion aus mangelndem Nutzen nicht im Simulator zu implementieren. Einer der wenigen Gründe warum es doch Sinn gemacht hätte Busse zu verwenden wäre, dass auf dem Adress- und Datenbus die Daten zu sehen wären, die darüber gesendet werden. Dadurch, dass aber nach jedem Zustand die Daten irgendwo gespeichert werden, können die Veränderungen direkt beobachtet werden. Zwar wäre es schön gewesen, wenn die Daten aus dem Programmspeicher über die Busse laufen würden, aber für einen Simulator ist das nicht zwangsweise notwendig. Normalerweise wird auch über diese Busse mit dem Programmspeicher kommuniziert. Dies wurde in diesem Simulator aber umgangen, indem der Prozessor direkten Zugriff auf den Speicher hat. Generell werden die Busse dazu verwendet, um mit externen Geräten zu kommunizieren. Da dieser Simulator aber nicht dafür gedacht ist, wurden diese komplett weggelassen. Daraus folgend wurden für den In- und Out-Befehl der letzte Zyklus nur mit leeren Zuständen gefüllt. So brauchen diese Befehle immer noch die vorgesehenen Anzahl an Zuständen, lesen und schreiben aber keine Daten.
 \\
 
 \noindent
-In jedem ersten Zustand aller Maschinenzyklen wird über den Datenbus ein 8-Bit Status Wort gesendet. Damit lässt sich erkennen welche Art von Maschinenzyklus ausgeführt wird.
-Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Zum einen, da es keinen Bus gibt und zum Anderen, da in der Beschreibung der Zustände (siehe Anhang \ref{anhang:instr_state}) nur so viel steht wie \glqq PC OUT STATUS\grqq\ im ersten Zustand des Fetch-Zyklus. Daraus ist nicht direkt ableitbar was auf den Datenbus geschrieben werden soll. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus kodiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
+In jedem ersten Zustand aller Maschinenzyklen wird über den Datenbus ein 8-Bit-Statuswort gesendet. Damit lässt sich erkennen, welche Art von Maschinenzyklus ausgeführt wird.
+Die notwendigen Zustände dafür existieren, schreiben aber nichts in den Bus. In Abbildung \ref{fig:status_word} ist zu sehen, wie die verschiedenen Zustände auf dem Bus kodiert werden würden. So wird ein Memory Write Zyklus dadurch bestimmt, dass alle Datenbits d\textsubscript{0-7} auf Null gesetzt werden.
 
 \imgSpaceBefore
 \begin{figure}[H]
@@ -1106,7 +1114,7 @@ Die notwendigen Zustände existieren dafür, schreiben aber nichts in den Bus. Z
 \end{figure}
 
 \noindent
-\textbf{Zustände die zwei Takte dauern}
+\textbf{Zustände, die zwei Takte dauern}
 
 \noindent
 Manche Zustände des Intel 8080 dauern zwei Takte an. Zu sehen ist das in Anhang \ref{anhang:instr_state}. Die Judge Condition, bei z.B. den bedingten Sprüngen, benötigt den vierten und fünften Zustand. Dies ist in diesem Simulator bisher nicht möglich. Deshalb 
@@ -1114,21 +1122,21 @@ wird der vierte Zustand ein leerer Zustand und der fünfte ist der eigentliche Z
 \\
 
 \noindent
-Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinenzyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq\ noch im 2 Zustand und der Text \glqq Z\grqq\ im dritten Zustand steht. Zusätzlich sind die beiden Texte durch einen Pfeil verbunden. Leider wird nirgends erklärt, was dies genau bedeutet. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der vorherige Zustand aber kein leerer Zustand, da dort der Programmzähler um eins erhöht werden muss. Davon gibt es viele Anweisungen, bei der die Texte in zwei Zuständen stehen.
+Ähnliches ist auch bei anderen Zuständen der Fall. Ebenfalls bei den bedingte Sprüngen gibt es im zweiten Maschinenzyklus einen Zustand, der das zweite Byte in das Z-Register schreiben soll. Dies wurde aber so eingezeichnet, dass der Text \glqq B2\grqq\ noch im 2 Zustand und der Text \glqq Z\grqq\ im dritten Zustand steht. Deshalb wurde das Schreiben des zweiten Bytes in das Z-Register im dritten Zustand ausgeführt. Hier wurde der vorherige Zustand aber kein leerer Zustand, da dort der Programmzähler um eins erhöht werden muss.
 \\
 
 \noindent
-\textbf{Fehler in der Beschreibung}
+\textbf{Abänderungen zum Handbuch}
 
 \noindent
-Bei den beiden MVI-Befehlen soll im zweiten Maschinenzyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird. Dies steht aber nicht in der Zustandsbeschreibung dabei. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht. Ebenso wurde bei dem DCR r-Befehl, der einen Wert um eins reduziert soll, der Wert um eins erhöht. Dies wurde im Simulator angepasst.
+Bei den beiden MVI-Befehlen soll im zweiten Maschinenzyklus ein weiteres Byte gelesen werden. Bei allen anderen Befehlen, die ein zweites Byte lesen wird im zweiten Zustand des zweiten Zyklus der Programmzähler um eins erhöht. Dies ist deswegen notwendig, da sonst das gleiche Byte nochmal gelesen wird, was in der Zustandsbeschreibung allerdings fehlt. Damit der MVI-Befehl aber korrekt ausgeführt werden kann, wird auch dort der Programmzähler erhöht. Ebenso wurde beim DCR r-Befehl, der einen Wert um eins reduziert soll, der Wert um eins erhöht. Dies wurde im Simulator angepasst.
 \\
 
 \noindent
 \textbf{Letzter Maschinenzyklus bei Sprungbefehlen}
 
 \noindent
-Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letztes ein WZ OUT STATUS Signal gesendet und danach wird der Programmzähler auf den um eins erhöhten Wert des zusammengesetzten W- und Z-Registers gesetzt. Diese zwei Zustände werden normalerweise anstatt des normalen Fetches des neuen Befehls ausgeführt. Dies ist in diesem Simulator aber nicht so einfach möglich. Deswegen haben alle Sprungbefehle einen zusätzlichen Maschinenzyklus erhalten. Dort wird nur der Wert des 16-Bit WZ-Registers in den Programmzähler geschrieben. Während des Fetch des nächsten Befehls wird dann der Zähler um eins erhöht. Somit führt das Programm an der richtigen Stelle weitere Befehle aus.
+Bei allen Sprungbefehlen, die der Intel 8080 unterstützt, wird zuletzt ein WZ OUT STATUS-Signal gesendet und der Programmzähler auf den um eins erhöhten Wert des zusammengesetzten W- und Z-Registers gesetzt. Diese zwei Zustände werden in einem realen Prozessor anstatt des normalen Fetches des neuen Befehls ausgeführt. Dies ist in diesem Simulator aber nicht so einfach möglich. Deswegen haben alle Sprungbefehle einen zusätzlichen Maschinenzyklus erhalten. Dort wird nur der Wert des 16-Bit WZ-Registers in den Programmzähler geschrieben. Während des Fetch des nächsten Befehls wird dann der Zähler um eins erhöht. Somit führt das Programm an der richtigen Stelle weitere Befehle aus.
 \\
 
 \noindent
@@ -1137,19 +1145,19 @@ Bei allen Sprungbefehlen, die der Intel 8080 unterstützt werden als aller Letzt
 \noindent
 \begin{itemize}
 \item Es wird überall nur mit unsigned Werten gearbeitet. Zero-Flag zeigt Werte > 127 (negative Werte) an
-\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht. Damit die Anzahl der Zustände wieder passt, wurde der vierte Zustand in zwei aufgeteilt.
-\item Es gibt keinen Hold-Modus. Da die Busse nicht von dem Prozessor freigegeben werden müssen.
+\item In der Beschreibung der Zustände werden teilweise Werte in die ALU geschrieben oder daraus gelesen (siehe Anhang \ref{anhang:instr_state} bei INR Befehl). Dies wird im Simulator nicht gemacht, da die arithmetischen Befehle nicht mehr in der ALU ausgeführt werden. Damit die Anzahl der Zustände wieder übereinstimmen, wurde der vierte Zustand in zwei aufgeteilt.
+\item Es gibt keinen Hold-Modus, da die Busse nicht vom Prozessor freigegeben werden müssen.
 \end{itemize}
 
 \subsection{Laden und Anpassen der Oberfläche}\label{chapter:LadenDObfl}
 Von Nico\\
 \noindent
-Die Oberfläche für den Simulator wurde nicht Dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
+Die Oberfläche für den Simulator wurde nicht dynamisch erzeugt. Das heißt es existiert eine statische 'ui'- Datei für jede Oberfläche mit der der Nutzer interagieren kann. Insgesamt gibt es die folgenden drei:\imgSpaceBefore
 
 \begin{itemize}
 	\item MainMenu.ui (Hauptmenü)
 	\item Intel8080\_MainWindow.ui (Simulator)
-	\item ChangeValueWindow.ui (Werte Input)
+	\item ChangeValueWindow.ui (Werte-Input)
 \end{itemize}
 
 \noindent
@@ -1163,7 +1171,7 @@ Als Beispiel für eins dieser manuell erstellten Fenster ist in Abbildung \ref{f
 \end{figure}
 
 \noindent
-In diesem werden jedem Element ein Name zugewiesen über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.) bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich eine Änderung schnell visuell zu überprüfen und andererseits spart man sich einiges an komplizierter Syntax für die genauere Positionierung eines Elements innerhalb eines Fensters was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe \ref{fig:I8080MW}) fällt auf das die Größe einiger Elemente angepasst wurde und das einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden. Diese Anpassungen finden während der Initialisierung der 'Intel8080\_MainWindow'-Klasse statt (siehe \ref{fig:InitFuncs}).\imgSpaceBefore
+In diesem wird jedem Element ein Name zugewiesen, über den dann später darauf zugegriffen werden kann. Über Layouts kann außerdem die grobe Position eines einzelnen Elements oder einer Gruppe von Elementen bestimmt werden. Vorteil dabei ist, dass unveränderliche Eigenschaften wie Elementtyp (Tabelle, Textfeld, etc.), bestimmte Beschriftungen oder Elementanzahlen (Spalten, Reihen, etc.) bereits festgelegt werden können, bevor die Implementierung der Funktionalität vorgenommen werden muss. Dadurch ist es einerseits möglich, eine Änderung schnell visuell zu überprüfen, und andererseits wird an komplizierter Syntax für Fenster gespart, was den Programmcode übersichtlicher hält. Verglichen mit der letztlich dem Nutzer angezeigten Oberfläche (siehe Abbildung \ref{fig:I8080MW}) fällt auf, dass die Größe einiger Elemente angepasst wurde und einige Knöpfe in die Zellen der Register-Elemente eingefügt wurden. Diese Anpassungen finden während der Initialisierung der 'Intel8080\_MainWindow'-Klasse statt (siehe Abbildung \ref{fig:InitFuncs}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1172,8 +1180,7 @@ In diesem werden jedem Element ein Name zugewiesen über den dann später darauf
 \label{fig:InitFuncs}
 \end{figure}
 
-\noindent
-'init\_ui' ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe \ref{fig:InitUI}).\imgSpaceBefore
+\vspace{15pt}
 
 \begin{figure}[H]
 \centering
@@ -1182,13 +1189,15 @@ In diesem werden jedem Element ein Name zugewiesen über den dann später darauf
 \label{fig:InitUI}
 \end{figure}
 
+
 \noindent
-Aufgabe dieser ist es den korrekten Pfad für die 'ui'-Datei zu bestimmen und über den Funktionsaufruf 'loadUI' die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion 'pressed\_table\_cell' zugewiesen welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen die diese Zuweisungen übernimmt sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
+'init\_ui' ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe Abbildung  \ref{fig:InitUI}).
+Aufgabe dieser ist es, den korrekten Pfad für die 'ui'-Datei zu bestimmen und über den Funktionsaufruf 'loadUI' die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion 'pressed\_table\_cell' zugewiesen, welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen, die diese Zuweisungen übernimmt, sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=12cm]{bilder/initProgMem}
-\caption{Initialisierung Programmspeicher}
+\caption{Initialisierung des Programmspeichers}
 \label{fig:InitProgMem}
 \end{figure}
 
@@ -1199,13 +1208,13 @@ Effektiv wird die in der 'ui'-Datei definierte Anzahl Zeilen und Spalten der Pro
 \subsection{GUI-Methoden}\label{chapter:GUI-Methods}
 Von Nico\\
 \noindent
-Die eine Seite des Simulators ist das Simulieren des Prozessors, mit diesem muss aber auch interagiert werden. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
+Die GUI dient als Schnittstelle zwischen Benutzter und Prozessorsimulation. Die in diesem Abschnitt erklärten Funktionen beziehen sich deshalb auf die in Kapitel \ref{chp:AufbauGUI} beschriebenen Funktionen für die Benutzeroberfläche.
 
 \subsubsection{Aktualisieren der Oberfläche}
-Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert der in der Oberfläche angezeigt wird ändert, beispielsweise der Programmzähler immer im zweiten Zustand jedes Befehls . Um die Oberfläche regelmäßig zu aktualisieren wurden folgende Funktionen verwendet:\imgSpaceBefore
+Nach der Ausführung jedes Zustandes besteht die Möglichkeit, dass sich ein in der Oberfläche angezeigter Wert ändert, beispielsweise der Programmzähler im zweiten Zustand jedes Befehls. Um die Oberfläche regelmäßig zu aktualisieren, wurden folgende Funktionen verwendet:\imgSpaceBefore
 
 \begin{itemize}
-	\item reload\_registers\_table: Aktualisiert die besonderen Register wie Programmähler, Instruction Register, etc.
+	\item reload\_registers\_table: Aktualisiert die besonderen Register wie Programmzähler, Instruction Register, etc.
 	\item reload\_register\_array\_table: Aktualisiert generische 8-Bit Register (b, c, d, e, etc.)
 	\item reload\_memory\_table: Aktualisiert Programmspeicher
 	\item fill\_program\_table: Aktualisiert Programmtabelle
@@ -1213,7 +1222,7 @@ Nach der Ausführung jedes State besteht die Möglichkeit, dass sich ein Wert de
 	\item color\_cycle\_state: Färbt aktuellen Maschinenzyklus und Zustand in CycleState-Tabelle
 \end{itemize}
 \noindent
-In der aktuellen Implementierung sind alle Funktionen jeweils so implementiert, dass alle relevanten Werte neu geladen werden unabhängig davon ob sie sich verändert haben oder nicht. Bei wenigen Werten z.B. für die Register stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes parsen und filtern des Programmspeichers sowie füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui' Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
+In der aktuellen Implementierung sind alle Funktionen jeweils so umgesetzt, dass alle relevanten Werte neu geladen werden, unabhängig davon, ob sie sich verändert haben oder nicht. Bei wenigen Werten, z.B. für die Register, stellt dies noch kein Problem dar, aber für den Programmspeicher (jeweils 128 8-Bit Register werden auf einmal ausgelesen) und vor allem für die Programmtabelle (komplettes Parsen und Filtern des Programmspeichers sowie Füllen der Tabelle) macht sich dies erheblich in der Performance bemerkbar. Da bisher noch kein Verfahren implementiert wurde, mit dem bei Bedarf selektiv aktualisiert werden kann, müssen bei jeder Zustandsänderung alle Funktionen für die Aktualisierung der Oberfläche ausgeführt werden. Dies geschieht über die 'update\_ui'-Funktion (siehe Abbildung \ref{fig:updateUI}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1234,7 +1243,7 @@ Die 'update\_ui'-Funktion wird innerhalb der Klasse für die Simulatoroberfläch
 \end{itemize}
 
 \noindent
-Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der angezeigten Aspekte des Simulators übersehen wird. Schlimmstenfalls könnte es auch dazu führen, dass wenn eine Anzeige nicht aktualisiert wird, dieser fehlerhafte Wert nach Manipulieren eines Anderen fälschlicherweise zurückgeschrieben wird in die internen Register des Simulators. Dieses Prinzip sieht man in Abbildung \ref{fig:perf}.\imgSpaceBefore
+Wie bereits erwähnt, ist der Sinn dieser Maßnahme, dass keine Veränderung der angezeigten Aspekte des Simulators übersehen wird. Schlimmstenfalls könnte es auch dazu führen, dass wenn eine Anzeige nicht aktualisiert wird, dieser fehlerhafte Wert nach Manipulieren eines anderen fälschlicherweise in die internen Register des Simulators zurückgeschrieben wird. Dieses Prinzip sieht man in Abbildung \ref{fig:perf}.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1244,7 +1253,7 @@ Wie bereits erwähnt ist der Sinn dieser Maßnahme, dass keine Veränderung der 
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator diese abzuarbeiten woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die 'update\_ui'-Funktion alle Elemente aktualisiert arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator, diese abzuarbeiten, woraufhin über 'update\_ui' die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die 'update\_ui'-Funktion alle Elemente aktualisiert arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1298,12 +1307,12 @@ Das zurückschreiben von der GUI in den Simulator geschieht über drei verschied
 \end{itemize}
 
 \noindent
-Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle iteriert, welche die Tabelle hat, der Wert wird herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemUpdateFunc} die konkrete Implementierung für das zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
+Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe Kapitel \ref{chapter:LadenDObfl}). Dabei wird über jede gültige Zelle der Tabelle iteriert, der Wert herausgeschrieben und über eine gültige Funktion in den Intel8080-Simulator übernommen. Als Beispiel dafür ist in Abbildung \ref{fig:MemUpdateFunc} die konkrete Implementierung für das Zurückschreiben des Programmspeichers zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{bilder/UpdateProgMem}
-\caption{Memory Update Function}
+\caption{Memory Update-Function}
 \label{fig:MemUpdateFunc}
 \end{figure}
 
@@ -1348,7 +1357,7 @@ Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit
 \section{Fazit und Ausblick}
 Von Nico \\
 \noindent
-Als letzter Schritt wurde für das Programm noch eine Exe Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
+Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
