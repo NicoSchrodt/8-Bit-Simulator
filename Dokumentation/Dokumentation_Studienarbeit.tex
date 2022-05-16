@@ -273,6 +273,7 @@ Da bei CISC-Prozessoren mit nur einem Befehl viel berechnet werden kann, sind di
 \subsubsection{Parallelität nach Flynn}
 Von Andreas\\
 
+\noindent
 Von Michael Flynn wurden 1966 die folgenden vier Arten von Parallelisierung eingeführt: \cite{Flynn}
 
 \begin{itemize}
@@ -354,7 +355,7 @@ Der Intel 8080 ist in der Lage, aus einem, zwei oder drei Bytes bestehen Befehle
 \noindent
 Bei \glqq Direct\grqq\ wird der Wert im Speicher mit der angegebenen Adresse verwendet. Hier werden das Low-Byte im zweiten und das High-Byte im dritten Byte gespeichert. Bei \glqq Register\grqq\ wird auf ein oder zwei Register verwiesen und der Register-Typ verhält sich wie bei \glqq Direct\grqq. Bei \glqq Register Indirect\grqq\ wird der Wert aus der Adresse aus dem zweiten und dritten Byte des Befehls gelesen. Dieser Wert wird als Adresse verarbeitet und erst der Wert aus dieser Adresse ist der zu verwendende Wert. Bei \glqq Immediate\grqq\ steht
 im zweiten und/oder dritten Byte ein Wert, mit dem gearbeitet wird (Low-Byte im zweiten Byte).
-Bei Interrupts und Verzweigungs-Befehlen gibt es nur die \glqq Direct\grqq - und \glqq Register indirect\grqq -Modi. \cite{IntMan45}
+Bei Interrupts und Verzweigungs-Befehlen gibt es nur die \glqq Direct\grqq- und \glqq Register indirect\grqq-Modi. \cite{IntMan45}
 \\ 
 
 \noindent
@@ -579,6 +580,8 @@ Die Aufgabe dieses Fensters ist simpel. Es gibt drei verschiedene Knöpfe, die j
 	\item Exit: Schließt das Fenster und alle laufenden Hintergrundprozesse, für den Fall, dass ein Simulatorprozess in der selben Session verwendet wurde.
 \end{itemize}
 
+\vspace{15pt}
+
 \subsubsection{Intel 8080-Simulationsfenster}
 In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfensters für den Intel 8080 zu sehen.\imgSpaceBefore
 
@@ -750,6 +753,7 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten über das Bussystem zuständig ist. Die Darstellung wurde hier bitweise gewählt, das heißt, statt die ganzen 2 Byte des Registers zu bearbeiten, werden die einzeln Bits angesteuert.
 
 
+\newpage
 \subsection{Tutorial}
 Das Tutorial für die Handhabung des Simulators ist über das Hauptmenü erreichbar. Es besteht aus fünf verschiedenen Bildern, welche jeweils die einzelnen Elemente des Simulators zeigen und deren Funktion näher beschreiben (siehe Abbildung \ref{fig:Tutorial}).\imgSpaceBefore
 
@@ -1383,7 +1387,7 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 Dafür wird ein Signal, welches ausgelöst wird, sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden oder der Zustand des Simulators verändert werden.
 
 \subsection{Exe-Erstellung}
-Als letzter Schritt wurde für das Programm noch eine \glqq exe\grqq-Datei erstellt. Dafür wurde das \glqq pyinstaller\grqq  \cite{pyinstaller} Paket verwendet. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
+Als letzter Schritt wurde für das Programm noch eine \glqq exe\grqq-Datei erstellt. Dafür wurde das \glqq pyinstaller\grqq\  \cite{pyinstaller} Paket verwendet. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
 
 \newpage
 
@@ -1435,11 +1439,11 @@ Intel 8080 Assembler: Paolo Amoroso, 2021, \url{https://github.com/pamoroso/suit
 \bibitem{IntMan20}
 Intel 8080 Microcomputer Systems User's Manual (S.20 (2-6)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
 
-\bibitem{qt}
-PyQt Reference Guide, \url{https://www.riverbankcomputing.com/static/Docs/PyQt6/index.html}, zuletzt abgerufen: 15.05.2022
-
 \bibitem{pyinstaller}
 Pyinstaller Manual, \url{https://pyinstaller.org/en/stable/}, zuletzt abgerufen: 16.05.2022
+
+\bibitem{qt}
+PyQt Reference Guide, \url{https://www.riverbankcomputing.com/static/Docs/PyQt6/index.html}, zuletzt abgerufen: 15.05.2022
 
 \end{thebibliography}
 
