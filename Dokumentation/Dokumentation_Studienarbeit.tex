@@ -1125,6 +1125,7 @@ Bei der Entwicklung dieses Simulators wurden einige Eigenheiten eines realen Pro
 \textbf{Adress- und Datenbus}
 
 \noindent
+Der Intel 8080 besitzt einen 8-Bit-Daten- und einen 16-Bit-Adressbus. 
 In diesem Simulator wurde kein Bus implementiert. Grund dafür ist, dass die Busse anhand von verschiedenen Taktgebern beschrieben und gelesen werden. Dies könnte zwar auch simuliert werden, letztendlich wurde aber beschlossen, diese Funktion aus mangelndem Nutzen nicht zu implementieren. Um trotzdem mit dem Programmspeicher kommunizieren zu können wurde es dem Prozessor ermöglicht, ohne einen Bus, direkt auf die Daten zuzugreifen.
 Während die Busse die übertragene Daten direkt einsehbar machen würden, zeigen die Register/Speicherstellen erst am Ende eines Befehls Veränderungen an.
 \\
