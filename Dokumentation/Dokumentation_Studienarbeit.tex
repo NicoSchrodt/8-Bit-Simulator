@@ -188,6 +188,9 @@ Ort, Datum\hfill Unterschrift\hspace{4cm}
 \automark{section}  % Inhalt von [\rightmark]{\leftmark} 
 
 \section{Einführung}
+Von Nico\\
+
+\noindent
 Dieses Kapitel befasst sich vorwiegend mit relevanten Grundlagen der Arbeit. Unter anderem wird das Ziel spezifiziert, elementare Aspekte der Arbeitsweise eines Prozessors werden erläutert und die verschiedenen Werkzeuge, mit denen das Ziel realisiert wird, werden aufgeführt.
 
 \subsection{Ziel der Arbeit}
@@ -676,6 +679,7 @@ Hiermit kann der Start- oder Endwert des angezeigten Registerblocks eingestellt 
 \label{fig:Register}
 \end{figure}
 
+\newpage
 \noindent
 Die gezeigten Einträge stehen für:\imgSpaceBefore
 
@@ -1112,6 +1116,7 @@ ADD_MC
 \subsubsection{Interrupts}
 Ein Interrupt-Befehl wurde implementiert, um die Ausführung von Interrupts zu ermöglichen. Dieser führt nicht wirklich den Interrupt aus. Dieser dient nur dem Zweck, dass der Programmzähler hier im zweiten Zustand nicht um eins erhöht wird. Im Handbuch des Intel 8080 \cite{IntMan16} wird der Interruptzyklus als Fetch-Zyklus beschrieben, bei dem der Programmzähler nicht erhöht wird. Viele Befehle haben in ihrem ersten Maschinenzyklus genau drei Zustände. Der erste beschreibt den Maschinenzyklus auf dem Datenbus, der zweite erhöht den Programmzähler und der dritte liest den nächsten Befehl ein und schreibt in das Instruction-Register. Somit wäre ein Fetch-Zyklus eigentlich beendet. Der Interrupt-Maschinenzyklus besitzt in der Implementierung dieses Simulators allerdings noch einen vierten, leeren Zustand. Dieser ist wichtig, da die Dekodierung des Befehls erst nach dem dritten Zustand erfolgt. Wenn der Befehl bzw. der erste Maschinenzyklus aber nur aus drei Zuständen bestehen würde, würde die Dekodierung nicht erfolgen und der übergebene Interrupt-Befehl könnte nicht ausgeführt werden.
 
+\newpage
 \subsubsection{Besonderheiten des Simulators}
 Bei der Entwicklung dieses Simulators wurden einige Eigenheiten eines realen Prozessors nicht repliziert. Im Folgenden soll aufgezeigt werden, welche Unterschiede es zu einem echten Prozessor gibt.
 \\
