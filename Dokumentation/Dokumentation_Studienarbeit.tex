@@ -191,8 +191,7 @@ Ort, Datum\hfill Unterschrift\hspace{4cm}
 Dieses Kapitel befasst sich vorwiegend mit relevanten Grundlagen der Arbeit. Unter anderem wird das Ziel spezifiziert, elementare Aspekte der Arbeitsweise eines Prozessors werden erläutert und die verschiedenen Werkzeuge, mit denen das Ziel realisiert wird, werden aufgeführt.
 
 \subsection{Ziel der Arbeit}
-In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem mehrere unterschiedliche 8-Bit Prozessoren simuliert werden können. Dazu sollen die grundlegenden Eigenschaften in kurzen Lernprogrammen erläutert werden. Ebenfalls soll es eine interaktive Einweisung geben wie der Simulator verwendet werden kann.
-
+In dieser Arbeit soll ein Simulationsprogramm geschrieben werden, mit dem einer oder mehrere 8-Bit Prozessoren simuliert werden können. Dazu sollen die grundlegenden Eigenschaften und Funktionen in einer kurzen Einweisung erläutert werden. Mit dem Simulator soll es möglich sein die verschiedenen Eigenschaften wie das Programm oder Registerinhalte einzusehen und ändern zu können. 
 \subsection{Repository}
 Der Quellcode kann in folgendem GitHub-Repository abgerufen werden:\\ \url{https://github.com/NicoSchrodt/8-Bit-Simulator}
 
@@ -607,15 +606,17 @@ Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausge
 \label{fig:Settings}
 \end{figure}
 
+\noindent
 Um die grobe Struktur eines Programms zu verstehen sind einige gültige Beispielbefehle bereits im Textfeld eingetragen (siehe Abbildung \ref{fig:ProgEdit}). Im Intel 8080 Programmers Manual sind noch weitere Beispiele für gültige Befehle aufgeführt. Das Programm kann über das untere Textfeld benannt werden. Wird der \glqq Output File\grqq-Knopf betätigt werden drei Dateien ausgegeben mit den Endungen \glqq asm\grqq, \glqq sym\grqq und \glqq com\grqq. Abhängig davon ob das Programm über die .exe-Datei gestartet wurde wird entweder der \glqq Output\grqq-Ordner verwendet oder einfach das Verzeichnis in dem die Exe ausgeführt wurde. Liegt ein Fehler vor in der Syntax wird ein Fehler ausgegeben mit dem Problem das behoben werden muss.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=5cm]{bilder/ProgramEditor}
+\includegraphics[width=15cm]{bilder/ProgramEditor}
 \caption{Programmeditor}
 \label{fig:ProgEdit}
 \end{figure}
 
+\noindent
 Sobald ein Programm geladen wurde, wird dieses in der dafür vorgesehenen Tabelle angezeigt (siehe Abbildung \ref{fig:ProgTable}).\imgSpaceBefore
 
 \begin{figure}[H]
@@ -748,7 +749,7 @@ Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten 
 \subsection{Tutorial}
 Das Tutorial für die Handhabung des Simulators ist über das Hauptmenü erreichbar. Es besteht aus fünf verschiedenen Bildern, welche jeweils die einzelnen Elemente des Simulators zeigen und deren Funktion näher beschreiben (siehe Abbildung \ref{fig:Tutorial}).\imgSpaceBefore
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{bilder/Tutorial}
 \caption{Tutorial-Fenster}
@@ -1376,28 +1377,7 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
 
 \subsubsection{Exe-Erstellung}
-Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
-
-\begin{figure}[h]
-\centering
-\begin{subfigure}{.25\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{bilder/o1}
-\end{subfigure}%
-\begin{subfigure}{.35\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{bilder/o2}
-\end{subfigure}
-\begin{subfigure}{.35\textwidth}
-  \centering
-  \includegraphics[width=.7\linewidth]{bilder/o3}
-\end{subfigure}
-\caption{Ordnerstruktur}
-\label{fig:OrdnerStruk}
-\end{figure}
-
-\noindent
-Während dies recht umständlich ist, bietet es zumindest den Vorteil, dass keine Python-Umgebung sowie die benötigten Pakete auf dem Rechner installiert werden müssen. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
+Als letzter Schritt wurde für das Programm noch eine \glqq exe\grqq-Datei erstellt. Dafür wurde das \glqq pyinstaller\grqq  \cite{pyinstaller} Paket verwendet. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
 
 \newpage
 
@@ -1406,10 +1386,10 @@ Von Nico \\
 
 \noindent
 \subsection{Zusammenfassung}
-Das Ergebnis dieser Studienarbeit ist ein Simulator für den Intel 8080 welcher mit einer zugehörigen Benutzeroberfläche bedient werden kann. Die relevanten Aspekte des Prozessors werden dem Nutzer dabei angezeigt, wie beispielsweise Registerinhalte, das ausgeführte Programm oder einzelne Operationen für jeden Zustand. Es ist dem Nutzer möglich eigene Programme über die Benutzeroberfläche in den Simulator einzufügen oder diese zuvor über den verwendeten Assembler zu erstellen und dann direkt einzulesen. Die eingefügten Programme können Schrittweise ausgeführt werden, wobei es möglich ist ganze Befehle, Maschinenzyklen oder sogar einzelne Zustände auszuführen. Die Bedeutung einzelner Zustände wird in einem Befehlslog eingetragen um nachvollziehen zu können was in jedem Zustand passiert. Programme können automatisch ausgeführt werden und über Haltepunkte auch automatisch an einer beliebigen Stelle angehalten werden. Es ist zu jedem Zeitpunkt möglich die internen Aspekte des Simulators zu verändern über eine einfach zu bedienende Oberfläche. Das zurücksetzen der Oberfläche funktioniert auch problemlos. Der gesamte Befehlssatz des Intel 8080 wurde so genau wie möglich implementiert und sollte identische Ergebnisse liefern wie nativ ausgeführte Operationen.
+Das Ergebnis dieser Studienarbeit ist ein Simulator für den Intel 8080 welcher mit einer zugehörigen Benutzeroberfläche bedient werden kann. Die relevanten Aspekte des Prozessors werden dem Nutzer dabei angezeigt, wie beispielsweise Registerinhalte, das ausgeführte Programm oder einzelne Operationen für jeden Zustand. Es ist dem Nutzer möglich eigene Programme über die Benutzeroberfläche in den Simulator einzufügen oder diese zuvor über den verwendeten Assembler zu erstellen und dann direkt einzulesen. Die eingefügten Programme können Schrittweise ausgeführt werden, wobei es möglich ist ganze Befehle, Maschinenzyklen oder sogar einzelne Zustände auszuführen. Es ist möglich über den eingefügten Programmeditor eigene Programme mit dem verwendeten Assembler zu schreiben. Dabei wird eine Hilfestellung gegeben für die korrekte Syntax. Die Bedeutung einzelner Zustände wird in einem Befehlslog eingetragen um nachvollziehen zu können was in jedem Zustand passiert. Programme können automatisch ausgeführt werden und über Haltepunkte auch automatisch an einer beliebigen Stelle angehalten werden. Es ist zu jedem Zeitpunkt möglich die internen Aspekte des Simulators zu verändern über eine einfach zu bedienende Oberfläche. Das zurücksetzen der Oberfläche funktioniert auch problemlos. Der gesamte Befehlssatz des Intel 8080 wurde so genau wie möglich implementiert und sollte identische Ergebnisse liefern wie nativ ausgeführte Operationen.
 
 \subsection{Ausblick}
-Die Benutzeroberfläche ist derzeit vollständig in Englisch geschrieben. Es wäre also eine Überlegung Wert eine Einstellung einzufügen für andere Sprachen. Der Befehlslog ist aktuell noch recht kryptisch. Während es wenn man die Bedeutung der Zustände und Abkürzung kennt zwar genügend Aufschluss gibt, ist diese Variante noch verbesserungswürdig. Das Erstellen eigener Programme ist nur über die Programmspeichertabelle möglich, bisher wurde kein eigener Editor entwickelt. Externes Erstellen muss über den mitgelieferten Assembler vorgenommen werden, wobei dafür keine eigene Bedienungsanleitung verfasst wurde. Eine interne Lösung auch mit Hilfestellung für die einzelnen Bytebefehle und deren Bedeutung wäre erstrebenswert. Das Tutorial vermittelt die notwendigen Grundlagen um den Simulator zu bedienen, aber eine interaktive Lösung mit Beispielen hätte vermutlich einen höheren Lernerfolg.
+Die Benutzeroberfläche ist derzeit vollständig in Englisch geschrieben. Es wäre also eine Überlegung Wert eine Einstellung einzufügen für andere Sprachen. Der Befehlslog ist aktuell noch recht kryptisch. Während es wenn man die Bedeutung der Zustände und Abkürzung kennt zwar genügend Aufschluss gibt, ist diese Variante noch verbesserungswürdig. Das Tutorial vermittelt die notwendigen Grundlagen um den Simulator zu bedienen, aber eine interaktive Lösung mit Beispielen hätte vermutlich einen höheren Lernerfolg.
 
 \newpage
 
@@ -1451,6 +1431,9 @@ Intel 8080 Microcomputer Systems User's Manual (S.20 (2-6)): Intel Corporation, 
 
 \bibitem{qt}
 PyQt Reference Guide, \url{https://www.riverbankcomputing.com/static/Docs/PyQt6/index.html}, zuletzt abgerufen: 15.05.2022
+
+\bibitem{pyinstaller}
+Pyinstaller Manual, \url{https://pyinstaller.org/en/stable/}, zuletzt abgerufen: 16.05.2022
 
 \end{thebibliography}
 
