@@ -312,7 +312,7 @@ Der Single-Prozessor-Simulator sollte etwas genauer darstellen, wie ein Prozesso
 \\
 
 \noindent
-Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat sich mit dem Frontend befasst, also die graphische Oberfläche, und Andreas Schmider hat sich um das Backend gekümmert, also die Funktionsweise des Prozessors. Diese zwei Bereiche können gut voneinander getrennt werden. Somit musste sich nur auf wenige Schnittstellen geeinigt werden.
+Die Aufgabengebiete bei diesem Simulator wurden wie folgt verteilt: Nico Schrodt befasste sich mit dem Frontend, also die graphische Oberfläche, und Andreas Schmider mit dem Backend, also die Funktionsweise des Prozessors. Diese zwei Bereiche können gut voneinander getrennt werden. Somit musste sich nur auf wenige Schnittstellen geeinigt werden.
 
 
 \newpage
@@ -1305,7 +1305,7 @@ Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simula
 \end{figure}
 
 \noindent
-Zuerst werden alle Einträge der Tabelle gelöscht, woraufhin über alle Register im Programmspeicher iteriert wird. Da in jedem Eintrag der Tabelle ein Befehl, sowie dessen Operanden stehen sollen, wird über eine Liste (instruction\_positions) der Index jedes Befehls gespeichert. Dadurch soll sichergestellt werden, dass Operanden in dieselbe Zeile wie der zugehörige Befehl geschrieben werden. Die Auswahl des Befehls sowie der Anzahl Operanden pro Befehl geschieht über ein Dictionary. In der Abfrage werden die Masken für jeden Befehl mit dem Bytecode im Programmspeicher verundet und der resultierende Eintrag im Dictionary gefunden (siehe Abbildung \ref{fig:Dict}).\imgSpaceBefore
+Zuerst werden alle Einträge der Tabelle gelöscht, woraufhin über alle Register im Programmspeicher iteriert wird. Da in jedem Eintrag der Tabelle ein Befehl sowie dessen Operanden stehen sollen, wird über eine Liste (instruction\_positions) der Index jedes Befehls gespeichert. Dadurch soll sichergestellt werden, dass Operanden in dieselbe Zeile wie der zugehörige Befehl geschrieben werden. Die Auswahl des Befehls sowie der Anzahl Operanden pro Befehl geschieht über ein Dictionary. In der Abfrage werden die Masken für jeden Befehl mit dem Bytecode im Programmspeicher verundet und der resultierende Eintrag im Dictionary gefunden (siehe Abbildung \ref{fig:Dict}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1325,7 +1325,7 @@ Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnu
 \end{figure}
 
 \noindent
-Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und dann ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet, wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq addiert um die Einträge der Operanden zu überspringen.
+Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet, wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq\ addiert, um die Einträge der Operanden zu überspringen.
 
 \subsubsection{Manipulieren der Simulation}
 Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
@@ -1362,7 +1362,7 @@ Dabei wird der Knopf, welcher die Funktion aufruft als Referenz an das neu erzeu
 \begin{figure}[H]
 \centering
 \includegraphics[width=12cm]{bilder/CheckInput}
-\caption{InputValidation-Function}
+\caption{Input-Validation-Function}
 \label{fig:CheckInput}
 \end{figure}
 
@@ -1380,7 +1380,7 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 \end{figure}
 
 \noindent
-Dafür wird ein Signal, welches ausgelöst wird, sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
+Dafür wird ein Signal, welches ausgelöst wird, sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden oder der Zustand des Simulators verändert werden.
 
 \subsection{Exe-Erstellung}
 Als letzter Schritt wurde für das Programm noch eine \glqq exe\grqq-Datei erstellt. Dafür wurde das \glqq pyinstaller\grqq  \cite{pyinstaller} Paket verwendet. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
