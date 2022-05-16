@@ -312,7 +312,7 @@ Der Single-Prozessor-Simulator sollte etwas genauer darstellen, wie ein Prozesso
 \\
 
 \noindent
-Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat sich um das Frontend, also die graphische Oberfläche, und Andreas Schmider um das Backend, also die Funktionsweise des Prozessors gekümmert. Diese zwei Bereiche können gut voneinander getrennt werden. Somit musste sich nur auf wenige Schnittstellen geeinigt werden.
+Die Aufgabengebiete bei diesem Simulator waren klar verteilt. Nico Schrodt hat sich mit dem Frontend befasst, also die graphische Oberfläche, und Andreas Schmider hat sich um das Backend gekümmert, also die Funktionsweise des Prozessors. Diese zwei Bereiche können gut voneinander getrennt werden. Somit musste sich nur auf wenige Schnittstellen geeinigt werden.
 
 
 \newpage
@@ -590,7 +590,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Über das Simulationsfenster für den Intel 8080 können Programme, die aus Bytebefehlen bestehen, welche ein Intel 8080 Prozessor ausführen kann, simuliert werden. Dafür sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Menüpunkt \glqq File\grqq in der oberen Leiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
+Über das Simulationsfenster für den Intel 8080 können Programme, die aus Bytebefehlen bestehen, welche ein Intel 8080 Prozessor ausführen kann, simuliert werden. Dafür sollte (muss aber nicht) zuerst ein gültiges Programm geladen werden. Dies kann über den Menüpunkt \glqq File\grqq\ in der oberen Leiste getan werden (siehe Abbildung \ref{fig:LoadFile}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -600,7 +600,7 @@ In Abbildung \ref{fig:I8080MW} ist die aktuellste Version des Simulationsfenster
 \end{figure}
 
 \noindent
-Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung \glqq .com\grqq). Über \glqq Exit\grqq kann der Benutzer ins Hauptmenü zurückkehren. Möchte man andere Programme als die mitgelieferten verwenden, so kann man den Editor der unter dem Settings Menüpunkt zu finden ist benutzen (siehe Abbildung \ref{fig:Settings}).\imgSpaceBefore
+Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausgewählt werden kann. Dabei ist zu beachten, dass in der aktuellen Version nur Ausgabedateien des verwendeten Assemblers genutzt werden können (Dateiendung \glqq .com\grqq). Über \glqq Exit\grqq\ kann der Benutzer ins Hauptmenü zurückkehren. Möchte man andere Programme als die mitgelieferten verwenden, so kann man den Editor der unter dem Settings Menüpunkt zu finden ist benutzen (siehe Abbildung \ref{fig:Settings}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -610,7 +610,7 @@ Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausge
 \end{figure}
 
 \noindent
-Um die grobe Struktur eines Programms zu verstehen sind einige gültige Beispielbefehle bereits im Textfeld eingetragen (siehe Abbildung \ref{fig:ProgEdit}). Im Intel 8080 Programmers Manual sind noch weitere Beispiele für gültige Befehle aufgeführt. Das Programm kann über das untere Textfeld benannt werden. Wird der \glqq Output File\grqq-Knopf betätigt werden drei Dateien ausgegeben mit den Endungen \glqq asm\grqq, \glqq sym\grqq und \glqq com\grqq. Abhängig davon ob das Programm über die .exe-Datei gestartet wurde wird entweder der \glqq Output\grqq-Ordner verwendet oder einfach das Verzeichnis in dem die Exe ausgeführt wurde. Liegt ein Fehler vor in der Syntax wird ein Fehler ausgegeben mit dem Problem das behoben werden muss.\imgSpaceBefore
+Um die grobe Struktur eines Programms zu verstehen sind einige gültige Beispielbefehle bereits im Textfeld eingetragen (siehe Abbildung \ref{fig:ProgEdit}). Im Intel 8080 Programmers Manual sind noch weitere Beispiele für gültige Befehle aufgeführt. Das Programm kann über das untere Textfeld benannt werden. Wird der \glqq Output File\grqq-Knopf betätigt werden drei Dateien ausgegeben mit den Endungen \glqq asm\grqq, \glqq sym\grqq\ und \glqq com\grqq. Abhängig davon ob das Programm über die .exe-Datei gestartet wurde wird entweder der \glqq Output\grqq-Ordner verwendet oder einfach das Verzeichnis in dem die Exe ausgeführt wurde. Liegt ein Fehler vor in der Syntax wird ein Fehler ausgegeben mit dem Problem das behoben werden muss.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -640,7 +640,7 @@ Dabei ist für jeden Befehl eine Zeile vorgesehen. Angezeigt werden sowohl die P
 \end{figure}
 
 \noindent
-Diese werden für die automatische Ausführung des Programmes (siehe nächster Abschnitt) relevant. Wird ein Breakpoint erreicht, so stoppt das Programm, vor Ausführung des Befehls. Das Programm muss manuell fortgesetzt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode \glqq 0x00\grqq identifiziert. Bei Initialisierung des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen funktionslosen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise, darstellt aber keine Interaktion mit diesem ermöglicht, wurde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\imgSpaceBefore
+Diese werden für die automatische Ausführung des Programmes (siehe nächster Abschnitt) relevant. Wird ein Breakpoint erreicht, so stoppt das Programm, vor Ausführung des Befehls. Das Programm muss manuell fortgesetzt werden. Da vorgesehen ist, dass das gesamte Programm in dieser Tabelle angezeigt wird, ist eine Sonderbehandlung des NOP-Befehls notwendig. Dieser wird durch den Bytecode \glqq 0x00\grqq\ identifiziert. Bei Initialisierung des Speichers ist dies auch die Standardbelegung jedes Registers. Damit die Tabelle also nicht mit in den meisten Fällen funktionslosen NOP-Befehlen befüllt wird, musste dafür eine Ausnahmeregelung getroffen werden. Sind im Speicher zwei oder mehr NOP-Befehle direkt aufeinanderfolgend, werden diese zu einem Eintrag zusammengefasst. Da diese Tabelle lediglich das Programm in komprimierter Weise, darstellt aber keine Interaktion mit diesem ermöglicht, wurde zusätzlich das in Abbildung \ref{fig:ProgSpeicher} gezeigte Fenster in die GUI eingefügt.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -670,7 +670,7 @@ Hiermit kann der Start- oder Endwert des angezeigten Registerblocks eingestellt 
 \end{figure}
 
 \noindent
-Über \glqq Next Instruction\grqq wird der nächste Befehl, der in der Programmtabelle farbig hervorgehoben ist, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für \glqq Next Machine Cycle\grqq und für \glqq Next State\grqq, wobei diese jeweils nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über \glqq Go\grqq wird automatisch das Programm ausgeführt. Bei erneutem Drücken wird das Programm pausiert. \glqq Reset\grqq setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich, einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen ist, werden diese mit ihren entsprechenden Bedeutungen und Werten angezeigt.\imgSpaceBefore
+Über \glqq Next Instruction\grqq\ wird der nächste Befehl, der in der Programmtabelle farbig hervorgehoben ist, ausgeführt und die Benutzeroberfläche wird entsprechend aktualisiert. Dasselbe gilt für \glqq Next Machine Cycle\grqq\ und für \glqq Next State\grqq, wobei diese jeweils nur den nächsten Machinenzyklus oder den nächsten Zustand ausführen. Über \glqq Go\grqq\ wird automatisch das Programm ausgeführt. Bei erneutem Drücken wird das Programm pausiert. \glqq Reset\grqq\ setzt den Simulator auf die Ausgangssituation zurück, behält aber den aktuellen Zustand des Programmspeichers bei. Es ist auch möglich, einzelne Register des Prozessors auszulesen. Wie in Abbildung \ref{fig:Register} zu sehen ist, werden diese mit ihren entsprechenden Bedeutungen und Werten angezeigt.\imgSpaceBefore
 
 \begin{figure}[h]
 \centering
@@ -770,12 +770,12 @@ Von Andreas\\
 
 \noindent
 Es wurde ein Simulator eines 8-Bit-Prozessors geschrieben.
-Der 8-Bit-Prozessor wurde mit einer Software mit graphischer Oberfläche realisiert. Diese zeigt dem Benutzer den aktuellen Zustand des Prozessors (Intel 8080) an. Der Simulator unterstützt alle Befehle des realen Prozessors und kann Interrupts ausführen. Lediglich der Single-Prozessor-Simulator ist in der Lage auch einen Interrupt durch die GUI zu generieren.
+Der 8-Bit-Prozessor wurde durch eine Software mit graphischer Oberfläche realisiert. Diese zeigt dem Benutzer den aktuellen Zustand des Prozessors (Intel 8080) an. Der Simulator unterstützt alle Befehle des realen Prozessors und kann Interrupts ausführen. Lediglich der Single-Prozessor-Simulator ist in der Lage auch einen Interrupt durch die GUI zu generieren.
 
 
 \subsection{Multi-Prozessor-Simulator}
 Mit diesem Simulator soll es möglich sein, zuvor assemblierten Code auszuführen. Dafür wird ein Assembler \cite{Assembler} verwendet, der aus dem Source Code (.asm) eine .com-Datei erstellt. Aus dieser kann das komplette Programm ausgelesen werden. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Labels/Sprungmarken abspeichert. Dieser Assembler wurde mit in den Simulator integriert. Diese Version des Simulators verfügt über keine GUI, deshalb muss dem Prozessor der Assemblercode in der Source-Datei (Intel8080.py) übergeben werden. Der Prozessor leitet den Code zum Assembler weiter und liest das Ergebnis in seinen Programmspeicher ein. 
-Zuallererst wurde der Intel 8080 implementiert. Dieser wurde voll-funktionsfähig implementiert, bevor damit begonnen wurde, andere Prozessoren zu implementieren. Im Zuge der Recherche ergab sich, dass sich die Prozessoren nur minimal unterscheiden, deshalb wurde sich dafür entschieden einen Prozessor genauer zu simulieren. Die Beschreibung dieses Simulators kann auf Seite \pageref{SPS_impl} gefunden werden.
+Zuallererst wurde der Intel 8080 implementiert. Dieser wurde voll-funktionsfähig implementiert, bevor damit begonnen wurde, andere Prozessoren zu implementieren. Im Zuge der Recherche ergab sich, dass sich die Prozessoren nur minimal unterscheiden, deshalb wurde sich dafür entschieden, einen Prozessor genauer zu simulieren. Die Beschreibung dieses Simulators kann in Kapitel \ref{SPS_impl} gefunden werden.
 
 
 \subsubsection{Programmablauf}
@@ -1125,8 +1125,8 @@ Bei der Entwicklung dieses Simulators wurden einige Eigenheiten eines realen Pro
 \textbf{Adress- und Datenbus}
 
 \noindent
-Der Intel 8080 besitzt einen 8-Bit-Daten- und einen 16-Bit-Adressbus. 
-In diesem Simulator wurde kein Bus implementiert. Grund dafür ist, dass die Busse anhand von verschiedenen Taktgebern beschrieben und gelesen werden. Dies könnte zwar auch simuliert werden, letztendlich wurde beschlossen, diese Funktion aus mangelndem Nutzen nicht im Simulator zu implementieren. Einer der wenigen Gründe warum es doch Sinn gemacht hätte Busse zu verwenden wäre, dass auf dem Adress- und Datenbus die Daten zu sehen wären, die darüber gesendet werden. Dadurch, dass aber nach jedem Zustand die Daten irgendwo gespeichert werden, können die Veränderungen direkt beobachtet werden. Zwar wäre es schön gewesen, wenn die Daten aus dem Programmspeicher über die Busse laufen würden, aber für einen Simulator ist das nicht zwangsweise notwendig. Normalerweise wird auch über diese Busse mit dem Programmspeicher kommuniziert. Dies wurde in diesem Simulator aber umgangen, indem der Prozessor direkten Zugriff auf den Speicher hat. Generell werden die Busse dazu verwendet, um mit externen Geräten zu kommunizieren. Da dieser Simulator aber nicht dafür gedacht ist, wurden diese komplett weggelassen. Daraus folgend wurden für den In- und Out-Befehl der letzte Zyklus nur mit leeren Zuständen gefüllt. So brauchen diese Befehle immer noch die vorgesehenen Anzahl an Zuständen, lesen und schreiben aber keine Daten.
+In diesem Simulator wurde kein Bus implementiert. Grund dafür ist, dass die Busse anhand von verschiedenen Taktgebern beschrieben und gelesen werden. Dies könnte zwar auch simuliert werden, letztendlich wurde aber beschlossen, diese Funktion aus mangelndem Nutzen nicht zu implementieren. Um trotzdem mit dem Programmspeicher kommunizieren zu können wurde es dem Prozessor ermöglicht, ohne einen Bus, direkt auf die Daten zuzugreifen.
+Während die Busse die übertragene Daten direkt einsehbar machen würden, zeigen die Register/Speicherstellen erst am Ende eines Befehls Veränderungen an.
 \\
 
 \noindent
@@ -1136,7 +1136,7 @@ Die notwendigen Zustände dafür existieren, schreiben aber nichts in den Bus. I
 \imgSpaceBefore
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{Bilder/Intel8080_DataLines}
+\includegraphics[width=13cm]{Bilder/Intel8080_DataLines}
 \caption{Kodierung der Befehlstypen beim SYNC Takt \cite{IntMan20}}
 \label{fig:status_word}
 \end{figure}
@@ -1220,8 +1220,8 @@ In diesem wird jedem Element ein Name zugewiesen, über den dann später darauf 
 
 
 \noindent
-\glqq init\_ui\grqq ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe Abbildung  \ref{fig:InitUI}).
-Aufgabe dieser ist es, den korrekten Pfad für die \glqq ui\grqq-Datei zu bestimmen und über den Funktionsaufruf \glqq loadUI\grqq die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion \glqq pressed\_table\_cell\grqq zugewiesen, welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen, die diese Zuweisungen übernimmt, sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
+\glqq init\_ui\grqq\ ist hierbei eine generische Funktion die von allen Fenstern verwendet wird (siehe Abbildung  \ref{fig:InitUI}).
+Aufgabe dieser ist es, den korrekten Pfad für die \glqq ui\grqq-Datei zu bestimmen und über den Funktionsaufruf \glqq loadUI\grqq\ die Datei in ein leeres QMainWindow zu laden. Die Funktionen für die Initialisierung der verschiedenen Register sowie des Programmspeichers erfüllen effektiv die gleiche Aufgabe. Das Bearbeiten der Werte wird über Knöpfe geregelt. Diese werden über die Initalisierungsfunktionen erzeugt und in die einzelnen Zellen des Elements eingefügt. Weiterhin wird den Knöpfen die Funktion \glqq pressed\_table\_cell\grqq\ zugewiesen, welche ausgeführt wird, sollte auf diese geklickt werden (um den Wert zu ändern). Ein Beispiel für eine der Funktionen, die diese Zuweisungen übernimmt, sieht man in Abbildung \ref{fig:InitProgMem}.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1284,7 +1284,7 @@ Wie bereits erwähnt, ist der Sinn dieser Maßnahme, dass keine Veränderung der
 \end{figure}
 
 \noindent
-Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator, diese abzuarbeiten, woraufhin über \glqq update\_ui\grqq die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die \glqq update\_ui\grqq-Funktion alle Elemente aktualisiert arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
+Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschinenzyklus oder eines Zustandes sind lediglich Anweisungen an den Simulator, diese abzuarbeiten, woraufhin über \glqq update\_ui\grqq\ die gesammelten Informationen wieder in die Benutzeroberfläche geladen werden. Ähnlich wie die \glqq update\_ui\grqq-Funktion alle Elemente aktualisiert, arbeiten auch die einzelnen Funktionen darin. Als Beispiel dafür ist in Abbildung \ref{fig:reloadRegs} die Funktion zum aktualisieren der Oberfläche für die speziellen Register zu sehen.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1294,7 +1294,7 @@ Die Implementierungen der drei Knöpfe zum Ausführen eines Befehl, eines Maschi
 \end{figure}
 
 \noindent
-Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simulators seinen Zustand ändert (beispielsweise ein einzelnes Register im Speicher), liest die Funktion einfach über die im Simulator definierte Schnittstellen alle für das Element relevanten Werte aus und trägt sie im korrekten Format in die Tabelle ein. Dieses Verhalten gilt auch in ähnlicher Weise für die \glqq reload\_register\_array\_table\grqq- und die \glqq reload\_program\_memory\_table\grqq-Funktion. Etwas anders funktioniert die Funktion, welche den Programmspeicher parst (\glqq fill\_program\_table\grqq) um das Programm übersichtlich mit der entsprechenden Bedeutung des Bytebefehls darzustellen (siehe Abbildung \ref{fig:FillProgReg}).\imgSpaceBefore
+Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simulators seinen Zustand ändert (beispielsweise ein einzelnes Register im Speicher), liest die Funktion einfach über die im Simulator definierte Schnittstellen alle für das Element relevanten Werte aus und trägt sie im korrekten Format in die Tabelle ein. Dieses Verhalten gilt auch in ähnlicher Weise für die \glqq reload\_register\_array\_table\grqq- und die \glqq reload\_program\_memory\_table\grqq-Funktion. Etwas anders funktioniert die Funktion, welche den Programmspeicher parst (\glqq fill\_program\_table\grqq), um das Programm übersichtlich mit der entsprechenden Bedeutung des Bytebefehls darzustellen (siehe Abbildung \ref{fig:FillProgReg}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1304,7 +1304,7 @@ Da es schwer nachzuvollziehen ist wann ein Bestandteil eines Elements des Simula
 \end{figure}
 
 \noindent
-Zuerst werden alle Einträge der Tabelle gelöscht woraufhin über alle Register im Programmspeicher iteriert wird. Da in jedem Eintrag der Tabelle ein Befehl, sowie dessen Operanden stehen sollen, wird über eine Liste (instruction\_positions) der Index jedes Befehls gespeichert. Dadurch soll sichergestellt werden, dass Operanden in die selbe Zeile geschrieben werden wie der Befehl zu dem sie gehören. Das bestimmen des Befehls sowie der Anzahl Operanden pro Befehl geschieht über ein Dictionary. Die Abfrage funktioniert so funktioniert so, dass die Masken für jeden Befehl mit dem Bytecode im Programmspeicher verundet werden und geschaut wird ob sich der resultierende Eintrag im Dictionary findet (siehe Abbildung \ref{fig:Dict}).\imgSpaceBefore
+Zuerst werden alle Einträge der Tabelle gelöscht, woraufhin über alle Register im Programmspeicher iteriert wird. Da in jedem Eintrag der Tabelle ein Befehl, sowie dessen Operanden stehen sollen, wird über eine Liste (instruction\_positions) der Index jedes Befehls gespeichert. Dadurch soll sichergestellt werden, dass Operanden in dieselbe Zeile wie der zugehörige Befehl geschrieben werden. Die Auswahl des Befehls sowie der Anzahl Operanden pro Befehl geschieht über ein Dictionary. In der Abfrage werden die Masken für jeden Befehl mit dem Bytecode im Programmspeicher verundet und der resultierende Eintrag im Dictionary gefunden (siehe Abbildung \ref{fig:Dict}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1314,17 +1314,17 @@ Zuerst werden alle Einträge der Tabelle gelöscht woraufhin über alle Register
 \end{figure}
 
 \noindent
-Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnung des Befehls und, falls angewendet, die Maske zum bestimmen des Befehls. Um keine zufälligen Treffer zu erzielen (beispielsweise verunden mit falscher Maske führt zu anderem Befehl) wird nach einer Übereinstimmung im Dictionary die \glqq mask\_validation\grqq-Funktion verwendet (siehe Abbildung \ref{fig:MaskValid}).\imgSpaceBefore
+Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnung des Befehls und, falls angewendet, die Maske zur Bestimmung des Befehls. Um keine zufälligen Treffer zu erzielen (beispielsweise verunden mit falscher Maske führt zu anderem Befehl) wird nach einer Übereinstimmung im Dictionary die \glqq mask\_validation\grqq-Funktion verwendet (siehe Abbildung \ref{fig:MaskValid}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=14cm]{bilder/mask_valid}
-\caption{Mask Validation Function}
+\caption{Mask-Validation-Function}
 \label{fig:MaskValid}
 \end{figure}
 
 \noindent
-Hierbei wird zuerst überprüft ob der vermeintliche Befehl eine Maske verwendet und dann ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als dieser interpretiert werden, wurde sich dazu entschieden diese Einträge zusammenzufassen insofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq addiert um die Einträge der Operanden zu überspringen.
+Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und dann ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet, wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq addiert um die Einträge der Operanden zu überspringen.
 
 \subsubsection{Manipulieren der Simulation}
 Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
@@ -1341,45 +1341,45 @@ Diese funktionieren ähnlich wie deren Initalisierungsfunktionen (siehe Kapitel 
 \begin{figure}[H]
 \centering
 \includegraphics[width=15cm]{bilder/UpdateProgMem}
-\caption{Memory Update-Function}
+\caption{Memory-Update-Function}
 \label{fig:MemUpdateFunc}
 \end{figure}
 
 \noindent
-Zuerst wird bestimmt welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register) können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion \glqq set\_memory\_byte\grqq werden die Werte dann einzeln zurückgeschrieben. Die drei \glqq update\grqq-Funktionen werden im Gegensatz zu den \glqq reload\grqq-Funktionen nur aufgerufen wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist die bereits angesprochene Funktion welche mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
+Zuerst wird bestimmt, welcher Speicherbereich derzeit angezeigt wird. Da die Programmspeichertabelle immer genau acht Zeilen und sechzehn Spalten hat (also 128 Register), können diese Werte fix verwendet werden. Daraufhin wird für jede Zeile die Adresse berechnet. Der Wert wird aus den Knöpfen bezogen und zur Basis 10 umgerechnet, da diese in Hexadezimal-Darstellung als String in diesen gespeichert werden. Über die Prozessorfunktion \glqq set\_memory\_byte\grqq\ werden die Werte dann einzeln zurückgeschrieben. Die drei \glqq update\grqq-Funktionen werden im Gegensatz zu den \glqq reload\grqq-Funktionen nur aufgerufen, wenn tatsächlich ein Wert im jeweiligen Element ändert. Dabei ist die bereits angesprochene Funktion, welche mit den Knopfelementen dieser Tabellen verknüpft ist relevant (siehe \ref{fig:PTC}).\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=12cm]{bilder/PTC}
-\caption{Knopfdruck Funktion}
+\caption{Knopfdruckfunktion}
 \label{fig:PTC}
 \end{figure}
 
 \noindent
-Dabei wird der Knopf welcher die Funktion aufruft als Referenz an das neu erzeugte ChangeValueWindow übergeben. Dieser wird benötigt um zu bestimmen welches Element eine Werteänderung vornimmt. In Abbildung \ref{fig:CheckInput} ist die Funktion des ChangeValueWindow zu sehen welche die Eingabevalidierung vornimmt und die für das Element entsprechende \glqq update\grqq-Funktion aufruft.\imgSpaceBefore
+Dabei wird der Knopf, welcher die Funktion aufruft als Referenz an das neu erzeugte ChangeValueWindow übergeben. Dieser wird benötigt, um zu bestimmen welches Element eine Werteänderung vornimmt. In Abbildung \ref{fig:CheckInput} ist die Funktion des ChangeValueWindow zu sehen, welche die Eingabevalidierung vornimmt und die für das Element entsprechende \glqq update\grqq-Funktion aufruft.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=12cm]{bilder/CheckInput}
-\caption{InputValidation Function}
+\caption{InputValidation-Function}
 \label{fig:CheckInput}
 \end{figure}
 
 \noindent
-Als erstes wird der Wert ausgelesen und der Index des Knopfes innerhalb der Tabelle bestimmt. Danach wird geprüft aus welchem Element der aufrufende Knopf stammt.
+Als erstes wird der Wert ausgelesen und der Index des Knopfes innerhalb der Tabelle bestimmt. Danach wird geprüft, aus welchem Element der aufrufende Knopf stammt.
 
 \subsubsection{Sonstige Interaktionen}
-Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern würde und eher unnötig ist, wurde die Anzeige der Programmspeichertabelle auf 128 aufeinanderfolgende Register limitiert. Um auswählen zu können welche Register angezeigt werden, sind zwei Eingabefenster vorgesehen. Entweder um anzugeben bis zu oder ab welchem Register der Speicher angezeigt werden soll. Das Ändern des einen Wertes passt dabei den anderen automatisch an.\imgSpaceBefore
+Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern würde und selten notwendig ist, wurde die Anzeige der Programmspeichertabelle auf 128 aufeinanderfolgende Register limitiert. Um auswählen zu können, welche Register angezeigt werden, sind zwei Eingabefenster vorgesehen. Entweder um anzugeben bis zu oder ab welchem Register der Speicher angezeigt werden soll. Das Ändern des einen Wertes passt dabei den anderen automatisch an.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=12cm]{bilder/Range_to}
-\caption{Range Funktion}
+\caption{Range-Funktion}
 \label{fig:RangeTo}
 \end{figure}
 
 \noindent
-Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
+Dafür wird ein Signal, welches ausgelöst wird, sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
 
 \subsection{Exe-Erstellung}
 Als letzter Schritt wurde für das Programm noch eine \glqq exe\grqq-Datei erstellt. Dafür wurde das \glqq pyinstaller\grqq  \cite{pyinstaller} Paket verwendet. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
@@ -1394,7 +1394,7 @@ Von Nico \\
 Das Ergebnis dieser Studienarbeit ist ein Simulator für den Intel 8080 welcher mit einer zugehörigen Benutzeroberfläche bedient werden kann. Die relevanten Aspekte des Prozessors werden dem Nutzer dabei angezeigt, wie beispielsweise Registerinhalte, das ausgeführte Programm oder einzelne Operationen für jeden Zustand. Es ist dem Nutzer möglich eigene Programme über die Benutzeroberfläche in den Simulator einzufügen oder diese zuvor über den verwendeten Assembler zu erstellen und dann direkt einzulesen. Die eingefügten Programme können Schrittweise ausgeführt werden, wobei es möglich ist ganze Befehle, Maschinenzyklen oder sogar einzelne Zustände auszuführen. Es ist möglich über den eingefügten Programmeditor eigene Programme mit dem verwendeten Assembler zu schreiben. Dabei wird eine Hilfestellung gegeben für die korrekte Syntax. Die Bedeutung einzelner Zustände wird in einem Befehlslog eingetragen um nachvollziehen zu können was in jedem Zustand passiert. Programme können automatisch ausgeführt werden und über Haltepunkte auch automatisch an einer beliebigen Stelle angehalten werden. Es ist zu jedem Zeitpunkt möglich die internen Aspekte des Simulators zu verändern über eine einfach zu bedienende Oberfläche. Das zurücksetzen der Oberfläche funktioniert auch problemlos. Der gesamte Befehlssatz des Intel 8080 wurde so genau wie möglich implementiert und sollte identische Ergebnisse liefern wie nativ ausgeführte Operationen.
 
 \subsection{Ausblick}
-Die Benutzeroberfläche ist derzeit vollständig in Englisch geschrieben. Es wäre also eine Überlegung Wert eine Einstellung einzufügen für andere Sprachen. Der Befehlslog ist aktuell noch recht kryptisch. Während es wenn man die Bedeutung der Zustände und Abkürzung kennt zwar genügend Aufschluss gibt, ist diese Variante noch verbesserungswürdig. Das Tutorial vermittelt die notwendigen Grundlagen um den Simulator zu bedienen, aber eine interaktive Lösung mit Beispielen hätte vermutlich einen höheren Lernerfolg.
+Die Benutzeroberfläche ist derzeit vollständig in Englisch geschrieben. In Zukunft könnten noch mehr Sprachen eingebaut werden. Der Befehlslog ist aktuell noch recht kryptisch. Während es wenn man die Bedeutung der Zustände und Abkürzung kennt zwar genügend Aufschluss gibt, ist diese Variante noch verbesserungswürdig. Das Tutorial vermittelt die notwendigen Grundlagen um den Simulator zu bedienen, aber eine interaktive Lösung mit Beispielen hätte vermutlich einen höheren Lernerfolg.
 
 \newpage
 
