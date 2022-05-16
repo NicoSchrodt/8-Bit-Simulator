@@ -215,7 +215,7 @@ Der Programmspeicher eines Prozessors enthält die einzelnen Befehle, welche vom
 \textbf{Ein-/Ausgabewerk}\\
 Das Ein-/Ausgabewerk ist für die Kommunikation des Prozessors mit anderen Systemkomponenten verantwortlich.\\
 \subsubsection{Befehlsformate}
-Für einen Prozessor wird zwischen vier verschiedenen Befehlsformaten unterschieden. Diese beziehen sich auf die Anzahl der Adressen, welche der ALU bei Beginn einer Operation zur Verfügung gestellt werden.\\ \\
+Für einen Prozessor wird zwischen vier verschiedenen Befehlsformaten unterschieden. Diese beziehen sich auf die Anzahl der Adressen, welche der ALU bei Beginn einer Operation zur Verfügung gestellt werden. \cite{Adressformate}\\ \\
 \textbf{Null-Adress-Anweisungen}\\
 Vom Akkumulator (Stack) wird der Wert der zwei obersten Adressfeldern entnommen und die Operation wird auf diese ausgeführt. Der Speicherort des Ergebnisses ist ebenfalls vorbestimmt. Daher werden zum Ausführen von Operationen keine Adressen benötigt.\\ \\
 \textbf{Ein-Adress-Anweisungen}\\
@@ -226,22 +226,27 @@ Für Zwei-Adress-Anweisungen ist es möglich eine Bezugsadresse für die Operand
 Drei-Adress-Anweisungen sind essentiell komplexere Zwei-Adress-Anweisungen. Eine der drei verfügbaren Adressen wird ebenfalls für die Zieladresse der Operation verwendet. Für das Beziehen der Operanden steht eine weitere Adresse zur Verfügung.\\
 
 \subsubsection{Harvard- und von-Neumann-Architektur}
+Von Andreas\\
+
+\noindent
 Prozessoren können auf viele unterschiedliche Arten kategorisiert werden. In diesem Kapitel geht es um die Harvard- und von-Neumann-Architektur. 
 Für beide Architekturen werden die im vorherigen Kapitel beschriebenen Bauteile benötigt. 
-Je nachdem welche Anzahl an einzelnen Bauteilen vorhanden und wie diese verbunden sind, können Prozessoren unterschieden werden. 
-Bei der von-Neumann-Architektur gibt es nur einen Daten-, Steuer- und Adressbus. Somit muss zuerst ein Befehl vom Speicher in das Steuerwerk geladen werden. 
-Erst danach wird mit Steuersignalen den einzelnen Komponenten mitgeteilt was als nächstes gemacht werden muss. Häufig müssen daraufhin Daten geladen oder geschrieben werden. 
+Bei der von-Neumann-Architektur gibt es nur einen Daten-, Steuer- und Adressbus, der mit allem verbunden ist. 
+Bei einem neuen Befehl muss somit zuerst ein Befehl vom Speicher in das Steuerwerk geladen werden. 
+Erst danach wird mit Steuersignalen den einzelnen Komponenten mitgeteilt was als nächstes geschehen soll. Häufig müssen daraufhin Daten geladen oder geschrieben werden. 
 Damit der Speicher aber weiß woher die Daten gelesen werden müssen, muss zuerst die Adresse über den Bus geschickt werden. 
-Bei der von-Neumann-Architektur läuft die ganze Kommunikation über einen Bus.
+Dadurch, dass es bei der von-Neumann-Architektur nur einen Bus gibt, muss darüber die ganze Kommunikation ablaufen.
 \\
-Die Harvard-Architektur besitzt mehrere, getrennte Busse, da es auch zwei getrennte Speicher gibt.
+Die Harvard-Architektur besitzt mehrere, getrennte Busse, da es auch zwei getrennte Speicher gibt: 
 Einen Programmspeicher und einen Datenspeicher. 
-Bei der von-Neumann-Architektur gibt es nur einen Speicher. 
-Dort liegen sowohl Programmcode als auch Daten zusammen. 
-Bei der Harvard-Architektur kann deshalb parallelisiert werden, da sich die Befehle und die Daten nicht gegenseitig blockieren. Aus dem Programmspeicher wird der nächste Befehl schon geladen, während für den vorherigen Befehl z.B. erst noch die Daten in die ALU geladen werden. 
-Somit ist es möglich, dass gleichzeitig ein Byte aus dem Programmspeicher als auch aus dem Datenspeicher verwendet werden. 
-Dies macht die Ausführung von Programmen wesentlich schneller als bei von-Neumann-Systemen.
-Der Nachteil davon ist allerdings, dass Bauteile öfters verwendet werden, was dazu führt, dass diese Prozessoren teurer sind. \cite{Architektur}
+Bei der von-Neumann-Architektur gibt es nur einen Speicher.
+Deshalb müssen Programmcode und Daten zwangsweise zusammen abgelegt werden. 
+Dadurch, dass bei der Harvard-Architektur zwei getrennte Speicher verwendet werden und jeder einen eigenen Bus besitzt, können sich Befehle und Daten nicht gegenseitig blockieren. 
+Somit können beide Speicher parallel angesprochen und verwendet werden. 
+Während für den vorherigen Befehl noch Daten eingelesen werden, kann schon ein neuer Befehl aus dem Programmspeicher eingelesen werden. 
+Daraus ergibt sich, rein aus der Theorie schon, eine höhere Ausführungsgeschwindigkeit als bei von-Neumann-Systemen. 
+Der Nachteil davon ist allerdings, dass Bauteile öfters verwendet werden, was dazu führt, dass diese Prozessoren teurer sind.
+Deshalb sind heutzutage auch die meisten Prozessoren noch mit einer von-Neumann-Architektur. \cite{Architektur_stud}, \cite{Architektur}
 
 \subsubsection{CISC und RISC}
 Von Andreas\\
@@ -613,7 +618,7 @@ Dadurch öffnet sich ein Dateien-Explorer, über den die gewünschte Datei ausge
 \label{fig:Settings}
 \end{figure}
 
-Um die grobe Struktur eines Programms zu verstehen sind einige gültige Beispielbefehle bereits im Textfeld eingetragen (siehe Abbildung \ref{fig:ProgEdit}). Im Intel 8080 Programmers Manual sind noch weitere Beispiele für gültige Befehle aufgeführt. Das Programm kann über das untere Textfeld benannt werden. Wird der \glqq Output File\grqq-Knopf betätigt werden drei Dateien ausgegeben mit den Endungen \glqq asm\grqq, \glqq sym\grqq und \glqq com\grqq. Abhängig davon ob das Programm über die Exe-Datei gestartet wurde wird entweder der \glqq Output\grqq-Ordner verwendet oder einfach das Verzeichnis in dem die Exe ausgeführt wurde. Liegt ein Fehler vor in der Syntax wird ein Fehler ausgegeben mit dem Problem das behoben werden muss.\imgSpaceBefore
+Um die grobe Struktur eines Programms zu verstehen sind einige gültige Beispielbefehle bereits im Textfeld eingetragen (siehe Abbildung \ref{fig:ProgEdit}). Im Intel 8080 Programmers Manual sind noch weitere Beispiele für gültige Befehle aufgeführt. Das Programm kann über das untere Textfeld benannt werden. Wird der \glqq Output File\grqq-Knopf betätigt werden drei Dateien ausgegeben mit den Endungen \glqq asm\grqq, \glqq sym\grqq und \glqq com\grqq. Abhängig davon ob das Programm über die .exe-Datei gestartet wurde wird entweder der \glqq Output\grqq-Ordner verwendet oder einfach das Verzeichnis in dem die Exe ausgeführt wurde. Liegt ein Fehler vor in der Syntax wird ein Fehler ausgegeben mit dem Problem das behoben werden muss.\imgSpaceBefore
 
 \begin{figure}[H]
 \centering
@@ -1404,7 +1409,7 @@ Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zw
 \end{figure}
 
 \noindent
-Während dies recht umständlich ist, bietet es zumindest den Vorteil, dass keine Python-Umgebung sowie die benötigten Pakete auf dem Rechner installiert werden müssen. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket benötigt.
+Während dies recht umständlich ist, bietet es zumindest den Vorteil, dass keine Python-Umgebung sowie die benötigten Pakete auf dem Rechner installiert werden müssen. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
 
 \section{Fazit und Ausblick}
 Von Nico \\
@@ -1422,6 +1427,11 @@ Die Benutzeroberfläche ist derzeit vollständig in Englisch geschrieben. Es wä
 \addcontentsline{toc}{section}{Literatur}
 \begin{thebibliography}{9}
 
+\bibitem{Adressformate}Instruction formats: \url{https://www.geeksforgeeks.org/computer-organization-instruction-formats-zero-one-two-three-address-instruction/}, zuletzt abgerufen: 25.12.2021
+
+\bibitem{Architektur_stud}
+Von-Neumann vs. Harvard: Studyflix,	\url{https://studyflix.de/informatik/von-neumann-vs-harvard-786}, zuletzt abgerufen: 15.05.2022
+
 \bibitem{Architektur}
 Von Neumann Architektur: \url{https://de.wikipedia.org/wiki/Von-Neumann-Architektur}, zuletzt abgerufen: 15.05.2022
 
@@ -1430,12 +1440,6 @@ Grundlagen der Informatik: Herold, Lurz, Wohlrab und Hopf; 3. aktualisierte Aufl
 
 \bibitem{Flynn}
 Some Computer Organizations and Their Effectiveness (S.948-960, vol. C-21): M. J. Flynn, 1972, in IEEE Transactions on Computers
-\bibitem{IntMan45}
-
-Intel 8080 Microcomputer Systems User's Manual (S.46 ff. (4-1)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
-
-\bibitem{IntMan18}
-Intel 8080 Microcomputer Systems User's Manual (S.18 f. (2-4)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
 
 \bibitem{IntMan16}
 Intel 8080 Microcomputer Systems User's Manual (S.16 (2-2)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
@@ -1443,15 +1447,19 @@ Intel 8080 Microcomputer Systems User's Manual (S.16 (2-2)): Intel Corporation, 
 \bibitem{IntMan30}
 Intel 8080 Microcomputer Systems User's Manual (S.30 ff. (2-16)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
 
-\bibitem{Adressformate}Instruction formats: \url{https://www.geeksforgeeks.org/computer-organization-instruction-formats-zero-one-two-three-address-instruction/}, zuletzt abgerufen: 25.12.2021
+\bibitem{IntMan45}
+Intel 8080 Microcomputer Systems User's Manual (S.46 ff. (4-1)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
 
-\bibitem{IntMan20}
-Intel 8080 Microcomputer Systems User's Manual (S.20 (2-6)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
+\bibitem{IntMan18}
+Intel 8080 Microcomputer Systems User's Manual (S.18 f. (2-4)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
 
 \bibitem{Assembler}
 Intel 8080 Assembler: Paolo Amoroso, 2021, \url{https://github.com/pamoroso/suite8080/tree/56c2e077dd3d178859d614932b9a1f33fa238e21}, zuletzt abgerufen: 15.05.2022
 
-\bibitem{}
+\bibitem{IntMan20}
+Intel 8080 Microcomputer Systems User's Manual (S.20 (2-6)): Intel Corporation, 1975, \url{http://bitsavers.trailing-edge.com/components/intel/MCS80/98-153B_Intel_8080_Microcomputer_Systems_Users_Manual_197509.pdf} zuletzt abgerufen: 14.05.2022
+
+\bibitem{qt}
 PyQt Reference Guide, \url{https://www.riverbankcomputing.com/static/Docs/PyQt6/index.html}, zuletzt abgerufen: 15.05.2022
 
 \end{thebibliography}
