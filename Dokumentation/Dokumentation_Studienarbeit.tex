@@ -1376,7 +1376,7 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 \noindent
 Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
 
-\subsubsection{Exe-Erstellung}
+\subsection{Exe-Erstellung}
 Als letzter Schritt wurde für das Programm noch eine \glqq exe\grqq-Datei erstellt. Dafür wurde das \glqq pyinstaller\grqq  \cite{pyinstaller} Paket verwendet. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
 
 \newpage
