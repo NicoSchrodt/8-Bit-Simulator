@@ -322,7 +322,7 @@ Die Aufgabengebiete bei diesem Simulator wurden wie folgt verteilt: Nico Schrodt
 Von Andreas\\ 
 
 \noindent
-Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 besitzt eine von-Neumann-Architektur und gehört somit zur Klasse der SISD-Architektur. Er bietet ein breites Spektrum an Befehlen und ist repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Im folgenden werden die Befehle und Register genauer erklärt.
+Als Prozessor für den Single-Prozessor-Simulator wurde der Intel 8080 ausgewählt. Der Intel 8080 besitzt eine von-Neumann-Architektur und gehört somit zur Klasse der SISD-Architektur. Er bietet ein breites Spektrum an Befehlen und ist repräsentativ für einen der ersten großen, kommerziell erfolgreichen Prozessoren. Im Folgenden werden die Befehle und Register genauer erklärt.
 
 
 \subsection{Register}
@@ -775,7 +775,7 @@ Der 8-Bit-Prozessor wurde durch eine Software mit graphischer Oberfläche realis
 
 \subsection{Multi-Prozessor-Simulator}
 Mit diesem Simulator soll es möglich sein, zuvor assemblierten Code auszuführen. Dafür wird ein Assembler \cite{Assembler} verwendet, der aus dem Source Code (.asm) eine .com-Datei erstellt. Aus dieser kann das komplette Programm ausgelesen werden. Zusätzlich dazu wird noch eine Datei (.sym) erstellt, die die Labels/Sprungmarken abspeichert. Dieser Assembler wurde mit in den Simulator integriert. Diese Version des Simulators verfügt über keine GUI, deshalb muss dem Prozessor der Assemblercode in der Source-Datei (Intel8080.py) übergeben werden. Der Prozessor leitet den Code zum Assembler weiter und liest das Ergebnis in seinen Programmspeicher ein. 
-Zuallererst wurde der Intel 8080 implementiert. Dieser wurde voll-funktionsfähig implementiert, bevor damit begonnen wurde, andere Prozessoren zu implementieren. Im Zuge der Recherche ergab sich, dass sich die Prozessoren nur minimal unterscheiden, deshalb wurde sich dafür entschieden, einen Prozessor genauer zu simulieren. Die Beschreibung dieses Simulators kann in Kapitel \ref{SPS_impl} gefunden werden.
+Zuallererst wurde der Intel 8080 implementiert. Dieser wurde voll-funktionsfähig implementiert, bevor damit begonnen wurde, andere Prozessoren zu implementieren. Im Zuge der Recherche ergab sich, dass sich die Prozessoren nur minimal unterscheiden, deshalb wurde sich dafür entschieden einen Prozessor genauer zu simulieren. Die Beschreibung dieses Simulators kann in Kapitel \ref{SPS_impl} gefunden werden.
 
 
 \subsubsection{Programmablauf}
@@ -1325,7 +1325,7 @@ Die Einträge sind hierbei die Anzahl der nachfolgenden Operanden, die Bezeichnu
 \end{figure}
 
 \noindent
-Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und ob die angewendete Maske die korrekte Maske ist. Falls der Befehl keine Maske verwendet, wird geprüft ob auch keine verwendet wurde. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq\ addiert, um die Einträge der Operanden zu überspringen.
+Hierbei wird zuerst überprüft, ob der vermeintliche Befehl eine Maske verwendet und ob die angewendete Maske die korrekte Maske ist. Zusätzlich wird überprüft, ob keine Maske verwendet wurde, falls der Befehle keine erfordert. Ist das Ergebnis negativ, wird die Übereinstimmung verworfen. Bei einem gültigen Treffer wird ein Eintrag in der Tabelle angelegt, der die Stelle im Speicher, den Namen des Befehls sowie dessen Operanden umfasst. Dabei wird berücksichtigt, ob es sich um einen NOP-Befehl handelt. Da leere Speicherstellen als solche interpretiert werden, werden diese Einträge zusammengefasst, sofern mehrere aufeinanderfolgen. Dies wird mit einem einfachen Zähler erreicht. Am Ende der Schleife werden die Anzahl Operanden auf die Zählvariable \glqq i\grqq\ addiert, um die Einträge der Operanden zu überspringen.
 
 \subsubsection{Manipulieren der Simulation}
 Das zurückschreiben von der GUI in den Simulator geschieht über drei verschiedene Funktionen:\imgSpaceBefore
