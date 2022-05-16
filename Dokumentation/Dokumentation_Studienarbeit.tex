@@ -744,7 +744,6 @@ Die letzte Funktionalität der Benutzeroberfläche ist ein Log in dem die einzel
 \noindent
 Gezeigt ist der Adresspuffer, welcher für das Auswählen von externen Geräten über das Bussystem zuständig ist. Die Darstellung wurde hier bitweise gewählt, das heißt, statt die ganzen 2 Byte des Registers zu bearbeiten, werden die einzeln Bits angesteuert.
 
-\newpage
 
 \subsection{Tutorial}
 Das Tutorial für die Handhabung des Simulators ist über das Hauptmenü erreichbar. Es besteht aus fünf verschiedenen Bildern, welche jeweils die einzelnen Elemente des Simulators zeigen und deren Funktion näher beschreiben (siehe Abbildung \ref{fig:Tutorial}).\imgSpaceBefore
@@ -795,6 +794,7 @@ Bei vielen Befehlen wie ACI wird auf genau einen Wert geprüft. Es gibt aber auc
 \noindent
 Dieses Vorgehen wird bei einigen Befehlen verwendet. In Kapitel \ref{chapter:opcode} wird genauer gezeigt, wie die Register in den Befehlen kodiert werden.
 
+\newpage
 
 \subsubsection{Programmaufbau}
 \label{chapter:MPS_aufbau}
@@ -845,8 +845,7 @@ Die zusammengesetzten Register können alle gleich behandelt werden, da bei dem 
 \label{fig:reg_array}
 \end{figure}
 
-
-\noindent
+\newpage
 
 
 \subsubsection{Befehlsvarianten}
@@ -1228,6 +1227,7 @@ Aufgabe dieser ist es, den korrekten Pfad für die \glqq ui\grqq-Datei zu bestim
 \noindent
 Effektiv wird die in der \glqq ui\grqq-Datei definierte Anzahl Zeilen und Spalten der Programmtabelle abgefragt. Dann wird über jedes Element iteriert und ein Knopf erstellt mit Standardtext und einer Zuweisung. Die zugewiesene Funktion wird in Kapitel \ref{chapter:GUI-Methods} noch näher erklärt.
 
+\newpage
 
 \subsection{GUI-Methoden}\label{chapter:GUI-Methods}
 Von Nico\\
@@ -1375,7 +1375,6 @@ Da das gesamte Auslesen und Anzeigen der 65.536 8-Bit Register zu lange dauern w
 \noindent
 Dafür wird ein Signal, welches ausgelöst wird sobald sich der Wert ändert mit der in Abbildung \ref{fig:RangeTo} gezeigten Funktion verknüpft. Um zu verhindern, dass die beiden Funktionen sich in einer Endlosschleife gegenseitig aufrufen wird ein Lock verwendet. Die Oberfläche wird nicht sofort aktualisiert, dafür muss zuerst der darunterliegende Knopf gedrückt werden, oder der Zustand des Simulators verändert werden.
 
-\newpage
 \subsubsection{Exe-Erstellung}
 Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zwischen den Versionen zu unterscheiden, wurde zu jeder Exe-Datei der entsprechende Commit angegeben. Aufgrund von Schwierigkeiten den Pfad der Dateien welche die Benutzeroberfläche definieren für die Exe-Dateien korrekt festzulegen bzw. diese direkt in das Program zu integrieren, müssen diese auf eine spezielle Art aufgerufen werden. Die Exe-Datei muss aus dem Basispfad des Programms heraus ausgeführt werden. Dabei wird lediglich das Verzeichnis unter 8-Bit-Simulator\textbackslash Code\textbackslash ui sowie deren Inhalt benötigt, der Pfad muss aber identisch sein (siehe Beispiel \ref{fig:OrdnerStruk}).\imgSpaceBefore
 
@@ -1399,6 +1398,8 @@ Als letzter Schritt wurde für das Programm noch eine .exe-Datei erstellt. Um zw
 
 \noindent
 Während dies recht umständlich ist, bietet es zumindest den Vorteil, dass keine Python-Umgebung sowie die benötigten Pakete auf dem Rechner installiert werden müssen. Sollte keine aktuelle Version des Programms als ausführbare Datei vorliegen wird eine Python Installation (Version 3.9 oder 3.10 getestet und funktionieren) und das PyQt6 Paket \cite{qt} benötigt.
+
+\newpage
 
 \section{Fazit und Ausblick}
 Von Nico \\
